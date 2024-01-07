@@ -228,6 +228,41 @@
                                             </div>
 
                                             <div class="col-md-6">
+                                            <div class="form-group">
+                                            <label class="form-label">Model <span class="text-red">*</span></label>
+                                            <select class="form-control select2" data-placeholder="Choose one (with optgroup)">
+                                                    <optgroup label="Mountain Time Zone">
+                                                        <option value="AZ">Arizona</option>
+                                                        <option value="CO">Colorado</option>
+                                                        <option value="ID">Idaho</option>
+                                                        <option value="MT">Montana</option><option value="NE">Nebraska</option>
+                                                        <option value="NM">New Mexico</option>
+                                                        <option value="ND">North Dakota</option>
+                                                        <option value="UT">Utah</option>
+                                                        <option value="WY">Wyoming</option>
+                                                    </optgroup>
+                                                    <optgroup label="Central Time Zone">
+                                                        <option value="AL">Alabama</option>
+                                                        <option value="AR">Arkansas</option>
+                                                        <option value="IL">Illinois</option>
+                                                        <option value="IA">Iowa</option>
+                                                        <option value="KS">Kansas</option>
+                                                        <option value="KY">Kentucky</option>
+                                                        <option value="LA">Louisiana</option>
+                                                        <option value="MN">Minnesota</option>
+                                                        <option value="MS">Mississippi</option>
+                                                        <option value="MO">Missouri</option>
+                                                        <option value="OK">Oklahoma</option>
+                                                        <option value="SD">South Dakota</option>
+                                                        <option value="TX">Texas</option>
+                                                        <option value="TN">Tennessee</option>
+                                                        <option value="WI">Wisconsin</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                            </div>
+
+                                            <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="form-label">Year <span class="text-red">*</span></label>
                                                     <select name="user[year]" class="form-control form-select select2" data-bs-placeholder="Select Year">
@@ -291,37 +326,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="form-label">Fuel Type <span class="text-red">*</span></label>
-                                                    <select name="user[year]" class="form-control form-select select2" data-bs-placeholder="Select Year">
-                                                            <option label="Select Fuel Type">Select Fuel Type</option>
-                                                            <option value="2014">2040</option>
-                                                            <option value="2014">2039</option>
-                                                            <option value="2014">2037</option>
-                                                            <option value="2014">2036</option>
-                                                            <option value="2014">2035</option>
-                                                            <option value="2014">2034</option>
-                                                            <option value="2014">2033</option>
-                                                            <option value="2014">2032</option>
-                                                            <option value="2014">2031</option>
-                                                            <option value="2014">2030</option>
-                                                            <option value="2014">2030</option>
-                                                            <option value="2013">2029</option>
-                                                            <option value="2012">2028</option>
-                                                            <option value="2011">2027</option>
-                                                            <option value="2010">2026</option>
-                                                            <option value="2009">2025</option>
-                                                            <option value="2008">2024</option>
-                                                            <option value="2007">2023</option>
-                                                            <option value="2006">2022</option>
-                                                            <option value="2005">2021</option>
-                                                            <option value="2004">2020</option>
-                                                            <option value="2003">2019</option>
-                                                            <option value="2002">2018</option>
-                                                        </select>
-                                                </div>
-                                            </div>
+                                           
 
                                             <div class="col-md-6">
 
@@ -341,12 +346,13 @@
                                                 </div>
                                             </div>
 
+                                            <div class="col-md-12 my-2">
+                                            <label class="form-label">Vehicle Image</label>
+                                                <input type="file" class="dropify" data-bs-height="180">
+                                            </div>
+
                                      
-
-
-                                       
-
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <button class="btn btn-default">Cancel</button>
                                                 <button class="btn btn-primary">Update</button>
                                             </div>
