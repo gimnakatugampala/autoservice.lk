@@ -579,33 +579,9 @@
                                         <div class="tab-pane active" id="side5">
                                             <ul class="sidemenu-list mega-menu-list">
                                                 <li class="side-menu-label1"><a href="javascript:void(0)">Bootstrap</a></li>
-                                                <li><a href="alerts.html" class="slide-item"> Alerts</a></li>
-                                                <li><a href="buttons.html" class="slide-item"> Buttons</a></li>
-                                                <li><a href="colors.html" class="slide-item"> Colors</a></li>
-                                                <li><a href="avatarsquare.html" class="slide-item"> Avatar Square</a></li>
-                                                <li><a href="avatar-radius.html" class="slide-item"> Avatar Radius</a></li>
-                                                <li><a href="avatar-round.html" class="slide-item"> Avatar Rounded</a></li>
-                                                <li><a href="dropdown.html" class="slide-item"> Dropdowns</a></li>
-                                                <li><a href="listgroup.html" class="slide-item"> List Group</a></li>
-                                                <li><a href="tags.html" class="slide-item"> Tags</a></li>
-                                                <li><a href="pagination.html" class="slide-item"> Pagination</a></li>
-                                                <li><a href="navigation.html" class="slide-item"> Navigation</a></li>
-                                                <li><a href="typography.html" class="slide-item"> Typography</a></li>
-                                                <li><a href="breadcrumbs.html" class="slide-item"> Breadcrumbs</a></li>
-                                                <li><a href="badge.html" class="slide-item"> Badges / Pills</a></li>
-                                                <li><a href="panels.html" class="slide-item"> Panels</a></li>
-                                                <li><a href="thumbnails.html" class="slide-item"> Thumbnails</a></li>
-                                                <li><a href="offcanvas.html" class="slide-item"> Offcanvas</a></li>
-                                                <li><a href="toast.html" class="slide-item"> toast</a></li>
-                                                <li><a href="scrollspy.html" class="slide-item"> Scrollspy</a></li>
-                                                <li><a href="mediaobject.html" class="slide-item"> Media Object</a></li>
-                                                <li><a href="accordion.html" class="slide-item"> Accordions </a></li>
-                                                <li><a href="tabs.html" class="slide-item"> Tabs</a></li>
-                                                <li><a href="modal.html" class="slide-item"> Modal</a></li>
-                                                <li><a href="tooltipandpopover.html" class="slide-item"> Tooltip and popover</a></li>
-                                                <li><a href="progress.html" class="slide-item"> Progress</a></li>
-                                                <li><a href="carousel.html" class="slide-item"> Carousels</a></li>
-                                                <li><a href="ribbons.html" class="slide-item"> Ribbons</a></li>
+
+                                                <li><a href="../employees/" class="slide-item">Employees List</a></li>
+                                                <li><a href="../employees/add-employee.php" class="slide-item">Add Employee</a></li>
                                             </ul>
                                             <div class="menutabs-content mt-5 p-0">
                                                 <div class="Annoucement_card">
