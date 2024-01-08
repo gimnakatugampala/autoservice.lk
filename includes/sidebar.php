@@ -27,7 +27,7 @@
                                 class="side-menu__label">Dashboard</span></a>
                     </li>
                     <li class="sub-category">
-                        <h3>UI Kit</h3>
+                        <h3>Service Management</h3>
                     </li>
                     <li class="slide">
                         <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)"><i

@@ -97,9 +97,8 @@
                                                     <tr>
                                                         <th class="border-bottom-0">ID</th>
                                                         <th class="border-bottom-0">Service Package</th>
-                                                        <th class="border-bottom-0">Vehicle Type</th>
-                                                        <th class="border-bottom-0">Model</th>
-                                                        <th class="border-bottom-0">Owner</th>
+                                                        <th class="border-bottom-0">Price</th>
+                                                        <th class="border-bottom-0">Created Date</th>
                                                         <th class="border-bottom-0">Actions</th>
                                                     </tr>
                                                 </thead>
@@ -109,11 +108,8 @@
                                                         <td>KY-3038</td>
                                                         <td>Sedan</td>
                                                         <td>FIT</td>
-                                                        <td>Gimna Katugampala</td>
                                                         <td>
-                                                            <a href="../vehicles/vehicle-details.php" class="btn btn-primary"><i class="fa fa-eye"></i></a>
-
-                                                            <a href="../vehicles/edit-vehicle.php" class="btn btn-info"><i class="fa fa-pencil" ></i></a>
+                                                            <a href="../service-packages/edit-service-package.php" class="btn btn-info"><i class="fa fa-pencil" ></i></a>
                                                         </td>
                                                     </tr>
                                                   
