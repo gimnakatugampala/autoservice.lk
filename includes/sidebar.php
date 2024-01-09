@@ -59,6 +59,30 @@
             </ul>
           </li>
 
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Manage Vehicle Owners
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="../vehicle-owners/" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Vehicle Owner List</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../vehicle-owners/add-vehicle-owner.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Vehicle Owner</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
 
           <li class="nav-item">
             <a href="#" class="nav-link">
