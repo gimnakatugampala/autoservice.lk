@@ -19,18 +19,21 @@
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6">
+          <div class="col-sm-10">
             <h1>Vehicle List</h1>
           </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
+          <div class="col-sm-2">
+            <!-- <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active">Vehicles</li>
-            </ol>
+            </ol> -->
+            <a href="../vehicles/add-vehicle.php" type="button" class="btn btn-block bg-gradient-primary"><i class="fas fa-plus"></i> Add Vehicle</a>
           </div>
+
         </div>
       </div><!-- /.container-fluid -->
     </section>
+
 
     <!-- Main content -->
     <section class="content">
@@ -39,7 +42,6 @@
           <div class="col-12">
       
             <!-- /.card -->
-
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Vehicles</h3>
@@ -67,7 +69,10 @@
                     <td>Sedan</td>
                     <td>FIT</td>
                     <td>Gimna Katugampala</td>
-                    <td>X</td>
+                    <td>
+                    <a href="../vehicles/vehicle-details.php" type="button" class="btn bg-gradient-primary"><i class="fas fa-eye"></i></a>
+                    <a href="../vehicles/edit-vehicle.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                    </td>
                   </tr>
                 
                   </tbody>
