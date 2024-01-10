@@ -83,6 +83,30 @@
             </ul>
           </li>
 
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Manage Service Package
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="../service-packages/" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Service Package List</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../service-packages/add-service-package.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Service Package</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
 
           <li class="nav-item">
             <a href="#" class="nav-link">
