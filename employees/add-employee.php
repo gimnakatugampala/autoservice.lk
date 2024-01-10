@@ -49,28 +49,28 @@
                 <div class="col-md-6">
                     <div class="form-group">
                           <label for="exampleInputEmail1">First Name <span class="text-danger">*</span></label>
-                          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="KY-3038">
+                          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="First Name">
                       </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
                           <label for="exampleInputEmail1">Last Name <span class="text-danger">*</span></label>
-                          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Engine Number">
+                          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Last Name">
                       </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
                           <label for="exampleInputEmail1">NIC <span class="text-danger">*</span></label>
-                          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Engine Number">
+                          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="National Identity Number">
                       </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
                           <label for="exampleInputEmail1">Email <span class="text-danger">*</span></label>
-                          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Engine Number">
+                          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
                       </div>
                 </div>
 
