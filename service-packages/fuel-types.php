@@ -20,14 +20,14 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-9">
-            <h1>Service Packages List</h1>
+            <h1>Fuel Types List</h1>
           </div>
           <div class="col-sm-3">
             <!-- <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active">Vehicles</li>
             </ol> -->
-            <a href="../service-packages/add-service-package.php" type="button" class="btn btn-block bg-gradient-primary"><i class="fas fa-plus"></i> Add Service Package</a>
+            <a href="../service-packages/add-fuel-type.php" type="button" class="btn btn-block bg-gradient-primary"><i class="fas fa-plus"></i> Add Fuel Type</a>
           </div>
 
         </div>
@@ -44,7 +44,7 @@
             <!-- /.card -->
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Service Packages</h3>
+                <h3 class="card-title">Fuel Types</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -52,11 +52,9 @@
                   <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Service Package</th>
-                    <th>Vehicle Type</th>
+                    <th>Fuel Type</th>
                     <th>Created Date</th>
                     <th>Actions</th>
-                    <th>Status</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -64,12 +62,11 @@
                   <tr>
                     <td>001</td>
                     <td>Oil Change</td>
-                    <td>Car</td>
                     <td>2024-1-10</td>
                     <td>
-                    <a href="../service-packages/edit-service-package.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                    <a href="../service-packages/edit-fuel-type.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                    <a type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></a>
                     </td>
-                    <td><input type="checkbox" name="my-checkbox" checked data-bootstrap-switch></td>
                   </tr>
                 
                   </tbody>

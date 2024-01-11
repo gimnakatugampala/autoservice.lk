@@ -104,6 +104,30 @@
                   <p>Add Service Package</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="../service-packages/fuel-types.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>All Fuel Type</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../service-packages/add-fuel-type.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Fuel Type</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../service-packages/add-service-package.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>All Service Pkg Item</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../service-packages/add-service-package.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Service Pkg Item</p>
+                </a>
+              </li>
             </ul>
           </li>
 
