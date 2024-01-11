@@ -46,34 +46,145 @@
 
               <div class="row">
 
-                <div class="col-md-7 mx-auto">
+                <div class="col-md-6">
                     <div class="form-group">
                           <label for="exampleInputEmail1">Service Package Name <span class="text-danger">*</span></label>
                           <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Name">
                       </div>
                 </div>
 
-                <div class="col-md-7 mx-auto">
-                    <div class="form-group">
-                          <label for="exampleInputEmail1">Default Price <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Default Price">
+                <div class="col-md-6">
+                <div class="form-group">
+                <label for="exampleInputEmail1">Select Vehicle Type <span class="text-danger">*</span></label>
+                        <select class="custom-select">
+                          <option>Car</option>
+                          <option>Van</option>
+                          <option>Bus</option>
+                          <option>Lorry</option>
+                          <option>option 5</option>
+                        </select>
                       </div>
                 </div>
 
-          
-                <div class="col-md-12">
+                <div class="col-md-6">
+                <div class="form-group">
+                <label for="exampleInputEmail1">Select Package Items <span class="text-danger">*</span></label>
+                        <select class="custom-select">
+                          <option>Car</option>
+                          <option>Van</option>
+                          <option>Bus</option>
+                          <option>Lorry</option>
+                          <option>option 5</option>
+                        </select>
+                      </div>
+                </div>
+
+                <div class="col-md-6">
+                <div class="form-group">
+                <label for="exampleInputEmail1">Select Free Package Items </label>
+                        <select class="custom-select">
+                          <option>Car</option>
+                          <option>Van</option>
+                          <option>Bus</option>
+                          <option>Lorry</option>
+                          <option>option 5</option>
+                        </select>
+                      </div>
+                </div>
+
+                <div class="col-md-6">
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th>Vehicle Type</th>
+                        <th>Item Name</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr>
+                        <td>Engine Oil Change</td>
+                        <td><button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button></td>
+                    </tr>
+                    <tr>
+                        <td>Oil Filter Change</td>
+                        <td><button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button></td>
+                    </tr>
+                    <tr>
+                        <td>Under Wash</td>
+                        <td><button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button></td>
+                    </tr>
+                    
+                    </tbody>
+                </table>
+                </div>
+
+                <div class="col-md-6">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr>
+                        <td>Diagnostic Scan Report</td>
+                        <td><button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button></td>
+                    </tr>
+                    <tr>
+                        <td>12V Battery Report</td>
+                        <td><button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button></td>
+                    </tr>
+                    <tr>
+                        <td>Free Body</td>
+                        <td><button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button></td>
+                    </tr>
+                    
+                    </tbody>
+                </table>
+                </div>
+            
+                <div class="col-md-6">
+                <div class="form-group">
+                <label for="exampleInputEmail1">Select Fuel Type <span class="text-danger">*</span></label>
+                        <select class="custom-select">
+                          <option>Car</option>
+                          <option>Van</option>
+                          <option>Bus</option>
+                          <option>Lorry</option>
+                          <option>option 5</option>
+                        </select>
+                      </div>
+                </div>
+
+                <div class="col-md-6">
+                <div class="form-group">
+                <label for="exampleInputEmail1">Select Filter Type <span class="text-danger">*</span></label>
+                        <select class="custom-select">
+                          <option>Car</option>
+                          <option>Van</option>
+                          <option>Bus</option>
+                          <option>Lorry</option>
+                          <option>option 5</option>
+                        </select>
+                      </div>
+                </div>
+          
+                <div class="col-md-6">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Fuel Type</th>
                         <th>Price (LKR)</th>
                     </tr>
                     </thead>
                     <tbody>
 
                     <tr>
-                        <td>Car</td>
-                        <td>
+                        <td>Valvoline 0W-20</td>
+                        <td class="w-50">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">LKR</span>
@@ -86,8 +197,51 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Van</td>
-                        <td>
+                        <td>Castrol/Valvoline 10W-30</td>
+                        <td class="w-50">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">LKR</span>
+                            </div>
+                            <input type="text" class="form-control">
+                            <div class="input-group-append">
+                                <span class="input-group-text">.00</span>
+                            </div>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    </tbody>
+                </table>
+                </div>
+
+                <div class="col-md-6">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Filter Type</th>
+                        <th>Price (LKR)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr>
+                        <td>Valvoline 0W-20</td>
+                        <td class="w-50">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">LKR</span>
+                            </div>
+                            <input type="text" class="form-control">
+                            <div class="input-group-append">
+                                <span class="input-group-text">.00</span>
+                            </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Castrol/Valvoline 10W-30</td>
+                        <td class="w-50">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">LKR</span>

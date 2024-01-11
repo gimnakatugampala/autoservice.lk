@@ -131,6 +131,30 @@
             </ul>
           </li>
 
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Manage Services
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="../employees/" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Pending Services</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../service/create-service.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Create Service</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
 
           <li class="nav-item">
             <a href="#" class="nav-link">
