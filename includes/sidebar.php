@@ -117,13 +117,13 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../service-packages/add-service-package.php" class="nav-link">
+                <a href="../service-packages/service-package-items.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>All Service Pkg Item</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../service-packages/add-service-package.php" class="nav-link">
+                <a href="../service-packages/add-service-package-item.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Service Pkg Item</p>
                 </a>
