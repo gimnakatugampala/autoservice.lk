@@ -63,14 +63,62 @@
 
                     <!-- Search Vehicle -->
                     <div id="search-vehicle-part" class="content" role="tabpanel" aria-labelledby="search-vehicle-part-trigger">
-                      <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+
+                    <div class="row">
+                      <div class="col-md-7 mx-auto">
+                        <h5 class="text-center"><b>Search By Vehicle Number</b></h5>
+                        <select class="custom-select" id="exampleSelectBorder">
+                          <option>Search Vehicle</option>
+                          <option>Value 1</option>
+                          <option>Value 2</option>
+                          <option>Value 3</option>
+                        </select>
+              
                       </div>
-                      <div class="form-group">
-                        <label for="exampleInputPassword1">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    </div>
+                    
+                    <!-- No Vehicle Selected -->
+                    <!-- <div class="d-flex justify-content-center my-4">
+                          <h6>OR</h6>
+                    </div>
+
+                    <div class="d-flex justify-content-center mt-4 text-center">
+                      <p class="w-25">If you can't find the vehicle in the list <b>create vehicle</b> before checkout</p>
+                    </div>
+
+                    <div class="d-flex justify-content-center text-center">
+                      <a href="../vehicles/add-vehicle.php" type="button" class="btn btn-outline-primary">Create Vehicle</a>
+                    </div> -->
+
+
+                    <!-- Vehicle Selected -->
+                    <div class="row my-4">
+                      <div class="col-md-5 mx-auto">
+                        <div class="card p-3 py-4 border border-dark text-center">
+                            <img class="rounded-circle mx-auto" style="object-fit: cover;" width="50%" height="170" src="https://hips.hearstapps.com/hmg-prod/images/2019-toyota-prius-limited-1545163015.jpg?crop=0.819xw:1.00xh;0.104xw,0&resize=768:*" alt="Vehicle">
+
+                            <div class="mx-auto my-2">
+
+                              <div class="d-flex align-items-center">
+
+                                <span class="m-0 p-0 d-flex align-items-center text-secondary mr-2">
+                                  <span class="mr-1">Color: </span>
+                                  <div class="border inline" style="width:11px;height:11px;background-color:crimson;border-radius:50%" ></div>
+                                </span>
+
+                                <span class="h4 m-0 p-0"><b>KY-3038</b></span>
+                              </div>
+
+                              <p class="m-0 p-0 text-secondary">Gimna Katugampala</p>
+                              <p class="m-0 p-0 text-secondary">+94 764961707</p>
+                            </div>
+                        </div>
                       </div>
+                    </div>
+
+
+                       
+                        
                       <button class="btn btn-primary" onclick="stepper.next()">Next</button>
                     </div>
 
