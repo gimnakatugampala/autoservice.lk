@@ -116,9 +116,18 @@
                       </div>
                     </div>
 
+                    <div class="d-flex justify-content-center mt-4 text-center">
+                      <div class="w-25">
+                        <p class="m-0 p-0"><b>This is not what your  looking for ?</b></p>
+                        <p class="m-0 p-0 text-secondary">You can create new vehicle</p>
+                      </div>
+                    </div>
 
-                       
-                        
+                    <div class="d-flex justify-content-center text-center my-2">
+                      <a href="../vehicles/add-vehicle.php" type="button" class="btn btn-outline-primary">Create Vehicle</a>
+                    </div>
+               
+
                       <button class="btn btn-primary" onclick="stepper.next()">Next</button>
                     </div>
 
