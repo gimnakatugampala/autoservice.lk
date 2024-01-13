@@ -53,7 +53,6 @@
                   <tr>
                     <th>ID</th>
                     <th>Maintenance</th>
-                    <th>Price (LKR)</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -62,7 +61,6 @@
                   <tr>
                     <td>001</td>
                     <td>Lathe Work</td>
-                    <td>20,000</td>
                     <td>
                     <a href="../maintenance/maintenance-details.php" type="button" class="btn bg-gradient-primary"><i class="fas fa-eye"></i></a>
                     <a href="../maintenance/edit-maintenance.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
