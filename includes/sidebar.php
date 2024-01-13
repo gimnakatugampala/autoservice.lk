@@ -35,9 +35,9 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
 
-            <li class="nav-item">
+          <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-car-side"></i>
               <p>
                 Manage Vehicles
                 <i class="right fas fa-angle-left"></i>
@@ -61,7 +61,7 @@
 
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-user-friends"></i>
               <p>
                 Manage Vehicle Owners
                 <i class="right fas fa-angle-left"></i>
@@ -85,7 +85,7 @@
 
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-box-open"></i>
               <p>
                 Manage Service Package
                 <i class="right fas fa-angle-left"></i>
@@ -130,10 +130,10 @@
               </li>
             </ul>
           </li>
-
+    
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-user-tie"></i>
               <p>
                 Manage Employees
                 <i class="right fas fa-angle-left"></i>
@@ -154,10 +154,10 @@
               </li>
             </ul>
           </li>
-
+     
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-charging-station"></i>
               <p>
                  Maintenance Package
                 <i class="right fas fa-angle-left"></i>
@@ -178,33 +178,33 @@
               </li>
             </ul>
           </li>
-
+    
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-money-bill"></i>
               <p>
-                Manage Order Services
+                Billing Area
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="../employees/" class="nav-link">
+                <a href="../billing/" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Pending Services</p>
+                  <p>All Bills</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../service/create-service.php" class="nav-link">
+                <a href="../billing/checkout.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Create Service</p>
+                  <p>Checkout</p>
                 </a>
               </li>
             </ul>
           </li>
 
 
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
@@ -465,7 +465,7 @@
                 </a>
               </li>
             </ul>
-          </li>
+          </li> -->
 
           <li class="nav-header">EXAMPLES</li>
           <li class="nav-item">
