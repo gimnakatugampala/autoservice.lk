@@ -67,7 +67,7 @@
                     <div id="search-vehicle-part" class="content" role="tabpanel" aria-labelledby="search-vehicle-part-trigger">
 
                     <div class="row">
-                      <div class="col-md-7 mx-auto">
+                      <div class="col-md-12">
                         <h5 class="text-center"><b>Search By Vehicle Number</b></h5>
                         <select class="custom-select" id="exampleSelectBorder">
                           <option>Search Vehicle</option>
@@ -304,7 +304,7 @@
                                   <label class="form-check-label">Bad</label>
                                 </div>
                             </td>
-
+                     
                             <td> 
                                 <div class="form-check">
                                   <input class="form-check-input" type="radio" name="radio1">
@@ -327,12 +327,6 @@
                             </td>
 
                           </tr>
-
-                         
-
-                       
-                    
-
                         </tbody>
                       </table>
                       </div>
@@ -350,18 +344,308 @@
 
                     <!-- Search Service Packages -->
                     <div id="service-package-part" class="content" role="tabpanel" aria-labelledby="service-package-part-trigger">
-                      <div class="form-group">
-                        <label for="exampleInputFile">File input</label>
-                        <div class="input-group">
-                          <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="exampleInputFile">
-                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                          </div>
-                          <div class="input-group-append">
-                            <span class="input-group-text">Upload</span>
-                          </div>
-                        </div>
+                 
+                    <div class="row">
+                      <div class="col-md-12">
+
+                      <table class="table table-bordered table-hover">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Service Package Name</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                        <span>
+                          <tr data-widget="expandable-table" aria-expanded="false">
+                            <td>001</td>
+                            <td>Toyota Car Package</td>
+                            <td>
+                              <button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button>
+                            </td>
+                          </tr>
+                          <tr class="expandable-body">
+                            <td colspan="5">
+                              <p>
+                                <div class="row">
+
+                                  <div class="col-md-6">
+                                    <table class="table table-sm table-striped">
+                                      <thead>
+                                        <tr>
+                                          <th>#</th>
+                                          <th>Fuel Type</th>
+                                          <th>Price</th>
+                                          <th>Select</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        
+                                        <tr>
+                                          <td>1.</td>
+                                          <td>Castrol/Valvoline 10W-30</td>
+                                          <td>
+                                          <div class="input-group">
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text">LKR</span>
+                                          </div>
+                                          <input type="text" class="form-control">
+                                          <div class="input-group-append">
+                                            <span class="input-group-text">.00</span>
+                                          </div>
+                                        </div>
+                                          </td>
+                                          <td>
+                                          <div class="custom-control custom-radio">
+                                          <input class="custom-control-input" type="radio" id="customRadio1" name="customRadio1">
+                                          <label for="customRadio1" class="custom-control-label"></label>
+                                        </div>
+                                          </td>
+                                        </tr>
+
+                                        <tr>
+                                          <td>2.</td>
+                                          <td>Castrol/Valvoline 10W-30</td>
+                                          <td>
+                                          <div class="input-group">
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text">LKR</span>
+                                          </div>
+                                          <input type="text" class="form-control">
+                                          <div class="input-group-append">
+                                            <span class="input-group-text">.00</span>
+                                          </div>
+                                        </div>
+                                          </td>
+                                          <td>
+                                          <div class="custom-control custom-radio">
+                                          <input class="custom-control-input" type="radio" id="customRadio2" name="customRadio1">
+                                          <label for="customRadio2" class="custom-control-label"></label>
+                                        </div>
+                                          </td>
+                                        </tr>
+                                      
+                                        
+                                      </tbody>
+                                    </table>
+                                  </div>
+        
+                                  <div class="col-md-6">
+                                    <table class="table table-sm table-striped">
+                                      <thead>
+                                        <tr>
+                                          <th>#</th>
+                                          <th>Filter Type</th>
+                                          <th>Price</th>
+                                          <th>Select</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        
+                                        <tr>
+                                          <td>1.</td>
+                                          <td>Castrol/Valvoline 10W-30</td>
+                                          <td>
+                                          <div class="input-group">
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text">LKR</span>
+                                          </div>
+                                          <input type="text" class="form-control">
+                                          <div class="input-group-append">
+                                            <span class="input-group-text">.00</span>
+                                          </div>
+                                        </div>
+                                          </td>
+                                          <td>
+                                          <div class="custom-control custom-radio">
+                                          <input class="custom-control-input" type="radio" id="customRadio3" name="customRadio4">
+                                          <label for="customRadio3" class="custom-control-label"></label>
+                                        </div>
+                                          </td>
+                                        </tr>
+
+                                        <tr>
+                                          <td>2.</td>
+                                          <td>Castrol/Valvoline 10W-30</td>
+                                          <td>
+                                          <div class="input-group">
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text">LKR</span>
+                                          </div>
+                                          <input type="text" class="form-control">
+                                          <div class="input-group-append">
+                                            <span class="input-group-text">.00</span>
+                                          </div>
+                                        </div>
+                                          </td>
+                                          <td>
+                                          <div class="custom-control custom-radio">
+                                          <input class="custom-control-input" type="radio" id="customRadio4" name="customRadio4">
+                                          <label for="customRadio4" class="custom-control-label"></label>
+                                        </div>
+                                          </td>
+                                        </tr>
+                                      
+                                        
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+
+                              </p>
+                            </td>
+                          </tr>
+                          </span>
+
+                          <span>
+                          <tr data-widget="expandable-table" aria-expanded="false">
+                            <td>001</td>
+                            <td>Toyota Car Package</td>
+                            <td>
+                              <button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button>
+                            </td>
+                          </tr>
+                          <tr class="expandable-body">
+                            <td colspan="5">
+                              <p>
+                                <div class="row">
+
+                                  <div class="col-md-6">
+                                    <table class="table table-sm table-striped">
+                                      <thead>
+                                        <tr>
+                                          <th>#</th>
+                                          <th>Fuel Type</th>
+                                          <th>Price</th>
+                                          <th>Select</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        
+                                        <tr>
+                                          <td>1.</td>
+                                          <td>Castrol/Valvoline 10W-30</td>
+                                          <td>
+                                          <div class="input-group">
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text">LKR</span>
+                                          </div>
+                                          <input type="text" class="form-control">
+                                          <div class="input-group-append">
+                                            <span class="input-group-text">.00</span>
+                                          </div>
+                                        </div>
+                                          </td>
+                                          <td>
+                                          <div class="custom-control custom-radio">
+                                          <input class="custom-control-input" type="radio" id="customRadio1" name="customRadio1">
+                                          <label for="customRadio1" class="custom-control-label"></label>
+                                        </div>
+                                          </td>
+                                        </tr>
+
+                                        <tr>
+                                          <td>2.</td>
+                                          <td>Castrol/Valvoline 10W-30</td>
+                                          <td>
+                                          <div class="input-group">
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text">LKR</span>
+                                          </div>
+                                          <input type="text" class="form-control">
+                                          <div class="input-group-append">
+                                            <span class="input-group-text">.00</span>
+                                          </div>
+                                        </div>
+                                          </td>
+                                          <td>
+                                          <div class="custom-control custom-radio">
+                                          <input class="custom-control-input" type="radio" id="customRadio2" name="customRadio1">
+                                          <label for="customRadio2" class="custom-control-label"></label>
+                                        </div>
+                                          </td>
+                                        </tr>
+                                      
+                                        
+                                      </tbody>
+                                    </table>
+                                  </div>
+        
+                                  <div class="col-md-6">
+                                    <table class="table table-sm table-striped">
+                                      <thead>
+                                        <tr>
+                                          <th>#</th>
+                                          <th>Filter Type</th>
+                                          <th>Price</th>
+                                          <th>Select</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        
+                                        <tr>
+                                          <td>1.</td>
+                                          <td>Castrol/Valvoline 10W-30</td>
+                                          <td>
+                                          <div class="input-group">
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text">LKR</span>
+                                          </div>
+                                          <input type="text" class="form-control">
+                                          <div class="input-group-append">
+                                            <span class="input-group-text">.00</span>
+                                          </div>
+                                        </div>
+                                          </td>
+                                          <td>
+                                          <div class="custom-control custom-radio">
+                                          <input class="custom-control-input" type="radio" id="customRadio3" name="customRadio4">
+                                          <label for="customRadio3" class="custom-control-label"></label>
+                                        </div>
+                                          </td>
+                                        </tr>
+
+                                        <tr>
+                                          <td>2.</td>
+                                          <td>Castrol/Valvoline 10W-30</td>
+                                          <td>
+                                          <div class="input-group">
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text">LKR</span>
+                                          </div>
+                                          <input type="text" class="form-control">
+                                          <div class="input-group-append">
+                                            <span class="input-group-text">.00</span>
+                                          </div>
+                                        </div>
+                                          </td>
+                                          <td>
+                                          <div class="custom-control custom-radio">
+                                          <input class="custom-control-input" type="radio" id="customRadio4" name="customRadio4">
+                                          <label for="customRadio4" class="custom-control-label"></label>
+                                        </div>
+                                          </td>
+                                        </tr>
+                                      
+                                        
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+
+                              </p>
+                            </td>
+                          </tr>
+                          </span>
+                      
+                        </tbody>
+                      </table>
+
                       </div>
+                    </div>
+
                       <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                       <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
