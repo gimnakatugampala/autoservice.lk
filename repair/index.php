@@ -20,14 +20,14 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-10">
-            <h1>Maintenance List</h1>
+            <h1>Repair List</h1>
           </div>
           <div class="col-sm-2">
             <!-- <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active">Vehicles</li>
             </ol> -->
-            <a href="../maintenance/add-maintenance.php" type="button" class="btn btn-block bg-gradient-primary"><i class="fas fa-plus"></i> Add Maintenance</a>
+            <a href="../repair/add-repair.php" type="button" class="btn btn-block bg-gradient-primary"><i class="fas fa-plus"></i> Add Repair</a>
           </div>
 
         </div>
@@ -44,7 +44,7 @@
             <!-- /.card -->
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Maintenances</h3>
+                <h3 class="card-title">Repairs</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -52,7 +52,7 @@
                   <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Maintenance</th>
+                    <th>Repair Name</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -62,8 +62,7 @@
                     <td>001</td>
                     <td>Lathe Work</td>
                     <td>
-                    <a href="../maintenance/maintenance-details.php" type="button" class="btn bg-gradient-primary"><i class="fas fa-eye"></i></a>
-                    <a href="../maintenance/edit-maintenance.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                    <a href="../repair/edit-repair.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
                     </td>
                   </tr>
                 

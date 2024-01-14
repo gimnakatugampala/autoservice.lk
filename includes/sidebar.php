@@ -159,21 +159,21 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-charging-station"></i>
               <p>
-                 Maintenance Package
+                 Manage Repairs
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="../maintenance/" class="nav-link">
+                <a href="../repair/" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Maintenance List</p>
+                  <p>Repair List</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../maintenance/add-maintenance.php" class="nav-link">
+                <a href="../repair/add-repair.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Add Maintenance</p>
+                  <p>Add Repair</p>
                 </a>
               </li>
             </ul>
@@ -183,21 +183,79 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-money-bill"></i>
               <p>
-                Billing Area
+                Manage Orders
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="../billing/" class="nav-link">
+                <a href="../orders/" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>All Bills</p>
+                  <p>Pending Orders</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="../billing/checkout.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Checkout</p>
+                  <p>Add Service Order</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../billing/checkout.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Wash Order</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../billing/checkout.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Repair Order</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../orders/add-service-repair-order.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Repair Service Order</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="../calendar.html" class="nav-link">
+              <i class="nav-icon far fa-calendar-alt"></i>
+              <p>Vehicle Search</p>
+            </a>
+          </li>
+
+
+          <li class="nav-header">INVENTORY</li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Manage Products
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="../../index.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Dashboard v1</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../../index2.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Dashboard v2</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../../index3.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Dashboard v3</p>
                 </a>
               </li>
             </ul>

@@ -20,12 +20,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Add Maintenance</h1>
+            <h1>Add Repair</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Maintenance Package</a></li>
-              <li class="breadcrumb-item active">Add Maintenance</li>
+              <li class="breadcrumb-item"><a href="#">Repair Package</a></li>
+              <li class="breadcrumb-item active">Add Repair</li>
             </ol>
           </div>
 
@@ -48,8 +48,8 @@
 
                 <div class="col-md-7 mx-auto">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Maintenance <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Maintenance Name">
+                          <label for="exampleInputEmail1">Repair <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Repair Name">
                       </div>
                 </div>
 
