@@ -30,32 +30,69 @@
             <div class="card card-default">
 
               <div class="card-body p-0">
-                <div class="bs-stepper">
 
-                  <div class="bs-stepper-header" role="tablist">
+                <div class="bs-stepper">
+                  <div class="row bs-stepper-header" role="tablist">
                     <!-- your steps here -->
-                    <div class="step" data-target="#search-vehicle-part">
-                      <button type="button" class="step-trigger" role="tab" aria-controls="search-vehicle-part" id="search-vehicle-part-trigger">
-                        <span class="bs-stepper-circle">1</span>
-                        <span class="bs-stepper-label">Search Vehicle</span>
-                      </button>
+                    <div class="col-md-1">
+                      <div class="step" data-target="#search-vehicle-part">
+                        <button type="button" class="step-trigger" role="tab" aria-controls="search-vehicle-part" id="search-vehicle-part-trigger">
+                          <span class="bs-stepper-circle">1</span>
+                          <span class="bs-stepper-label">Search Vehicle</span>
+                        </button>
+                      </div>
                     </div>
 
                     <div class="line"></div>
+                    <div class="col-md-2">
                     <div class="step" data-target="#vehicle-report-part">
                       <button type="button" class="step-trigger" role="tab" aria-controls="vehicle-report-part" id="vehicle-report-part-trigger">
                         <span class="bs-stepper-circle">2</span>
                         <span class="bs-stepper-label">Vehicle Condition Report</span>
                       </button>
                     </div>
+                    </div>
 
                     <div class="line"></div>
+                    <div class="col-md-2">
                     <div class="step" data-target="#service-package-part">
                       <button type="button" class="step-trigger" role="tab" aria-controls="service-package-part" id="service-package-part-trigger">
                         <span class="bs-stepper-circle">3</span>
                         <span class="bs-stepper-label">Service Packages</span>
                       </button>
                     </div>
+                    </div>
+
+                    <div class="line"></div>
+                    <div class="col-md-2">
+                    <div class="step" data-target="#maintenance-part">
+                      <button type="button" class="step-trigger" role="tab" aria-controls="maintenance-part" id="maintenance-part-trigger">
+                        <span class="bs-stepper-circle">4</span>
+                        <span class="bs-stepper-label">Maintenance Packages</span>
+                      </button>
+                    </div>
+                    </div>
+
+                    <div class="line"></div>
+                    <div class="col-md-1">
+                    <div class="step" data-target="#select-products-part">
+                      <button type="button" class="step-trigger" role="tab" aria-controls="select-products-part" id="select-products-part-trigger">
+                        <span class="bs-stepper-circle">5</span>
+                        <span class="bs-stepper-label">Select Products</span>
+                      </button>
+                    </div>
+                    </div>
+
+                    <div class="line"></div>
+                    <div class="col-md-2">
+                    <div class="step" data-target="#generate-invoice-part">
+                      <button type="button" class="step-trigger" role="tab" aria-controls="generate-invoice-part" id="generate-invoice-part-trigger">
+                        <span class="bs-stepper-circle">6</span>
+                        <span class="bs-stepper-label">Generate Invoice</span>
+                      </button>
+                    </div>
+                    </div>
+
 
                    
                   </div>
@@ -341,11 +378,19 @@
                      
                     </div>
 
-                    <!-- Search Service Packages -->
+                    <!-- Search Service Packages  - Step 3 -->
                   <div id="service-package-part" class="content" role="tabpanel" aria-labelledby="service-package-part-trigger">
                  
                     <div class="row">
                       <div class="col-md-12">
+
+                      <h5 class="text-center"><b>Select Service Packages</b></h5>
+                      <select class="custom-select mb-4" id="exampleSelectBorder">
+                          <option>Search Service Packages</option>
+                          <option>Value 1</option>
+                          <option>Value 2</option>
+                          <option>Value 3</option>
+                        </select>
 
                       <table class="table table-bordered table-hover">
                         <thead>
@@ -645,11 +690,253 @@
                       </div>
                     </div>
 
-                    <h4><b>Total - LKR 30,000/=</b></h4>
+                      <h4><b>Total - LKR 30,000/=</b></h4>
 
                       <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
-                      <button type="submit" class="btn btn-primary">Submit</button>
+                      <button class="btn btn-primary" onclick="stepper.next()">Next</button>
                     </div>
+
+
+                  
+                  
+                    <!-- Maintenance Packages  - Step 4 -->
+                <div id="maintenance-part" class="content" role="tabpanel" aria-labelledby="maintenance-part-trigger">
+
+                  <div class="row">
+
+                      <div class="col-md-12">
+                      <h5 class="text-center"><b>Select Maintenance Packages</b></h5>
+                      <select class="custom-select mb-4" id="exampleSelectBorder">
+                          <option>Search Maintenance Packages</option>
+                          <option>Value 1</option>
+                          <option>Value 2</option>
+                          <option>Value 3</option>
+                        </select>
+
+                      </div>
+                  </div>
+
+                  <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Maintenance Package Name</th>
+                      <th>Price (LKR)</th>
+                      <th>Discount (LKR)</th>
+                      <th>Total (LKR)</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <tr>
+                      <td>1.</td>
+                      <td>Lathe Work</td>
+
+                      <td>  
+                        <div class="input-group">
+                          <input type="text" class="form-control">
+                          <div class="input-group-append">
+                            <span class="input-group-text">.00</span>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>  
+                        <div class="input-group">
+                          <input type="text" class="form-control">
+                          <div class="input-group-append">
+                            <span class="input-group-text">.00</span>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>  
+                        <p class="h6">400.00</p>
+                      </td>
+
+                      <td>  
+                      <button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button>
+                      </td>
+
+                    </tr>
+
+                    <tr>
+                      <td>2.</td>
+                      <td>Face Repair</td>
+
+                      <td>  
+                        <div class="input-group">
+                          <input type="text" class="form-control">
+                          <div class="input-group-append">
+                            <span class="input-group-text">.00</span>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>  
+                        <div class="input-group">
+                          <input type="text" class="form-control">
+                          <div class="input-group-append">
+                            <span class="input-group-text">.00</span>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>  
+                        <p class="h6">400.00</p>
+                      </td>
+
+                      <td>  
+                      <button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button>
+                      </td>
+
+                    </tr>
+
+                  </tbody>
+                </table>
+
+                <h4><b>Total - LKR 14,000/=</b></h4>
+
+                  <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                  <button class="btn btn-primary" onclick="stepper.next()">Next</button>
+                </div>
+
+
+                 <!-- Select Products  - Step 5 -->
+                 <div id="select-products-part" class="content" role="tabpanel" aria-labelledby="select-products-part-trigger">
+
+                 <div class="row">
+
+                  <div class="col-md-12">
+                  <h5 class="text-center"><b>Select Products</b></h5>
+                  <select class="custom-select mb-4" id="exampleSelectBorder">
+                      <option>Search Products</option>
+                      <option>Value 1</option>
+                      <option>Value 2</option>
+                      <option>Value 3</option>
+                    </select>
+
+                  </div>
+                  </div>
+
+
+                 <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Products Name</th>
+                      <th>QTY</th>
+                      <th>Unit Price (LKR)</th>
+                      <th>Discount (LKR)</th>
+                      <th>Total (LKR)</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                  <tr>
+                      <td>1.</td>
+                      <td>Head Light</td>
+
+                      <td>  
+                        <div class="input-group">
+                          <input type="text" class="form-control">
+                          <div class="input-group-append">
+                            <span class="input-group-text">.00</span>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>  
+                        <div class="input-group">
+                          <input type="text" class="form-control">
+                          <div class="input-group-append">
+                            <span class="input-group-text">.00</span>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>  
+                        <div class="input-group">
+                          <input type="text" class="form-control">
+                          <div class="input-group-append">
+                            <span class="input-group-text">.00</span>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>  
+                        <p class="h6">400.00</p>
+                      </td>
+
+                      <td>  
+                      <button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button>
+                      </td>
+
+                    </tr>
+
+                    <tr>
+                      <td>2.</td>
+                      <td>Face Repair</td>
+
+                      <td>  
+                        <div class="input-group">
+                          <input type="text" class="form-control">
+                          <div class="input-group-append">
+                            <span class="input-group-text">.00</span>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>  
+                        <div class="input-group">
+                          <input type="text" class="form-control">
+                          <div class="input-group-append">
+                            <span class="input-group-text">.00</span>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>  
+                        <div class="input-group">
+                          <input type="text" class="form-control">
+                          <div class="input-group-append">
+                            <span class="input-group-text">.00</span>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>  
+                        <p class="h6">400.00</p>
+                      </td>
+
+                      <td>  
+                      <button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button>
+                      </td>
+
+                    </tr>
+
+                  </tbody>
+                </table>
+
+                <h4><b>Total - LKR 25,000/=</b></h4>
+
+                 <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                 <button class="btn btn-primary" onclick="stepper.next()">Next</button>
+                  <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
+                 </div>
+
+
+                      <!-- Generate Invoice  - Step 6 -->
+                      <div id="generate-invoice-part" class="content" role="tabpanel" aria-labelledby="generate-invoice-part-trigger">
+
+                      <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                       <button type="submit" class="btn btn-primary">Submit</button>
+                      </div>
+
+
+                    
           
 
                
