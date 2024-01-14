@@ -136,9 +136,8 @@
                       <div id="vehicle-report-part" class="content" role="tabpanel" aria-labelledby="vehicle-report-part-trigger">
 
                       <div class="row">
-
                       <!-- 1 -->
-                      <div class="col-md-10 table-responsive p-0 mx-auto my-2">
+                    <div class="col-md-10 table-responsive p-0 mx-auto my-2">
                       <table class="table table-striped table-bordered table-hover">
                       <thead>
                         <tr>
@@ -275,7 +274,7 @@
                       </div>
 
                         <!-- 2 -->
-                        <div class="col-md-10 table-responsive p-0 mx-auto my-2">
+                    <div class="col-md-10 table-responsive p-0 mx-auto my-2">
                       <table class="table table-striped table-bordered table-hover">
                       <thead>
                         <tr>
@@ -343,7 +342,7 @@
                     </div>
 
                     <!-- Search Service Packages -->
-                    <div id="service-package-part" class="content" role="tabpanel" aria-labelledby="service-package-part-trigger">
+                  <div id="service-package-part" class="content" role="tabpanel" aria-labelledby="service-package-part-trigger">
                  
                     <div class="row">
                       <div class="col-md-12">
@@ -645,6 +644,8 @@
 
                       </div>
                     </div>
+
+                    <h4><b>Total - LKR 30,000/=</b></h4>
 
                       <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                       <button type="submit" class="btn btn-primary">Submit</button>
