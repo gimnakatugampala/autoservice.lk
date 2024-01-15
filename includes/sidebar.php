@@ -195,19 +195,19 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../billing/checkout.php" class="nav-link">
+                <a href="../orders/add-service-order.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Service Order</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../billing/checkout.php" class="nav-link">
+                <a href="../orders/add-wash-order.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Wash Order</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../billing/checkout.php" class="nav-link">
+                <a href="../orders/add-repair-order.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Repair Order</p>
                 </a>

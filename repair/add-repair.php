@@ -58,7 +58,7 @@
                   <thead>
                     <tr>
                       <th>Vehicle Type</th>
-                      <th>Price (LKR)</th>
+                      <th>Unit Price Per Hr (LKR)</th>
                     </tr>
                   </thead>
                   <tbody>
