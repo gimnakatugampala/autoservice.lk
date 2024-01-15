@@ -178,6 +178,30 @@
               </li>
             </ul>
           </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-shower"></i>
+              <p>
+                 Manage Washers
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="../repair/" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Washers List</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../repair/add-repair.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Washer</p>
+                </a>
+              </li>
+            </ul>
+          </li>
     
           <li class="nav-item">
             <a href="#" class="nav-link">
@@ -525,7 +549,7 @@
             </ul>
           </li> -->
 
-          <li class="nav-header">EXAMPLES</li>
+          <!-- <li class="nav-header">EXAMPLES</li>
           <li class="nav-item">
             <a href="../calendar.html" class="nav-link">
               <i class="nav-icon far fa-calendar-alt"></i>
@@ -914,7 +938,7 @@
               <p>Informational</p>
             </a>
           </li>
-        </ul>
+        </ul> -->
       </nav>
       <!-- /.sidebar-menu -->
     </div>
