@@ -318,13 +318,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="../products/" class="nav-link">
+                <a href="../purchase-order/" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Purchases List</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../products/add-product.php" class="nav-link">
+                <a href="../purchase-order/add-purchase-order.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Purchase</p>
                 </a>
