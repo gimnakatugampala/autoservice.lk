@@ -276,6 +276,107 @@
                   <p>Add Product</p>
                 </a>
               </li>
+
+              <li class="nav-item">
+                <a href="../products/category-list.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Category List</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="../products/add-category.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Category</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="../products/brand-list.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Brand List</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="../products/add-brand.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Brand</p>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Manage Purchases
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="../products/" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Purchases List</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../products/add-product.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Purchase</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Manage Returns
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="../products/" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Purchases List</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../products/add-product.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Purchase</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Manage People
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="../products/" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Supplier List</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../products/add-product.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Supplier</p>
+                </a>
+              </li>
             </ul>
           </li>
 

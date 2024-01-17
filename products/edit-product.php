@@ -46,7 +46,7 @@
 
               <div class="row">
 
-                <div class="col-md-12">
+              <div class="col-md-6">
                     <div class="form-group">
                           <label for="exampleInputEmail1">Product Name <span class="text-danger">*</span></label>
                           <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Name">
@@ -66,18 +66,7 @@
                       </div>
                 </div>
 
-                <div class="col-md-6">
-                <div class="form-group">
-                <label for="exampleInputEmail1">Select Sub Category <span class="text-danger">*</span></label>
-                        <select class="custom-select">
-                          <option>Car</option>
-                          <option>Van</option>
-                          <option>Bus</option>
-                          <option>Lorry</option>
-                          <option>option 5</option>
-                        </select>
-                      </div>
-                </div>
+            
 
                 <div class="col-md-6">
                 <div class="form-group">
@@ -128,8 +117,8 @@
 
                 <div class="col-md-6">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Selling Price (LKR)<span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Selling Price">
+                          <label for="exampleInputEmail1">Buying Price (LKR)<span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Buying Price">
                       </div>
                 </div>
 
