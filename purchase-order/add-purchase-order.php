@@ -133,9 +133,9 @@
                   <tbody>
                     <tr>
                       <td>Oil Barrel</td>
-                      <td>3</td>
-                      <td>20.00</td>
-                      <td>0.00</td>
+                      <td><input type="text" class="form-control"></td>
+                      <td><input type="text" class="form-control"></td>
+                      <td><input type="text" class="form-control"></td>
                       <td>20.00</td>
                       <td><button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button></td>
                     </tr>
@@ -144,6 +144,32 @@
                 </div>
 
         
+                <div class="col-md-6"></div>
+
+                <div class="col-md-6">
+                <div class="table-responsive">
+                <table class="table">
+                  <tr>
+                    <th style="width:50%">Sub Total:</th>
+                    <td>LKR 250.30</td>
+                  </tr>
+                  <tr>
+                    <th>VAT (9.3%)</th>
+                    <td><input type="text" class="form-control w-50"></td>
+                  </tr>
+                  <tr>
+                    <th>Paid Amount</th>
+                    <td>LKR 10.34</td>
+                  </tr>
+                  <tr>
+                    <th>Total:</th>
+                    <td><u style="text-decoration-style: double;">LKR 265.24</u></td>
+                  </tr>
+                </table>
+                </div>
+                    
+                </div>
+                
             
 
                 <div class="col-md-4">

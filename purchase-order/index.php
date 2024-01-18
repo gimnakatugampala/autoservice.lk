@@ -67,12 +67,13 @@
                     <td>001</td>
                     <td>Gimna Katugampala</td>
                     <td>2024-01-17</td>
-                    <td>Pending</td>
-                    <td>Advance</td>
+                    <td><span class="badge badge-primary">Pending</span></td>    
+                    <td><span class="badge badge-warning">Advance</span></td>
                     <td>2024-1-19</td>
                     <td>20,000.00</td>
                     <td>
-                    <a href="../service-packages/edit-service-package.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                    <a href="../purchase-order/purchase-order-details.php" type="button" class="btn bg-gradient-primary"><i class="fas fa-eye"></i></a>
+                    <a href="../purchase-order/edit-purchase-order.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
                     </td>
                   </tr>
                 
