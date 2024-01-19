@@ -207,39 +207,39 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-money-bill"></i>
               <p>
-                Manage Orders
+                Manage Job Cards
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="../orders/" class="nav-link">
+                <a href="../job-cards/" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Pending Orders</p>
+                  <p>Pending Job Cards</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../orders/add-service-order.php" class="nav-link">
+                <a href="../job-cards/add-service-job.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Add Service Order</p>
+                  <p>Add Service Job</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../orders/add-wash-order.php" class="nav-link">
+                <a href="../job-cards/add-wash-job.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Add Wash Order</p>
+                  <p>Add Wash Job</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../orders/add-repair-order.php" class="nav-link">
+                <a href="../job-cards/add-repair-job.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Add Repair Order</p>
+                  <p>Add Repair Job</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../orders/add-service-repair-order.php" class="nav-link">
+                <a href="../job-cards/add-service-repair-job.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Repair Service Order</p>
+                  <p>Repair Service Job</p>
                 </a>
               </li>
             </ul>
