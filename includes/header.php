@@ -32,6 +32,13 @@
   <link rel="stylesheet" href="../plugins/bs-stepper/css/bs-stepper.min.css">
   <!-- dropzonejs -->
   <link rel="stylesheet" href="../plugins/dropzone/min/dropzone.min.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="../plugins/summernote/summernote-bs4.min.css">
+  <!-- CodeMirror -->
+  <link rel="stylesheet" href="../plugins/codemirror/codemirror.css">
+  <link rel="stylesheet" href="../plugins/codemirror/theme/monokai.css">
+  <!-- SimpleMDE -->
+  <link rel="stylesheet" href="../plugins/simplemde/simplemde.min.css">
 
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">

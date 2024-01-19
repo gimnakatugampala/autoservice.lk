@@ -31,6 +31,13 @@
 <script src="../plugins/inputmask/jquery.inputmask.min.js"></script>
 <!-- date-range-picker -->
 <script src="../plugins/daterangepicker/daterangepicker.js"></script>
+<!-- Summernote -->
+<script src="../plugins/summernote/summernote-bs4.min.js"></script>
+<!-- CodeMirror -->
+<script src="../plugins/codemirror/codemirror.js"></script>
+<script src="../plugins/codemirror/mode/css/css.js"></script>
+<script src="../plugins/codemirror/mode/xml/xml.js"></script>
+<script src="../plugins/codemirror/mode/htmlmixed/htmlmixed.js"></script>
 <!-- bootstrap color picker -->
 <script src="../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
 <!-- Tempusdominus Bootstrap 4 -->

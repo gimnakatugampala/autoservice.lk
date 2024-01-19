@@ -48,6 +48,28 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
+                <div class="row my-4">
+                    <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <select class="custom-select">
+                                  <option>Please Select Service Count</option>
+                                  <option>option 2</option>
+                                  <option>option 3</option>
+                                  <option>option 4</option>
+                                  <option>option 5</option>
+                                </select>
+                              </div>
+                        </div>
+                    </div>
+
+                    </div>
+                    <div class="col-md-3">
+                        <button data-toggle="modal" data-target="#modal-lg-email" type="button" class="btn bg-gradient-secondary"><i class="fas fa-at"></i> Send Email</button>
+                        <button  data-toggle="modal" data-target="#modal-lg-sms" type="button" class="btn bg-gradient-secondary"><i class="fas fa-sms"></i> Send SMS</button>
+                    </div>
+                </div>
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
@@ -85,6 +107,54 @@
   </div>
   <!-- /.content-wrapper -->
 
+  <div class="modal fade" id="modal-lg-email">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Send Email</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            <textarea id="summernote">
+                Place <em>some</em> <u>text</u> <strong>here</strong>
+              </textarea>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-primary">Send</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <div class="modal fade" id="modal-lg-sms">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Send SMS</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            <textarea id="email-note">
+                Place <em>some</em> <u>text</u> <strong>here</strong>
+              </textarea>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-primary">Send</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+
+
+    
   <?php include_once '../includes/sub-footer.php';?>
 
   <!-- Control Sidebar -->
@@ -95,7 +165,22 @@
 </div>
 <!-- ./wrapper -->
 
+
 <?php include_once '../includes/footer.php';?>
+
+<script>
+  $(function () {
+    // Summernote
+    $('#summernote').summernote()
+    $('#email-note').summernote()
+
+    // CodeMirror
+    CodeMirror.fromTextArea(document.getElementById("codeMirrorDemo"), {
+      mode: "htmlmixed",
+      theme: "monokai"
+    });
+  })
+</script>
 
 </body>
 </html>
