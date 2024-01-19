@@ -342,15 +342,15 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="../products/" class="nav-link">
+                <a href="../return/purchase-return.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Purchases List</p>
+                  <p>Purchase Return List</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../products/add-product.php" class="nav-link">
+                <a href="../return/add-pruchase-return.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Add Purchase</p>
+                  <p>Add Purchase Return</p>
                 </a>
               </li>
             </ul>
