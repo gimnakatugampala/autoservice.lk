@@ -219,6 +219,18 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="../job-cards/cancel-job.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Canceled Job Cards</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../job-cards/completed-job.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Completed Job Cards</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="../job-cards/add-service-job.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Service Job</p>

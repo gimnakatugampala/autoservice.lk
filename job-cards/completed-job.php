@@ -20,7 +20,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-5">
-            <h1>Pending Job Card List</h1>
+            <h1>Completed Job Card List</h1>
           </div>
           <div class="col-sm-7">
             <!-- <ol class="breadcrumb float-sm-right">
@@ -47,7 +47,7 @@
             <!-- /.card -->
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Pending Job Cards</h3>
+                <h3 class="card-title">Completed Job Cards</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -59,6 +59,7 @@
                     <th>Vehicle Owner Name</th>
                     <th>Vehicle Name</th>
                     <th>Created Date</th>
+                    <th>Completed Date</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -70,8 +71,9 @@
                     <td>Gimna Katugampala</td>
                     <td>KY-3038</td>
                     <td>2024-01-15</td>
+                    <td>2024-01-25</td>
                     <td>
-                    <a href="../job-cards/edit-service-repair-job.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                    <button type="button" class="btn bg-gradient-primary"><i class="fas fa-eye"></i></button>
                     </td>
                   </tr>
                 

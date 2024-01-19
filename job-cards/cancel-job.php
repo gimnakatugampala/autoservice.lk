@@ -59,6 +59,7 @@
                     <th>Vehicle Owner Name</th>
                     <th>Vehicle Name</th>
                     <th>Created Date</th>
+                    <th>Canceled Date</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -70,8 +71,9 @@
                     <td>Gimna Katugampala</td>
                     <td>KY-3038</td>
                     <td>2024-01-15</td>
+                    <td>2024-01-25</td>
                     <td>
-                    <a href="../job-cards/edit-service-repair-job.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                    <button type="button" class="btn bg-gradient-primary"><i class="fas fa-eye"></i></button>
                     </td>
                   </tr>
                 
