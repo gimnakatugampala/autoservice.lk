@@ -75,6 +75,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="../vehicle-owners/my-vehicle-owners.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>My Vehicle Owners</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="../vehicle-owners/add-vehicle-owner.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Vehicle Owner</p>
@@ -258,7 +264,7 @@
           </li>
 
           <li class="nav-item">
-            <a href="../calendar.html" class="nav-link">
+            <a href="../vehicle-search/" class="nav-link">
               <i class="nav-icon far fa-calendar-alt"></i>
               <p>Vehicle Search</p>
             </a>
