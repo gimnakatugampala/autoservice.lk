@@ -257,7 +257,7 @@
 
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-shopping-bag"></i>
               <p>
                 Manage Products
                 <i class="right fas fa-angle-left"></i>
@@ -310,7 +310,7 @@
 
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-cash-register"></i>
               <p>
                 Manage Purchases
                 <i class="right fas fa-angle-left"></i>
@@ -331,10 +331,10 @@
               </li>
             </ul>
           </li>
-
+       
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-undo"></i>
               <p>
                 Manage Returns
                 <i class="right fas fa-angle-left"></i>
@@ -355,24 +355,24 @@
               </li>
             </ul>
           </li>
-
+    
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-users"></i>
               <p>
-                Manage People
+                Manage Suppliers
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="../products/" class="nav-link">
+                <a href="../suppliers/" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Supplier List</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../products/add-product.php" class="nav-link">
+                <a href="../suppliers/add-supplier.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Supplier</p>
                 </a>
