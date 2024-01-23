@@ -9,18 +9,21 @@
 <div class="login-content">
 <div class="login-userset">
 <div class="login-logo">
-<!-- <img src="../assets/img/logo.png" alt="img"> -->
-<h3>autoservice.lk</h3>
+
+<div class="d-flex align-items-center">
+    <img width="50" src="../assets/img/system/autoservice_logo.jpg" alt="img">
+    <h4 class="ml-2">autoservice.lk</h4>
+</div>
 
 </div>
 <div class="login-userheading">
-<h3>Sign In</h3>
-<h4>Please login to your account</h4>
+<h3 class="m-0">Sign In</h3>
+<h4 class="m-0">Sign In As A Service Station</h4>
 </div>
 <div class="form-login">
 <label>Email</label>
 <div class="form-addons">
-<input type="text" placeholder="Enter your email address">
+<input type="text" placeholder="Enter Service Station email">
 <img src="../assets/img/icons/mail.svg" alt="img">
 </div>
 </div>
@@ -48,7 +51,7 @@
 </div>
 
 <div class="login-img">
-<img src="../assets/img/login.jpg" alt="img">
+<img style="object-fit: cover;" src="https://autotechcollision.com/wp-content/uploads/2019/07/auto-service-repair-2000x1050-1170x650.jpg" alt="img">
 </div>
 
 </div>
