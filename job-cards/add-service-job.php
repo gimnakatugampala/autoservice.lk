@@ -235,21 +235,7 @@
                 </div>
 
 
-                      <!-- other Info - Step 2 -->
-                      <div id="other-info-part" class="content" role="tabpanel" aria-labelledby="other-info-part-trigger">
-
-              
-
-                        
-
-                      
-                      
-
-          
-
-                      <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
-                      <button class="btn btn-primary" onclick="stepper.next()">Next</button>
-                      </div>
+                
 
                   
 

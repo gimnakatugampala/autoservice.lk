@@ -182,6 +182,14 @@
 
                 <div class="col-md-6">
                     <div class="form-group">
+                          <label for="exampleInputEmail1">Chassis Number <span class="text-danger">*</span></label>
+                          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Chassis Number">
+                      </div>
+                </div>
+
+
+                <div class="col-md-6">
+                    <div class="form-group">
                     <label>Vehicle Color <span class="text-danger">*</span></label>
                     <div class="input-group my-colorpicker2">
                         <input type="text" class="form-control">
@@ -207,7 +215,7 @@
                   </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-12">
                 <button type="button" class="btn bg-gradient-secondary">Cancel</button>
                 <button type="button" class="btn bg-gradient-primary">Submit</button>
                 </div>
