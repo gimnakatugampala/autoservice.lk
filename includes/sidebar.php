@@ -271,9 +271,9 @@
           </li>
 
           <li class="nav-item">
-            <a href="../vehicle-search/" class="nav-link">
+            <a href="../send-notifications/" class="nav-link">
               <i class="nav-icon fas fa-envelope"></i>
-              <p>Send Notifications</p>
+              <p>Send Notifications <span class="badge badge-info right">2</span></p>
             </a>
           </li>
 
