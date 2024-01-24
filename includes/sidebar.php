@@ -270,6 +270,13 @@
             </a>
           </li>
 
+          <li class="nav-item">
+            <a href="../vehicle-search/" class="nav-link">
+              <i class="nav-icon fas fa-envelope"></i>
+              <p>Send Notifications</p>
+            </a>
+          </li>
+
 
           <li class="nav-header">INVENTORY</li>
 
