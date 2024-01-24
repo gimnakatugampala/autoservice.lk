@@ -52,7 +52,7 @@
                     <div class="col-md-2">
                     <div class="step" data-target="#maintenance-part">
                       <button type="button" class="step-trigger" role="tab" aria-controls="maintenance-part" id="maintenance-part-trigger">
-                        <span class="bs-stepper-circle">3</span>
+                        <span class="bs-stepper-circle">2</span>
                         <span class="bs-stepper-label">Repair Packages</span>
                       </button>
                     </div>
@@ -62,7 +62,7 @@
                     <div class="col-md-1">
                     <div class="step" data-target="#select-products-part">
                       <button type="button" class="step-trigger" role="tab" aria-controls="select-products-part" id="select-products-part-trigger">
-                        <span class="bs-stepper-circle">4</span>
+                        <span class="bs-stepper-circle">3</span>
                         <span class="bs-stepper-label">Select Products</span>
                       </button>
                     </div>
@@ -72,7 +72,7 @@
                     <div class="col-md-2">
                     <div class="step" data-target="#vehicle-report-part">
                       <button type="button" class="step-trigger" role="tab" aria-controls="vehicle-report-part" id="vehicle-report-part-trigger">
-                        <span class="bs-stepper-circle">5</span>
+                        <span class="bs-stepper-circle">4</span>
                         <span class="bs-stepper-label">Vehicle Condition Report</span>
                       </button>
                     </div>
@@ -82,7 +82,7 @@
                     <div class="col-md-2">
                     <div class="step" data-target="#generate-invoice-part">
                       <button type="button" class="step-trigger" role="tab" aria-controls="generate-invoice-part" id="generate-invoice-part-trigger">
-                        <span class="bs-stepper-circle">6</span>
+                        <span class="bs-stepper-circle">5</span>
                         <span class="bs-stepper-label">Generate Invoice</span>
                       </button>
                     </div>
@@ -167,6 +167,33 @@
                         <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Next Mileage">
                       </div>
                       </div>
+                    </div>
+
+                    <div class="row">
+
+                      <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Paid Status</label>
+                            <select class="custom-select">
+                              <option>Not Paid</option>
+                              <option>Advanced</option>
+                              <option>Not Paid</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Status</label>
+                            <select class="custom-select">
+                              <option>Inprogress</option>
+                              <option>Canceled</option>
+                              <option>Completed</option>
+                            </select>
+                          </div>
+                        </div>
+
+
                     </div>
 
                     <div class="row">

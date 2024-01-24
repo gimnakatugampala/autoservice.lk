@@ -44,6 +44,7 @@
                       </div>
                     </div>
 
+                  
 
              
                     <div class="line"></div>
@@ -62,7 +63,7 @@
                     <div class="col-md-2">
                     <div class="step" data-target="#vehicle-report-part">
                       <button type="button" class="step-trigger" role="tab" aria-controls="vehicle-report-part" id="vehicle-report-part-trigger">
-                        <span class="bs-stepper-circle">5</span>
+                        <span class="bs-stepper-circle">3</span>
                         <span class="bs-stepper-label">Vehicle Condition Report</span>
                       </button>
                     </div>
@@ -72,7 +73,7 @@
                     <div class="col-md-2">
                     <div class="step" data-target="#generate-invoice-part">
                       <button type="button" class="step-trigger" role="tab" aria-controls="generate-invoice-part" id="generate-invoice-part-trigger">
-                        <span class="bs-stepper-circle">6</span>
+                        <span class="bs-stepper-circle">4</span>
                         <span class="bs-stepper-label">Generate Invoice</span>
                       </button>
                     </div>
@@ -143,6 +144,8 @@
                       </div>
                     </div>
 
+                    
+
                     <div class="row">
                       <div class="col-md-4 mx-auto">
                       <div class="form-group">
@@ -157,6 +160,33 @@
                         <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Next Mileage">
                       </div>
                       </div>
+                    </div>
+
+                    <div class="row">
+
+                      <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Paid Status</label>
+                            <select class="custom-select">
+                              <option>Not Paid</option>
+                              <option>Advanced</option>
+                              <option>Not Paid</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Status</label>
+                            <select class="custom-select">
+                              <option>Inprogress</option>
+                              <option>Canceled</option>
+                              <option>Completed</option>
+                            </select>
+                          </div>
+                        </div>
+
+
                     </div>
 
                     <div class="row">
@@ -203,6 +233,23 @@
                
                       <button class="btn btn-primary" onclick="stepper.next()">Next</button>
                 </div>
+
+
+                      <!-- other Info - Step 2 -->
+                      <div id="other-info-part" class="content" role="tabpanel" aria-labelledby="other-info-part-trigger">
+
+              
+
+                        
+
+                      
+                      
+
+          
+
+                      <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                      <button class="btn btn-primary" onclick="stepper.next()">Next</button>
+                      </div>
 
                   
 

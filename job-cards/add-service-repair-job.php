@@ -44,8 +44,9 @@
                       </div>
                     </div>
 
+                  
 
-             
+      
                     <div class="line"></div>
                     <div class="col-md-2">
                     <div class="step" data-target="#service-package-part">
@@ -175,6 +176,33 @@
                         <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Next Mileage">
                       </div>
                       </div>
+                    </div>
+
+                    <div class="row">
+
+                      <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Paid Status</label>
+                            <select class="custom-select">
+                              <option>Not Paid</option>
+                              <option>Advanced</option>
+                              <option>Not Paid</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Status</label>
+                            <select class="custom-select">
+                              <option>Inprogress</option>
+                              <option>Canceled</option>
+                              <option>Completed</option>
+                            </select>
+                          </div>
+                        </div>
+
+
                     </div>
 
                     <div class="row">
