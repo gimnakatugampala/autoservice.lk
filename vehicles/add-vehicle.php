@@ -191,13 +191,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                     <label>Vehicle Color <span class="text-danger">*</span></label>
-                    <div class="input-group my-colorpicker2">
-                        <input type="text" class="form-control">
-
-                        <div class="input-group-append">
-                        <span class="input-group-text"><i class="fas fa-square"></i></span>
-                        </div>
-                    </div>
+                    <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Color">
                   <!-- /.input group -->
                 </div>
                 </div>

@@ -123,6 +123,18 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="../service-packages/filter-types.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>All Filter Type</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../service-packages/add-filter-type.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Filter Type</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="../service-packages/service-package-items.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>All Service Pkg Item</p>
