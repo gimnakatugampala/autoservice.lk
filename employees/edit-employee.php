@@ -99,13 +99,41 @@
                 </div>
                 </div>
 
+                <div class="col-md-6">
+                <div class="form-group">
+                  <label>Date of Birth</label>
+                  <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
+                        <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <div class="col-md-6"></div>
+
+                <div class="col-md-6">
+                <div class="form-group">
+                  <label>Password</label>
+                  <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                </div>
+                </div>
+
+                <div class="col-md-6">
+                <div class="form-group">
+                  <label>Confirm Password</label>
+                  <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                </div>
+                </div>
+
     
 
           
 
-                <div class="col-md-4">
+                <div class="col-md-12">
                 <button type="button" class="btn bg-gradient-secondary">Cancel</button>
-                <button type="button" class="btn bg-gradient-primary">Submit</button>
+                <button type="button" class="btn bg-gradient-primary">Update</button>
                 </div>
 
               </div>
