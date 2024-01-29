@@ -23,14 +23,14 @@
 <div class="form-login">
 <label>Email</label>
 <div class="form-addons">
-<input type="text" placeholder="Enter Service Station email">
+<input id="email" type="text" placeholder="Enter Service Station email">
 <img src="../assets/img/icons/mail.svg" alt="img">
 </div>
 </div>
 <div class="form-login">
 <label>Password</label>
 <div class="pass-group">
-<input type="password" class="pass-input" placeholder="Enter your password">
+<input id="password" type="password" class="pass-input" placeholder="Enter your password">
 <span class="fas toggle-password fa-eye-slash"></span>
 </div>
 </div>
@@ -40,8 +40,9 @@
 </div>
 </div>
 <div class="form-login">
-<a class="btn btn-login" href="../auth/user-login.php">Sign In</a>
+<button id="btn_station_login" class="btn btn-login" >Sign In</button>
 </div>
+<!-- href="../auth/user-login.php" -->
 <div class="signinform text-center">
 <h4>Don’t have an account? <a href="../auth/station-register.php" class="hover-a">Sign Up</a></h4>
 </div>

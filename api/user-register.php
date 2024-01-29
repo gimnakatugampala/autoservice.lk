@@ -35,9 +35,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // SESSIONS
                  $row = $result->fetch_assoc();
                  $_SESSION["user_id"] = $row["id"];
+                 echo "success";
             }
         
-            echo "success";
         }else{
             echo $conn->error;
         }

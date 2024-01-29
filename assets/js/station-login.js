@@ -1,11 +1,13 @@
 $(document).ready(function () {
 
-    $("#btn-user-reg").click(function () {
+    $("#btn_station_login").click(function () {
 
        
         var email = $("#email").val();
-        var password = $("#pass").val();
-        var con_password = $("#con_pass").val();
+        var password = $("#password").val();
+
+        console.log(email)
+        console.log(password)
     
     
 
@@ -35,52 +37,25 @@ $(document).ready(function () {
 
               return
 
-        }else if(con_password == ""){
-            Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: "Please Enter Confirm Password",
-              });
-
-              return
-
-        }else if(con_password != password){
-            Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: "Passwords Do not Match",
-              });
-
-              return
-
         }
 
-    
 
         //  SAVE DATA
         $.ajax({
             type: "POST",
-            url: "../api/user-register.php",
+            url: "../api/station-login.php",
             data: {
-              station_code:generateUUID(),
               email:email,
-              password:con_password
+              password:password
             },
             success: function (response) {
      
                 console.log(response)
 
               if (response === "success") {
-                window.location.href = "../vehicles/";
+                window.location.href = "../auth/user-login.php";
                 // console.log("Success")
     
-              } else if (response == "User Exist"){
-                Swal.fire({
-                    icon: "error",
-                    title: "Login failed",
-                    text: "User Already Exist.",
-                  });
-
               }else {
                 Swal.fire({
                     icon: "error",
@@ -94,9 +69,6 @@ $(document).ready(function () {
                 console.log(error)
             }
           });
-
-
-    
 
              
          })

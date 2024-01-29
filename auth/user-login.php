@@ -2,12 +2,25 @@
 
 <?php include_once '../includes/header.php';?>
 
+<?php
+
+session_start();
+require_once '../includes/db_config.php';
+
+if (!isset($_SESSION["station_id"]) || $_SESSION["station_id"] == null) {
+  header('Location: ../auth/station-login.php');
+  exit(); 
+}
+
+?>
+
+
 
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
     <img class="rounded-circle" width="60" height="60" src="../dist/img/system/logo_pistona.png" >
-    <h6 class="my-2"><b>Pistona Automotive Solutions</b></h6>
+    <h6 class="my-2"><b><?php echo (isset($_SESSION["station_name"])) ?  $_SESSION["station_name"] : ''; ?></b></h6>
   </div>
   <!-- /.login-logo -->
   <div class="card">
