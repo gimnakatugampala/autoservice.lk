@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "SELECT * FROM service_station WHERE email = '$email' OR service_name = '$station_name'";
     $result = $conn->query($sql);
 
-    $dateNow =date("Y-m-d H:i:s");
+    // $dateNow =date("Y-m-d H:i:s");
 
     if ($result->num_rows > 0) {
         echo "User Exist";
@@ -29,9 +29,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // echo "User Does Not Exist";
 
         // Save Data
-        $sql = "INSERT INTO service_station (code, service_name,email,password,created_date,is_deleted,is_active,
+        $sql = "INSERT INTO service_station (code, service_name,email,password,is_deleted,is_active,
         latitude,`long`) 
-        VALUES ('$station_code', '$station_name', '$email','$hashed_password','$dateNow',0,1,'$latitude','$long')";
+        VALUES ('$station_code', '$station_name', '$email','$hashed_password',0,1,'$latitude','$long')";
         if ($conn->query($sql) === TRUE) {
 
             $sql = "SELECT * FROM service_station WHERE email = '$email' OR service_name = '$station_name'";

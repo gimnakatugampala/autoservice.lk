@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "SELECT * FROM service_station WHERE email = '$email' AND password = '$hashed_password'";
     $result = $conn->query($sql);
 
-    $dateNow =date("Y-m-d H:i:s");
+    // $dateNow =date("Y-m-d H:i:s");
 
     if ($result->num_rows > 0) {
         

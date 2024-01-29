@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "SELECT * FROM employee WHERE email = '$email'";
     $result = $conn->query($sql);
 
-    $dateNow =date("Y-m-d H:i:s");
+    // $dateNow =date("Y-m-d H:i:s");
 
     if ($result->num_rows > 0) {
         echo "User Exist";        
@@ -24,8 +24,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // echo "User Does Not Exist";
 
         // Save Data
-        $sql = "INSERT INTO employee (code,email,password,created_date,is_active,service_station_id,user_type_id) 
-        VALUES ('$station_code', '$email','$hashed_password','$dateNow',1,'{$_SESSION["station_id"]}',1)";
+        $sql = "INSERT INTO employee (code,email,password,is_active,service_station_id,user_type_id) 
+        VALUES ('$station_code', '$email','$hashed_password',1,'{$_SESSION["station_id"]}',1)";
         if ($conn->query($sql) === TRUE) {
 
             $sql = "SELECT * FROM employee WHERE email = '$email'";

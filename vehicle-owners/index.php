@@ -1,5 +1,7 @@
 
 <?php include_once '../includes/header.php';?>
+<?php require_once '../api/vehicle-owner-list.php' ?>
+
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -52,22 +54,28 @@
                   <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Full Name</th>
                     <th>Email</th>
+                    <th>Full Name</th>
                     <th>Phone Number</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>002</td>
-                    <td>Gimna Katugampala</td>
-                    <td>gimnakatugampala1@gmail.com</td>
-                    <td>0764961707</td>
-                    <td>
-                    <a href="../vehicle-owners/edit-vehicle-owner.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
-                    </td>
-                  </tr>
+
+                  <?php foreach ($result as $row) : ?>
+                    <tr>
+                      <td><?php echo  $row["code"]; ?></td>
+                      <td><?php echo  $row["first_name"] . ' ' . $row["last_name"]; ?></td>
+                      <td><?php echo  $row["email"]; ?></td>
+                      <td><?php echo  $row["phone"]; ?></td>
+                      <td>
+                      <a href="../vehicle-owners/edit-vehicle-owner.php?code=<?php echo $row['code'];?>" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                      </td>
+                    </tr>
+
+                    <?php endforeach; ?>
+
+             
                
                 </table>
               </div>
