@@ -16,7 +16,7 @@ if (!isset($_SESSION["station_id"]) || $_SESSION["station_id"] == null) {
 
 
 
-<body class="hold-transition login-page">
+<body class="d-flex justify-content-center align-items-center h-100 mt-5 bg-light hold-transition">
 <div class="login-box">
   <div class="login-logo">
     <img class="rounded-circle" width="60" height="60" src="../dist/img/system/logo_pistona.png" >
@@ -28,10 +28,10 @@ if (!isset($_SESSION["station_id"]) || $_SESSION["station_id"] == null) {
      <h3 class="text-center">Employee Login</h3>
       <p class="login-box-msg">Sign in to start your session</p>
 
-      <form action="../vehicles/" method="post">
+      
         <label class="form-label">Email address</label>
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email">
+          <input id="email" type="email" class="form-control" placeholder="Email">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -41,7 +41,7 @@ if (!isset($_SESSION["station_id"]) || $_SESSION["station_id"] == null) {
 
         <label class="form-label">Password</label>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
+          <input id="password"  type="password" class="form-control" placeholder="Password">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -59,11 +59,11 @@ if (!isset($_SESSION["station_id"]) || $_SESSION["station_id"] == null) {
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            <button id="btn_user_login" type="submit" class="btn btn-primary btn-block">Sign In</button>
           </div>
           <!-- /.col -->
         </div>
-      </form>
+      
 
       <!-- <p class="mb-1">
         <a href="forgot-password.html">I forgot my password</a>

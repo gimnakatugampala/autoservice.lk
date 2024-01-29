@@ -27,7 +27,7 @@ if (!isset($_SESSION["station_id"]) || $_SESSION["station_id"] == null) {
 
 
 <!-- login-page -->
-<body class="d-flex justify-content-center align-items-center h-100 mt-5 bg-light hold-transition ">
+<body class="d-flex justify-content-center align-items-center h-100 mt-5 bg-light hold-transition">
 <div class="login-box">
   <div class="login-logo">
     <img class="rounded-circle" width="60" height="60" src="../dist/img/system/logo_pistona.png" >
