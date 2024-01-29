@@ -45,6 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // SESSIONS
                  $row = $result->fetch_assoc();
                  $_SESSION["station_id"] = $row["id"];
+                 $_SESSION["station_name"] = $row["service_name"];
             }
         
             echo "success";

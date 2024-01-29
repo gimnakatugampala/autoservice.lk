@@ -44,4 +44,7 @@
 
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <!-- Theme style -->
 </head>

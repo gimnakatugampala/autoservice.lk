@@ -204,3 +204,8 @@
   }
   // DropzoneJS Demo Code End
 </script>
+
+<script src="../assets/js/scripts.js"></script>
+
+
+<script src="../assets/js/user-register.js"></script>

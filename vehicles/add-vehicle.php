@@ -211,7 +211,7 @@
 
                 <div class="col-md-12">
                 <button type="button" class="btn bg-gradient-secondary">Cancel</button>
-                <button type="button" class="btn bg-gradient-primary">Submit</button>
+                <button  type="button" class="btn bg-gradient-primary">Submit</button>
                 </div>
 
               </div>

@@ -3,11 +3,24 @@
 <?php include_once '../includes/header.php';?>
 
 
-<body class="hold-transition login-page">
+<?php
+
+session_start();
+
+if (!isset($_SESSION["station_id"]) || $_SESSION["station_id"] == null) {
+  header('Location: ../auth/station-login.php');
+  exit(); 
+}
+
+?>
+
+
+<!-- login-page -->
+<body class="d-flex justify-content-center align-items-center h-100 mt-5 bg-light hold-transition ">
 <div class="login-box">
   <div class="login-logo">
     <img class="rounded-circle" width="60" height="60" src="../dist/img/system/logo_pistona.png" >
-    <h6 class="my-2"><b>Pistona Automotive Solutions</b></h6>
+    <h6 class="my-2"><b><?php echo (isset($_SESSION["station_name"])) ?  $_SESSION["station_name"] : ''; ?></b></h6>
   </div>
   <!-- /.login-logo -->
   <div class="card">
@@ -15,10 +28,11 @@
      <h3 class="text-center">Admin Register</h3>
       <p class="login-box-msg">Register to start your session</p>
 
-      <form action="../vehicles/" method="post">
+   
+
         <label class="form-label">Email address</label>
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email">
+          <input id="email" type="email" class="form-control" placeholder="Email" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -28,7 +42,7 @@
 
         <label class="form-label">Password</label>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
+          <input id="pass" type="password" class="form-control" placeholder="Password" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -38,7 +52,7 @@
 
         <label class="form-label">Confirm Password</label>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
+          <input id="con_pass" type="password" class="form-control" placeholder="Password">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -57,11 +71,13 @@
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Register</button>
+            <button id="btn-user-reg" type="submit" class="btn btn-primary btn-block">Register</button>
           </div>
           <!-- /.col -->
         </div>
-      </form>
+
+  
+      
 
       <!-- <p class="mb-1">
         <a href="forgot-password.html">I forgot my password</a>
