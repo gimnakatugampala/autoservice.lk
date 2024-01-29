@@ -210,3 +210,4 @@
 
 <script src="../assets/js/user-register.js"></script>
 <script src="../assets/js/user-login.js"></script>
+<script src="../assets/js/add-vehicle-owner.js"></script>

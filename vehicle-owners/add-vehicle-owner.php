@@ -49,14 +49,14 @@
                 <div class="col-md-6">
                     <div class="form-group">
                           <label for="exampleInputEmail1">First Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="First Name">
+                          <input type="text" class="form-control" id="first_name" placeholder="First Name">
                       </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
                           <label for="exampleInputEmail1">Last Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Last Name">
+                          <input type="text" class="form-control" id="last_name" placeholder="Last Name">
                       </div>
                 </div>
 
@@ -64,14 +64,14 @@
                 <div class="col-md-6">
                     <div class="form-group">
                           <label for="exampleInputEmail1">Email <span class="text-danger">*</span></label>
-                          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email address">
+                          <input type="email" class="form-control" id="email" placeholder="Email address">
                       </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
                           <label for="exampleInputEmail1">NIC <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="National Identity Card">
+                          <input type="text" class="form-control" id="nic" placeholder="National Identity Card">
                       </div>
                 </div>
 
@@ -82,7 +82,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-phone"></i></span>
                     </div>
-                    <input type="text" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask>
+                    <input id="phone_number" type="text" class="form-control" data-inputmask='"mask": "099 9999 999"' data-mask>
                   </div>
                 </div>
                 </div>
@@ -95,15 +95,15 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-phone"></i></span>
                     </div>
-                    <input type="text" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask>
+                    <input id="other_phone_number" type="text" class="form-control" data-inputmask='"mask": "099 9999 999"' data-mask>
                   </div>
                 </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Street Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Street Name">
+                          <label for="exampleInputEmail1">Address <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="address" placeholder="Address">
                       </div>
                 </div>
 
@@ -111,14 +111,14 @@
                 <div class="col-md-6">
                     <div class="form-group">
                           <label for="exampleInputEmail1">City <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="City">
+                          <input type="text" class="form-control" id="city" placeholder="City">
                       </div>
                 </div>
 
 
                 <div class="col-md-4">
                 <button type="button" class="btn bg-gradient-secondary">Cancel</button>
-                <button type="button" class="btn bg-gradient-primary">Submit</button>
+                <button id="add-vehicle-owner-btn" type="button" class="btn bg-gradient-primary">Submit</button>
                 </div>
 
               </div>
