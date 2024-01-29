@@ -28,10 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         // echo "User Does Not Exist";
 
-       
-        // echo $station_logo;
-     
-
         // Save Data
         $sql = "INSERT INTO service_station (code, service_name,email,password,created_date,is_deleted,is_active,
         latitude,`long`) 

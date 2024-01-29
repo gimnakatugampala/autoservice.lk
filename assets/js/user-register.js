@@ -55,52 +55,45 @@ $(document).ready(function () {
 
         }
 
-        console.log(email)
-        console.log(password)
-        console.log(con_password)
-
     
 
         //  SAVE DATA
-        // $.ajax({
-        //     type: "POST",
-        //     url: "../api/station_register.php",
-        //     data: {
-        //       station_code:generateUUID(),
-        //       station_name,
-        //       email:email,
-        //       password:con_password,
-        //       lat:(lat).toString(),
-        //       long:(long).toString(),
-        //     },
-        //     success: function (response) {
+        $.ajax({
+            type: "POST",
+            url: "../api/user-register.php",
+            data: {
+              station_code:generateUUID(),
+              email:email,
+              password:con_password
+            },
+            success: function (response) {
      
-        //         console.log(response)
+                console.log(response)
 
-        //       if (response === "success") {
-        //         window.location.href = "../auth/user-register.php";
-        //         // console.log("Success")
+            //   if (response === "success") {
+            //     window.location.href = "../vehicles/";
+            //     // console.log("Success")
     
-        //       } else if (response == "User Exist"){
-        //         Swal.fire({
-        //             icon: "error",
-        //             title: "Login failed",
-        //             text: "Service Station Already Exist.",
-        //           });
+            //   } else if (response == "User Exist"){
+            //     Swal.fire({
+            //         icon: "error",
+            //         title: "Login failed",
+            //         text: "Service Station Already Exist.",
+            //       });
 
-        //       }else {
-        //         Swal.fire({
-        //             icon: "error",
-        //             title: "Login failed",
-        //             text: "Please check your credentials.",
-        //           });
-        //       }
+            //   }else {
+            //     Swal.fire({
+            //         icon: "error",
+            //         title: "Login failed",
+            //         text: "Please check your credentials.",
+            //       });
+            //   }
 
-        //     },
-        //     error:function (error) {
-        //         console.log(error)
-        //     }
-        //   });
+            },
+            error:function (error) {
+                console.log(error)
+            }
+          });
 
 
     

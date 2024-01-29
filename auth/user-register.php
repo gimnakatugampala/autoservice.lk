@@ -6,10 +6,21 @@
 <?php
 
 session_start();
+require_once '../includes/db_config.php';
 
 if (!isset($_SESSION["station_id"]) || $_SESSION["station_id"] == null) {
   header('Location: ../auth/station-login.php');
   exit(); 
+}else{
+
+  $sql = "SELECT * FROM employee WHERE service_station_id = '{$_SESSION["station_id"]}' AND user_type_id = 1";
+  $result = $conn->query($sql);
+
+  if ($result->num_rows > 0) {
+    header('Location: ../auth/station-login.php');
+    exit(); 
+  }
+
 }
 
 ?>
