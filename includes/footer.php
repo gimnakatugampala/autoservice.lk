@@ -211,6 +211,9 @@
 <script src="../assets/js/cmb/cmbvehiclemanufacturers.js"></script>
 <script src="../assets/js/cmb/cmbvehiclecountry.js"></script>
 <script src="../assets/js/cmb/cmbvehiclemodel.js"></script>
+<script src="../assets/js/cmb/cmbvehiclefueltype.js"></script>
+<script src="../assets/js/cmb/cmbvehicleowner.js"></script>
+<script src="../assets/js/cmb/cmbvehicleyear.js"></script>
 
 <script src="../assets/js/user-register.js"></script>
 <script src="../assets/js/user-login.js"></script>
