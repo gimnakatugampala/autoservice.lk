@@ -49,14 +49,14 @@
                 <div class="col-md-6">
                     <div class="form-group">
                           <label for="exampleInputEmail1">Vehicle Number <span class="text-danger">*</span></label>
-                          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="KY-3038">
+                          <input type="text" class="form-control" id="vehicle_number" placeholder="KY-3038" oninput="convertToUppercase(this)">
                       </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
                           <label for="exampleInputEmail1">Engine Number <span class="text-danger">*</span></label>
-                          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Engine Number">
+                          <input oninput="convertToUppercase(this)" type="text" class="form-control" id="engine_number" placeholder="Engine Number">
                       </div>
                 </div>
 
@@ -77,11 +77,11 @@
 
                 <div class="col-md-6">
                 <div class="form-group">
-                    <label for="exampleInputFile">Vehicle Image</label>
+                    <label for="vehicle_img">Vehicle Image</label>
                     <div class="input-group">
                       <div class="custom-file">
-                        <input accept="image/*" type="file" class="custom-file-input" id="exampleInputFile">
-                        <label class="custom-file-label" for="exampleInputFile">Choose Image</label>
+                        <input accept="image/*" type="file" class="custom-file-input" id="vehicle_img">
+                        <label class="custom-file-label" for="vehicle_img">Choose Image</label>
                       </div>
                     </div>
                   </div>
@@ -181,8 +181,8 @@
 
                 <div class="col-md-6">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Chassis Number <span class="text-danger">*</span></label>
-                          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Chassis Number">
+                          <label for="chassis_number">Chassis Number <span class="text-danger">*</span></label>
+                          <input oninput="convertToUppercase(this)" type="email" class="form-control" id="chassis_number" placeholder="Chassis Number">
                       </div>
                 </div>
 
@@ -190,7 +190,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                     <label>Vehicle Color <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Color">
+                    <input oninput="convertToUppercase(this)" type="text" class="form-control" id="vehicle_color" placeholder="Color">
                   <!-- /.input group -->
                 </div>
                 </div>
@@ -200,7 +200,7 @@
 
                 <div class="col-md-12">
                 <button type="button" class="btn bg-gradient-secondary">Cancel</button>
-                <button  type="button" class="btn bg-gradient-primary">Submit</button>
+                <button id="btn_add_vehicle" type="button" class="btn bg-gradient-primary">Submit</button>
                 </div>
 
               </div>
@@ -230,6 +230,8 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+
+<script src="../assets/js/touppercaseinput.js"></script>
 
 <?php include_once '../includes/footer.php';?>
 
