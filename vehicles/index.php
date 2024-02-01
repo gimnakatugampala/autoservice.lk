@@ -1,5 +1,6 @@
 
 <?php include_once '../includes/header.php';?>
+<?php include_once '../api/vehiclelist.php';?>
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -53,8 +54,8 @@
                   <tr>
                     <th>ID</th>
                     <th>Vehicle Number</th>
-                    <th>Vehicle Type</th>
-                    <th>Vehicle Sub type</th>
+                    <th>Vehicle Class</th>
+                    <th>Vehicle Make</th>
                     <th>Model</th>
                     <th>Owner</th>
                     <th>Actions</th>
@@ -62,18 +63,24 @@
                   </thead>
                   <tbody>
 
-                  <tr>
-                    <td>001</td>
-                    <td>KY-3038</td>
-                    <td>Car</td>
-                    <td>Sedan</td>
-                    <td>FIT</td>
-                    <td>Gimna Katugampala</td>
-                    <td>
-                    <a href="../vehicles/vehicle-details.php" type="button" class="btn bg-gradient-primary"><i class="fas fa-eye"></i></a>
-                    <a href="../vehicles/edit-vehicle.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
-                    </td>
-                  </tr>
+                  <?php foreach ($vehicles as $row) : ?>
+                    <tr>
+                      <td><?php echo  $row["code"]; ?></td>
+                      <td><?php echo  $row["vehicle_number"]; ?></td>
+                      <td><?php echo  $row["vehicle_class_name"]; ?></td>
+                      <td><?php echo  $row["vehicle_make_name"]; ?></td>
+                      <td><?php echo  $row["vehicle_model_name"]; ?></td>
+                      <td><?php echo  $row["vo_first_name"] .' ' .$row["vo_last_name"]; ?></td>
+                      <td>
+                      <a href="../vehicles/vehicle-details.php" type="button" class="btn bg-gradient-primary"><i class="fas fa-eye"></i></a>
+                      <a href="../vehicles/edit-vehicle.php?code=<?php echo $row['code'];?>" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                      </td>
+                      
+                    </tr>
+
+                  <?php endforeach; ?>
+
+              
                 
                   </tbody>
                 </table>
