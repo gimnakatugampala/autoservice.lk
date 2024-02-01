@@ -62,45 +62,44 @@
 
                 <div class="col-md-6">
                 <div class="form-group">
-                  <label>Vehicle Type <span class="text-danger">*</span></label>
-                  <select class="form-control select2" style="width: 100%;">
-                    <option selected="selected">Alabama</option>
+                  <label>Vehicle Class <span class="text-danger">*</span></label>
+                  <select id="cmbvehicleclass" class="form-control select2" style="width: 100%;">
+                    <!-- <option selected="selected">Alabama</option>
                     <option>Alaska</option>
                     <option>California</option>
                     <option>Delaware</option>
                     <option>Tennessee</option>
                     <option>Texas</option>
-                    <option>Washington</option>
+                    <option>Washington</option> -->
                   </select>
                 </div>
                 </div>
 
                 <div class="col-md-6">
                 <div class="form-group">
-                  <label>Sub Vehicle Type <span class="text-danger">*</span></label>
-                  <select class="form-control select2" style="width: 100%;">
-                    <option selected="selected">Alabama</option>
-                    <option>Alaska</option>
-                    <option>California</option>
-                    <option>Delaware</option>
-                    <option>Tennessee</option>
-                    <option>Texas</option>
-                    <option>Washington</option>
-                  </select>
+                    <label for="exampleInputFile">Vehicle Image</label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input accept="image/*" type="file" class="custom-file-input" id="exampleInputFile">
+                        <label class="custom-file-label" for="exampleInputFile">Choose Image</label>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                </div>
+
+              
 
                 <div class="col-md-6">
                 <div class="form-group">
-                  <label>Manufacturer <span class="text-danger">*</span></label>
-                  <select class="form-control select2" style="width: 100%;">
-                    <option selected="selected">Alabama</option>
+                  <label>Vehicle Make <span class="text-danger">*</span></label>
+                  <select id="cmbvehiclemanufacturer" class="form-control select2" style="width: 100%;">
+                    <!-- <option selected="selected">Alabama</option>
                     <option>Alaska</option>
                     <option>California</option>
                     <option>Delaware</option>
                     <option>Tennessee</option>
                     <option>Texas</option>
-                    <option>Washington</option>
+                    <option>Washington</option> -->
                   </select>
                 </div>
                 </div>
@@ -108,14 +107,14 @@
                 <div class="col-md-6">
                 <div class="form-group">
                   <label>Manufacturer Country <span class="text-danger">*</span></label>
-                  <select class="form-control select2" style="width: 100%;">
-                    <option selected="selected">Alabama</option>
+                  <select id="cmbvehiclecountry" class="form-control select2" style="width: 100%;">
+                    <!-- <option selected="selected">Alabama</option>
                     <option>Alaska</option>
                     <option>California</option>
                     <option>Delaware</option>
                     <option>Tennessee</option>
                     <option>Texas</option>
-                    <option>Washington</option>
+                    <option>Washington</option> -->
                   </select>
                 </div>
                 </div>
@@ -123,14 +122,14 @@
                 <div class="col-md-6">
                 <div class="form-group">
                   <label>Model <span class="text-danger">*</span></label>
-                  <select class="form-control select2" style="width: 100%;">
-                    <option selected="selected">Alabama</option>
+                  <select id="cmbvehiclemodel" class="form-control select2" style="width: 100%;">
+                    <!-- <option selected="selected">Alabama</option>
                     <option>Alaska</option>
                     <option>California</option>
                     <option>Delaware</option>
                     <option>Tennessee</option>
                     <option>Texas</option>
-                    <option>Washington</option>
+                    <option>Washington</option> -->
                   </select>
                 </div>
                 </div>
@@ -197,17 +196,7 @@
                 </div>
 
 
-                <div class="col-md-6">
-                <div class="form-group">
-                    <label for="exampleInputFile">Vehicle Image</label>
-                    <div class="input-group">
-                      <div class="custom-file">
-                        <input accept="image/*" type="file" class="custom-file-input" id="exampleInputFile">
-                        <label class="custom-file-label" for="exampleInputFile">Choose Image</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              
 
                 <div class="col-md-12">
                 <button type="button" class="btn bg-gradient-secondary">Cancel</button>

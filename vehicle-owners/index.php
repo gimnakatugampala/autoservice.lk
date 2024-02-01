@@ -62,7 +62,7 @@
                   </thead>
                   <tbody>
 
-                  <?php foreach ($result as $row) : ?>
+                  <?php foreach ($vehicle_owners as $row) : ?>
                     <tr>
                       <td><?php echo  $row["code"]; ?></td>
                       <td><?php echo  $row["first_name"] . ' ' . $row["last_name"]; ?></td>
@@ -71,6 +71,7 @@
                       <td>
                       <a href="../vehicle-owners/edit-vehicle-owner.php?code=<?php echo $row['code'];?>" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
                       </td>
+                      
                     </tr>
 
                     <?php endforeach; ?>

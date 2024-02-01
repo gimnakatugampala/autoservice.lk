@@ -207,7 +207,12 @@
 
 <script src="../assets/js/scripts.js"></script>
 
+<script src="../assets/js/cmb/cmbvehicleclass.js"></script>
+<script src="../assets/js/cmb/cmbvehiclemanufacturers.js"></script>
+<script src="../assets/js/cmb/cmbvehiclecountry.js"></script>
+<script src="../assets/js/cmb/cmbvehiclemodel.js"></script>
 
 <script src="../assets/js/user-register.js"></script>
 <script src="../assets/js/user-login.js"></script>
+
 <script src="../assets/js/add-vehicle-owner.js"></script>
