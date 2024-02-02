@@ -222,3 +222,4 @@
 <script src="../assets/js/add-vehicle-owner.js"></script>
 <script src="../assets/js/add-vehicle.js"></script>
 <script src="../assets/js/add-employee.js"></script>
+<script src="../assets/js/add-fuel.js"></script>

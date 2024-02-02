@@ -48,8 +48,8 @@
 
                 <div class="col-md-12">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Fuel Type <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Name">
+                          <label for="fuel_type">Fuel Type <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="fuel_type" placeholder="Name">
                       </div>
                 </div>
 
@@ -58,7 +58,7 @@
 
                 <div class="col-md-4">
                 <button type="button" class="btn bg-gradient-secondary">Cancel</button>
-                <button type="button" class="btn bg-gradient-primary">Submit</button>
+                <button id="btn_fuel_type" type="button" class="btn bg-gradient-primary">Submit</button>
                 </div>
 
               </div>
