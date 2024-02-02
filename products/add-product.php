@@ -56,12 +56,12 @@
                 <div class="col-md-6">
                 <div class="form-group">
                 <label for="exampleInputEmail1">Select Category <span class="text-danger">*</span></label>
-                        <select class="custom-select">
-                          <option>Car</option>
+                        <select id="cmbproductcategory" class="custom-select">
+                          <!-- <option>Car</option>
                           <option>Van</option>
                           <option>Bus</option>
                           <option>Lorry</option>
-                          <option>option 5</option>
+                          <option>option 5</option> -->
                         </select>
                       </div>
                 </div>
