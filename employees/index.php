@@ -57,6 +57,7 @@
                     <th>Full Name</th>
                     <th>Email</th>
                     <th>Phone Number</th>
+                    <th>User Type</th>
                     <th>Status</th>
                     <th>Actions</th>
                   </tr>
@@ -67,9 +68,10 @@
                     <tr>
                     <td><?php echo  $row["code"]; ?></td>
                     <td><?php echo  $row["nic"]; ?></td>
-                    <td><?php echo  $row["first_name"] . '' . $row["last_name"]; ?></td>
+                    <td><?php echo  $row["first_name"] . ' ' . $row["last_name"]; ?></td>
                     <td><?php echo  $row["email"]; ?></td>
                     <td><?php echo  $row["contact_number"]; ?></td>
+                    <td><?php echo  $row["userType"]; ?></td>
                     <td><input type="checkbox" name="my-checkbox" checked data-bootstrap-switch></td>
                       <td>
                       <a href="../employees/employee-details.php" type="button" class="btn bg-gradient-primary"><i class="fas fa-eye"></i></a>

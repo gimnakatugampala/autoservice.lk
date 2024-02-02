@@ -1,7 +1,16 @@
 <?php
+
+session_start();
+
 require_once '../includes/db_config.php';
 
-$sql = 'SELECT * FROM employee WHERE is_active = 1 ORDER BY created_date DESC';
+ $stationID = $_SESSION['station_id'];
+
+$sql = "SELECT *, 
+user_type.type AS userType 
+FROM employee 
+JOIN user_type ON employee.user_type_id = user_type.id
+WHERE is_active = 1 AND service_station_id = '$stationID' ORDER BY created_date DESC";
 $result = $conn->query( $sql );
 
 $employees = array();
