@@ -48,8 +48,8 @@
 
                 <div class="col-md-6">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Product Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Name">
+                          <label for="product_name">Product Name <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="product_name" placeholder="Name">
                       </div>
                 </div>
 
@@ -83,15 +83,15 @@
 
                 <div class="col-md-6">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Warrenty <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Warrenty">
+                          <label for="product_warrenty">Warrenty <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="product_warrenty" placeholder="Warrenty">
                       </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Quantity <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Quantity">
+                          <label for="product_quantity">Quantity <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="product_quantity" placeholder="Quantity">
                       </div>
                 </div>
 
@@ -110,15 +110,15 @@
 
                 <div class="col-md-6">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Selling Price (LKR)<span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Selling Price">
+                          <label for="selling_price">Selling Price (LKR)<span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="selling_price" placeholder="Selling Price">
                       </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Buying Price (LKR)<span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Buying Price">
+                          <label for="buying_price">Buying Price (LKR)<span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="buying_price" placeholder="Buying Price">
                       </div>
                 </div>
 
@@ -127,7 +127,7 @@
 
                 <div class="col-md-4">
                 <button type="button" class="btn bg-gradient-secondary">Cancel</button>
-                <button type="button" class="btn bg-gradient-primary">Submit</button>
+                <button id="btn_add_product" type="button" class="btn bg-gradient-primary">Submit</button>
                 </div>
 
               </div>
