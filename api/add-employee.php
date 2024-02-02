@@ -14,8 +14,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phone_number = $_POST['phone_number'];
     $other_phone_number = $_POST['other_phone_number'];
     $dob = $_POST['dob'];
-    $pass = $_POST['pass'];
+    $user_type = $_POST['user_type'];
     $con_pass = $_POST['con_pass'];
+
+    $hashed_password = sha1($con_pass);
 
     $sql = "SELECT * FROM employee WHERE email = '$email' OR contact_number = '$phone_number' OR nic = '$nic'";
     $result = $conn->query($sql);
@@ -27,14 +29,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         echo "Employee Does Not Exist";
         // Save Data
-        // $sql = "INSERT INTO vehicle_owner (code, first_name,last_name,email,phone,nic,address,city,other_phone,is_deleted) 
-        // VALUES ('$code', '$first_name', '$last_name','$email','$phone_number','$nic','$address','$city','$other_phone_number',0)";
-        // if ($conn->query($sql) === TRUE) {
+        $sql = "INSERT INTO employee (code,
+         first_name,
+         last_name,
+         email,
+         password,
+         dob,
+         contact_number,
+         nic,
+         is_active,
+         emergency_number,
+         service_station_id,
+         user_type_id) 
+        VALUES ('$code', 
+        '$first_name', 
+        '$last_name',
+        '$email',
+        '$hashed_password',
+        '$dob',
+        '$phone_number',
+        '$nic',
+         1,
+        '$other_phone_number',
+         '{$_SESSION["station_id"]}',
+         '$user_type')";
+        if ($conn->query($sql) === TRUE) {
 
-        //     echo "success";
-        // }else{
-        //     echo $conn->error;
-        // }
+            echo "success";
+        }else{
+            echo $conn->error;
+        }
 
     }
 

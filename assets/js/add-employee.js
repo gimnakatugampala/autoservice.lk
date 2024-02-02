@@ -11,6 +11,7 @@ $(document).ready(function () {
         var dob = $("#dob").val();
         var pass = $("#pass").val();
         var con_pass = $("#con_pass").val();
+        var cmbusertypes = $("#cmbusertypes").val();
 
      
 
@@ -72,6 +73,14 @@ $(document).ready(function () {
               });
 
               return
+        }else if(cmbusertypes == ""){
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Select User Type",
+              });
+
+              return
         }else if(pass == ""){
             Swal.fire({
                 icon: "error",
@@ -105,6 +114,7 @@ $(document).ready(function () {
             console.log(phone_number)
             console.log(other_phone_number)
             console.log(dob)
+            console.log(cmbusertypes)
             console.log(pass)
             console.log(con_pass)
 
@@ -122,6 +132,7 @@ $(document).ready(function () {
                 phone_number:phone_number.replace(/\s/g, ''),
                 other_phone_number:other_phone_number.replace(/\s/g, ''),
                 dob:dob,
+                user_type:cmbusertypes,
                 pass:pass,
                 con_pass:con_pass
             },
