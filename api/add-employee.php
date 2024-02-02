@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows > 0) {
         echo "Employee Exist";        
     } else {
-        echo "Employee Does Not Exist";
+        // echo "Employee Does Not Exist";
         // Save Data
         $sql = "INSERT INTO employee (code,
          first_name,

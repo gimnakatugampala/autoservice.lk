@@ -140,17 +140,24 @@ $(document).ready(function () {
     
                 console.log(response)
 
-            // if (response === "success") {
-            //     window.location.href = "../vehicle-owners/";
-            //     // console.log("Success")
+            if (response === "success") {
+                window.location.href = "../employees/";
     
-            // }else {
-            //     Swal.fire({
-            //         icon: "error",
-            //         title: "Error",
-            //         text: "Vehicle Owner Already Exist.",
-            //     });
-            // }
+            }else if(response == "Employee Exist"){
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Employee Already Exist.",
+                  });
+
+              }else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Something Went Wrong",
+                    text: "Please Try Again.",
+                  });
+              }
 
             },
             error:function (error) {
