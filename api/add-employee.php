@@ -17,26 +17,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pass = $_POST['pass'];
     $con_pass = $_POST['con_pass'];
 
-    // $sql = "SELECT * FROM vehicle_owner WHERE email = '$email' OR phone = '$phone_number' OR nic = '$nic'";
-    // $result = $conn->query($sql);
+    $sql = "SELECT * FROM employee WHERE email = '$email' OR contact_number = '$phone_number' OR nic = '$nic'";
+    $result = $conn->query($sql);
 
     // // $dateNow =date("Y-m-d H:i:s");
 
-    // if ($result->num_rows > 0) {
-    //     echo "User Exist";        
-    // } else {
-    //     // echo "User Does Not Exist";
-    //     // Save Data
-    //     $sql = "INSERT INTO vehicle_owner (code, first_name,last_name,email,phone,nic,address,city,other_phone,is_deleted) 
-    //     VALUES ('$code', '$first_name', '$last_name','$email','$phone_number','$nic','$address','$city','$other_phone_number',0)";
-    //     if ($conn->query($sql) === TRUE) {
+    if ($result->num_rows > 0) {
+        echo "Employee Exist";        
+    } else {
+        echo "Employee Does Not Exist";
+        // Save Data
+        // $sql = "INSERT INTO vehicle_owner (code, first_name,last_name,email,phone,nic,address,city,other_phone,is_deleted) 
+        // VALUES ('$code', '$first_name', '$last_name','$email','$phone_number','$nic','$address','$city','$other_phone_number',0)";
+        // if ($conn->query($sql) === TRUE) {
 
-    //         echo "success";
-    //     }else{
-    //         echo $conn->error;
-    //     }
+        //     echo "success";
+        // }else{
+        //     echo $conn->error;
+        // }
 
-    // }
+    }
 
 
 }

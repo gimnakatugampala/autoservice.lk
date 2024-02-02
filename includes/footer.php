@@ -207,6 +207,7 @@
 
 <script src="../assets/js/scripts.js"></script>
 
+<script src="../assets/js/cmb/cmbusertype.js"></script>
 <script src="../assets/js/cmb/cmbvehicleclass.js"></script>
 <script src="../assets/js/cmb/cmbvehiclemanufacturers.js"></script>
 <script src="../assets/js/cmb/cmbvehiclecountry.js"></script>
