@@ -48,15 +48,15 @@
 
                 <div class="col-md-12">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Brand Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Name">
+                          <label for="brand_name">Brand Name <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="brand_name" placeholder="Name">
                       </div>
                 </div>
 
 
                 <div class="col-md-4">
                 <button type="button" class="btn bg-gradient-secondary">Cancel</button>
-                <button type="button" class="btn bg-gradient-primary">Submit</button>
+                <button id="btn_add_brand" type="button" class="btn bg-gradient-primary">Submit</button>
                 </div>
 
               </div>
