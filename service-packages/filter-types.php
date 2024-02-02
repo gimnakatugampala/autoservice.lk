@@ -1,5 +1,6 @@
 
 <?php include_once '../includes/header.php';?>
+<?php include_once '../api/filtertypelist.php';?>
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -59,16 +60,23 @@
                   </thead>
                   <tbody>
 
+
+
+
+                  <?php foreach ($filter_type as $row) : ?>
+
                   <tr>
-                    <td>001</td>
-                    <td>Oil Change</td>
-                    <td>2024-1-10</td>
+                  <td><?php echo  $row["code"]; ?></td>
+                  <td><?php echo  $row["name"]; ?></td>
+                  <td><?php echo  $row["created_date"]; ?></td>
                     <td>
                     <a href="../service-packages/edit-filter-type.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
                     <a type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></a>
                     </td>
                   </tr>
-                
+                  
+                  <?php endforeach; ?>
+                  
                   </tbody>
                 </table>
               </div>
