@@ -224,3 +224,4 @@
 <script src="../assets/js/add-employee.js"></script>
 <script src="../assets/js/add-fuel.js"></script>
 <script src="../assets/js/add-filter.js"></script>
+<script src="../assets/js/add-service-package-item.js"></script>
