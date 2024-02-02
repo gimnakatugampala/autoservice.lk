@@ -1,5 +1,6 @@
 
 <?php include_once '../includes/header.php';?>
+<?php include_once '../api/employeelist.php';?>
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -62,18 +63,24 @@
                   </thead>
                   <tbody>
 
-                  <tr>
-                    <td>001</td>
-                    <td>200017203400</td>
-                    <td>Gimna Katugampala</td>
-                    <td>gimna@gmail.com</td>
-                    <td>0764961707</td>
+                  <?php foreach ($employees as $row) : ?>
+                    <tr>
+                    <td><?php echo  $row["code"]; ?></td>
+                    <td><?php echo  $row["nic"]; ?></td>
+                    <td><?php echo  $row["first_name"] . '' . $row["last_name"]; ?></td>
+                    <td><?php echo  $row["email"]; ?></td>
+                    <td><?php echo  $row["contact_number"]; ?></td>
                     <td><input type="checkbox" name="my-checkbox" checked data-bootstrap-switch></td>
-                    <td>
-                    <a href="../employees/employee-details.php" type="button" class="btn bg-gradient-primary"><i class="fas fa-eye"></i></a>
-                    <a href="../employees/edit-employee.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
-                    </td>
-                  </tr>
+                      <td>
+                      <a href="../employees/employee-details.php" type="button" class="btn bg-gradient-primary"><i class="fas fa-eye"></i></a>
+                      <a href="../employees/edit-employee.php?code=<?php echo $row['code'];?>" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                      </td>
+                      
+                    </tr>
+
+                  <?php endforeach; ?>
+
+             
                 
                   </tbody>
                 </table>
