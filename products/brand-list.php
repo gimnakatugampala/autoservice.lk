@@ -1,5 +1,6 @@
 
 <?php include_once '../includes/header.php';?>
+<?php include_once '../api/productbrandlist.php';?>
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -59,15 +60,21 @@
                   </thead>
                   <tbody>
 
-                  <tr>
-                    <td>001</td>
-                    <td>Caltex</td>
-                    <td>2024-1-10</td>
-                    <td>
-                    <a href="../products/edit-brand.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
-                    <button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
+                  <?php foreach ($product_brand as $row) : ?>
+                    <tr>
+                      <td><?php echo  $row["code"]; ?></td>
+                      <td><?php echo  $row["brand_name"]; ?></td>
+                      <td><?php echo  $row["created_date"]; ?></td>
+                      <td>
+                      <a href="../products/edit-brand.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                      <button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button>
+                      </td>
+                      
+                    </tr>
+
+                  <?php endforeach; ?>
+
+           
                 
                   </tbody>
                 </table>
