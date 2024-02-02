@@ -1,5 +1,6 @@
 
 <?php include_once '../includes/header.php';?>
+<?php include_once '../api/addcategory.php';?>
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -48,15 +49,15 @@
 
                 <div class="col-md-12">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Category Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Name">
+                          <label for="category_name">Category Name <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="category_name" placeholder="Name">
                       </div>
                 </div>
 
 
                 <div class="col-md-4">
                 <button type="button" class="btn bg-gradient-secondary">Cancel</button>
-                <button type="button" class="btn bg-gradient-primary">Submit</button>
+                <button id="btn_add_category" type="button" class="btn bg-gradient-primary">Submit</button>
                 </div>
 
               </div>

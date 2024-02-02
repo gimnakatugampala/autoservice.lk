@@ -226,3 +226,4 @@
 <script src="../assets/js/add-filter.js"></script>
 <script src="../assets/js/add-service-package-item.js"></script>
 <script src="../assets/js/add-brand.js"></script>
+<script src="../assets/js/addcategory.js"></script>
