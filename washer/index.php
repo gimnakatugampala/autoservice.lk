@@ -1,5 +1,6 @@
 
 <?php include_once '../includes/header.php';?>
+<?php include_once '../api/washerlist.php';?>
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -52,21 +53,27 @@
                   <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Vehicle Type</th>
+                    <th>Vehicle Class</th>
                     <th>Price</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
                   <tbody>
 
-                  <tr>
-                    <td>001</td>
-                    <td>Van</td>
-                    <td>900.00</td>
-                    <td>
-                    <a href="../washer/edit-washer.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
-                    </td>
-                  </tr>
+                  <?php foreach ($washers as $row) : ?>
+                    <tr>
+                      <td><?php echo  $row["code"]; ?></td>
+                      <td><?php echo  $row["vehicle_class_name"]; ?></td>
+                      <td><?php echo  $row["price"]; ?></td>
+                      <td>
+                      <a href="../washer/edit-washer.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                      </td>
+                      
+                   </tr>
+
+                  <?php endforeach; ?>
+
+
                 
                   </tbody>
                 </table>
