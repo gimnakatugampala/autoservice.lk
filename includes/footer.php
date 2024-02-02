@@ -232,3 +232,4 @@
 <script src="../assets/js/addcategory.js"></script>
 <script src="../assets/js/addsupplier.js"></script>
 <script src="../assets/js/add-product.js"></script>
+<script src="../assets/js/addwasher.js"></script>
