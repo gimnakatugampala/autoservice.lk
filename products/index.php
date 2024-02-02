@@ -1,5 +1,6 @@
 
 <?php include_once '../includes/header.php';?>
+<?php include_once '../api/product-list.php';?>
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -61,17 +62,22 @@
                   </thead>
                   <tbody>
 
-                  <tr>
-                    <td>001</td>
-                    <td>Oil Change</td>
-                    <td>Car</td>
-                    <td>2024-1-10</td>
-                    <td>45</td>
-                    <td>
-                    <a href="../products/edit-product.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
-                    </td>
-                  </tr>
-                
+                  <?php foreach ($product as $row) : ?>
+                    <tr>
+                      <td><?php echo  $row["code"]; ?></td>
+                      <td><?php echo  $row["product_name"]; ?></td>
+                      <td><?php echo  $row["warrenty"]; ?></td>
+                      <td><?php echo  $row["created_date"]; ?></td>
+                      <td><?php echo  $row["quantity"]; ?></td>
+                      <td>
+                      <a href="../products/edit-product.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                      </td>
+                      
+                    </tr>
+
+                <?php endforeach; ?>
+
+              
                   </tbody>
                 </table>
               </div>
