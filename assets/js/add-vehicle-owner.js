@@ -14,7 +14,7 @@ $(document).ready(function () {
         // console.log(first_name)
         // console.log(last_name)
         // console.log(email)
-        console.log(nic)
+        // console.log(nic)
         // console.log(phone_number)
         // console.log(other_phone_number)
         // console.log(address)

@@ -1,5 +1,6 @@
 
 <?php include_once '../includes/header.php';?>
+<?php include_once '../api/supplierlist.php';?>
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -60,17 +61,21 @@
                   </thead>
                   <tbody>
 
-                  <tr>
-                    <td>001</td>
-                    <td>Gimna Katugampala</td>
-                    <td>0764961707</td>
-                    <td>gimnakatugampala1@gmail.com</td>
-                    <td>
-                    <a href="../suppliers/edit-supplier.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
-                    <button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
-                
+                  <?php foreach ($supplier as $row) : ?>
+                    <tr>
+                      <td><?php echo  $row["code"]; ?></td>
+                      <td><?php echo  $row["first_name"] .' ' .$row["last_name"]; ?></td>
+                      <td><?php echo  $row["phone"]; ?></td>
+                      <td><?php echo  $row["email"]; ?></td>
+                      <td>
+                      <a href="../suppliers/edit-supplier.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                      <button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button>
+                      </td>
+                      
+                    </tr>
+
+                <?php endforeach; ?>
+
                   </tbody>
                 </table>
               </div>
