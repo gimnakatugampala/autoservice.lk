@@ -66,7 +66,7 @@
                       <td><?php echo  $row["vehicle_class_name"]; ?></td>
                       <td><?php echo  $row["price"]; ?></td>
                       <td>
-                      <a href="../washer/edit-washer.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                      <a href="../washer/edit-washer.php?code=<?php echo  $row["code"]; ?>" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
                       </td>
                       
                    </tr>

@@ -46,27 +46,26 @@
 
               <div class="row">
 
-                <div class="col-md-6">
+              <div class="col-md-6">
                     
-                          <div class="form-group">
-                                <label>Vehicle Type <span class="text-danger">*</span></label>
-                                <select class="custom-select">
-                                <option>option 1</option>
-                                <option>option 2</option>
-                                <option>option 3</option>
-                                <option>option 4</option>
-                                <option>option 5</option>
-                            </select>
-                      </div>
-                </div>
-
-                <div class="col-md-6">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Price (LKR) <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Price">
-                      </div>
+                          <label>Vehicle Class <span class="text-danger">*</span></label>
+                          <select id="cmbvehicleclass"class="custom-select">
+                          <!-- <option>option 1</option>
+                          <option>option 2</option>
+                          <option>option 3</option>
+                          <option>option 4</option>
+                          <option>option 5</option> -->
+                      </select>
                 </div>
+          </div>
 
+          <div class="col-md-6">
+              <div class="form-group">
+                    <label for="price">Price (LKR) <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="price" placeholder="Price">
+                </div>
+          </div>
               
 
       
@@ -103,6 +102,10 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="../plugins/jquery/jquery.min.js"></script>
+<script src="../assets/js/getwasher.js"></script>
 
 <?php include_once '../includes/footer.php';?>
 
