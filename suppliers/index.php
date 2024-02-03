@@ -68,7 +68,7 @@
                       <td><?php echo  $row["phone"]; ?></td>
                       <td><?php echo  $row["email"]; ?></td>
                       <td>
-                      <a href="../suppliers/edit-supplier.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                      <a href="../suppliers/edit-supplier.php?code=<?php echo  $row["code"]; ?>" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
                       <button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button>
                       </td>
                       
