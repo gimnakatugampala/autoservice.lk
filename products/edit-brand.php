@@ -46,10 +46,10 @@
 
               <div class="row">
 
-                <div class="col-md-12">
+              <div class="col-md-12">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Brand Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Name">
+                          <label for="brand_name">Brand Name <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="brand_name" placeholder="Name">
                       </div>
                 </div>
 
@@ -86,6 +86,10 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="../plugins/jquery/jquery.min.js"></script>
+<script src="../assets/js/getbrands.js"></script>
 
 <?php include_once '../includes/footer.php';?>
 
