@@ -66,7 +66,7 @@
                       <td><?php echo  $row["name"]; ?></td>
                       <td><?php echo  $row["created_date"]; ?></td>
                       <td>
-                      <a href="../products/edit-category.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                      <a href="../products/edit-category.php?code=<?php echo  $row["code"]; ?>" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
                       <button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button>
                       </td>
                       
