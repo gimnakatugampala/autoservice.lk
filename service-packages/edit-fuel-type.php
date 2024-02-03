@@ -46,12 +46,13 @@
 
               <div class="row">
 
-                <div class="col-md-12">
+              <div class="col-md-12">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Fuel Type <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Name">
+                          <label for="fuel_type">Fuel Type <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="fuel_type" placeholder="Name">
                       </div>
                 </div>
+
 
         
             
@@ -88,6 +89,10 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="../plugins/jquery/jquery.min.js"></script>
+<script src="../assets/js/getfueltypes.js"></script>
 
 <?php include_once '../includes/footer.php';?>
 
