@@ -68,7 +68,7 @@
                       <td><?php echo  $row["name"]; ?></td>
                       <td><?php echo  $row["created_date"]; ?></td>
                         <td>
-                        <a href="../service-packages/edit-service-package-item.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                        <a href="../service-packages/edit-service-package-item.php?code=<?php echo  $row["code"]; ?>" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
                         <a type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></a>
                         </td>
                       </tr>
