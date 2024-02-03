@@ -70,7 +70,7 @@
                       <td><?php echo  $row["created_date"]; ?></td>
                       <td><?php echo  $row["quantity"]; ?></td>
                       <td>
-                      <a href="../products/edit-product.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                      <a href="../products/edit-product.php?code=<?php echo  $row["code"]; ?>" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
                       </td>
                       
                     </tr>

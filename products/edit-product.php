@@ -48,20 +48,20 @@
 
               <div class="col-md-6">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Product Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Name">
+                          <label for="product_name">Product Name <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="product_name" placeholder="Name">
                       </div>
                 </div>
 
                 <div class="col-md-6">
                 <div class="form-group">
                 <label for="exampleInputEmail1">Select Category <span class="text-danger">*</span></label>
-                        <select class="custom-select">
-                          <option>Car</option>
+                        <select id="cmbproductcategory" class="custom-select">
+                          <!-- <option>Car</option>
                           <option>Van</option>
                           <option>Bus</option>
                           <option>Lorry</option>
-                          <option>option 5</option>
+                          <option>option 5</option> -->
                         </select>
                       </div>
                 </div>
@@ -71,54 +71,54 @@
                 <div class="col-md-6">
                 <div class="form-group">
                 <label for="exampleInputEmail1">Select Brand <span class="text-danger">*</span></label>
-                        <select class="custom-select">
-                          <option>Car</option>
+                        <select id="cmbproductbrand" class="custom-select">
+                          <!-- <option>Car</option>
                           <option>Van</option>
                           <option>Bus</option>
                           <option>Lorry</option>
-                          <option>option 5</option>
+                          <option>option 5</option> -->
                         </select>
                       </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Warrenty <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Warrenty">
+                          <label for="product_warrenty">Warrenty <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="product_warrenty" placeholder="Warrenty">
                       </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Quantity <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Quantity">
+                          <label for="product_quantity">Quantity <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="product_quantity" placeholder="Quantity">
                       </div>
                 </div>
 
                 <div class="col-md-6">
                 <div class="form-group">
                 <label for="exampleInputEmail1">Availability <span class="text-danger">*</span></label>
-                        <select class="custom-select">
-                          <option>Car</option>
+                        <select id="cmbavailablity" class="custom-select">
+                          <!-- <option>Car</option>
                           <option>Van</option>
                           <option>Bus</option>
                           <option>Lorry</option>
-                          <option>option 5</option>
+                          <option>option 5</option> -->
                         </select>
                       </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Selling Price (LKR)<span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Selling Price">
+                          <label for="selling_price">Selling Price (LKR)<span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="selling_price" placeholder="Selling Price">
                       </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Buying Price (LKR)<span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Buying Price">
+                          <label for="buying_price">Buying Price (LKR)<span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="buying_price" placeholder="Buying Price">
                       </div>
                 </div>
 
@@ -157,6 +157,10 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="../plugins/jquery/jquery.min.js"></script>
+<script src="../assets/js/getproducts.js"></script>
 
 <?php include_once '../includes/footer.php';?>
 
