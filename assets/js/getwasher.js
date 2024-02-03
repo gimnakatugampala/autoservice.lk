@@ -14,7 +14,7 @@ $(document).ready(function () {
       var price = $("#price").val();
       var dataIdValue = $(this).data("id");
 
-      console.log(dataIdValue);
+      // console.log(dataIdValue);
 
     
 
