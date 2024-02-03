@@ -72,7 +72,7 @@
 
                 <div class="col-md-12">
                 <button type="button" class="btn bg-gradient-secondary">Cancel</button>
-                <button type="button" class="btn bg-gradient-primary">Update</button>
+                <button id="btn_update_washer" type="button" class="btn bg-gradient-primary">Update</button>
                 </div>
 
               </div>
