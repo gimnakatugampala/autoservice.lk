@@ -4,10 +4,10 @@ $(document).ready(function () {
     const urlParams = new URLSearchParams(window.location.search);
     const myParam = urlParams.get('code');
 
-    document.addEventListener('DOMContentLoaded', getVehicles());
+    document.addEventListener('DOMContentLoaded', getBrands());
 
 
-   function getVehicles(){
+   function getBrands(){
        $.ajax({
          type: "POST",
          url: "../api/getbrands.php",
