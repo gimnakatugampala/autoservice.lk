@@ -46,31 +46,31 @@
 
               <div class="row">
 
-                <div class="col-md-6">
+              <div class="col-md-6">
                     <div class="form-group">
                           <label for="exampleInputEmail1">First Name <span class="text-danger">*</span></label>
-                          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="First Name">
+                          <input type="text" class="form-control" id="first_name" placeholder="First Name">
                       </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
                           <label for="exampleInputEmail1">Last Name <span class="text-danger">*</span></label>
-                          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Last Name">
+                          <input type="text" class="form-control" id="last_name" placeholder="Last Name">
                       </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
                           <label for="exampleInputEmail1">NIC <span class="text-danger">*</span></label>
-                          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="National Identity Number">
+                          <input type="text" class="form-control" id="nic" placeholder="National Identity Number">
                       </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
                           <label for="exampleInputEmail1">Email <span class="text-danger">*</span></label>
-                          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                          <input type="email" class="form-control" id="email" placeholder="Email">
                       </div>
                 </div>
 
@@ -81,7 +81,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-phone"></i></span>
                     </div>
-                    <input type="text" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask>
+                    <input id="phone_number" type="text" class="form-control" data-inputmask='"mask": "099 9999 999"' data-mask>
                   </div>
                 </div>
                 </div>
@@ -94,7 +94,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-phone"></i></span>
                     </div>
-                    <input type="text" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask>
+                    <input id="other_phone_number" type="text" class="form-control" data-inputmask='"mask": "099 9999 999"' data-mask>
                   </div>
                 </div>
                 </div>
@@ -103,7 +103,7 @@
                 <div class="form-group">
                   <label>Date of Birth</label>
                   <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                        <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
+                        <input id="dob" type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
                         <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
@@ -111,21 +111,35 @@
                 </div>
                 </div>
 
-                <div class="col-md-6"></div>
+                <div class="col-md-6">
+                <div class="form-group">
+                  <label>User Type</label>
+                  <select id="cmbusertypes" class="form-control select2" style="width: 100%;">
+                    <!-- <option selected="selected">Alabama</option>
+                    <option>Alaska</option>
+                    <option>California</option>
+                    <option>Delaware</option>
+                    <option>Tennessee</option>
+                    <option>Texas</option>
+                    <option>Washington</option> -->
+                  </select>
+                </div>
+                </div>
 
                 <div class="col-md-6">
                 <div class="form-group">
                   <label>Password</label>
-                  <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                  <input type="password" class="form-control" id="pass" placeholder="Password">
                 </div>
                 </div>
 
                 <div class="col-md-6">
                 <div class="form-group">
                   <label>Confirm Password</label>
-                  <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                  <input type="password" class="form-control" id="con_pass" placeholder="Password">
                 </div>
                 </div>
+
 
     
 
@@ -163,6 +177,11 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="../plugins/jquery/jquery.min.js"></script>
+<script src="../assets/js/getemployees.js"></script>
+
 
 <?php include_once '../includes/footer.php';?>
 
