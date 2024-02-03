@@ -2,6 +2,7 @@
 require_once '../includes/db_config.php';
 
 $sql = 'SELECT * ,
+vehicle.code AS vehicle_code,
 vehicle_owner.first_name AS vo_first_name , 
 vehicle_owner.last_name AS vo_last_name ,
 vehicle_class.name AS vehicle_class_name,
