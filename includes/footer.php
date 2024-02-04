@@ -218,6 +218,7 @@
 <script src="../assets/js/cmb/cmbproductbrand.js"></script>
 <script src="../assets/js/cmb/cmbproductavailablity.js"></script>
 <script src="../assets/js/cmb/cmbproductcategory.js"></script>
+<script src="../assets/js/cmb/cmbpackageitems.js"></script>
 
 <script src="../assets/js/user-register.js"></script>
 <script src="../assets/js/user-login.js"></script>

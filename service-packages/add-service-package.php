@@ -55,13 +55,13 @@
 
                 <div class="col-md-6">
                 <div class="form-group">
-                <label for="exampleInputEmail1">Select Vehicle Type <span class="text-danger">*</span></label>
-                        <select class="custom-select">
-                          <option>Car</option>
+                <label for="exampleInputEmail1">Select Vehicle Class <span class="text-danger">*</span></label>
+                        <select id="cmbvehicleclass" class="custom-select">
+                          <!-- <option>Car</option>
                           <option>Van</option>
                           <option>Bus</option>
                           <option>Lorry</option>
-                          <option>option 5</option>
+                          <option>option 5</option> -->
                         </select>
                       </div>
                 </div>
@@ -69,12 +69,12 @@
                 <div class="col-md-6">
                 <div class="form-group">
                 <label for="exampleInputEmail1">Select Package Items <span class="text-danger">*</span></label>
-                        <select class="custom-select">
-                          <option>Car</option>
+                        <select id="cmbpackageitems" class="custom-select">
+                          <!-- <option>Car</option>
                           <option>Van</option>
                           <option>Bus</option>
                           <option>Lorry</option>
-                          <option>option 5</option>
+                          <option>option 5</option> -->
                         </select>
                       </div>
                 </div>
@@ -83,11 +83,11 @@
                 <div class="form-group">
                 <label for="exampleInputEmail1">Select Free Package Items </label>
                         <select class="custom-select">
-                          <option>Car</option>
+                          <!-- <option>Car</option>
                           <option>Van</option>
                           <option>Bus</option>
                           <option>Lorry</option>
-                          <option>option 5</option>
+                          <option>option 5</option> -->
                         </select>
                       </div>
                 </div>
