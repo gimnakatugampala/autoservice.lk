@@ -61,19 +61,21 @@
                       <th>Unit Price Per Hr (LKR)</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
+                  <tbody id="tbrepair">
+
+                    <!-- <tr>
                       <td>Car</td>
                       <td>
                           <input type="text" class="form-control" id="exampleInputEmail1" placeholder="LKR">
                       </td>
                     </tr>
+
                     <tr>
                       <td>Van</td>
                       <td>
                           <input type="text" class="form-control" id="exampleInputEmail1" placeholder="LKR">
                       </td>
-                    </tr>
+                    </tr> -->
                    
                   </tbody>
                 </table>
