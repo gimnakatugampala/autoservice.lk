@@ -46,10 +46,10 @@
 
               <div class="row">
 
-                <div class="col-md-7 mx-auto">
+              <div class="col-md-7 mx-auto">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Repair <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Repair Name">
+                          <label for="repair_name">Repair <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="repair_name" placeholder="Repair Name">
                       </div>
                 </div>
 
@@ -61,8 +61,8 @@
                       <th>Unit Price Per Hr (LKR) </th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
+                  <tbody id="tbeditrepair">
+                    <!-- <tr>
                       <td>Car</td>
                       <td>
                           <input type="text" class="form-control" id="exampleInputEmail1" placeholder="LKR">
@@ -73,7 +73,7 @@
                       <td>
                           <input type="text" class="form-control" id="exampleInputEmail1" placeholder="LKR">
                       </td>
-                    </tr>
+                    </tr> -->
                    
                   </tbody>
                 </table>
@@ -82,7 +82,7 @@
 
                 <div class="col-md-12">
                 <button type="button" class="btn bg-gradient-secondary">Cancel</button>
-                <button type="button" class="btn bg-gradient-primary">Update</button>
+                <button id="btn_update_repair" type="button" class="btn bg-gradient-primary">Update</button>
                 </div>
 
               </div>
@@ -112,6 +112,10 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="../plugins/jquery/jquery.min.js"></script>
+<script src="../assets/js/getrepairs.js"></script>
 
 <?php include_once '../includes/footer.php';?>
 
