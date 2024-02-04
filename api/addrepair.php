@@ -34,10 +34,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($conn->query($manageRepairSQL) !== true) {
                 echo 'Error: ' . $manageRepairSQL . '<br>' . $conn->error;
                 exit();
-            }else{
-                echo "success";
             }
         }
+
+        echo "success";
 
         }else{
             echo $conn->error;
