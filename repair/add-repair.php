@@ -48,8 +48,8 @@
 
                 <div class="col-md-7 mx-auto">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Repair <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Repair Name">
+                          <label for="repair_name">Repair <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="repair_name" placeholder="Repair Name">
                       </div>
                 </div>
 
@@ -90,7 +90,7 @@
 
                 <div class="col-md-12">
                 <button type="button" class="btn bg-gradient-secondary">Cancel</button>
-                <button type="button" class="btn bg-gradient-primary">Submit</button>
+                <button id="btn_add_repair" type="button" class="btn bg-gradient-primary">Submit</button>
                 </div>
 
               </div>
