@@ -1,5 +1,6 @@
 
 <?php include_once '../includes/header.php';?>
+<?php include_once '../api/repairlist.php';?>
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -58,13 +59,19 @@
                   </thead>
                   <tbody>
 
-                  <tr>
-                    <td>001</td>
-                    <td>Lathe Work</td>
-                    <td>
-                    <a href="../repair/edit-repair.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
-                    </td>
-                  </tr>
+                  <?php foreach ($repair as $row) : ?>
+                    <tr>
+                      <td><?php echo  $row["code"]; ?></td>
+                      <td><?php echo  $row["name"]; ?></td>
+                      <td>
+                      <a href="../repair/edit-repair.php?code=<?php echo  $row["code"]; ?>" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                      </td>
+                      
+                   </tr>
+
+                <?php endforeach; ?>
+
+                
                 
                   </tbody>
                 </table>
