@@ -58,7 +58,7 @@
 
                 <div class="col-md-4">
                 <button type="button" class="btn bg-gradient-secondary">Cancel</button>
-                <button type="button" class="btn bg-gradient-primary">Update</button>
+                <button id="btn_update_service_package_item" type="button" class="btn bg-gradient-primary">Update</button>
                 </div>
 
               </div>
