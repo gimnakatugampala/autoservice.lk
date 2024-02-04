@@ -21,7 +21,7 @@ $(document).ready(function () {
 
     function populateTableRepair(data) {
         data.forEach(function (list) {
-            // console.log(list)
+            console.log(list)
             var row = $("<tr>");
             row.append("<td class='rowID' style='display:none;'>" + list.id + "</td>");
             row.append(`<td>${list.name}</td>`);
