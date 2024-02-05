@@ -316,12 +316,11 @@ $(document).ready(function () {
       var service_package_name = $("#service_package_name").val();
       var vehicleclass = $("#cmbvehicleclass").val();
 
-      console.log(service_package_name)
-      console.log(vehicleclass)
-      console.log(services)
-      console.log(free_services)
-      console.log(fuel_types)
-      console.log(filter_types)
+  
+      // console.log(services)
+      // console.log(free_services)
+      // console.log(fuel_types)
+      // console.log(filter_types)
       
       // Service Packages
       $(".serviceID").each(function () {
@@ -349,7 +348,7 @@ $(document).ready(function () {
       // console.log(FuelTypeID)
       dataFuelTypes.push({
         FuelTypeID,
-        Price
+        Price: Price == "" ? 0 : Price
       })
     })
 
@@ -360,12 +359,60 @@ $(document).ready(function () {
       // console.log(FuelTypeID)
       dataFilterTypes.push({
         FilterTypeID,
-        Price
+        Price: Price == "" ? 0 : Price
       })
     })
 
-    
-    console.log(dataServices)
+    if(service_package_name == ""){
+
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Please Enter Service Package Name",
+      });
+      return
+
+    }else if(vehicleclass == null){
+
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Please Select Vehicle Class",
+      });
+      return
+
+    }else if(dataServices.length == 0){
+
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Select At Least One Service Package Item",
+      });
+      return
+
+    }else if(dataFuelTypes.length == 0){
+
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Select At Least One Fuel Type",
+      });
+      return
+
+    }else if(dataFilterTypes.length == 0){
+
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Select At Least One Filter Type",
+      });
+      return
+
+    }
+
+    // console.log(service_package_name)
+    // console.log(vehicleclass)    
+    // console.log(dataServices)
     console.log(dataFreeServices)
     console.log(dataFuelTypes)
     console.log(dataFilterTypes)
