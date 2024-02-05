@@ -227,8 +227,8 @@
                         <th>Price (LKR)</th>
                     </tr>
                     </thead>
-                    <tbody>
-
+                    <tbody id="tbfiltertype">
+<!-- 
                     <tr>
                         <td>Valvoline 0W-20</td>
                         <td class="w-50">
@@ -256,7 +256,7 @@
                             </div>
                             </div>
                         </td>
-                    </tr>
+                    </tr> -->
                     
                     </tbody>
                 </table>
