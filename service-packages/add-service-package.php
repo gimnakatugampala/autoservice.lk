@@ -57,6 +57,7 @@
                 <div class="form-group">
                 <label for="exampleInputEmail1">Select Vehicle Class <span class="text-danger">*</span></label>
                         <select id="cmbvehicleclass" class="custom-select">
+                        <option disabled selected value="">Please Select</option>
                           <!-- <option>Car</option>
                           <option>Van</option>
                           <option>Bus</option>

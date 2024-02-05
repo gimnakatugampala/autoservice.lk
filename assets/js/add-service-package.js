@@ -42,7 +42,7 @@ $(document).ready(function () {
               Swal.fire({
                 icon: "error",
                 title: "Error",
-                text: "Product Already Exist",
+                text: "Service Item Already Exist",
               });
               return
   
@@ -109,7 +109,7 @@ $(document).ready(function () {
               Swal.fire({
                 icon: "error",
                 title: "Error",
-                text: "Product Already Exist",
+                text: "Service Item Already Exist",
               });
               return
   
