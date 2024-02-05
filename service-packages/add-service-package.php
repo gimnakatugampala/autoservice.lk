@@ -48,8 +48,8 @@
 
                 <div class="col-md-6">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Service Package Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Name">
+                          <label for="service_package_name">Service Package Name <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="service_package_name" placeholder="Name">
                       </div>
                 </div>
 
@@ -100,9 +100,9 @@
                         <th>Action</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tbpackageitem">
 
-                    <tr>
+                    <!-- <tr>
                         <td>Engine Oil Change</td>
                         <td><button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button></td>
                     </tr>
@@ -113,7 +113,7 @@
                     <tr>
                         <td>Under Wash</td>
                         <td><button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button></td>
-                    </tr>
+                    </tr> -->
                     
                     </tbody>
                 </table>
@@ -196,6 +196,7 @@
                             </div>
                         </td>
                     </tr>
+
                     <tr>
                         <td>Castrol/Valvoline 10W-30</td>
                         <td class="w-50">
@@ -264,7 +265,7 @@
 
                 <div class="col-md-4">
                 <button type="button" class="btn bg-gradient-secondary">Cancel</button>
-                <button type="button" class="btn bg-gradient-primary">Submit</button>
+                <button id="btn_add_service_package" type="button" class="btn bg-gradient-primary">Submit</button>
                 </div>
 
               </div>
