@@ -134,7 +134,7 @@ $(document).ready(function () {
           var row = $("<tr>");
           row.append(`<td class="serviceFreeID" style='display:none;'>${list.id}</td>`);
           row.append(`<td>${list.name}</td>`);
-          row.append(`<td><button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button></td>`);
+          row.append(`<td><a a data-id="${list.id}" type="button" class="btn bg-gradient-danger deleteItem"><i class="fas fa-trash"></i></a></td>`);
           row.append("</tr>");
          
           FreeServicePackagetableBody.append(row);
@@ -209,6 +209,7 @@ $(document).ready(function () {
               </div>
               </div>
           </td>`);
+          row.append(`<td><a data-id="${list.id}" type="button" class="btn bg-gradient-danger deleteItem"><i class="fas fa-trash"></i></a></td>`);
           row.append("</tr>");
          
           FuelTypeTableBody.append(row);
@@ -284,6 +285,7 @@ $(document).ready(function () {
               </div>
               </div>
           </td>`);
+          row.append(`<td><a data-id="${list.id}" type="button" class="btn bg-gradient-danger deleteItem"><i class="fas fa-trash"></i></a></td>`);
           row.append("</tr>");
          
           FilterTypeTableBody.append(row);
@@ -448,8 +450,90 @@ $(document).ready(function () {
         }
   
     })
+
+
+     // Delete Free Service Package Item
+     $("#tbfreepackageitem").on("click", ".deleteItem", function () {
+      var listItem = $(this).data('id');
+      console.log(listItem)
+      console.log(free_services)
+      console.log(itemsFreeService)
+
+      
+      let indexToRemove = free_services.findIndex(item => item.id == listItem);
+
+      if (indexToRemove != -1) {
+        free_services.splice(indexToRemove, 1);
+      }
+
   
-     
+
+       $(this).closest('tr').remove();
+
+        // Items Array
+        let indexToRemoveItems = itemsFreeService.findIndex(item => item.rowID.innerText == listItem);
+
+        if (indexToRemoveItems != -1) {
+          itemsFreeService.splice(indexToRemoveItems, 1);
+        }
+  
+    })
+
+      // Delete Fuel Type
+      $("#tbfueltype").on("click", ".deleteItem", function () {
+        var listItem = $(this).data('id');
+        // console.log(listItem)
+        // console.log(free_services)
+        // console.log(itemsFreeService)
+
+        
+        let indexToRemove = fuel_types.findIndex(item => item.id == listItem);
+
+        if (indexToRemove != -1) {
+          fuel_types.splice(indexToRemove, 1);
+        }
+
+    
+
+        $(this).closest('tr').remove();
+
+          // Items Array
+          let indexToRemoveItems = itemsFuelType.findIndex(item => item.rowID.innerText == listItem);
+
+          if (indexToRemoveItems != -1) {
+            itemsFuelType.splice(indexToRemoveItems, 1);
+          }
+    
+      })
+
+      // Delete Filter Type
+      $("#tbfiltertype").on("click", ".deleteItem", function () {
+        var listItem = $(this).data('id');
+        // console.log(listItem)
+        // console.log(free_services)
+        // console.log(itemsFreeService)
+
+        
+        let indexToRemove = filter_types.findIndex(item => item.id == listItem);
+
+        if (indexToRemove != -1) {
+          filter_types.splice(indexToRemove, 1);
+        }
+
+    
+
+        $(this).closest('tr').remove();
+
+          // Items Array
+          let indexToRemoveItems = itemsFilterType.findIndex(item => item.rowID.innerText == listItem);
+
+          if (indexToRemoveItems != -1) {
+            itemsFilterType.splice(indexToRemoveItems, 1);
+          }
+    
+      })
+  
+    
   
     
   

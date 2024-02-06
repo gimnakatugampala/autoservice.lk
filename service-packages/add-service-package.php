@@ -182,6 +182,7 @@
                     <tr>
                         <th>Fuel Type</th>
                         <th>Price (LKR)</th>
+                        <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody id="tbfueltype">
@@ -226,6 +227,7 @@
                     <tr>
                         <th>Filter Type</th>
                         <th>Price (LKR)</th>
+                        <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody id="tbfiltertype">
