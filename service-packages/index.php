@@ -1,5 +1,6 @@
 
 <?php include_once '../includes/header.php';?>
+<?php include_once '../api/servicepackages.php';?>
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -53,7 +54,7 @@
                   <tr>
                     <th>ID</th>
                     <th>Service Package</th>
-                    <th>Vehicle Type</th>
+                    <th>Vehicle Class</th>
                     <th>Created Date</th>
                     <th>Actions</th>
                     <th>Status</th>
@@ -61,16 +62,22 @@
                   </thead>
                   <tbody>
 
-                  <tr>
-                    <td>001</td>
-                    <td>Oil Change</td>
-                    <td>Car</td>
-                    <td>2024-1-10</td>
-                    <td>
-                    <a href="../service-packages/edit-service-package.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                  <?php foreach ($service_packages as $row) : ?>
+                    <tr>
+                      <td><?php echo  $row["code"]; ?></td>
+                      <td><?php echo  $row["package_name"]; ?></td>
+                      <td><?php echo  $row["vehicle_class_name"]; ?></td>
+                      <td><?php echo  $row["created_date"]; ?></td>
+                      <td>
+                      <a href="../service-packages/edit-service-package.php?code=<?php echo  $row["code"]; ?>" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
                     </td>
                     <td><input type="checkbox" name="my-checkbox" checked data-bootstrap-switch></td>
-                  </tr>
+                      
+                    </tr>
+
+                <?php endforeach; ?>
+
+           
                 
                   </tbody>
                 </table>
