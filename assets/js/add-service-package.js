@@ -67,7 +67,7 @@ $(document).ready(function () {
           var row = $("<tr>");
           row.append(`<td class="serviceID" style='display:none;'>${list.id}</td>`);
           row.append(`<td>${list.name}</td>`);
-          row.append(`<td><button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button></td>`);
+          row.append(`<td><a data-id="${list.id}" type="button" class="btn bg-gradient-danger deleteItem"><i class="fas fa-trash"></i></a></td>`);
           row.append("</tr>");
          
           ServicePackagetableBody.append(row);
@@ -305,7 +305,7 @@ $(document).ready(function () {
   
     });
 
-  
+  // Add Service Package
     $("#btn_add_service_package").click(function () {
 
       var dataServices = []
@@ -422,9 +422,34 @@ $(document).ready(function () {
 
     });
   
- 
-  
+    // Delete Service Package Item
+    $("#tbpackageitem").on("click", ".deleteItem", function () {
+      var listItem = $(this).data('id');
+      console.log(listItem)
+      console.log(services)
+      console.log(itemsService)
 
+      
+      let indexToRemove = services.findIndex(item => item.id == listItem);
+
+      if (indexToRemove != -1) {
+        services.splice(indexToRemove, 1);
+      }
+
+    
+
+      $(this).closest('tr').remove();
+
+        // // // Items Array
+        let indexToRemoveItems = itemsService.findIndex(item => item.rowID.innerText == listItem);
+
+        if (indexToRemoveItems != -1) {
+          itemsService.splice(indexToRemoveItems, 1);
+        }
+  
+    })
+  
+     
   
     
   
