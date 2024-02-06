@@ -412,12 +412,47 @@ $(document).ready(function () {
 
     }
 
-    // console.log(service_package_name)
-    // console.log(vehicleclass)    
-    // console.log(dataServices)
+    console.log(service_package_name)
+    console.log(vehicleclass)    
+    console.log(dataServices)
     console.log(dataFreeServices)
     console.log(dataFuelTypes)
     console.log(dataFilterTypes)
+
+    //  SAVE DATA
+    $.ajax({
+      type: "POST",
+      url: "../api/addservicepackage.php",
+      data: {
+      code:generateUUID(),
+      service_package_name,
+      vehicleclass,
+      services:JSON.stringify(dataServices),
+      free_services:JSON.stringify(dataFreeServices),
+      fuel_types:JSON.stringify(dataFuelTypes),
+      filter_types:JSON.stringify(dataFilterTypes)
+      },
+      success: function (response) {
+
+          // console.log(response)
+
+        if (response === "success") {
+
+          window.location.href = "../service-packages/";
+
+        }else {
+          Swal.fire({
+              icon: "error",
+              title: "Something Went Wrong",
+              text: "Please Try Again.",
+            });
+        }
+
+      },
+      error:function (error) {
+          console.log(error)
+      }
+  });
 
 
     
