@@ -64,7 +64,7 @@
                 <div class="form-group">
                 <label for="exampleInputEmail1">Purchase Date <span class="text-danger">*</span></label>
                     <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                        <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
+                        <input type="text" id="purchase-date" class="form-control datetimepicker-input" data-target="#reservationdate"/>
                         <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
@@ -76,12 +76,13 @@
                 <div class="col-md-12">
                 <div class="form-group">
                 <label for="exampleInputEmail1">Select Products <span class="text-danger">*</span></label>
-                        <select class="custom-select">
-                          <option>Car</option>
+                        <select id="cmbproducts" class="custom-select">
+                          <option value="" selected disabled>Please Select</option>
+                          <!-- <option>Car</option>
                           <option>Van</option>
                           <option>Bus</option>
                           <option>Lorry</option>
-                          <option>option 5</option>
+                          <option>option 5</option> -->
                         </select>
                       </div>
                 </div>
@@ -89,32 +90,34 @@
                 <div class="col-md-4">
                 <div class="form-group">
                 <label for="exampleInputEmail1">Paid Status <span class="text-danger">*</span></label>
-                        <select class="custom-select">
-                          <option>Car</option>
+                        <select id="cmbpaidstatus" class="custom-select">
+                        <option value="" selected disabled>Please Select</option>
+                          <!-- <option>Car</option>
                           <option>Van</option>
                           <option>Bus</option>
                           <option>Lorry</option>
-                          <option>option 5</option>
+                          <option>option 5</option> -->
                         </select>
                       </div>
                 </div>
 
                 <div class="col-md-4">
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Paid Amount</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="0.00">
+                    <label for="paid_amount">Paid Amount</label>
+                    <input type="text" class="form-control" id="paid_amount" placeholder="0.00">
                   </div>
                 </div>
 
                 <div class="col-md-4">
                 <div class="form-group">
                 <label for="exampleInputEmail1">Status <span class="text-danger">*</span></label>
-                        <select class="custom-select">
-                          <option>Car</option>
+                        <select id="cmbstatus" class="custom-select">
+                        <option value="" selected disabled>Please Select</option>
+                          <!-- <option>Car</option>
                           <option>Van</option>
                           <option>Bus</option>
                           <option>Lorry</option>
-                          <option>option 5</option>
+                          <option>option 5</option> -->
                         </select>
                       </div>
                 </div>
@@ -175,7 +178,7 @@
 
                 <div class="col-md-4">
                 <button type="button" class="btn bg-gradient-secondary">Cancel</button>
-                <button type="button" class="btn bg-gradient-primary">Submit</button>
+                <button id="btn_add_purchase" type="button" class="btn bg-gradient-primary">Submit</button>
                 </div>
 
               </div>
