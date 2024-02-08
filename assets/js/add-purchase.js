@@ -85,7 +85,7 @@ $(document).ready(function () {
           row.append(`<td><input value="${plist.buying_price}" type="text" class="form-control price"></td>`);
           row.append(`<td><input value="0" type="text" class="form-control discount"></td>`);
           row.append(`<td class="total"></td>`);
-          row.append(`<td><button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button></td>`);
+          row.append(`<td><button data-id="${plist.id}" type="button" class="btn bg-gradient-danger deleteProductItem"><i class="fas fa-trash"></i></button></td>`);
           tableBodyPO.append(row);
   
         //   // Add the new item to the items array
@@ -221,13 +221,16 @@ $(document).ready(function () {
             url: "../api/add-purchaseorder.php",
             data: {
                 pocode:generateUUID(),
+                picode:generateUUID(),
                 suppliers,
                 purchase_date,
                 paidstatus,
                 paid_amount:paid_amount == "" ? 0 : paid_amount,
                 subtotal:subtotal.textContent == "" ? 0 : subtotal.textContent,
                 vat:VAT.value == "" ? 0 : VAT.value,
-                status
+                status,
+                paymentmethod:paymentmethod,
+                products:JSON.stringify(data)
              
             },
             success: function (response) {
@@ -258,5 +261,32 @@ $(document).ready(function () {
 
              
          })
+
+         // Delete Filter Type
+      $("#tbpuchaseorder_products").on("click", ".deleteProductItem", function () {
+        var listItem = $(this).data('id');
+        // console.log(listItem)
+        // console.log(free_services)
+        // console.log(itemsFreeService)
+      
+        
+        let indexToRemove = selected_products.findIndex(item => item.id == listItem);
+
+        if (indexToRemove != -1) {
+          selected_products.splice(indexToRemove, 1);
+        }
+
+    
+
+        $(this).closest('tr').remove();
+
+          // Items Array
+          let indexToRemoveItems = items.findIndex(item => item.rowID.innerText == listItem);
+
+          if (indexToRemoveItems != -1) {
+            items.splice(indexToRemoveItems, 1);
+          }
+    
+      })
 
 })
