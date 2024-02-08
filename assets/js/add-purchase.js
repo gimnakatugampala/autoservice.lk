@@ -235,19 +235,19 @@ $(document).ready(function () {
             },
             success: function (response) {
     
-                console.log(response)
+                // console.log(response)
 
-            // if (response === "success") {
-            //     window.location.href = "../products/";
-            //     // console.log("Success")
+            if (response === "success") {
+                window.location.href = "../purchase-order//";
+                // console.log("Success")
     
-            // }else {
-            //     Swal.fire({
-            //         icon: "error",
-            //         title: "Please Try Again",
-            //         text: "Something Went Wrong",
-            //     });
-            // }
+            }else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Please Try Again",
+                    text: "Something Went Wrong",
+                });
+            }
 
             },
             error:function (error) {
