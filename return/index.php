@@ -1,5 +1,6 @@
 
 <?php include_once '../includes/header.php';?>
+<?php include_once '../api/purchaseorderreturn.php';?>
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -63,7 +64,41 @@
                   </thead>
                   <tbody>
 
-                  <tr>
+                  <?php foreach ($purchase_order_return as $row) : ?>
+                    <tr>
+                      <td><?php echo  $row["PORCODE"]; ?></td>
+                      <td><?php echo  $row["firstname"] . " ".$row["lastname"] ; ?></td>
+                      <td><?php echo  $row["PORCREATEDDATE"]; ?></td>
+
+                      <?php  if($row["status_id"] == "1") : ?>
+                      <td><span class="badge badge-primary">Pending</span></td>  
+                      <?php  elseif ($row["status_id"] == "2"): ?>  
+                      <td><span class="badge badge-danger">Canceled</span></td>  
+                      <?php  elseif ($row["status_id"] == "3"): ?>  
+                      <td><span class="badge badge-success">Completed</span></td>  
+                      <?php  endif; ?>
+
+                      <?php  if($row["paid_status_id"] == "1") : ?>
+                      <td><span class="badge badge-danger">Not Paid</span></td>  
+                      <?php  elseif ($row["paid_status_id"] == "2"): ?>  
+                      <td><span class="badge badge-warning">Advance</span></td>  
+                      <?php  elseif ($row["paid_status_id"] == "3"): ?>  
+                      <td><span class="badge badge-success">Paid</span></td>  
+                      <?php  endif; ?>
+
+                      <!-- <td><span class="badge badge-warning">Advance</span></td> -->
+                      <td><?php echo  $row["COMDATE"]; ?></td>
+                      <td><?php echo  $row["sub_total"]; ?></td>
+                      <td>
+                        <a href="../return/purchase-return-details.php?code=<?php echo  $row["PORCODE"]; ?>" type="button" class="btn bg-gradient-primary"><i class="fas fa-eye"></i></a>
+                        <a href="../return/edit-purchase-return.php?code=<?php echo  $row["PORCODE"]; ?>" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                    </td>
+                  </tr>
+
+                <?php endforeach; ?>
+
+
+                  <!-- <tr>
                     <td>001</td>
                     <td>Gimna Katugampala</td>
                     <td>2024-01-17</td>
@@ -75,7 +110,7 @@
                     <a href="../return/purchase-return-details.php" type="button" class="btn bg-gradient-primary"><i class="fas fa-eye"></i></a>
                     <a href="../return/edit-purchase-return.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
                     </td>
-                  </tr>
+                  </tr> -->
                 
                   </tbody>
                 </table>
