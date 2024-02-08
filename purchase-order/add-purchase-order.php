@@ -87,7 +87,7 @@
                       </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                 <div class="form-group">
                 <label for="exampleInputEmail1">Paid Status <span class="text-danger">*</span></label>
                         <select id="cmbpaidstatus" class="custom-select">
@@ -101,17 +101,31 @@
                       </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                 <div class="form-group">
                     <label for="paid_amount">Paid Amount</label>
                     <input type="text" class="form-control" id="paid_amount" placeholder="0.00">
                   </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                 <div class="form-group">
                 <label for="exampleInputEmail1">Status <span class="text-danger">*</span></label>
                         <select id="cmbstatus" class="custom-select">
+                        <option value="" selected disabled>Please Select</option>
+                          <!-- <option>Car</option>
+                          <option>Van</option>
+                          <option>Bus</option>
+                          <option>Lorry</option>
+                          <option>option 5</option> -->
+                        </select>
+                      </div>
+                </div>
+
+                <div class="col-md-3">
+                <div class="form-group">
+                <label for="exampleInputEmail1">Payment Method <span class="text-danger">*</span></label>
+                        <select id="cmbpaymentmethod" class="custom-select">
                         <option value="" selected disabled>Please Select</option>
                           <!-- <option>Car</option>
                           <option>Van</option>
@@ -134,15 +148,17 @@
                       <th></th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
+                  <tbody id="tbpuchaseorder_products">
+
+                    <!-- <tr>
                       <td>Oil Barrel</td>
                       <td><input type="text" class="form-control"></td>
                       <td><input type="text" class="form-control"></td>
                       <td><input type="text" class="form-control"></td>
                       <td>20.00</td>
                       <td><button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button></td>
-                    </tr>
+                    </tr> -->
+
                   </tbody>
                 </table>
                 </div>
@@ -155,19 +171,19 @@
                 <table class="table">
                   <tr>
                     <th style="width:50%">Sub Total:</th>
-                    <td>LKR 250.30</td>
+                    <td id="subtotal">0.00</td>
                   </tr>
                   <tr>
-                    <th>VAT (9.3%)</th>
-                    <td><input type="text" class="form-control w-50"></td>
+                    <th>VAT (%)</th>
+                    <td><input type="text" value="0" class="form-control w-50" id="vat"></td>
                   </tr>
-                  <tr>
+                  <tr style="display:none;">
                     <th>Paid Amount</th>
-                    <td>LKR 10.34</td>
+                    <td id="paid">0.00</td>
                   </tr>
                   <tr>
-                    <th>Total:</th>
-                    <td><u style="text-decoration-style: double;">LKR 265.24</u></td>
+                    <th>To Be Paid:</th>
+                    <td><u id="to_be_paid" style="text-decoration-style: double;">0.00</u></td>
                   </tr>
                 </table>
                 </div>
