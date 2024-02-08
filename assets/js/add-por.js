@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     var dropdownPO = document.getElementById("cmbproducts");
-    var tableBodyPO = $("#tbpuchaseorder_products");
+    var tableBodyPO = $("#tbpuchaseorder_return_products");
 
     const paidAmountInput = document.getElementById("paid_amount");
     const subtotal = document.getElementById("subtotal");
@@ -134,7 +134,7 @@ $(document).ready(function () {
       }
 
     // Add Purchase
-    $("#btn_add_purchase").click(function () {
+    $("#add_pruchase_order_return_btn").click(function () {
 
         var data = [];
        
@@ -144,6 +144,7 @@ $(document).ready(function () {
         var paid_amount = $("#paid_amount").val();
         var status = $("#cmbstatus").val();
         var paymentmethod = $("#cmbpaymentmethod").val();
+        var return_note = $("#return_note").val();
 
         console.log(suppliers)
         console.log(purchase_date)
@@ -213,15 +214,22 @@ $(document).ready(function () {
               text: "Please Select Payment Method",
             });
             return
+      }else if(return_note == ""){
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Please Enter A Return Note",
+          });
+          return
       }else{
 
            //  SAVE DATA
            $.ajax({
             type: "POST",
-            url: "../api/add-purchaseorder.php",
+            url: "../api/addpor.php",
             data: {
-                pocode:generateUUID(),
-                picode:generateUUID(),
+                porcode:generateUUID(),
+                pircode:generateUUID(),
                 suppliers,
                 purchase_date,
                 paidstatus,
@@ -235,10 +243,10 @@ $(document).ready(function () {
             },
             success: function (response) {
     
-                // console.log(response)
+                console.log(response)
 
             if (response === "success") {
-                window.location.href = "../purchase-order//";
+                window.location.href = "../return/";
                 // console.log("Success")
     
             }else {
@@ -257,13 +265,11 @@ $(document).ready(function () {
 
         }
 
-        
-
-             
+            
          })
 
          // Delete Filter Type
-      $("#tbpuchaseorder_products").on("click", ".deleteProductItem", function () {
+      $("#tbpuchaseorder_return_products").on("click", ".deleteProductItem", function () {
         var listItem = $(this).data('id');
         // console.log(listItem)
         // console.log(free_services)
@@ -286,10 +292,9 @@ $(document).ready(function () {
           if (indexToRemoveItems != -1) {
             items.splice(indexToRemoveItems, 1);
           }
-
-          calculateDisplay()
-          calculateTotal()
     
+          calculateTotal()
+          calculateDisplay()
       })
 
 })

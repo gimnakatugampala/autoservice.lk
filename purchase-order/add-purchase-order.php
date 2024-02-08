@@ -166,7 +166,7 @@
         
                 <div class="col-md-6"></div>
 
-                <div class="col-md-6">
+              <div class="col-md-6">
                 <div class="table-responsive">
                 <table class="table">
                   <tr>
@@ -226,6 +226,8 @@
 <!-- ./wrapper -->
 
 <?php include_once '../includes/footer.php';?>
+
+<script src="../assets/js/add-purchase.js"></script>
 
 </body>
 </html>
