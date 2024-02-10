@@ -44,24 +44,25 @@
             <div class="card">
               <div class="card-body">
 
-              <div class="row">
+             <div class="row">
 
-                <div class="col-md-6">
+             <div class="col-md-6">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Service Package Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Name">
+                          <label for="service_package_name">Service Package Name <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="service_package_name" placeholder="Name">
                       </div>
                 </div>
 
                 <div class="col-md-6">
                 <div class="form-group">
-                <label for="exampleInputEmail1">Select Vehicle Type <span class="text-danger">*</span></label>
-                        <select class="custom-select">
-                          <option>Car</option>
+                <label for="exampleInputEmail1">Select Vehicle Class <span class="text-danger">*</span></label>
+                        <select id="cmbvehicleclass" class="custom-select">
+                        <option disabled selected value="">Please Select</option>
+                          <!-- <option>Car</option>
                           <option>Van</option>
                           <option>Bus</option>
                           <option>Lorry</option>
-                          <option>option 5</option>
+                          <option>option 5</option> -->
                         </select>
                       </div>
                 </div>
@@ -69,12 +70,12 @@
                 <div class="col-md-6">
                 <div class="form-group">
                 <label for="exampleInputEmail1">Select Package Items <span class="text-danger">*</span></label>
-                        <select class="custom-select">
-                          <option>Car</option>
-                          <option>Van</option>
+                        <select id="cmbpackageitems" class="custom-select">
+                          <option disabled selected value="">Please Select</option>
+                          <!-- <option>Van</option>
                           <option>Bus</option>
                           <option>Lorry</option>
-                          <option>option 5</option>
+                          <option>option 5</option> -->
                         </select>
                       </div>
                 </div>
@@ -82,12 +83,13 @@
                 <div class="col-md-6">
                 <div class="form-group">
                 <label for="exampleInputEmail1">Select Free Package Items </label>
-                        <select class="custom-select">
-                          <option>Car</option>
+                        <select id="cmbpackageitems2" class="custom-select">
+                        <option disabled selected value="">Please Select</option>
+                          <!-- <option>Car</option>
                           <option>Van</option>
                           <option>Bus</option>
                           <option>Lorry</option>
-                          <option>option 5</option>
+                          <option>option 5</option> -->
                         </select>
                       </div>
                 </div>
@@ -100,9 +102,9 @@
                         <th>Action</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tbpackageitem">
 
-                    <tr>
+                    <!-- <tr>
                         <td>Engine Oil Change</td>
                         <td><button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button></td>
                     </tr>
@@ -113,7 +115,7 @@
                     <tr>
                         <td>Under Wash</td>
                         <td><button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button></td>
-                    </tr>
+                    </tr> -->
                     
                     </tbody>
                 </table>
@@ -127,9 +129,9 @@
                         <th>Action</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tbfreepackageitem">
 
-                    <tr>
+                    <!-- <tr>
                         <td>Diagnostic Scan Report</td>
                         <td><button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button></td>
                     </tr>
@@ -140,7 +142,7 @@
                     <tr>
                         <td>Free Body</td>
                         <td><button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button></td>
-                    </tr>
+                    </tr> -->
                     
                     </tbody>
                 </table>
@@ -149,12 +151,13 @@
                 <div class="col-md-6">
                 <div class="form-group">
                 <label for="exampleInputEmail1">Select Fuel Type <span class="text-danger">*</span></label>
-                        <select class="custom-select">
-                          <option>Car</option>
+                        <select id="cmbfueltype" class="custom-select">
+                        <option disabled selected value="">Please Select</option>
+                          <!-- <option>Car</option>
                           <option>Van</option>
                           <option>Bus</option>
                           <option>Lorry</option>
-                          <option>option 5</option>
+                          <option>option 5</option> -->
                         </select>
                       </div>
                 </div>
@@ -162,12 +165,13 @@
                 <div class="col-md-6">
                 <div class="form-group">
                 <label for="exampleInputEmail1">Select Filter Type <span class="text-danger">*</span></label>
-                        <select class="custom-select">
-                          <option>Car</option>
+                        <select id="cmbfiltertype" class="custom-select">
+                        <option disabled selected value="">Please Select</option>
+                          <!-- <option>Car</option>
                           <option>Van</option>
                           <option>Bus</option>
                           <option>Lorry</option>
-                          <option>option 5</option>
+                          <option>option 5</option> -->
                         </select>
                       </div>
                 </div>
@@ -178,10 +182,11 @@
                     <tr>
                         <th>Fuel Type</th>
                         <th>Price (LKR)</th>
+                        <th>Actions</th>
                     </tr>
                     </thead>
-                    <tbody>
-
+                    <tbody id="tbfueltype">
+<!-- 
                     <tr>
                         <td>Valvoline 0W-20</td>
                         <td class="w-50">
@@ -196,6 +201,7 @@
                             </div>
                         </td>
                     </tr>
+
                     <tr>
                         <td>Castrol/Valvoline 10W-30</td>
                         <td class="w-50">
@@ -209,7 +215,7 @@
                             </div>
                             </div>
                         </td>
-                    </tr>
+                    </tr> -->
                     
                     </tbody>
                 </table>
@@ -221,10 +227,11 @@
                     <tr>
                         <th>Filter Type</th>
                         <th>Price (LKR)</th>
+                        <th>Actions</th>
                     </tr>
                     </thead>
-                    <tbody>
-
+                    <tbody id="tbfiltertype">
+<!-- 
                     <tr>
                         <td>Valvoline 0W-20</td>
                         <td class="w-50">
@@ -252,11 +259,12 @@
                             </div>
                             </div>
                         </td>
-                    </tr>
+                    </tr> -->
                     
                     </tbody>
                 </table>
                 </div>
+                   
                    
 
         
@@ -294,6 +302,11 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="../plugins/jquery/jquery.min.js"></script>
+<script src="../assets/js/edit-service-package.js"></script>
+
 
 <?php include_once '../includes/footer.php';?>
 
