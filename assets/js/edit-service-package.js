@@ -586,111 +586,127 @@ $(document).ready(function () {
             console.log(data);
   
             loadData = data;
+
+           
+            // Service Packages
+            data.service_packages_items.forEach(function (list) {
+              var row = $("<tr>");
+              row.append(`<td class="serviceID" style='display:none;'>${list.id}</td>`);
+              row.append(`<td>${list.name}</td>`);
+              row.append(`<td><a data-id="${list.id}" type="button" class="btn bg-gradient-danger deleteItem"><i class="fas fa-trash"></i></a></td>`);
+              row.append("</tr>");
+             
+              ServicePackagetableBody.append(row);
+      
+              // Add the new item to the items array
+              var item = {
+                rowID: row.find(".serviceID")[0]
+              };
+              itemsService.push(item);
+      
+            
+      
+             
+            });
+
+            // Free Service Packages
+            data.free_service_packages_items.forEach(function (list) {
+              var row = $("<tr>");
+              row.append(`<td class="serviceFreeID" style='display:none;'>${list.id}</td>`);
+              row.append(`<td>${list.name}</td>`);
+              row.append(`<td><a a data-id="${list.id}" type="button" class="btn bg-gradient-danger deleteItem"><i class="fas fa-trash"></i></a></td>`);
+              row.append("</tr>");
+             
+              FreeServicePackagetableBody.append(row);
+      
+              // Add the new item to the items array
+              var item = {
+                rowID: row.find(".serviceFreeID")[0],
+              };
+              itemsFreeService.push(item);
+      
+            
+      
+             
+            });
+
+            // Fuel Types
+            data.fuel_types.forEach(function (list) {
+              var row = $("<tr>");
+              row.append(`<td class="fuelTypeID" style='display:none;'>${list.id}</td>`);
+              row.append(`<td>${list.name}</td>`);
+              row.append(`<td class="w-50">
+              <div class="input-group">
+                  <div class="input-group-prepend">
+                      <span class="input-group-text">LKR</span>
+                  </div>
+                  <input value="${list.price}" type="text" class="form-control fuel-type-price">
+                  <div class="input-group-append">
+                      <span class="input-group-text">.00</span>
+                  </div>
+                  </div>
+              </td>`);
+              row.append(`<td><a data-id="${list.id}" type="button" class="btn bg-gradient-danger deleteItem"><i class="fas fa-trash"></i></a></td>`);
+              row.append("</tr>");
+             
+              FuelTypeTableBody.append(row);
+      
+              // Add the new item to the items array
+              var item = {
+                rowID: row.find(".fuelTypeID")[0],
+                FuelPrice: row.find(".fuel-type-price")[0]
+              };
+              itemsFuelType.push(item);
+      
+              // item.quantityInput.addEventListener("input", calculateTotal);
+              // item.priceInput.addEventListener("input", calculateTotal);
+              // item.discountInput.addEventListener("input", calculateTotal);
+      
+             
+            });
+
+            // Filter Types
+            data.filter_types.forEach(function (list) {
+              var row = $("<tr>");
+              row.append(`<td class="filterTypeId" style='display:none;'>${list.id}</td>`);
+              row.append(`<td>${list.name}</td>`);
+              row.append(`<td class="w-50">
+              <div class="input-group">
+                  <div class="input-group-prepend">
+                      <span class="input-group-text">LKR</span>
+                  </div>
+                  <input value="${list.price}" type="text" class="form-control filter-type-price">
+                  <div class="input-group-append">
+                      <span class="input-group-text">.00</span>
+                  </div>
+                  </div>
+              </td>`);
+              row.append(`<td><a data-id="${list.id}" type="button" class="btn bg-gradient-danger deleteItem"><i class="fas fa-trash"></i></a></td>`);
+              row.append("</tr>");
+             
+              FilterTypeTableBody.append(row);
+      
+              // Add the new item to the items array
+              var item = {
+                rowID: row.find(".filterTypeId")[0],
+                FilterTypePrice: row.find(".filter-type-price")[0]
+              };
+              itemsFilterType.push(item);
+      
+              // item.quantityInput.addEventListener("input", calculateTotal);
+              // item.priceInput.addEventListener("input", calculateTotal);
+              // item.discountInput.addEventListener("input", calculateTotal);
+      
+             
+            });
   
             let ServicePackageNameElement = document.getElementById("service_package_name");
             let VehicleClassElement = document.getElementById("cmbvehicleclass");
-          //   let salesDateElement = document.getElementById("salesdate");
-          //   let paidStatusElement = document.getElementById("paidStatus");
-          //   let paidAmountElement = document.getElementById("paidamountVal");
-          //   let statusElement = document.getElementById("progressstatus");
-  
-          //   var GrandTotalElement = document.getElementById("grandTotal");
-          //   var PaidAElement = document.getElementById("paid");
-          //   var DiscountElement = document.getElementById("dis");
-          //   var ToBePaidElement = document.getElementById("topaid");
+        
 
           ServicePackageNameElement.value = data.data_content[0].package_name
           VehicleClassElement.value = data.data_content[0].vehicle_type_id
   
-            
-  
-          //   // Customer
-          //   for (var i = 0; i < cusSelectElement.options.length; i++) {
-          //     if (cusSelectElement.options[i].value === data.SalesOrder[0].cusid) {
-          //       cusSelectElement.options[i].selected = true;
-          //         break;
-          //     }
-          //   }
-  
-          //     // Sales date
-          //     salesDateElement.value = data.SalesOrder[0].salesorderdate.split(' ')[0]
-  
-          //     // Paid Status
-          //     for (var i = 0; i < paidStatusElement.options.length; i++) {
-          //       if (paidStatusElement.options[i].value === data.SalesOrder[0].paidstatusid) {
-          //         paidStatusElement.options[i].selected = true;
-          //           break;
-          //     }
-          //   }
-  
-  
-          //   // Paid Amount
-          //   paidAmountElement.value = data.SalesOrder[0].paidamount
-  
-  
-          //   // Status
-          //   for (var i = 0; i < statusElement.options.length; i++) {
-          //     if (statusElement.options[i].value === data.SalesOrder[0].sid) {
-          //       statusElement.options[i].selected = true;
-          //         break;
-          //   }
-          // }
-  
-  
-          // // Grand Total
-          // GrandTotalElement.textContent = `${data.SalesOrder[0].grandtotal}.00`
-  
-          // // grandt = data.SalesOrder[0].grandtotal
-  
-          // // Paid Amount
-          // PaidAElement.textContent = `${data.SalesOrder[0].paidamount}.00`
-  
-          // // Discount
-          // DiscountElement.textContent = `${data.SalesOrder[0].discount}.00`
-  
-          // // To be Paid
-          // ToBePaidElement.textContent = `${parseFloat(data.SalesOrder[0].grandtotal) - (parseFloat(data.SalesOrder[0].paidamount))}.00`
-              
-          // // Get The Product Order Item List
-          // data.Productlists.forEach(function (plist) {
-          //   var row = $("<tr>");
-          //   row.append("<td class='rowID' style='display:none;'>" + plist.id + "</td>");
-          //   row.append("<td>" + plist.productname + "</td>");
-          //   row.append(
-          //     "<td><input type='number' class='form-control quantity'  value=" +
-          //       plist.QTY +
-          //       " name='qty'></td>"
-          //   );
-          //   row.append(
-          //     "<td><input type='number' class='form-control price' value=" +
-          //       plist.price +
-          //       " name='pprice'></td>"
-          //   );
-          //   row.append(
-          //     "<td><input type='number' class='form-control discount' value="+
-          //     plist.discount +" name='discountp'></td>"
-          //   );
-          //   row.append(`<td class='text-end total'>${parseFloat(plist.price) * parseFloat(plist.QTY) - parseFloat(plist.discount)}</td>`);
-          //   row.append(
-          //     "<td><a data-id="+plist.id+" class='deleteSaleProduct'><img src='../assets/img/icons/delete.svg' alt='svg'></a></td>"
-          //   );
-          //   tableBody.append(row);
-  
-          //   var item = {
-          //     rowID: row.find(".rowID")[0],
-          //     quantityInput: row.find(".quantity")[0],
-          //     priceInput: row.find(".price")[0],
-          //     discountInput: row.find(".discount")[0],
-          //     totalCell: row.find(".total")[0],
-          //   };
-  
-          //   items.push(item);
-    
-          //   item.quantityInput.addEventListener("input", calculateTotal);
-          //   item.priceInput.addEventListener("input", calculateTotal);
-          //   item.discountInput.addEventListener("input", calculateTotal);
-    
-          // });
   
           },
           error: function () {},
