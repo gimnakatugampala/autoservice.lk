@@ -379,7 +379,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="../return/purchase-return.php" class="nav-link">
+                <a href="../return/" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Purchase Return List</p>
                 </a>

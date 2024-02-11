@@ -302,6 +302,10 @@
 </div>
 <!-- ./wrapper -->
 
+<!-- jQuery -->
+<script src="../plugins/jquery/jquery.min.js"></script>
+<script src="../assets/js/add-service-package.js"></script>
+
 <?php include_once '../includes/footer.php';?>
 
 </body>

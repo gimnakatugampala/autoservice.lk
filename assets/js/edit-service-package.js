@@ -11,6 +11,8 @@ $(document).ready(function () {
     var dropdownFilter = document.getElementById("cmbfiltertype");
     var FilterTypeTableBody = $("#tbfiltertype");
 
+    var loadData;
+
 
      // Get The Code From URL
      const urlParams = new URLSearchParams(window.location.search);
@@ -29,13 +31,15 @@ $(document).ready(function () {
     var fuel_types = []
     var filter_types = []
 
+   
+
 
   
     //  Package Select - Service Package Items
     dropdown.addEventListener("change", function () {
       
       var selectID = dropdown.value;
-      console.log(selectID)
+      // console.log(selectID)
       $.ajax({
         type: "POST",
         url: "../api/checkservicepackageitem.php",
@@ -58,6 +62,7 @@ $(document).ready(function () {
               return
   
             }else{
+        
               populateTableServicePackageItem(data);
               services.push(data[0])
               return
@@ -315,7 +320,7 @@ $(document).ready(function () {
     });
 
   // Add Service Package
-    $("#btn_add_service_package").click(function () {
+    $("#update_service_package_btn").click(function () {
 
       var dataServices = []
       var dataFreeServices = []
@@ -326,10 +331,7 @@ $(document).ready(function () {
       var vehicleclass = $("#cmbvehicleclass").val();
 
   
-      // console.log(services)
-      // console.log(free_services)
-      // console.log(fuel_types)
-      // console.log(filter_types)
+
       
       // Service Packages
       $(".serviceID").each(function () {
@@ -426,12 +428,25 @@ $(document).ready(function () {
     console.log(dataFuelTypes)
     console.log(dataFilterTypes)
 
+    console.log("-------------------------")
+    
+    console.log(services)
+    console.log(free_services)
+    console.log(fuel_types)
+    console.log(filter_types)
+    console.log("-------------------------")
+    console.log(itemsService)
+    console.log(itemsFreeService)
+    console.log(itemsFuelType)
+    console.log(itemsFilterType)
+    console.log(loadData)
+
     //  SAVE DATA
     $.ajax({
       type: "POST",
-      url: "../api/addservicepackage.php",
+      url: "../api/editservicepackage.php",
       data: {
-      code:generateUUID(),
+      service_package_id:loadData.id.id,
       service_package_name,
       vehicleclass,
       services:JSON.stringify(dataServices),
@@ -441,7 +456,7 @@ $(document).ready(function () {
       },
       success: function (response) {
 
-          // console.log(response)
+          console.log(response)
 
         if (response === "success") {
 
@@ -587,27 +602,47 @@ $(document).ready(function () {
   
             loadData = data;
 
+
+           
+            data.service_packages_items.forEach(item => {
+              services.push(item);
+          });
+
+            data.free_service_packages_items.forEach(item => {
+              free_services.push(item);
+          });
+
+          data.fuel_types.forEach(item => {
+            fuel_types.push(item);
+        });
+
+        data.filter_types.forEach(item => {
+          filter_types.push(item);
+      });
            
             // Service Packages
-            data.service_packages_items.forEach(function (list) {
-              var row = $("<tr>");
-              row.append(`<td class="serviceID" style='display:none;'>${list.id}</td>`);
-              row.append(`<td>${list.name}</td>`);
-              row.append(`<td><a data-id="${list.id}" type="button" class="btn bg-gradient-danger deleteItem"><i class="fas fa-trash"></i></a></td>`);
-              row.append("</tr>");
-             
-              ServicePackagetableBody.append(row);
-      
-              // Add the new item to the items array
-              var item = {
-                rowID: row.find(".serviceID")[0]
-              };
-              itemsService.push(item);
-      
+              data.service_packages_items.forEach(function (list) {
+                var row = $("<tr>");
+                row.append(`<td class="serviceID" style='display:none;'>${list.id}</td>`);
+                row.append(`<td>${list.name}</td>`);
+                row.append(`<td><a data-id="${list.id}" type="button" class="btn bg-gradient-danger deleteItem"><i class="fas fa-trash"></i></a></td>`);
+                row.append("</tr>");
+               
+                ServicePackagetableBody.append(row);
+        
+                // Add the new item to the items array
+                var item = {
+                  rowID: row.find(".serviceID")[0]
+                };
+                itemsService.push(item);
+  
             
-      
-             
-            });
+        
+              
+        
+               
+              });
+            
 
             // Free Service Packages
             data.free_service_packages_items.forEach(function (list) {
@@ -713,7 +748,9 @@ $(document).ready(function () {
         });
   
       }
-    
+
+
+      
   
   
   });
