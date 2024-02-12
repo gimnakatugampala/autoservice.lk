@@ -225,9 +225,12 @@
 </div>
 <!-- ./wrapper -->
 
+<!-- jQuery -->
+<script src="../plugins/jquery/jquery.min.js"></script>
+<script src="../assets/js/add-purchase.js"></script>
+
 <?php include_once '../includes/footer.php';?>
 
-<script src="../assets/js/add-purchase.js"></script>
 
 </body>
 </html>
