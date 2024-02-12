@@ -1,11 +1,3 @@
-/**
- * AdminLTE Demo Menu
- * ------------------
- * You should not use this file in production.
- * This file is for demo purposes only.
- */
-
-/* eslint-disable camelcase */
 
 (function ($) {
   'use strict'
@@ -58,7 +50,7 @@
   // Checkboxes
 
   $container.append(
-    '<h5>Customize AdminLTE</h5><hr class="mb-2"/>'
+    '<h5>autoservice.lk</h5><hr class="mb-2"/>'
   )
 
   var $dark_mode_checkbox = $('<input />', {

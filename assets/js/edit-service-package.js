@@ -31,9 +31,7 @@ $(document).ready(function () {
     var fuel_types = []
     var filter_types = []
 
-   
-
-
+  
   
     //  Package Select - Service Package Items
     dropdown.addEventListener("change", function () {
