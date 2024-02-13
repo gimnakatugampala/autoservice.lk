@@ -80,25 +80,25 @@ $(document).ready(function () {
         
                     console.log(response)
 
-                //   if (response === "success") {
+                  if (response === "success") {
 
-                //     window.location.href = "../vehicles/";
+                    window.location.href = "../vehicles/";
         
-                //   }else if(response == "Vehicle Exist"){
+                  }else if(response == "Vehicle Exist"){
 
-                //     Swal.fire({
-                //         icon: "error",
-                //         title: "Error",
-                //         text: "Vehicle Already Exist.",
-                //       });
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "Vehicle Already Exist.",
+                      });
 
-                //   }else {
-                //     Swal.fire({
-                //         icon: "error",
-                //         title: "Something Went Wrong",
-                //         text: "Please Try Again.",
-                //       });
-                //   }
+                  }else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Something Went Wrong",
+                        text: "Please Try Again.",
+                      });
+                  }
 
                 },
                 error:function (error) {
