@@ -231,6 +231,7 @@ $(document).ready(function () {
             url: "../api/edit-purchaseorder.php",
             data: {
                 poID:loadData.id.id,
+                picode:generateUUID(),
                 suppliers,
                 purchase_date,
                 paidstatus,
@@ -246,17 +247,17 @@ $(document).ready(function () {
     
                 console.log(response)
 
-            // if (response === "success") {
-            //     window.location.href = "../purchase-order/";
-            //     // console.log("Success")
+            if (response === "success") {
+                window.location.href = "../purchase-order/";
+                // console.log("Success")
     
-            // }else {
-            //     Swal.fire({
-            //         icon: "error",
-            //         title: "Please Try Again",
-            //         text: "Something Went Wrong",
-            //     });
-            // }
+            }else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Please Try Again",
+                    text: "Something Went Wrong",
+                });
+            }
 
             },
             error:function (error) {
