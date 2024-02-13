@@ -2,7 +2,10 @@
 
 
 require_once '../includes/db_config.php';
-session_start();
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
  $stationID = $_SESSION['station_id'];
  $userID = $_SESSION['user_id'];
