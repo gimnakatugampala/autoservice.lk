@@ -6,7 +6,7 @@ $(document).ready(function () {
         var vehicle_number = $("#vehicle_number").val();
         var engine_number = $("#engine_number").val();
         var cmbvehicleclass = $("#cmbvehicleclass").val();
-        var vehicle_img = $("#vehicle_img").val();
+        var vehicle_img = $("#vehicle_img")[0];
         var cmbvehiclemanufacturer = $("#cmbvehiclemanufacturer").val();
         var cmbvehiclecountry = $("#cmbvehiclecountry").val();
         var cmbvehiclemodel = $("#cmbvehiclemodel").val();
@@ -15,6 +15,8 @@ $(document).ready(function () {
         var cmbvehicleyear = $("#cmbvehicleyear").val();
         var chassis_number = $("#chassis_number").val();
         var vehicle_color = $("#vehicle_color").val();
+
+       
 
         if(vehicle_number == ""){
             Swal.fire({
@@ -46,48 +48,57 @@ $(document).ready(function () {
             return
         }else{
 
+            let form_data = new FormData();
+            let img = $("#vehicle_img")[0].files;
+
+             // -------------------- DATA -------------------
+        form_data.append("code",generateUUID())
+        form_data.append("vehicle_number",`${vehicle_number}`)
+        form_data.append("engine_number",`${engine_number}`)
+        form_data.append("vehicleclass",`${cmbvehicleclass}`)
+        form_data.append("vehiclemanufacturer",`${cmbvehiclemanufacturer}`)
+        form_data.append("vehiclecountry",`${cmbvehiclecountry}`)
+        form_data.append("vehiclemodel",`${cmbvehiclemodel}`)
+        form_data.append("vehiclefueltype",`${cmbvehiclefueltype}`)
+        form_data.append("vehicleowner",`${cmbvehicleowner}`)
+        form_data.append("vehicleyear",`${cmbvehicleyear}`)
+        form_data.append("vehicleyear",`${cmbvehicleyear}`)
+        form_data.append("chassis_number",`${chassis_number}`)
+        form_data.append("vehicle_color",`${vehicle_color}`)
+        form_data.append("my_image",vehicle_img.files.length == 0 ? null : img[0])
+        // -------------------- DATA -------------------
+
 
             //  SAVE DATA
             $.ajax({
                 type: "POST",
                 url: "../api/add-vehicle.php",
-                data: {
-                code:generateUUID(),
-                vehicle_number:vehicle_number,
-                engine_number:engine_number,
-                vehicleclass:cmbvehicleclass,
-                vehiclemanufacturer:cmbvehiclemanufacturer,
-                vehiclecountry:cmbvehiclecountry,
-                vehiclemodel:cmbvehiclemodel,
-                vehiclefueltype:cmbvehiclefueltype,
-                vehicleowner:cmbvehicleowner,
-                vehicleyear:cmbvehicleyear,
-                chassis_number:chassis_number,
-                vehicle_color:vehicle_color
-                },
+                data:form_data,
+                contentType:false,
+                processData:false,
                 success: function (response) {
         
                     console.log(response)
 
-                  if (response === "success") {
+                //   if (response === "success") {
 
-                    window.location.href = "../vehicles/";
+                //     window.location.href = "../vehicles/";
         
-                  }else if(response == "Vehicle Exist"){
+                //   }else if(response == "Vehicle Exist"){
 
-                    Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: "Vehicle Already Exist.",
-                      });
+                //     Swal.fire({
+                //         icon: "error",
+                //         title: "Error",
+                //         text: "Vehicle Already Exist.",
+                //       });
 
-                  }else {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Something Went Wrong",
-                        text: "Please Try Again.",
-                      });
-                  }
+                //   }else {
+                //     Swal.fire({
+                //         icon: "error",
+                //         title: "Something Went Wrong",
+                //         text: "Please Try Again.",
+                //       });
+                //   }
 
                 },
                 error:function (error) {
