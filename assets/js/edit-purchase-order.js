@@ -144,126 +144,127 @@ $(document).ready(function () {
     // Add Purchase
     $("#btn_update_purchase_order").click(function () {
 
-    //     var data = [];
+        var data = [];
        
-    //     var suppliers = $("#cmbsuppliers").val();
-    //     var purchase_date = $("#purchase-date").val();
-    //     var paidstatus = $("#cmbpaidstatus").val();
-    //     var paid_amount = $("#paid_amount").val();
-    //     var status = $("#cmbstatus").val();
-    //     var paymentmethod = $("#cmbpaymentmethod").val();
+        var suppliers = $("#cmbsuppliers").val();
+        var purchase_date = $("#purchase-date").val();
+        var paidstatus = $("#cmbpaidstatus").val();
+        var paid_amount = $("#paid_amount").val();
+        var status = $("#cmbstatus").val();
+        var paymentmethod = $("#cmbpaymentmethod").val();
 
-    //     console.log(suppliers)
-    //     console.log(purchase_date)
-    //     console.log(paidstatus)
-    //     console.log(paid_amount)
-    //     console.log(status)
-    //     console.log(items)
-    //     console.log(selected_products)
-    //     console.log(subtotal.textContent)
+        console.log(suppliers)
+        console.log(purchase_date)
+        console.log(paidstatus)
+        console.log(paid_amount)
+        console.log(status)
+        console.log(items)
+        console.log(selected_products)
+        console.log(subtotal.textContent)
 
-    //     $(".quantity").each(function () {
-    //         var product = $(this).closest("tr").find("td:nth-child(1)").text();
-    //         var quantity = $(this).closest("tr").find(".quantity").val();
-    //         var price = $(this).closest("tr").find(".price").val();
-    //         var discount = $(this).closest("tr").find(".discount").val();
+        $(".quantity").each(function () {
+            var product = $(this).closest("tr").find("td:nth-child(1)").text();
+            var quantity = $(this).closest("tr").find(".quantity").val();
+            var price = $(this).closest("tr").find(".price").val();
+            var discount = $(this).closest("tr").find(".discount").val();
       
-    //         if(paid_amount == ""|| isNaN(paid_amount)){
-    //             paid_amount = 0
-    //         }
+            if(paid_amount == ""|| isNaN(paid_amount)){
+                paid_amount = 0
+            }
       
-    //         console.log(paid_amount)
+            console.log(paid_amount)
       
-    //         data.push({
-    //           product: product,
-    //           quantity: quantity,
-    //           price: price,
-    //           discount: discount,
-    //         });
-    //       });
+            data.push({
+              product: product,
+              quantity: quantity,
+              price: price,
+              discount: discount,
+            });
+          });
         
 
-    //       console.log(data)
+          console.log(data)
    
 
-    //     if(suppliers == null){
-    //         Swal.fire({
-    //             icon: "error",
-    //             title: "Error",
-    //             text: "Please Select Supplier",
-    //           });
-    //           return
-    //     }else if(purchase_date == ""){
-    //         Swal.fire({
-    //             icon: "error",
-    //             title: "Error",
-    //             text: "Please Select Purchase Date",
-    //           });
-    //           return
-    //     }else if(paidstatus == ""){
-    //         Swal.fire({
-    //             icon: "error",
-    //             title: "Error",
-    //             text: "Please Select Paid Status",
-    //           });
-    //           return
-    //     }else if(status == null){
-    //         Swal.fire({
-    //             icon: "error",
-    //             title: "Error",
-    //             text: "Please Select Status",
-    //           });
-    //           return
-    //     }else if(paymentmethod == "" || paymentmethod == null){
-    //       Swal.fire({
-    //           icon: "error",
-    //           title: "Error",
-    //           text: "Please Select Payment Method",
-    //         });
-    //         return
-    //   }else{
+        if(suppliers == null){
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Please Select Supplier",
+              });
+              return
+        }else if(purchase_date == ""){
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Please Select Purchase Date",
+              });
+              return
+        }else if(paidstatus == ""){
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Please Select Paid Status",
+              });
+              return
+        }else if(status == null){
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Please Select Status",
+              });
+              return
+        }else if(paymentmethod == "" || paymentmethod == null){
+          Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "Please Select Payment Method",
+            });
+            return
+      }else{
 
-    //        //  SAVE DATA
-    //        $.ajax({
-    //         type: "POST",
-    //         url: "../api/add-purchaseorder.php",
-    //         data: {
-    //             pocode:generateUUID(),
-    //             picode:generateUUID(),
-    //             suppliers,
-    //             purchase_date,
-    //             paidstatus,
-    //             paid_amount:paid_amount == "" ? 0 : paid_amount,
-    //             subtotal:subtotal.textContent == "" ? 0 : subtotal.textContent,
-    //             vat:VAT.value == "" ? 0 : VAT.value,
-    //             status,
-    //             paymentmethod:paymentmethod,
-    //             products:JSON.stringify(data)
+        console.log(loadData)
+
+           //  SAVE DATA
+           $.ajax({
+            type: "POST",
+            url: "../api/edit-purchaseorder.php",
+            data: {
+                poID:loadData.id.id,
+                suppliers,
+                purchase_date,
+                paidstatus,
+                paid_amount:paid_amount == "" ? 0 : paid_amount,
+                subtotal:subtotal.textContent == "" ? 0 : subtotal.textContent,
+                vat:VAT.value == "" ? 0 : VAT.value,
+                status,
+                paymentmethod:paymentmethod,
+                products:JSON.stringify(data)
              
-    //         },
-    //         success: function (response) {
+            },
+            success: function (response) {
     
-    //             // console.log(response)
+                console.log(response)
 
-    //         if (response === "success") {
-    //             window.location.href = "../purchase-order//";
-    //             // console.log("Success")
+            // if (response === "success") {
+            //     window.location.href = "../purchase-order/";
+            //     // console.log("Success")
     
-    //         }else {
-    //             Swal.fire({
-    //                 icon: "error",
-    //                 title: "Please Try Again",
-    //                 text: "Something Went Wrong",
-    //             });
-    //         }
+            // }else {
+            //     Swal.fire({
+            //         icon: "error",
+            //         title: "Please Try Again",
+            //         text: "Something Went Wrong",
+            //     });
+            // }
 
-    //         },
-    //         error:function (error) {
-    //             console.log(error)
-    //         }
-    //     });
+            },
+            error:function (error) {
+                console.log(error)
+            }
+        });
 
-    //     }
+        }
 
         
 
@@ -310,7 +311,11 @@ $(document).ready(function () {
           success: function (data) {
             console.log(data);
   
-        //     loadData = data;
+            loadData = data;
+
+            data.products.forEach(item => {
+                selected_products.push(item);
+            });
            
             // Products
             data.products.forEach(function (plist) {
@@ -354,7 +359,7 @@ $(document).ready(function () {
                 const purchase_date = document.getElementById("purchase-date");
                 const paidstatus = document.getElementById("cmbpaidstatus");
                 const status = document.getElementById("cmbstatus");
-                // const paymentmethod = document.getElementById("cmbpaymentmethod");
+                const paymentmethod = document.getElementById("cmbpaymentmethod");
 
 
 
@@ -366,9 +371,10 @@ $(document).ready(function () {
 
                 subtotalElement.textContent = data.data_content[0].sub_total
                 VATElement.value = data.data_content[0].vat_amount
+                paymentmethod.value = data.data_content[0].payment_method_id
                 
 
-
+                
 
                 calculateDisplay()
          
