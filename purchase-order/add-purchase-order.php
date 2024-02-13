@@ -228,7 +228,7 @@
 <!-- jQuery -->
 <script src="../plugins/jquery/jquery.min.js"></script>
 
-<?php include_once '../includes/footer.php';?>
+<?php include_once '../includes/footer.php';?> -->
 
 <script src="../assets/js/add-purchase.js"></script>
 

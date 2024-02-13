@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     var dropdownPO = document.getElementById("cmbproducts");
-    var tableBodyPO = $("#tb_update_puchaseorder_products");
+    var tableBodyPOEdit = $("#tb_update_puchaseorder_products");
 
     const paidAmountInput = document.getElementById("paid_amount");
     const subtotal = document.getElementById("subtotal");
@@ -94,7 +94,7 @@ $(document).ready(function () {
           row.append(`<td><input value="0" type="text" class="form-control discount"></td>`);
           row.append(`<td class="total"></td>`);
           row.append(`<td><button data-id="${plist.id}" type="button" class="btn bg-gradient-danger deleteProductItem"><i class="fas fa-trash"></i></button></td>`);
-          tableBodyPO.append(row);
+          tableBodyPOEdit.append(row);
   
         //   // Add the new item to the items array
           var item = {
@@ -322,12 +322,12 @@ $(document).ready(function () {
                 var row = $("<tr>");
                 row.append(`<td class='rowID' style='display:none;'>${plist.id}</td>`);
                 row.append(`<td>${plist.product_name}</td>`);
-                row.append(`<td><input value="${plist.quantity}" type="text" class="form-control quantity"></td>`);
-                row.append(`<td><input value="${plist.buying_price}" type="text" class="form-control price"></td>`);
-                row.append(`<td><input value="0" type="text" class="form-control discount"></td>`);
+                row.append(`<td><input value="${plist.qty}" type="text" class="form-control quantity"></td>`);
+                row.append(`<td><input value="${plist.purchase_price}" type="text" class="form-control price"></td>`);
+                row.append(`<td><input value="${plist.discount}"  type="text" class="form-control discount"></td>`);
                 row.append(`<td class="total">${Number.parseFloat(plist.qty) * Number.parseFloat(plist.purchase_price) - Number.parseFloat(plist.discount)}</td>`);
                 row.append(`<td><button data-id="${plist.id}" type="button" class="btn bg-gradient-danger deleteProductItem"><i class="fas fa-trash"></i></button></td>`);
-                tableBodyPO.append(row);
+                tableBodyPOEdit.append(row);
         
               //   // Add the new item to the items array
                 var item = {
