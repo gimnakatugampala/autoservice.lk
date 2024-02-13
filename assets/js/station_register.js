@@ -9,7 +9,16 @@ $(document).ready(function () {
         var lat = ""
         var long = ""
 
-        console.log(station_logo)
+        let form_data = new FormData();
+        let img = $("#station_logo")[0].files;
+
+        form_data.append("station_code",generateUUID())
+        form_data.append("station_name",`${station_name}`)
+        form_data.append("email",`${email}`)
+        form_data.append("password",`${con_password}`)
+        form_data.append("lat",lat.toString())
+        form_data.append("long",lat.toString())
+        form_data.append("my_image",img[0])
         
 
         if(station_name == ""){
@@ -76,6 +85,7 @@ $(document).ready(function () {
 
         }
 
+
     
 
         fetch('https://ipapi.co/json/')
@@ -89,23 +99,30 @@ $(document).ready(function () {
         })
         .then(() => {
 
-    console.log(generateUUID())
-    console.log(station_name)
-    console.log(email)
-    console.log((lat).toString())
+
+           // ------------------ DATA -----------------
+        form_data.append("station_code",generateUUID())
+        form_data.append("station_name",`${station_name}`)
+        form_data.append("email",`${email}`)
+        form_data.append("password",`${con_password}`)
+        form_data.append("lat",lat.toString())
+        form_data.append("long",lat.toString())
+        form_data.append("my_image",img[0])
+
+        // ------------------ DATA -----------------
+
+          console.log(generateUUID())
+          console.log(station_name)
+          console.log(email)
+          console.log((lat).toString())
 
         //  SAVE DATA
         $.ajax({
             type: "POST",
             url: "../api/station_register.php",
-            data: {
-              station_code:generateUUID(),
-              station_name,
-              email:email,
-              password:con_password,
-              lat:(lat).toString(),
-              long:(long).toString(),
-            },
+            data:form_data,
+            contentType:false,
+            processData:false,
             success: function (response) {
      
                 console.log(response)
@@ -136,23 +153,6 @@ $(document).ready(function () {
           });
 
         })
-
-
-
-        
-
-        // if (station_logo.files.length > 0) {
-        //     var selectedFile = station_logo.files[0];
-        //     console.log("Selected File:", selectedFile);
-        // } else {
-        //     console.log("No file selected.");
-        // }
-
-        // console.log(station_name)
-        // console.log(station_logo)
-        // console.log(email)
-        // console.log(password)
-        // console.log(con_password)
 
              
          })

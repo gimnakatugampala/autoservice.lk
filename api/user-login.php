@@ -20,6 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         $row = $result->fetch_assoc();
         $_SESSION["user_id"] = $row["id"];
+        
 
         echo "success";        
     } else {

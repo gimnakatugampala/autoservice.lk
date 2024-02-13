@@ -1,15 +1,10 @@
-
-
 <?php include_once '../includes/header.php';?>
-
-
-
 
 
 <body class="d-flex justify-content-center align-items-center h-100 mt-5 bg-light hold-transition">
 <div class="login-box">
   <div class="login-logo">
-    <img class="rounded-circle" width="60" height="60" src="../dist/img/system/logo_pistona.png" >
+    <img class="rounded-circle" width="60" height="60" src=<?php echo (isset($_SESSION["station_img"])) ?  $_SESSION["station_img"] : '../assets/img/no-image.png'; ?> >
     <h6 class="my-2"><b><?php echo (isset($_SESSION["station_name"])) ?  $_SESSION["station_name"] : ''; ?></b></h6>
   </div>
   <!-- /.login-logo -->

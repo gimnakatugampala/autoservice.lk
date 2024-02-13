@@ -21,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $row = $result->fetch_assoc();
         $_SESSION["station_id"] = $row["id"];
         $_SESSION["station_name"] = $row["service_name"];
+        $_SESSION["station_img"] = $row["logo"];
 
         echo "success";        
     } else {

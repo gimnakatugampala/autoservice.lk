@@ -11,14 +11,14 @@
 </div>
 
 <div class="login-content">
-<div class="login-userset">
-<div class="login-logo">
 
+<form enctype="multipart/form-data" class="login-userset">
+
+<div class="login-logo">
 <div class="d-flex align-items-center">
     <img width="50" src="../assets/img/system/autoservice_logo.jpg" alt="img">
     <h4 class="ml-2">autoservice.lk</h4>
 </div>
-
 </div>
 
 <div class="login-userheading">
@@ -77,7 +77,7 @@
 <h4>Already has a station? <a href="../auth/station-login.php" class="hover-a">Sign In</a></h4>
 </div>
 
-</div>
+</form>
 </div>
 
 
