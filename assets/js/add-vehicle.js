@@ -62,7 +62,6 @@ $(document).ready(function () {
         form_data.append("vehiclefueltype",`${cmbvehiclefueltype}`)
         form_data.append("vehicleowner",`${cmbvehicleowner}`)
         form_data.append("vehicleyear",`${cmbvehicleyear}`)
-        form_data.append("vehicleyear",`${cmbvehicleyear}`)
         form_data.append("chassis_number",`${chassis_number}`)
         form_data.append("vehicle_color",`${vehicle_color}`)
         form_data.append("my_image",vehicle_img.files.length == 0 ? null : img[0])

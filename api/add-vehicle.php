@@ -142,6 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             vehicle_fuel_type_id,
             vehicle_country_id,
             vehicle_manufacturer_id,
+
             vehicle_class_id
             ) 
             VALUES ('$code', 
