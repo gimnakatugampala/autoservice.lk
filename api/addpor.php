@@ -16,6 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $vat = $_POST['vat'];
     $status = $_POST['status'];
     $paymentmethod = $_POST['paymentmethod'];
+    $return_note = $_POST['return_note'];
     $data_products = json_decode($_POST['products'], true);
 
 
@@ -32,7 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           sub_total,
           vat_amount,
           invoice_issused,
-          status_id
+          status_id,
+          note
           ) 
           VALUES ('$porcode', 
           '{$_SESSION["station_id"]}',
@@ -44,7 +46,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           '$subtotal',
           '$vat',
            1,
-          '$status'
+          '$status',
+          '$return_note'
           )";
           if ($conn->query($sql) === TRUE) {
  
@@ -113,7 +116,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           sub_total,
           vat_amount,
           invoice_issused,
-          status_id
+          status_id,
+          note
           ) 
           VALUES ('$porcode', 
           '{$_SESSION["station_id"]}',
@@ -125,7 +129,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           '$subtotal',
           '$vat',
            0,
-          '$status'
+          '$status',
+          '$return_note'
           )";
           if ($conn->query($sql) === TRUE) {
  
