@@ -1,3 +1,26 @@
+<!-- CHeck User Sessions -->
+<?php 
+
+session_start();
+
+if($_SESSION['station_id'] == null) {
+  header("Location: ../auth/station-login.php");
+  // exit(0);
+}
+
+// Station Session is Null
+// if($_SESSION['user_id'] == null) {
+//   header("Location: ../auth/user-login.php");
+//   // exit(0);
+// }
+
+
+
+
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,3 +71,4 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   <!-- Theme style -->
 </head>
+

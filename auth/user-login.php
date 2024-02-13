@@ -2,17 +2,7 @@
 
 <?php include_once '../includes/header.php';?>
 
-<?php
 
-session_start();
-require_once '../includes/db_config.php';
-
-if (!isset($_SESSION["station_id"]) || $_SESSION["station_id"] == null) {
-  header('Location: ../auth/station-login.php');
-  exit(); 
-}
-
-?>
 
 
 
