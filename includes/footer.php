@@ -208,6 +208,7 @@
 <script src="../assets/js/scripts.js"></script>
 
 <script src="../assets/js/getuserdetails.js"></script>
+<script src="../assets/js/logout.js"></script>
 
 <script src="../assets/js/cmb/cmbusertype.js"></script>
 <script src="../assets/js/cmb/cmbvehicleclass.js"></script>
