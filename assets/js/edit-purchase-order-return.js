@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    var dropdownPO = document.getElementById("cmbproducts");
+    var dropdownPOREdit = document.getElementById("cmbproducts");
     var tableBodyPOR = $("#tbpuchaseorder_update_return_products");
 
     const paidAmountInput = document.getElementById("paid_amount");
@@ -49,8 +49,8 @@ $(document).ready(function () {
     var items = [];
     var selected_products = [];
   
-    dropdownPO.addEventListener("change", function () {
-      var productId = dropdownPO.value;
+    dropdownPOREdit.addEventListener("change", function () {
+      var productId = dropdownPOREdit.value;
 
       $.ajax({
         type: "POST",
@@ -234,44 +234,45 @@ $(document).ready(function () {
       }else{
 
            //  SAVE DATA
-        //    $.ajax({
-        //     type: "POST",
-        //     url: "../api/addpor.php",
-        //     data: {
-        //         porcode:generateUUID(),
-        //         pircode:generateUUID(),
-        //         suppliers,
-        //         purchase_date,
-        //         paidstatus,
-        //         paid_amount:paid_amount == "" ? 0 : paid_amount,
-        //         subtotal:subtotal.textContent == "" ? 0 : subtotal.textContent,
-        //         vat:VAT.value == "" ? 0 : VAT.value,
-        //         status,
-        //         paymentmethod:paymentmethod,
-        //         products:JSON.stringify(data)
+           $.ajax({
+            type: "POST",
+            url: "../api/editpor.php",
+            data: {
+                porID:loadData.id.id,
+                pircode:generateUUID(),
+                suppliers,
+                purchase_date,
+                paidstatus,
+                paid_amount:paid_amount == "" ? 0 : paid_amount,
+                subtotal:subtotal.textContent == "" ? 0 : subtotal.textContent,
+                vat:VAT.value == "" ? 0 : VAT.value,
+                status,
+                return_note,
+                paymentmethod:paymentmethod,
+                products:JSON.stringify(data)
              
-        //     },
-        //     success: function (response) {
+            },
+            success: function (response) {
     
-        //         console.log(response)
+                console.log(response)
 
-        //     if (response === "success") {
-        //         window.location.href = "../return/";
-        //         // console.log("Success")
+            if (response === "success") {
+                window.location.href = "../return/";
+                // console.log("Success")
     
-        //     }else {
-        //         Swal.fire({
-        //             icon: "error",
-        //             title: "Please Try Again",
-        //             text: "Something Went Wrong",
-        //         });
-        //     }
+            }else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Please Try Again",
+                    text: "Something Went Wrong",
+                });
+            }
 
-        //     },
-        //     error:function (error) {
-        //         console.log(error)
-        //     }
-        // });
+            },
+            error:function (error) {
+                console.log(error)
+            }
+        });
 
         }
 
@@ -279,7 +280,7 @@ $(document).ready(function () {
          })
 
          // Delete Filter Type
-      $("#tbpuchaseorder_return_products").on("click", ".deleteProductItem", function () {
+      $("#tbpuchaseorder_update_return_products").on("click", ".deleteProductItem", function () {
         var listItem = $(this).data('id');
         // console.log(listItem)
         // console.log(free_services)
@@ -317,40 +318,40 @@ $(document).ready(function () {
           success: function (data) {
             console.log(data);
   
-            // loadData = data;
+            loadData = data;
 
-            // data.products.forEach(item => {
-            //     selected_products.push(item);
-            // });
+            data.products.forEach(item => {
+              selected_products.push(item);
+            });
            
-            // // Products
-            // data.products.forEach(function (plist) {
-            //     var row = $("<tr>");
-            //     row.append(`<td class='rowID' style='display:none;'>${plist.id}</td>`);
-            //     row.append(`<td>${plist.product_name}</td>`);
-            //     row.append(`<td><input value="${plist.qty}" type="text" class="form-control quantity"></td>`);
-            //     row.append(`<td><input value="${plist.purchase_price}" type="text" class="form-control price"></td>`);
-            //     row.append(`<td><input value="${plist.discount}"  type="text" class="form-control discount"></td>`);
-            //     row.append(`<td class="total">${Number.parseFloat(plist.qty) * Number.parseFloat(plist.purchase_price) - Number.parseFloat(plist.discount)}</td>`);
-            //     row.append(`<td><button data-id="${plist.id}" type="button" class="btn bg-gradient-danger deleteProductItem"><i class="fas fa-trash"></i></button></td>`);
-            //     tableBodyPOEdit.append(row);
-        
-            //   //   // Add the new item to the items array
-            //     var item = {
-            //       rowID: row.find(".rowID")[0],
-            //       quantityInput: row.find(".quantity")[0],
-            //       priceInput: row.find(".price")[0],
-            //       discountInput: row.find(".discount")[0],
-            //       totalCell: row.find(".total")[0],
-            //     };
-            //     items.push(item);
-        
-            //     item.quantityInput.addEventListener("input", calculateTotal);
-            //     item.priceInput.addEventListener("input", calculateTotal);
-            //     item.discountInput.addEventListener("input", calculateTotal);
-        
-            //     calculateTotal();
-            //   });
+            // Products
+            data.products.forEach(function (plist) {
+              var row = $("<tr>");
+              row.append(`<td class='rowID' style='display:none;'>${plist.id}</td>`);
+              row.append(`<td>${plist.product_name}</td>`);
+              row.append(`<td><input value="${plist.qty}" type="text" class="form-control quantity"></td>`);
+              row.append(`<td><input value="${plist.purchase_price}" type="text" class="form-control price"></td>`);
+              row.append(`<td><input value="${plist.discount}" type="text" class="form-control discount"></td>`);
+              row.append(`<td class="total">${Number.parseFloat(plist.qty) * Number.parseFloat(plist.purchase_price) - Number.parseFloat(plist.discount)}</td>`);
+              row.append(`<td><button data-id="${plist.id}" type="button" class="btn bg-gradient-danger deleteProductItem"><i class="fas fa-trash"></i></button></td>`);
+              tableBodyPOR.append(row);
+      
+            //   // Add the new item to the items array
+              var item = {
+                rowID: row.find(".rowID")[0],
+                quantityInput: row.find(".quantity")[0],
+                priceInput: row.find(".price")[0],
+                discountInput: row.find(".discount")[0],
+                totalCell: row.find(".total")[0],
+              };
+              items.push(item);
+      
+              item.quantityInput.addEventListener("input", calculateTotal);
+              item.priceInput.addEventListener("input", calculateTotal);
+              item.discountInput.addEventListener("input", calculateTotal);
+      
+              calculateTotal();
+            });
             
 
     
@@ -370,6 +371,7 @@ $(document).ready(function () {
 
 
 
+                paymentmethod.value = data.data_content[0].payment_method_id
                 paidAmountInputElement.value =  data.data_content[0].paid_amount
                 NoteElement.value =  data.data_content[0].note
                 suppliers.value =  data.data_content[0].supplier_id
@@ -379,7 +381,6 @@ $(document).ready(function () {
 
                 subtotalElement.textContent = data.data_content[0].sub_total
                 VATElement.value = data.data_content[0].vat_amount
-                paymentmethod.value = data.data_content[0].payment_method_id
                 
 
                 

@@ -29,19 +29,19 @@ if ( $results->num_rows > 0 ) {
     }
 }
 
-// // Get Products
-// $sql_products = "SELECT * FROM purchase_order_products 
-// JOIN product ON purchase_order_products.product_id = product.id
-// WHERE purchase_order_id = $id[id]";
+// Get Products
+$sql_products = "SELECT * FROM purchase_order_return_products 
+JOIN product ON purchase_order_return_products.product_id = product.id
+WHERE purchase_order_return_products.purchase_order_return_id = $id[id]";
 
-// $result_products = $conn->query( $sql_products );
+$result_products = $conn->query( $sql_products );
 
-// $products_array = array();
-// if ( $result_products->num_rows > 0 ) {
-//     while ( $row = $result_products->fetch_assoc() ) {
-//         $products_array[] = $row;
-//     }
-// }
+$products_array = array();
+if ( $result_products->num_rows > 0 ) {
+    while ( $row = $result_products->fetch_assoc() ) {
+        $products_array[] = $row;
+    }
+}
 
 
 
@@ -50,8 +50,8 @@ if ( $results->num_rows > 0 ) {
 
 echo json_encode([
     "data_content"=>$purchase_order_return,
-    "id"=>$id
-    // "products"=>$products_array,
+    "id"=>$id,
+    "products"=>$products_array
     // "free_service_packages_items"=>$service_free_package_item_objects,
     // "fuel_types"=>$fuel_types,
     // "filter_types"=>$filter_types
