@@ -235,10 +235,10 @@ $(document).ready(function () {
             },
             success: function (response) {
     
-                // console.log(response)
+                console.log(response)
 
             if (response === "success") {
-                window.location.href = "../purchase-order//";
+                window.location.href = "../purchase-order/";
                 // console.log("Success")
     
             }else {

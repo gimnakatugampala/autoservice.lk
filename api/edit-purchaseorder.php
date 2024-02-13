@@ -49,6 +49,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               $qty = $row['quantity'];
               $price = $row['price'];
               $discount = $row['discount'];
+
+
+                 // ------------------------- Update the New Product Quantity ------------------------------
+                 $query = "SELECT quantity FROM product WHERE id = $product";
+                 $result = $conn->query($query);
+ 
+                 if ($result->num_rows > 0) {
+                     $current_quantity = $result->fetch_assoc()['quantity'];
+                     $new_quantity = $current_quantity + $qty;
+ 
+                     // Update the database with the new quantity
+                     $update_query = "UPDATE product SET quantity = $new_quantity WHERE id = $product";
+ 
+                     if ($conn->query($update_query) === TRUE) {
+                         // echo "sucess";
+                     } else {
+                         echo "Error updating quantity: " . $conn->error;
+                     }
+                 }
+ 
+             // ------------------------------ Update the New Product Quantity -------------------------------
+
   
               $ProductsSQL = "INSERT INTO purchase_order_products (
                   product_id,
