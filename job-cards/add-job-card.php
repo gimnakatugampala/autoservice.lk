@@ -124,11 +124,8 @@
                     <div class="row">
                       <div class="col-md-12">
                         <h5 class="text-center"><b>Search By Vehicle Number</b></h5>
-                        <select class="custom-select" id="exampleSelectBorder">
-                          <option>Search Vehicle</option>
-                          <option>Value 1</option>
-                          <option>Value 2</option>
-                          <option>Value 3</option>
+                        <select class="custom-select" id="cmbsearchvehicles">
+                            <option value="" selected disabled>Please Select</option>
                         </select>
               
                       </div>
@@ -152,7 +149,7 @@
                     <div class="row my-4">
                       <div class="col-md-5 mx-auto">
                         <div class="card p-3 py-4 border border-dark text-center">
-                            <!-- <img class="rounded-circle mx-auto" style="object-fit: cover;" width="50%" height="170" src="https://hips.hearstapps.com/hmg-prod/images/2019-toyota-prius-limited-1545163015.jpg?crop=0.819xw:1.00xh;0.104xw,0&resize=768:*" alt="Vehicle"> -->
+                 
                             <div class="mx-auto my-2">
 
                               <div class="d-flex align-items-center">
@@ -194,10 +191,8 @@
                       <div class="col-sm-6">
                           <div class="form-group">
                             <label>Paid Status</label>
-                            <select class="custom-select">
-                              <option>Not Paid</option>
-                              <option>Advanced</option>
-                              <option>Not Paid</option>
+                            <select id="cmbpaidstatus" class="custom-select">
+                            <!-- <option value="" selected disabled>Please Select</option> -->
                             </select>
                           </div>
                         </div>
@@ -205,10 +200,8 @@
                         <div class="col-sm-6">
                           <div class="form-group">
                             <label>Status</label>
-                            <select class="custom-select">
-                              <option>Inprogress</option>
-                              <option>Canceled</option>
-                              <option>Completed</option>
+                            <select id="cmbstatus" class="custom-select">
+                                <!-- <option value="" selected disabled>Please Select</option> -->
                             </select>
                           </div>
                         </div>
@@ -1318,7 +1311,11 @@
 </div>
 <!-- ./wrapper -->
 
+<script src="../plugins/jquery/jquery.min.js"></script>
+
 <?php include_once '../includes/footer.php';?>
+
+<script src="../assets/js/add-jobcard.js"></script>
 
 </body>
 </html>
