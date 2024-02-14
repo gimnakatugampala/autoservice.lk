@@ -248,28 +248,34 @@
                   <p>Completed Job Cards</p>
                 </a>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a href="../job-cards/add-service-job.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Service Job</p>
                 </a>
-              </li>
-              <li class="nav-item">
+              </li> -->
+              <!-- <li class="nav-item">
                 <a href="../job-cards/add-wash-job.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Wash Job</p>
                 </a>
-              </li>
-              <li class="nav-item">
+              </li> -->
+              <!-- <li class="nav-item">
                 <a href="../job-cards/add-repair-job.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Repair Job</p>
                 </a>
-              </li>
-              <li class="nav-item">
+              </li> -->
+              <!-- <li class="nav-item">
                 <a href="../job-cards/add-service-repair-job.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Repair Service Job</p>
+                </a>
+              </li> -->
+              <li class="nav-item">
+                <a href="../job-cards/add-job-card.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Job Card</p>
                 </a>
               </li>
             </ul>
