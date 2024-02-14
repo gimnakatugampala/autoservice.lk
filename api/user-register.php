@@ -37,7 +37,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // SESSIONS
                  $row = $result->fetch_assoc();
                  $_SESSION["user_id"] = $row["id"];
-                 echo "success";
+
+                 $sql = "INSERT INTO user_session (station_id,user_id) 
+                 VALUES ('{$_SESSION["station_id"]}','{$_SESSION["user_id"]}')";
+                 if ($conn->query($sql) === TRUE) {
+                         echo "success";
+                     }
+
+                //  echo "success";
             }
         
         }else{

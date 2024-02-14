@@ -74,11 +74,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $_SESSION["station_id"] = $row["id"];
                             $_SESSION["station_name"] = $row["service_name"];
                             $_SESSION["station_img"] = $row["logo"];
+
+                            // Save Station Session
+                            $sql = "INSERT INTO station_session (station_id) 
+                            VALUES ('{$_SESSION["station_id"]}')";
+                                if ($conn->query($sql) === TRUE) {
+                                        echo "success";
+                                    }
+
                         }
 
                      //  -------------------------------------- SAVE TO STATION ----------------------------
                     
-                        echo "success";
+                        // echo "success";
                     }else{
                         echo $conn->error;
                     }
