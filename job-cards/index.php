@@ -71,7 +71,7 @@
                     <td>KY-3038</td>
                     <td>2024-01-15</td>
                     <td>
-                    <a href="../job-cards/edit-service-repair-job.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                    <a href="../job-cards/edit-job-card.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
                     </td>
                   </tr>
                 
