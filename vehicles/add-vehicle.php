@@ -64,6 +64,7 @@
                 <div class="form-group">
                   <label>Vehicle Class <span class="text-danger">*</span></label>
                   <select id="cmbvehicleclass" class="form-control select2" style="width: 100%;">
+                  <option value="" selected disabled>Please Select</option>
                     <!-- <option selected="selected">Alabama</option>
                     <option>Alaska</option>
                     <option>California</option>
@@ -93,6 +94,7 @@
                 <div class="form-group">
                   <label>Vehicle Make <span class="text-danger">*</span></label>
                   <select id="cmbvehiclemanufacturer" class="form-control select2" style="width: 100%;">
+                  <option value="" selected disabled>Please Select</option>
                     <!-- <option selected="selected">Alabama</option>
                     <option>Alaska</option>
                     <option>California</option>
@@ -108,6 +110,7 @@
                 <div class="form-group">
                   <label>Manufacturer Country <span class="text-danger">*</span></label>
                   <select id="cmbvehiclecountry" class="form-control select2" style="width: 100%;">
+                  <option value="" selected disabled>Please Select</option>
                     <!-- <option selected="selected">Alabama</option>
                     <option>Alaska</option>
                     <option>California</option>
@@ -123,6 +126,7 @@
                 <div class="form-group">
                   <label>Model <span class="text-danger">*</span></label>
                   <select id="cmbvehiclemodel" class="form-control select2" style="width: 100%;">
+                  <option value="" selected disabled>Please Select</option>
                     <!-- <option selected="selected">Alabama</option>
                     <option>Alaska</option>
                     <option>California</option>
@@ -138,6 +142,7 @@
                 <div class="form-group">
                   <label>Fuel Type <span class="text-danger">*</span></label>
                   <select id="cmbvehiclefueltype"  class="form-control select2" style="width: 100%;">
+                  <option value="" selected disabled>Please Select</option>
                     <!-- <option selected="selected">Alabama</option>
                     <option>Alaska</option>
                     <option>California</option>
@@ -153,6 +158,7 @@
                 <div class="form-group">
                   <label>Select Vehicle Owner <span class="text-danger">*</span></label>
                   <select id="cmbvehicleowner" class="form-control select2" style="width: 100%;">
+                  <option value="" selected disabled>Please Select</option>
                     <!-- <option selected="selected">Alabama</option>
                     <option>Alaska</option>
                     <option>California</option>
@@ -168,6 +174,7 @@
                 <div class="form-group">
                   <label>Year <span class="text-danger">*</span></label>
                   <select id="cmbvehicleyear" class="form-control select2" style="width: 100%;">
+                  <option value="" selected disabled>Please Select</option>
                     <!-- <option selected="selected">Alabama</option>
                     <option>Alaska</option>
                     <option>California</option>

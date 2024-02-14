@@ -229,6 +229,7 @@
 <script src="../assets/js/cmb/cmbpaidstatus.js"></script>
 <script src="../assets/js/cmb/cmbstatus.js"></script>
 <script src="../assets/js/cmb/cmbpaymentmethod.js"></script>
+<script src="../assets/js/cmb/cmbsearchvehicle.js"></script>
 
 <script src="../assets/js/user-register.js"></script>
 <script src="../assets/js/user-login.js"></script>

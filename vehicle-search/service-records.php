@@ -65,7 +65,7 @@
                   <tr>
                     <td>203909</td>
                     <td>Pistona Automotive Solutions</td>
-                    <td>0764961707</td>
+                    <td>Completed</td>
                     <td>2024-01-24</td>
                     <td>2024-01-25</td>
                     <td>50,000.00</td>

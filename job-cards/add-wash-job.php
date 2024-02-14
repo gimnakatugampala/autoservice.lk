@@ -82,11 +82,12 @@
                     <div class="row">
                       <div class="col-md-12">
                         <h5 class="text-center"><b>Search By Vehicle Number</b></h5>
-                        <select class="custom-select" id="exampleSelectBorder">
-                          <option>Search Vehicle</option>
+                        <select class="custom-select" id="cmbsearchvehicles">
+                        <option value="" selected disabled>Please Select</option>
+                          <!-- <option>Search Vehicle</option>
                           <option>Value 1</option>
                           <option>Value 2</option>
-                          <option>Value 3</option>
+                          <option>Value 3</option> -->
                         </select>
               
                       </div>
@@ -110,11 +111,8 @@
                     <div class="row my-4">
                       <div class="col-md-5 mx-auto">
                         <div class="card p-3 py-4 border border-dark text-center">
-                            <!-- <img class="rounded-circle mx-auto" style="object-fit: cover;" width="50%" height="170" src="https://hips.hearstapps.com/hmg-prod/images/2019-toyota-prius-limited-1545163015.jpg?crop=0.819xw:1.00xh;0.104xw,0&resize=768:*" alt="Vehicle"> -->
                             <div class="mx-auto my-2">
-
                               <div class="d-flex align-items-center">
-
                                 <span class="m-0 p-0 d-flex align-items-center text-secondary mr-2">
                                   <span class="mr-1">Color: </span>
                                   <div class="border inline" style="width:11px;height:11px;background-color:crimson;border-radius:50%" ></div>
@@ -148,7 +146,6 @@
                     </div>
 
                     <div class="row">
-
                       <div class="col-sm-6">
                           <div class="form-group">
                             <label>Paid Status</label>
@@ -298,7 +295,8 @@
 
           
 
-                 <!-- Generate Invoice  - Step 3 -->
+                
+                   <!-- Generate Invoice  - Step 3 -->
                 <div id="generate-invoice-part" class="content" role="tabpanel" aria-labelledby="generate-invoice-part-trigger">
 
                   <div class="invoice p-3 mb-3">
