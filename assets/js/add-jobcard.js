@@ -73,7 +73,7 @@ $(document).ready(function () {
 
         <div class="row">
 
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <div class="form-group">
                 <label>Paid Status</label>
                 <select id="cmbpaidstatus" class="custom-select">
@@ -85,17 +85,29 @@ $(document).ready(function () {
                 </div>
             </div>
 
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <div class="form-group">
-                <label>Status</label>
-                <select id="cmbstatus" class="custom-select">
+                <label>Job Card Type</label>
+                <select id="cmbjobcardtype" class="custom-select">
                     <option value="" selected disabled>Please Select</option> 
-                    ${data.cmbstatus.map((state) => {
-                      return `<option ${state.id}>${state.status}</option>`;
+                    ${data.cmbjobtypes.map((state) => {
+                      return `<option ${state.id}>${state.type}</option>`;
                   }).join('')}
                 </select>
                 </div>
             </div>
+
+            <div class="col-sm-4">
+            <div class="form-group">
+            <label>Status</label>
+            <select id="cmbstatus" class="custom-select">
+                <option value="" selected disabled>Please Select</option> 
+                ${data.cmbstatus.map((state) => {
+                  return `<option ${state.id}>${state.status}</option>`;
+              }).join('')}
+            </select>
+            </div>
+        </div>
 
 
         </div>
