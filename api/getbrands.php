@@ -19,5 +19,5 @@ if ( $results->num_rows > 0 ) {
 
 echo json_encode([
     "data_content"=>$product_brand
-    ] );
+    ]);
 ?>

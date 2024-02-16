@@ -16,10 +16,10 @@ $(document).ready(function () {
         dataType: "json",
         success: function (data) {
 
-        //   console.log(data)
+          console.log(data)
   
           // ---------------
-              populateSearchVehicleContent(data[0]);
+              populateSearchVehicleContent(data);
           // ---------------
         },
         error: function () {},
@@ -28,6 +28,7 @@ $(document).ready(function () {
       // Fill Search Content Vehicle
       function populateSearchVehicleContent(data) {
         console.log(data)
+        // console.log(status.cmbstatus)
 
         $('#search-vehicle-content').html(`
         <div class="row my-4">
@@ -40,14 +41,14 @@ $(document).ready(function () {
 
                   <span class="m-0 p-0 d-flex align-items-center text-secondary mr-2">
                     <span class="mr-1">Color: </span>
-                    <div class="border inline" style="width:11px;height:11px;background-color:${data.vehicle_color};border-radius:50%" ></div>
+                    <div class="border inline" style="width:11px;height:11px;background-color:${data.vehicles[0].vehicle_color};border-radius:50%" ></div>
                   </span>
 
-                  <span class="h4 m-0 p-0"><b>${data.vehicle_number}</b></span>
+                  <span class="h4 m-0 p-0"><b>${data.vehicles[0].vehicle_number}</b></span>
                 </div>
 
-                <p class="m-0 p-0 text-secondary">Gimna Katugampala</p>
-                <p class="m-0 p-0 text-secondary">+94 764961707</p>
+                <p class="m-0 p-0 text-secondary">${data.vehicles[0].first_name} ${data.vehicles[0].last_name}</p>
+                <p class="m-0 p-0 text-secondary">+94 ${removeLeadingZeros(data.vehicles[0].phone)}</p>
                 <p class="m-0 p-0 text-secondary">Prev Mileage : 56,000 KM</p>
               </div>
                 </div>
@@ -57,15 +58,15 @@ $(document).ready(function () {
         <div class="row">
             <div class="col-md-4 mx-auto">
             <div class="form-group">
-            <label for="exampleInputEmail1">Current Mileage (KM)</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Current Mileage">
+            <label for="current-mileage">Current Mileage (KM)</label>
+            <input type="text" class="form-control" id="current-mileage" placeholder="Current Mileage">
             </div>
             </div>
 
             <div class="col-md-4 mx-auto">
             <div class="form-group">
-            <label for="exampleInputEmail1">Next Mileage (KM)</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Next Mileage">
+            <label for="new-mileage">Next Mileage (KM)</label>
+            <input type="text" class="form-control" id="new-mileage" placeholder="Next Mileage">
             </div>
             </div>
         </div>
@@ -76,7 +77,10 @@ $(document).ready(function () {
                 <div class="form-group">
                 <label>Paid Status</label>
                 <select id="cmbpaidstatus" class="custom-select">
-                <!-- <option value="" selected disabled>Please Select</option> -->
+                <option value="" selected disabled>Please Select</option>
+                ${data.cmbpaidstatus.map((state) => {
+                  return `<option ${state.id}>${state.status}</option>`;
+              }).join('')}
                 </select>
                 </div>
             </div>
@@ -85,7 +89,10 @@ $(document).ready(function () {
                 <div class="form-group">
                 <label>Status</label>
                 <select id="cmbstatus" class="custom-select">
-                    <!-- <option value="" selected disabled>Please Select</option> -->
+                    <option value="" selected disabled>Please Select</option> 
+                    ${data.cmbstatus.map((state) => {
+                      return `<option ${state.id}>${state.status}</option>`;
+                  }).join('')}
                 </select>
                 </div>
             </div>

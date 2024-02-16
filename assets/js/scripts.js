@@ -25,4 +25,16 @@ function generateUUID() { // Public Domain/MIT
         return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
   }
+
+
+//   Remove Phone Number Zero
+function removeLeadingZeros(phoneNumber) {
+    // Check if the phone number starts with a zero
+    if (phoneNumber.startsWith('0')) {
+        // Use regular expression to remove leading zeros
+        return phoneNumber.replace(/^0+/, '');
+    } else {
+        return phoneNumber;
+    }
+}
   
