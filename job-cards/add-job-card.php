@@ -162,12 +162,13 @@
                 <!-- Vehicle Report - Step 2 -->
                 <div id="vehicle-report-part" class="content" role="tabpanel" aria-labelledby="vehicle-report-part-trigger">
                         <div class="row">
+                            
                             <!-- 1 -->
                             <div class="col-md-10 table-responsive p-0 mx-auto my-2">
                             <table class="table table-striped table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>Interior</th>
+                                <th>Lubricants</th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -177,8 +178,8 @@
                             </thead>
                             <tbody>
 
-                                <tr>
-                                <td>Lights (Head,Brake,Turn)</td>
+                            <tr>
+                                <td>Engine Oil</td>
                                 <td> 
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="radio1">
@@ -214,9 +215,9 @@
                                     </div>
                                 </td>
 
-                                </tr>
+                            </tr>
 
-                                <tr>
+                            <tr>
                                 <td>Wipes</td>
                                 <td> 
                                     <div class="form-check">
@@ -253,111 +254,18 @@
                                     </div>
                                 </td>
 
-                                </tr>
-
-                                <tr>
-                                <td>Windshield / Glass</td>
-                                <td> 
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="radio1">
-                                        <label class="form-check-label">Worse</label>
-                                    </div>
-                                </td>
-
-                                <td> 
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="radio1">
-                                        <label class="form-check-label">Bad</label>
-                                    </div>
-                                </td>
-
-                                <td> 
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="radio1">
-                                        <label class="form-check-label">Ok</label>
-                                    </div>
-                                </td>
-
-                                <td> 
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="radio1">
-                                        <label class="form-check-label">Good</label>
-                                    </div>
-                                </td>
-
-                                <td> 
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="radio1">
-                                        <label class="form-check-label">Perfect</label>
-                                    </div>
-                                </td>
-
-                                </tr>
-
-
-                            </tbody>
-                            </table>
-                            </div>
-
-                            <!-- 2 -->
-                            <div class="col-md-10 table-responsive p-0 mx-auto my-2">
-                            <table class="table table-striped table-bordered table-hover">
-                            <thead>
-                            <tr>
-                                <th>Brakes</th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
                             </tr>
-                            </thead>
-                            <tbody>
 
-                                <tr>
-                                <td>Brake Pads /Shoes</td>
-                                <td> 
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="radio1">
-                                        <label class="form-check-label">Worse</label>
-                                    </div>
-                                </td>
+                              
 
-                                <td> 
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="radio1">
-                                        <label class="form-check-label">Bad</label>
-                                    </div>
-                                </td>
 
-                                <td> 
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="radio1">
-                                        <label class="form-check-label">Ok</label>
-                                    </div>
-                                </td>
-
-                                <td> 
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="radio1">
-                                        <label class="form-check-label">Good</label>
-                                    </div>
-                                </td>
-
-                                <td> 
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="radio1">
-                                        <label class="form-check-label">Perfect</label>
-                                    </div>
-                                </td>
-
-                                </tr>
                             </tbody>
                             </table>
                             </div>
-                            
 
-                            </div>
+                        
+
+                    </div>
 
 
 
