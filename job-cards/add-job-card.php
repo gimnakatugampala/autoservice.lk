@@ -155,14 +155,14 @@
                         <!-- Vehicle Selected -->
                     </div>
 
-                      <button class="btn btn-primary" onclick="stepper.next()">Next</button>
+                      <button id="job-card-step-1" class="btn btn-primary">Next</button>
                 </div>
                 
 
                 <!-- Vehicle Report - Step 2 -->
                 <div id="vehicle-report-part" class="content" role="tabpanel" aria-labelledby="vehicle-report-part-trigger">
                         <div class="row">
-                            
+
                             <!-- 1 -->
                             <div class="col-md-10 table-responsive p-0 mx-auto my-2">
                             <table class="table table-striped table-bordered table-hover">
