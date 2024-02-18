@@ -2,7 +2,10 @@ $(document).ready(function () {
     var dropdown = document.getElementById("cmbsearchvehicles");
     // var SearchVehicleContentDOM = $("#search-vehicle-content");
 
+    document.addEventListener('DOMContentLoaded', getVehicleReport());
+
     let vehicle;
+    var rowVehicleReportData = [];
 
   
     //  Package Select - Service Package Items
@@ -180,56 +183,56 @@ $(document).ready(function () {
       console.log(vehicle)
 
 
-      if(vehicle == null){
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Please Select Vehicle",
-        });
-        return
-      }else if(current_mileage == ""){
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Please Enter Current Mileage",
-        });
-        return
-      }else if(new_mileage == ""){
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Please Enter New Mileage",
-        });
-        return
-      }else if(paid_status == null){
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Please Select Paid Status",
-        });
-        return
-      }else if(job_card_type == null){
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Please Select Job Card Type",
-        });
-        return
-      }else if(status == null){
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Please Select Status",
-        });
-        return
-      }else if(notify == null){
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Please Select Notification Time",
-        });
-        return
-      }else{
+      // if(vehicle == null){
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: "Error",
+      //     text: "Please Select Vehicle",
+      //   });
+      //   return
+      // }else if(current_mileage == ""){
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: "Error",
+      //     text: "Please Enter Current Mileage",
+      //   });
+      //   return
+      // }else if(new_mileage == ""){
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: "Error",
+      //     text: "Please Enter New Mileage",
+      //   });
+      //   return
+      // }else if(paid_status == null){
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: "Error",
+      //     text: "Please Select Paid Status",
+      //   });
+      //   return
+      // }else if(job_card_type == null){
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: "Error",
+      //     text: "Please Select Job Card Type",
+      //   });
+      //   return
+      // }else if(status == null){
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: "Error",
+      //     text: "Please Select Status",
+      //   });
+      //   return
+      // }else if(notify == null){
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: "Error",
+      //     text: "Please Select Notification Time",
+      //   });
+      //   return
+      // }else{
 
         stepper.next()
 
@@ -241,12 +244,129 @@ $(document).ready(function () {
         console.log(vehicle)
         console.log(notify)
 
-      }
+      // }
 
 
      
 
     })
+  // ---------------- Step 1 --------------
+
+    // --------------- Step 2 ------------
+    function getVehicleReport(){
+
+      $.ajax({
+        type: "POST",
+        url: "../api/getvehiclereport.php",
+        dataType: "json",
+        success: function (data) {
+
+          console.log(data)
+  
+          // ---------------
+              populateVehicleReportContent(data);
+          // ---------------
+        },
+        error: function () {},
+      });
+
+      // --- Populate Vehicle Report
+      function populateVehicleReportContent(data){
+          console.log(data)
+
+          $('#vehicle-report-container').html(`
+          ${data.vehicle_category.map((category) => {
+              return `
+                  <div class="col-md-10 table-responsive p-0 mx-auto my-2">
+                      <table class="table table-striped table-bordered table-hover">
+                          <thead>
+                              <tr>
+                                  <th>${category.category}</th>
+                                  <th></th>
+                                  <th></th>
+                                  <th></th>
+                                  <th></th>
+                                  <th></th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                          ${data.vehicle_subcategory.filter(subcategory => subcategory.vehicle_condition_category_id === category.id).map(subcategory => {
+                            return `
+                            <tr data-subcategory-id="${subcategory.id}">
+                                    <td>${subcategory.sub_category}</td>
+                                    <input type="hidden" value="${subcategory.id}">
+                                    <td> 
+                                        <div class="form-check">
+                                            <input value="1" class="form-check-input" type="radio" name="radio${subcategory.id}">
+                                            <label class="form-check-label">Worse</label>
+                                        </div>
+                                    </td>
+                                    <td> 
+                                        <div class="form-check">
+                                            <input value="2" class="form-check-input" type="radio" name="radio${subcategory.id}">
+                                            <label class="form-check-label">Bad</label>
+                                        </div>
+                                    </td>
+                                    <td> 
+                                        <div class="form-check">
+                                            <input value="3" class="form-check-input" type="radio" name="radio${subcategory.id}">
+                                            <label class="form-check-label">Ok</label>
+                                        </div>
+                                    </td>
+                                    <td> 
+                                        <div class="form-check">
+                                            <input value="4" class="form-check-input" type="radio" name="radio${subcategory.id}">
+                                            <label class="form-check-label">Good</label>
+                                        </div>
+                                    </td>
+                                    <td> 
+                                        <div class="form-check">
+                                            <input value="5" class="form-check-input" type="radio" name="radio${subcategory.id}">
+                                            <label class="form-check-label">Perfect</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
+                          </tbody>
+                      </table>
+                  </div>`;
+          }).join('')}
+      `);
+      }
+
+    }
+
+    $("#job-card-step-2").click(function () {
+    // Iterate over each row in the table
+    $('table tbody tr').each(function(index) {
+        // Object to store the data for the current row
+        var row = {};
+
+        // Find the subcategory ID for this row
+        var subcategoryId = $(this).data('subcategory-id');
+
+        // Find the radio buttons within this row
+        $(this).find('input[type="radio"]').each(function() {
+            // Check if the radio button is checked
+            if ($(this).is(':checked')) {
+                // Store the subcategory ID and the value of the checked radio button
+                row['subcategoryId'] = subcategoryId;
+                row['value'] = $(this).val();
+            }
+        });
+
+        // Push the row object containing radio button values and subcategory ID into the rowVehicleReportData array
+        rowVehicleReportData.push(row);
+    });
+
+    
+    console.log(rowVehicleReportData);
+    
+      stepper.next()
+    })
+    // --------------- Step 2 ------------
+
 
 
   });
