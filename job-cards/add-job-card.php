@@ -276,8 +276,9 @@
 
                 <!-- Washers Package - Step 3-->
                 <div id="washer-part" class="content" role="tabpanel" aria-labelledby="washer-part-trigger">
-                    <div class="row">
-                        <div class="col-md-12">
+
+                <div id="washer-part-container" class="row">
+                    <!-- <div class="col-md-12">
 
                         <table class="table table-striped">
                         <thead>
@@ -336,11 +337,11 @@
 
                         <h4><b>Total - LKR 14,000/=</b></h4>
 
-                        </div>
-                    </div>
+                    </div> -->
+                </div>
 
                         <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
-                        <button class="btn btn-primary" onclick="stepper.next()">Next</button>
+                        <button id="job-card-step-3" class="btn btn-primary" >Next</button>
                 </div>
                 <!-- Washers Package - Step 3-->
 

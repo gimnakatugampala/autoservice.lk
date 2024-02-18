@@ -5,6 +5,13 @@ $(document).ready(function () {
     document.addEventListener('DOMContentLoaded', getVehicleReport());
 
     let vehicle;
+    let current_mileage;
+    let new_mileage;
+    let paid_status;
+    let job_card_type;
+    let status;
+    let notify;
+
     var rowVehicleReportData = [];
 
   
@@ -172,12 +179,12 @@ $(document).ready(function () {
     $("#job-card-step-1").click(function () {
 
     
-      let current_mileage = $("#current-mileage").val();
-      let new_mileage = $("#new-mileage").val();
-      let paid_status = $("#cmbpaidstatus").val();
-      let job_card_type = $("#cmbjobcardtype").val();
-      let status = $("#cmbstatus").val();
-      let notify = $('input[name="customRadio"]:checked').val();
+      current_mileage = $("#current-mileage").val();
+      new_mileage = $("#new-mileage").val();
+      paid_status = $("#cmbpaidstatus").val();
+      job_card_type = $("#cmbjobcardtype").val();
+      status = $("#cmbstatus").val();
+      notify = $('input[name="customRadio"]:checked').val();
     
       
       console.log(vehicle)
@@ -233,6 +240,35 @@ $(document).ready(function () {
       //   });
       //   return
       // }else{
+
+      // --------------- Set Washer in Step 3 -----------
+      if(job_card_type != "2" && job_card_type != "3"){
+
+        console.log("Call Washer")
+        $.ajax({
+          type: "POST",
+          data: {
+            vehicle_class_id:vehicle[0].vehicle_class_id,
+        },
+          url: "../api/getwasherbyvehicleclassid.php",
+          dataType: "json",
+          success: function (data) {
+  
+            console.log(vehicle[0].vehicle_class_id)
+            console.log(data)
+    
+            // ---------------
+            populateWasherTable(data[0])
+            // ---------------
+          },
+          error: function () {},
+        });
+        
+      }else{
+        $('#washer-part-container').html(``)
+      }
+
+      // --------------- Set Washer in Step 3 -----------
 
         stepper.next()
 
@@ -367,6 +403,76 @@ $(document).ready(function () {
     })
     // --------------- Step 2 ------------
 
+    // --------------- Step 3 ------------
+    function populateWasherTable(data) {
+      $('#washer-part-container').html(`
+      <div class="col-md-12">
+        <table class="table table-striped">
+        <thead>
+            <tr>
+            <th>#</th>
+            <th>Washer Package Name</th>
+            <th>QTY</th>
+            <th>Unit Price (LKR)</th>
+            <th>Discount (LKR)</th>
+            <th>Total (LKR)</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        <tr>
+        <td>1.</td>
+        <td>Wash</td>
+
+        <td>  
+            <div class="input-group">
+            <input type="text" class="form-control">
+            <div class="input-group-append">
+                <span class="input-group-text">.00</span>
+            </div>
+            </div>
+        </td>
+        
+        <td>  
+            <div class="input-group">
+            <input value="${data.price}" type="text" class="form-control">
+            <div class="input-group-append">
+                <span class="input-group-text">.00</span>
+            </div>
+            </div>
+        </td>
+
+        <td>  
+            <div class="input-group">
+            <input type="text" class="form-control">
+            <div class="input-group-append">
+                <span class="input-group-text">.00</span>
+            </div>
+            </div>
+        </td>
+
+        <td>  
+            <p class="h6">400.00</p>
+        </td>
+
+
+        
+        </tr>
+
+        </tbody>
+        </table>
+
+        <h4><b>Total - LKR 14,000/=</b></h4>
+
+    </div>
+
+      `)
+    }
+
+    $("#job-card-step-3").click(function () {
+      console.log("123")
+    })
+    // --------------- Step 3 ------------
 
 
   });
