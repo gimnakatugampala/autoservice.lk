@@ -674,11 +674,8 @@
 
                         <div class="col-md-12">
                         <h5 class="text-center"><b>Select Repair Packages</b></h5>
-                        <select class="custom-select mb-4" id="exampleSelectBorder">
-                            <option>Search Repair Packages</option>
-                            <option>Value 1</option>
-                            <option>Value 2</option>
-                            <option>Value 3</option>
+                        <select class="custom-select mb-4" id="cmbrepair">
+                            <option value="" disabled selected>Search Repair Packages</option>
                             </select>
 
                         </div>
@@ -696,9 +693,9 @@
                         <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="table-jobcard-repair">
 
-                        <tr>
+                        <!-- <tr>
                         <td>1.</td>
                         <td>Lathe Work</td>
 
@@ -737,56 +734,17 @@
                         <button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button>
                         </td>
 
+                        </tr> -->
+
                         
-                        </tr>
-
-                        <tr>
-                        <td>2.</td>
-                        <td>Lathe Work</td>
-
-                        <td>  
-                            <div class="input-group">
-                            <input type="text" class="form-control">
-                            <div class="input-group-append">
-                                <span class="input-group-text">.00</span>
-                            </div>
-                            </div>
-                        </td>
-
-                        <td>  
-                            <div class="input-group">
-                            <input type="text" class="form-control">
-                            <div class="input-group-append">
-                                <span class="input-group-text">.00</span>
-                            </div>
-                            </div>
-                        </td>
-
-                        <td>  
-                            <div class="input-group">
-                            <input type="text" class="form-control">
-                            <div class="input-group-append">
-                                <span class="input-group-text">.00</span>
-                            </div>
-                            </div>
-                        </td>
-
-                        <td>  
-                            <p class="h6">400.00</p>
-                        </td>
-
-                        <td>  
-                        <button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button>
-                        </td>
-
-                        </tr>
+                
 
                     
 
                     </tbody>
                     </table>
 
-                    <h4><b>Total - LKR 14,000/=</b></h4>
+                    <h4><b>Total - LKR <span id="repair-final-total">00</span>/=</b></h4>
 
                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                     <button class="btn btn-primary" onclick="stepper.next()">Next</button>

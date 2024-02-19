@@ -14,6 +14,10 @@ $(document).ready(function () {
 
     var rowVehicleReportData = [];
 
+    var items = [];
+    var WasherValues = []
+    
+
   
     //  Package Select - Service Package Items
     dropdown.addEventListener("change", function () {
@@ -405,6 +409,7 @@ $(document).ready(function () {
 
     // --------------- Step 3 ------------
     function populateWasherTable(data) {
+
       $('#washer-part-container').html(`
       <div class="col-md-12">
         <table class="table table-striped">
@@ -420,13 +425,15 @@ $(document).ready(function () {
         </thead>
         <tbody>
 
-        <tr>
-        <td>1.</td>
+
+
+        <tr class="rowBody">
+        <td style='display:none;' class='rowID'>${data.id}</td>
+        <td>1</td>
         <td>Wash</td>
-
         <td>  
             <div class="input-group">
-            <input type="text" class="form-control">
+            <input value="1" type="text" class="form-control wash-qty">
             <div class="input-group-append">
                 <span class="input-group-text">.00</span>
             </div>
@@ -435,7 +442,7 @@ $(document).ready(function () {
         
         <td>  
             <div class="input-group">
-            <input value="${data.price}" type="text" class="form-control">
+            <input value="${data.price}" type="text" class="form-control wash-unit-price">
             <div class="input-group-append">
                 <span class="input-group-text">.00</span>
             </div>
@@ -444,7 +451,7 @@ $(document).ready(function () {
 
         <td>  
             <div class="input-group">
-            <input type="text" class="form-control">
+            <input value="0" type="text" class="form-control wash-discount">
             <div class="input-group-append">
                 <span class="input-group-text">.00</span>
             </div>
@@ -452,29 +459,211 @@ $(document).ready(function () {
         </td>
 
         <td>  
-            <p class="h6">400.00</p>
+            <p class="h6 wash-total">00</p>
         </td>
-
-
-        
         </tr>
 
         </tbody>
         </table>
 
-        <h4><b>Total - LKR 14,000/=</b></h4>
+        <h4><b>Total - LKR <span id="wash-final-total"></span>/=</b></h4>
 
     </div>
 
       `)
+
+      var row = $(".rowBody"); // Assuming you only have one row
+      var item = {
+          rowID: row.find(".rowID")[0],
+          quantityInput: row.find(".wash-qty")[0],
+          priceInput: row.find(".wash-unit-price")[0],
+          discountInput: row.find(".wash-discount")[0],
+          totalCell: row.find(".wash-total")[0],
+      };
+
+      items.push(item);
+
+      item.quantityInput.addEventListener("input", calculateWasherTotal);
+      item.priceInput.addEventListener("input", calculateWasherTotal);
+      item.discountInput.addEventListener("input", calculateWasherTotal);
+  
+      calculateWasherTotal();
+
+
+    }
+
+    function calculateWasherTotal() {
+      // var totalAmount = 0;
+      items.forEach(function (item) {
+        
+        // document.getElementById("wash-final-total").textContent = "0"
+        var rowID = parseFloat(item.rowID.innerText);
+        var quantity = parseFloat(item.quantityInput.value);
+        var price = parseFloat(item.priceInput.value);
+        var discount = parseFloat(item.discountInput.value);
+  
+        var itemTotal = quantity * price - discount;
+        item.totalCell.textContent = itemTotal.toFixed(2);
+        
+        // totalAmount += itemTotal;
+        // document.getElementById("wash-final-total").textContent = itemTotal;
+
+        WasherValues = [];
+
+        WasherValues.push({
+          washerID:rowID,
+          price,
+          quantity,
+          discount
+        })
+        
+        $("#wash-final-total").text(itemTotal.toFixed(2));
+        // console.log(totalAmount)
+      });
+      
     }
 
     $("#job-card-step-3").click(function () {
-      console.log("123")
+      console.log(items)
+      console.log(WasherValues)
+      stepper.next()
     })
     // --------------- Step 3 ------------
+
+    // --------------- Step 4 ------------
+    var dropdownRepair = document.getElementById("cmbrepair");
+    var tableBodyRepair = $("#table-jobcard-repair");
+    var repair_items = [];
+    var selected_repairs = [];
+
+
+    dropdownRepair.addEventListener("change", function () {
+      var repairId = dropdownRepair.value;
+      $.ajax({
+        type: "POST",
+        url: "../api/checkrepair.php",
+        data: { 
+          repairId: repairId,
+          vehicleClassId: vehicle[0].vehicle_class_id
+        },
+        dataType: "json",
+        success: function (data) {
+
+            console.log(data)
+  
+          // ---------------
+          let foundRepairs = selected_repairs.some(repair => repair.id == repairId);
+  
+            if(foundRepairs){
+  
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Repair Already Exist",
+              });
+              return
+  
+            }else{
+              populateTableRepairs(data);
+              // console.log(data)
+              selected_repairs.push(data[0])
+              return
+            }
+  
+          // ---------------
+        },
+        error: function () {},
+      });
+  
+      // Get All the Sales List
+      function populateTableRepairs(data) {
+        console.log(data)
+
+        data.forEach(function (plist) {
+          var row = $("<tr>");
+          row.append(`<td class='rowID' style='display:none;'>${plist.id}</td>`);
+          row.append(`<td>1.</td>`);
+          row.append(`<td>${plist.name}</td>`);
+          row.append(`<td>  
+                <div class="input-group">
+                <input value="1" type="text" class="form-control hours">
+                <div class="input-group-append">
+                    <span class="input-group-text">.00</span>
+                </div>
+                </div>
+            </td>`);
+          row.append(`<td>  
+            <div class="input-group">
+            <input value="${plist.price}" type="text" class="form-control unit-price">
+            <div class="input-group-append">
+                <span class="input-group-text">.00</span>
+            </div>
+            </div>
+          </td>`);
+          row.append(`<td>  
+          <div class="input-group">
+          <input value="0" type="text" class="form-control discount">
+          <div class="input-group-append">
+              <span class="input-group-text">.00</span>
+          </div>
+          </div>
+          </td>`);
+          row.append(`<td>  
+          <p class="h6 repair-total">400.00</p>
+        </td>`);
+          row.append(`<td>  
+          <button data-id="${plist.id}" type="button" class="btn bg-gradient-danger deleteRepairItem"><i class="fas fa-trash"></i></button>
+          </td>`);
+          tableBodyRepair.append(row);
+  
+          // Add the new item to the items array
+          var item = {
+            rowID: row.find(".rowID")[0],
+            HoursInput: row.find(".hours")[0],
+            UnitPriceInput: row.find(".unit-price")[0],
+            discountInput: row.find(".discount")[0],
+            totalCell: row.find(".repair-total")[0],
+          };
+          repair_items.push(item);
+  
+          item.HoursInput.addEventListener("input", calculateRepairTotal);
+          item.UnitPriceInput.addEventListener("input", calculateRepairTotal);
+          item.discountInput.addEventListener("input", calculateRepairTotal);
+  
+          calculateRepairTotal();
+        });
+
+
+      }
+  
+    });
+
+    function calculateRepairTotal() {
+      var totalAmount = 0;
+      var to = 0;
+      var dis = 0;
+      repair_items.forEach(function (item) {
+        var hours = item.HoursInput.value == "" ? 0 :parseFloat(item.HoursInput.value);
+        var unitPrice = item.UnitPriceInput.value == "" ? 0 : parseFloat(item.UnitPriceInput.value);
+        var discount = item.discountInput.value == "" ? 0 : parseFloat(item.discountInput.value);
+  
+        var itemTotal = hours * unitPrice - discount;
+        item.totalCell.textContent = itemTotal.toFixed(2);
+  
+        totalAmount += itemTotal;
+        dis += discount;
+  
+      });
+      $("#repair-final-total").text(totalAmount.toFixed(2));
+
+      // calculateDisplay()
+      // $("#dis").text(dis.toFixed(2));
+  
+      // $("#topaid").text(to.toFixed(2));
+    }
+    // --------------- Step 4 ------------
 
 
   });
   
-  
+  7
