@@ -681,7 +681,7 @@
                         </div>
                     </div>
 
-                    <table class="table table-striped">
+                    <table class="table table-striped repairTable">
                     <thead>
                         <tr>
                         <th>#</th>

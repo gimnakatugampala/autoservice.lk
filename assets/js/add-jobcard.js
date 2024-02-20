@@ -550,6 +550,10 @@ $(document).ready(function () {
         success: function (data) {
 
             console.log(data)
+
+            if(data.length == 0){
+              return
+            }
   
           // ---------------
           let foundRepairs = selected_repairs.some(repair => repair.id == repairId);
@@ -575,7 +579,7 @@ $(document).ready(function () {
         error: function () {},
       });
   
-      // Get All the Sales List
+      // Get All the Repairs List
       function populateTableRepairs(data) {
         console.log(data)
 
@@ -661,6 +665,33 @@ $(document).ready(function () {
   
       // $("#topaid").text(to.toFixed(2));
     }
+
+    $("table.repairTable").on("click", ".deleteRepairItem", function () {
+      var listItem = $(this).data('id');
+      console.log(listItem)
+  
+      let indexToRemove = selected_repairs.findIndex(item => item.id == listItem);
+  
+      if (indexToRemove !== -1) {
+        selected_repairs.splice(indexToRemove, 1);
+      }
+  
+      // Items Array
+      let indexToRemoveItems = repair_items.findIndex(item => item.rowID.innerText == listItem);
+  
+      if (indexToRemoveItems !== -1) {
+        repair_items.splice(indexToRemoveItems, 1);
+      }
+
+      // -------------------- CALCULATE ---------------------------
+
+      calculateRepairTotal()
+      // ---------------------- CALCULATE -------------------------
+
+
+      $(this).closest('tr').remove();
+  
+    })
     // --------------- Step 4 ------------
 
 
