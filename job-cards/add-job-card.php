@@ -758,11 +758,8 @@
 
                     <div class="col-md-12">
                     <h5 class="text-center"><b>Select Products</b></h5>
-                    <select class="custom-select mb-4" id="exampleSelectBorder">
-                        <option>Search Products</option>
-                        <option>Value 1</option>
-                        <option>Value 2</option>
-                        <option>Value 3</option>
+                    <select class="custom-select mb-4" id="cmbproducts">
+                        <option value="" disabled selected>Search Products</option>
                         </select>
 
                     </div>
@@ -781,15 +778,14 @@
                         <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="table-jobcard-products">
 
-                    <tr>
+                    <!-- <tr>
                         <td>1.</td>
                         <td>Head Light</td>
-
                         <td>  
                             <div class="input-group">
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control quantityQty">
                             <div class="input-group-append">
                                 <span class="input-group-text">.00</span>
                             </div>
@@ -798,7 +794,7 @@
 
                         <td>  
                             <div class="input-group">
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control unitPriceProduct">
                             <div class="input-group-append">
                                 <span class="input-group-text">.00</span>
                             </div>
@@ -822,9 +818,9 @@
                         <button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button>
                         </td>
 
-                        </tr>
+                        </tr> -->
 
-                        <tr>
+                        <!-- <tr>
                         <td>2.</td>
                         <td>Face Repair</td>
 
@@ -863,12 +859,12 @@
                         <button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button>
                         </td>
 
-                        </tr>
+                        </tr> -->
 
                     </tbody>
                     </table>
 
-                    <h4><b>Total - LKR 25,000/=</b></h4>
+                    <h4><b>Total - LKR <span class="total-final-product">00</span>/=</b></h4>
 
                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                     <button class="btn btn-primary" onclick="stepper.next()">Next</button>

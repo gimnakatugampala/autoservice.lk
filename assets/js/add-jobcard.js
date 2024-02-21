@@ -530,7 +530,7 @@ $(document).ready(function () {
     })
     // --------------- Step 3 ------------
 
-    // --------------- Step 4 ------------
+    // --------------- Step 5 ------------
     var dropdownRepair = document.getElementById("cmbrepair");
     var tableBodyRepair = $("#table-jobcard-repair");
     var repair_items = [];
@@ -692,9 +692,116 @@ $(document).ready(function () {
       $(this).closest('tr').remove();
   
     })
-    // --------------- Step 4 ------------
+    // --------------- Step 5 ------------
+
+
+
+
+    //  ------------------------------- Step 6 --------------------------
+    var dropdownProducts = document.getElementById("cmbproducts");
+    var tableBodyProducts = $("#table-jobcard-products");
+
+    var products_items = [];
+    var selected_products = [];
+
+    dropdownProducts.addEventListener("change", function () {
+      var productId = dropdownProducts.value;
+      $.ajax({
+        type: "POST",
+        url: "../api/checkproduct.php",
+        data: { productId: productId },
+        dataType: "json",
+        success: function (data) {
+
+            console.log(data)
+
+            if(data.length == 0){
+              return
+            }
+  
+          // // ---------------
+          let foundSales = selected_products.some(product => product.id == productId);
+  
+          if(foundSales){
+
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "Product Already Exist",
+            });
+            return
+
+          }else{
+            populateTableProducts(data);
+            console.log(data)
+            selected_products.push(data[0])
+            return
+          }
+  
+          // ---------------
+        },
+        error: function () {},
+      });
+  
+      function populateTableProducts(data) {
+        data.forEach(function (plist,index) {
+          var row = $("<tr>");
+          row.append(`<td class='rowProductID' style='display:none;'>${plist.id}</td>`);
+          row.append(`<td>${index + 1}.</td>`);
+          row.append(`<td>${plist.product_name}</td>`);
+          row.append(`<td>  
+          <div class="input-group">
+          <input value="${plist.quantity}" type="text" class="form-control quantityQty">
+          <div class="input-group-append">
+              <span class="input-group-text">.00</span>
+          </div>
+          </div>
+          </td>`);
+          row.append(` <td>  
+          <div class="input-group">
+          <input value="${plist.selling_price}" type="text" class="form-control unitPriceProduct">
+          <div class="input-group-append">
+              <span class="input-group-text">.00</span>
+          </div>
+          </div>
+        </td>`);
+          row.append(`<td>  
+          <div class="input-group">
+          <input value="0" type="text" class="form-control discountProduct">
+          <div class="input-group-append">
+              <span class="input-group-text">.00</span>
+          </div>
+          </div>
+        </td>`);
+          row.append(`<td>  
+          <p class="h6 totalProduct">400.00</p>
+          </td>`);
+          row.append(`<td><button data-id="${plist.id}" type="button" class="btn bg-gradient-danger deleteProductsItem"><i class="fas fa-trash"></i></button></td>`);
+          tableBodyProducts.append(row);
+  
+        //   // Add the new item to the items array
+          var item = {
+            rowID: row.find(".rowProductID")[0],
+            quantityInput: row.find(".quantityQty")[0],
+            priceInput: row.find(".unitPriceProduct")[0],
+            discountInput: row.find(".discountProduct")[0],
+            totalCell: row.find(".totalProduct")[0],
+          };
+          products_items.push(item);
+  
+          // item.quantityInput.addEventListener("input", calculateTotal);
+          // item.priceInput.addEventListener("input", calculateTotal);
+          // item.discountInput.addEventListener("input", calculateTotal);
+  
+          // calculateTotal();
+        });
+      }
+  
+    });
+
+    //  ------------------------------- Step 6 --------------------------
 
 
   });
   
-  7
+  
