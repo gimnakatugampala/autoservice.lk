@@ -789,15 +789,38 @@ $(document).ready(function () {
           };
           products_items.push(item);
   
-          // item.quantityInput.addEventListener("input", calculateTotal);
-          // item.priceInput.addEventListener("input", calculateTotal);
-          // item.discountInput.addEventListener("input", calculateTotal);
+          item.quantityInput.addEventListener("input", calculateProductTotal);
+          item.priceInput.addEventListener("input", calculateProductTotal);
+          item.discountInput.addEventListener("input", calculateProductTotal);
   
-          // calculateTotal();
+          calculateProductTotal();
         });
       }
   
     });
+
+    function calculateProductTotal() {
+      var totalAmount = 0;
+  
+      var dis = 0;
+      products_items.forEach(function (item) {
+        var quantity = item.quantityInput.value == "" ? 0 :parseFloat(item.quantityInput.value);
+        var price = item.priceInput.value == "" ? 0 : parseFloat(item.priceInput.value);
+        var discount = item.discountInput.value == "" ? 0 : parseFloat(item.discountInput.value);
+  
+        var itemTotal = quantity * price - discount;
+        item.totalCell.textContent = itemTotal.toFixed(2);
+  
+        totalAmount += itemTotal;
+        dis += discount;
+      });
+      $("#total-final-product").text(totalAmount.toFixed(2));
+
+      // calculateDisplay()
+      // $("#dis").text(dis.toFixed(2));
+  
+      // $("#topaid").text(to.toFixed(2));
+    }
 
     //  ------------------------------- Step 6 --------------------------
 

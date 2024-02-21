@@ -864,7 +864,7 @@
                     </tbody>
                     </table>
 
-                    <h4><b>Total - LKR <span class="total-final-product">00</span>/=</b></h4>
+                    <h4><b>Total - LKR <span id="total-final-product">00</span>/=</b></h4>
 
                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                     <button class="btn btn-primary" onclick="stepper.next()">Next</button>
