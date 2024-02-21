@@ -822,6 +822,33 @@ $(document).ready(function () {
       // $("#topaid").text(to.toFixed(2));
     }
 
+    $("table.productsTable").on("click", ".deleteProductsItem", function () {
+      var listItem = $(this).data('id');
+      console.log(listItem)
+  
+      let indexToRemove = selected_products.findIndex(item => item.id == listItem);
+  
+      if (indexToRemove !== -1) {
+        selected_products.splice(indexToRemove, 1);
+      }
+  
+      // Items Array
+      let indexToRemoveItems = products_items.findIndex(item => item.rowID.innerText == listItem);
+  
+      if (indexToRemoveItems !== -1) {
+        products_items.splice(indexToRemoveItems, 1);
+      }
+
+      // -------------------- CALCULATE ---------------------------
+
+      calculateProductTotal()
+      // ---------------------- CALCULATE -------------------------
+
+
+      $(this).closest('tr').remove();
+  
+    })
+
     //  ------------------------------- Step 6 --------------------------
 
 

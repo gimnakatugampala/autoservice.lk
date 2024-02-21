@@ -766,7 +766,7 @@
                     </div>
 
 
-                    <table class="table table-striped">
+                    <table class="table table-striped productsTable">
                     <thead>
                         <tr>
                         <th>#</th>
