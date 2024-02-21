@@ -19,7 +19,7 @@ $(document).ready(function () {
     
 
   
-    //  Package Select - Service Package Items
+    //  Search Vehicle
     dropdown.addEventListener("change", function () {
       
       var selectID = dropdown.value;

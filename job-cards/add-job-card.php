@@ -353,11 +353,8 @@
                         <div class="col-md-12">
 
                         <h5 class="text-center"><b>Select Service Packages</b></h5>
-                        <select class="custom-select mb-4" id="exampleSelectBorder">
-                            <option>Search Service Packages</option>
-                            <option>Value 1</option>
-                            <option>Value 2</option>
-                            <option>Value 3</option>
+                        <select class="custom-select mb-4" id="cmbservicepackages">
+                        <option value="" selected disabled>Please Select Service Packages</option>
                             </select>
 
                         <table class="table table-bordered table-hover">

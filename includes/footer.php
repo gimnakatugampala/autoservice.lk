@@ -232,6 +232,7 @@
 <script src="../assets/js/cmb/cmbsearchvehicle.js"></script>
 <script src="../assets/js/cmb/cmbjobcardtypes.js"></script>
 <script src="../assets/js/cmb/cmbrepair.js"></script>
+<script src="../assets/js/cmb/cmbservicepackages.js"></script>
 
 <script src="../assets/js/user-register.js"></script>
 <script src="../assets/js/user-login.js"></script>

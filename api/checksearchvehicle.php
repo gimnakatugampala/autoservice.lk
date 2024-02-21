@@ -1,7 +1,11 @@
 <?php
 require_once '../includes/db_config.php';
 
+$_SESSION["job_card_vehicle_class_id"] = "";
+
 $vehicleID = $_POST['itemID'];
+
+
 
 $sql = "SELECT * FROM vehicle 
 JOIN vehicle_owner ON vehicle.vehicle_owner_id = vehicle_owner.id
@@ -15,6 +19,7 @@ if ( $result->num_rows > 0 ) {
         $vehicle[] = $row;
     }
 }
+
 
 
 $sql = "SELECT * FROM status";
@@ -49,6 +54,8 @@ if ( $result->num_rows > 0 ) {
         $job_card_type[] = $row;
     }
 }
+
+
 
 echo json_encode([ 
 "vehicles" => $vehicle, 
