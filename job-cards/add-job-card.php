@@ -357,7 +357,7 @@
                         <option value="" selected disabled>Please Select Service Packages</option>
                             </select>
 
-                        <table class="table table-bordered table-hover">
+                        <table id="tableServicePackage" class="table table-bordered table-hover">
                             <thead>
                             <tr>
                                 <th>#</th>

@@ -583,11 +583,11 @@ $(document).ready(function () {
         console.log(data)
 
         data.servicePackage.forEach(function (plist,index) {
-          var row = $(` <tr data-widget="expandable-table" aria-expanded="false">
+          var row = $(`<tr data-widget="expandable-table" aria-expanded="false">
           <td>${index + 1}</td>
           <td>${plist.package_name}</td>
           <td>
-          <button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button>
+          <button data-id="${plist.id}" type="button" class="btn bg-gradient-danger deleteServicePackageItem"><i class="fas fa-trash"></i></button>
           </td>
       </tr>
       <tr class="expandable-body">
@@ -710,6 +710,32 @@ $(document).ready(function () {
       }
   
     });
+
+    $("#tableServicePackage").on("click", ".deleteServicePackageItem", function () {
+      var listItem = $(this).data('id');  
+
+      
+      let indexToRemove = selected_service_packages.findIndex(item => item.id == listItem);
+
+      if (indexToRemove != -1) {
+        selected_service_packages.splice(indexToRemove, 1);
+      }
+
+  
+
+      $(this).closest('tr').remove();
+
+        // Items Array
+        let indexToRemoveItems = service_packages_items.findIndex(item => item.rowID.innerText == listItem);
+
+        if (indexToRemoveItems != -1) {
+          service_packages_items.splice(indexToRemoveItems, 1);
+        }
+
+        // calculateDisplay()
+        // calculateTotal()
+  
+    })
 
 
 
