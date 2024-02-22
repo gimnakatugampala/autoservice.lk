@@ -530,6 +530,192 @@ $(document).ready(function () {
     })
     // --------------- Step 3 ------------
 
+
+    //  ---------------------- Step 4 -------------
+    var dropdownServicePackage = document.getElementById("cmbservicepackages");
+    var tableBodyServicePackage = $("#table-jobcard-service-packages");
+    var service_packages_items = [];
+    var selected_service_packages = [];
+
+
+    dropdownServicePackage.addEventListener("change", function () {
+      var servicePackageId = dropdownServicePackage.value;
+      $.ajax({
+        type: "POST",
+        url: "../api/checkservicepackage.php",
+        data: { 
+          servicePackageId: servicePackageId
+        },
+        dataType: "json",
+        success: function (data) {
+
+            console.log(data)
+            // console.log(data.servicePackage[0])
+
+      
+  
+          // ---------------
+          let foundServicePackage = selected_service_packages.some(servicep => servicep.id == servicePackageId);
+  
+            if(foundServicePackage){
+  
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Service Package Already Exist",
+              });
+              return
+  
+            }else{
+              populateTableServicePackage(data);
+              // console.log(data)
+              selected_service_packages.push(data.servicePackage[0])
+              return
+            }
+  
+          // ---------------
+        },
+        error: function () {},
+      });
+  
+      // Get All the Repairs List
+      function populateTableServicePackage(data) {
+        console.log(data)
+
+        data.servicePackage.forEach(function (plist,index) {
+          var row = $(` <tr data-widget="expandable-table" aria-expanded="false">
+          <td>${index + 1}</td>
+          <td>${plist.package_name}</td>
+          <td>
+          <button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button>
+          </td>
+      </tr>
+      <tr class="expandable-body">
+          <td colspan="5">
+          <p class="m-0 p-0">
+              <div class="row">
+              <div class="col-md-6">
+                  <table class="table table-sm table-striped">
+                  <thead>
+                      <tr>
+                      <th>#</th>
+                      <th>Fuel Type</th>
+                      <th>Price</th>
+                      <th>Select</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      
+                  ${data.fuelArry.map((fuel, fuelIndex) => `
+                    <tr>
+                        <td>${fuelIndex + 1}</td>
+                        <td>${fuel.name}</td>
+                        <td>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">LKR</span>
+                                </div>
+                                <input value="${fuel.price}" type="text" class="form-control">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">.00</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" id="fuelRadio${index + 1}_${fuelIndex + 1}" name="fuelRadio${index + 1}">
+                                <label for="fuelRadio${index + 1}_${fuelIndex + 1}" class="custom-control-label"></label>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('')}
+
+              
+                  
+                      
+                  </tbody>
+                  </table>
+              </div>
+
+              <div class="col-md-6">
+                  <table class="table table-sm table-striped">
+                  <thead>
+                      <tr>
+                      <th>#</th>
+                      <th>Filter Type</th>
+                      <th>Price</th>
+                      <th>Select</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      
+                  ${data.filterArry.map((filter, filterIndex) => `
+                  <tr>
+                      <td>${filterIndex + 1}</td>
+                      <td>${filter.name}</td>
+                      <td>
+                          <div class="input-group">
+                              <div class="input-group-prepend">
+                                  <span class="input-group-text">LKR</span>
+                              </div>
+                              <input value="${filter.price}" type="text" class="form-control">
+                              <div class="input-group-append">
+                                  <span class="input-group-text">.00</span>
+                              </div>
+                          </div>
+                      </td>
+                      <td>
+                          <div class="custom-control custom-radio">
+                              <input class="custom-control-input" type="radio" id="filterRadio${index + 1}_${filterIndex + 1}" name="filterRadio${index + 1}">
+                              <label for="filterRadio${index + 1}_${filterIndex + 1}" class="custom-control-label"></label>
+                          </div>
+                      </td>
+                  </tr>
+              `).join('')}
+
+
+                  
+                      
+                  </tbody>
+                  </table>
+              </div>
+              </div>
+
+          </p>
+          </td>
+      </tr>`);
+   
+      
+          
+          tableBodyServicePackage.append(row);
+  
+      //     // Add the new item to the items array
+      //     // var item = {
+      //     //   rowID: row.find(".rowID")[0],
+      //     //   HoursInput: row.find(".hours")[0],
+      //     //   UnitPriceInput: row.find(".unit-price")[0],
+      //     //   discountInput: row.find(".discount")[0],
+      //     //   totalCell: row.find(".repair-total")[0],
+      //     // };
+      //     // repair_items.push(item);
+  
+      //     // item.HoursInput.addEventListener("input", calculateRepairTotal);
+      //     // item.UnitPriceInput.addEventListener("input", calculateRepairTotal);
+      //     // item.discountInput.addEventListener("input", calculateRepairTotal);
+  
+      //     // calculateRepairTotal();
+        });
+
+
+      }
+  
+    });
+
+
+
+
+    //  ---------------------- Step 4 -------------
+
     // --------------- Step 5 ------------
     var dropdownRepair = document.getElementById("cmbrepair");
     var tableBodyRepair = $("#table-jobcard-repair");

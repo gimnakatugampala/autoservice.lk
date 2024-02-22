@@ -365,9 +365,9 @@
                                 <th>Actions</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="table-jobcard-service-packages">
 
-                            <span>
+                        <!-- <span>
                             <tr data-widget="expandable-table" aria-expanded="false">
                                 <td>001</td>
                                 <td>Toyota Car Package</td>
@@ -506,10 +506,10 @@
                                 </p>
                                 </td>
                             </tr>
-                            </span>
+                        </span> -->
 
-                            <span>
-                            <tr data-widget="expandable-table" aria-expanded="false">
+                       
+                            <!-- <tr data-widget="expandable-table" aria-expanded="false">
                                 <td>001</td>
                                 <td>Toyota Car Package</td>
                                 <td>
@@ -646,8 +646,10 @@
 
                                 </p>
                                 </td>
-                            </tr>
-                            </span>
+                            </tr> -->
+                        
+
+                          
                         
                             </tbody>
                         </table>
