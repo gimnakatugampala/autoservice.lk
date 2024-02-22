@@ -349,7 +349,7 @@
                 
                 <!-- Search Service Packages  - Step 4 -->
                 <div id="service-package-part" class="content" role="tabpanel" aria-labelledby="service-package-part-trigger">
-                        <div class="row">
+                        <div id="service-package-part-container" class="row">
                         <div class="col-md-12">
 
                         <h5 class="text-center"><b>Select Service Packages</b></h5>
@@ -656,8 +656,8 @@
 
                         </div>
                         </div>
-
                         <h4><b>Total - LKR <span id="service-package-total">00</span>/=</b></h4>
+
 
                         <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                         <button id="job-card-step-4" class="btn btn-primary" >Next</button>
@@ -669,7 +669,7 @@
                 <!-- Repair Packages  - Step 5 -->
                 <div id="maintenance-part" class="content" role="tabpanel" aria-labelledby="maintenance-part-trigger">
 
-                    <div class="row">
+                    <div id="maintenance-part-container" class="row">
 
                         <div class="col-md-12">
                         <h5 class="text-center"><b>Select Repair Packages</b></h5>

@@ -248,7 +248,6 @@ $(document).ready(function () {
       // --------------- Set Washer in Step 3 -----------
       if(job_card_type != "2" && job_card_type != "3"){
 
-        console.log("Call Washer")
         $.ajax({
           type: "POST",
           data: {
@@ -271,6 +270,8 @@ $(document).ready(function () {
       }else{
         $('#washer-part-container').html(``)
       }
+
+   
 
       // --------------- Set Washer in Step 3 -----------
 
