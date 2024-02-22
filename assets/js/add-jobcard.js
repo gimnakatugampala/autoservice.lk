@@ -538,6 +538,19 @@ $(document).ready(function () {
     var service_packages_items = [];
     var selected_service_packages = [];
 
+    // Fuel Type
+    var service_packages_items_fuel = [];
+    // Filter Type
+    var service_packages_items_filter = [];
+
+    let counterId =0;
+
+    // Selected Fuel Type
+    var selected_fuel = []
+    // Selected Filter Type
+    var selected_filter = []
+
+
 
     dropdownServicePackage.addEventListener("change", function () {
       var servicePackageId = dropdownServicePackage.value;
@@ -565,7 +578,8 @@ $(document).ready(function () {
               return
   
             }else{
-              populateTableServicePackage(data);
+              counterId += 1;
+              populateTableServicePackage(data,counterId);
               // console.log(data)
               selected_service_packages.push(data.servicePackage[0])
               return
@@ -577,13 +591,13 @@ $(document).ready(function () {
       });
   
       // Get All the Repairs List
-      function populateTableServicePackage(data) {
+      function populateTableServicePackage(data,counterId) {
         console.log(data)
 
-        data.servicePackage.forEach(function (plist,index) {
+        data.servicePackage.forEach(function (plist) {
           var row = $(`<tr data-widget="expandable-table" aria-expanded="false">
           <td class='rowServicePackageID' style='display:none;'>${plist.id}</td>
-          <td>${index + 1}</td>
+          <td>${counterId}</td>
           <td>${plist.package_name}</td>
           <td>
           <button data-id="${plist.id}" type="button" class="btn bg-gradient-danger deleteServicePackageItem"><i class="fas fa-trash"></i></button>
@@ -608,6 +622,7 @@ $(document).ready(function () {
                   ${data.fuelArry.map((fuel, fuelIndex) => `
                     <tr>
                     <td class='rowFuelID' style='display:none;'>${fuel.id}</td>
+                    <td class='rowServicePackageID' style='display:none;'>${plist.id}</td>
                         <td>${fuelIndex + 1}</td>
                         <td>${fuel.name}</td>
                         <td>
@@ -623,8 +638,8 @@ $(document).ready(function () {
                         </td>
                         <td>
                             <div class="custom-control custom-radio">
-                                <input class="custom-control-input fuel-radio" type="radio" id="fuelRadio${index + 1}_${fuelIndex + 1}" name="fuelRadio${index + 1}">
-                                <label for="fuelRadio${index + 1}_${fuelIndex + 1}" class="custom-control-label"></label>
+                                <input class="custom-control-input fuel-radio" type="radio" id="fuelRadio${counterId + 1}_${fuelIndex + 1}" name="fuelRadio${counterId + 1}">
+                                <label for="fuelRadio${counterId + 1}_${fuelIndex + 1}" class="custom-control-label"></label>
                             </div>
                         </td>
                     </tr>
@@ -652,6 +667,7 @@ $(document).ready(function () {
                   ${data.filterArry.map((filter, filterIndex) => `
                   <tr>
                     <td class='rowFilterID' style='display:none;'>${filter.id}</td>
+                    <td class='rowServicePackageID' style='display:none;'>${plist.id}</td>
                       <td>${filterIndex + 1}</td>
                       <td>${filter.name}</td>
                       <td>
@@ -667,8 +683,8 @@ $(document).ready(function () {
                       </td>
                       <td>
                           <div class="custom-control custom-radio">
-                              <input class="custom-control-input filter-radio" type="radio" id="filterRadio${index + 1}_${filterIndex + 1}" name="filterRadio${index + 1}">
-                              <label for="filterRadio${index + 1}_${filterIndex + 1}" class="custom-control-label"></label>
+                              <input class="custom-control-input filter-radio" type="radio" id="filterRadio${counterId + 1}_${filterIndex + 1}" name="filterRadio${counterId + 1}">
+                              <label for="filterRadio${counterId + 1}_${filterIndex + 1}" class="custom-control-label"></label>
                           </div>
                       </td>
                   </tr>
@@ -689,18 +705,31 @@ $(document).ready(function () {
       
           
           tableBodyServicePackage.append(row);
+        
   
-          // Add the new item to the items array
           var item = {
-            rowFuelID: row.find(".rowServicePackageID")[0]
+            rowServicePackageID: row.find(".rowServicePackageID")[0]
           };
           service_packages_items.push(item);
+
+          // -------------- Fuel Type --------------
+          var itemFuel = {
+            rowServicePackageID: row.find(".rowServicePackageID")[0],
+            rowFuelID: row.find(".rowFuelID")[0],
+            FuelPrice: row.find(".FuelPrice")[0]
+          };
+          service_packages_items_fuel.push(itemFuel);
+
+          // -------------- Filter Type
+          var itemFilter = {
+            rowServicePackageID: row.find(".rowServicePackageID")[0],
+            rowFilterID: row.find(".rowFilterID")[0],
+            FilterPrice: row.find(".FilterPrice")[0]
+          };
+
+          service_packages_items_filter.push(itemFilter);
   
-      //     // item.HoursInput.addEventListener("input", calculateRepairTotal);
-      //     // item.UnitPriceInput.addEventListener("input", calculateRepairTotal);
-      //     // item.discountInput.addEventListener("input", calculateRepairTotal);
-  
-      //     // calculateRepairTotal();
+
         });
 
 
@@ -708,58 +737,124 @@ $(document).ready(function () {
   
     });
 
+    // --------------- Calculate Price
+    function calculateServicePackageTotal() {
+      // -- Fuel Type
+      let totalAmount=0;
+
+      selected_filter.forEach((filter) =>{
+        totalAmount += Number.parseInt(filter.price)
+      })
+
+      selected_fuel.forEach((fuel) =>{
+        totalAmount += Number.parseInt(fuel.price)
+      })
+  
+      $("#service-package-total").text(totalAmount.toFixed(2));
+
+      console.log(selected_filter)
+      console.log(selected_fuel)
+
+  
+    }
+
     // ------------- Selected Lubricant Type -------
     $(document).on('change', '.fuel-radio', function() {
       if ($(this).is(':checked')) {
+          const ServicePackageId = $(this).closest('tr').find('.rowServicePackageID').text();
           const selectedPrice = $(this).closest('tr').find('.FuelPrice').val();
           const selectedId = $(this).closest('tr').find('.rowFuelID').text();
+          console.log('Selected Service Package ID:', ServicePackageId);
           console.log('Selected Price:', selectedPrice);
-          console.log('Selected ID:', selectedId);
-          // Do whatever you need with the selected price and ID
+          console.log('Selected Fuel ID:', selectedId);
+          console.log("Fuel Type");
+
+          selected_fuel = selected_fuel.filter(item => !(item.ServicePackageId == ServicePackageId));
+
+
+          let i = {
+            ServicePackageId,
+            price:selectedPrice,
+            typeId:selectedId
+          }
+
+          selected_fuel.push(i)
+
+          calculateServicePackageTotal()
+          
       }
   });
   
     // ------------- Selected Filter Type -------
     $(document).on('change', '.filter-radio', function() {
       if ($(this).is(':checked')) {
+         const ServicePackageId = $(this).closest('tr').find('.rowServicePackageID').text();
           const selectedPrice = $(this).closest('tr').find('.FilterPrice').val();
           const selectedId = $(this).closest('tr').find('.rowFilterID').text();
+          console.log('Selected Service Package ID:', ServicePackageId);
           console.log('Selected Price:', selectedPrice);
-          console.log('Selected ID:', selectedId);
-          // Do whatever you need with the selected price and ID
+          console.log('Selected Filter ID:', selectedId);
+          console.log("Filter Type");
+
+
+          selected_filter = selected_filter.filter(item => !(item.ServicePackageId == ServicePackageId));
+
+    
+          let i = {
+            ServicePackageId,
+            price:selectedPrice,
+            typeId:selectedId
+          }
+
+          selected_filter.push(i)
+          calculateServicePackageTotal()
       }
   });
 
     $("#tableServicePackage").on("click", ".deleteServicePackageItem", function () {
       var listItem = $(this).data('id');  
 
-      
       let indexToRemove = selected_service_packages.findIndex(item => item.id == listItem);
 
       if (indexToRemove != -1) {
         selected_service_packages.splice(indexToRemove, 1);
       }
 
+      //  --------------- Delete From Fuel Type Arr
+      let indexToRemoveFuel = selected_fuel.findIndex(item => item.ServicePackageId == listItem);
+
+      if (indexToRemoveFuel != -1) {
+        selected_fuel.splice(indexToRemoveFuel, 1);
+      }
+      //  --------------- Delete From Filter Type Arr
+      let indexToRemoveFilter = selected_filter.findIndex(item => item.ServicePackageId == listItem);
+
+      if (indexToRemoveFilter != -1) {
+        selected_filter.splice(indexToRemoveFilter, 1);
+      }
+
   
 
       $(this).closest('tr').remove();
 
-        // Items Array
-        let indexToRemoveItems = service_packages_items.findIndex(item => item.rowID.innerText == listItem);
+        // // Items Array
+        // let indexToRemoveItems = service_packages_items.findIndex(item => item.rowID.innerText == listItem);
 
-        if (indexToRemoveItems != -1) {
-          service_packages_items.splice(indexToRemoveItems, 1);
-        }
+        // if (indexToRemoveItems != -1) {
+        //   service_packages_items.splice(indexToRemoveItems, 1);
+        // }
 
-      // console.log(service_packages_items)
+        console.log(selected_fuel)
+        console.log(selected_filter)
 
-        // calculateDisplay()
-        // calculateTotal()
+  
   
     })
 
     $("#job-card-step-4").click(function () {
       stepper.next()
+      console.log(selected_fuel)
+      console.log(selected_filter)
     })
 
 
