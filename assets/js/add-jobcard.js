@@ -332,7 +332,7 @@ $(document).ready(function () {
                           <tbody>
                           ${data.vehicle_subcategory.filter(subcategory => subcategory.vehicle_condition_category_id === category.id).map(subcategory => {
                             return `
-                            <tr data-subcategory-id="${subcategory.id}">
+                            <tr data-category-id="${category.id}" data-subcategory-id="${subcategory.id}">
                                     <td>${subcategory.sub_category}</td>
                                     <input type="hidden" value="${subcategory.id}">
                                     <td> 
@@ -385,12 +385,14 @@ $(document).ready(function () {
 
         // Find the subcategory ID for this row
         var subcategoryId = $(this).data('subcategory-id');
+        var categoryId = $(this).data('category-id');
 
         // Find the radio buttons within this row
         $(this).find('input[type="radio"]').each(function() {
             // Check if the radio button is checked
             if ($(this).is(':checked')) {
                 // Store the subcategory ID and the value of the checked radio button
+                row['categoryId'] = categoryId;
                 row['subcategoryId'] = subcategoryId;
                 row['value'] = $(this).val();
             }
@@ -837,15 +839,12 @@ $(document).ready(function () {
 
       $(this).closest('tr').remove();
 
-        // // Items Array
-        // let indexToRemoveItems = service_packages_items.findIndex(item => item.rowID.innerText == listItem);
-
-        // if (indexToRemoveItems != -1) {
-        //   service_packages_items.splice(indexToRemoveItems, 1);
-        // }
+  
 
         console.log(selected_fuel)
         console.log(selected_filter)
+
+        calculateServicePackageTotal()
 
   
   
