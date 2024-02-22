@@ -534,6 +534,7 @@ $(document).ready(function () {
     //  ---------------------- Step 4 -------------
     var dropdownServicePackage = document.getElementById("cmbservicepackages");
     var tableBodyServicePackage = $("#table-jobcard-service-packages");
+
     var service_packages_items = [];
     var selected_service_packages = [];
 
@@ -551,9 +552,6 @@ $(document).ready(function () {
 
             console.log(data)
             // console.log(data.servicePackage[0])
-
-      
-  
           // ---------------
           let foundServicePackage = selected_service_packages.some(servicep => servicep.id == servicePackageId);
   
@@ -584,6 +582,7 @@ $(document).ready(function () {
 
         data.servicePackage.forEach(function (plist,index) {
           var row = $(`<tr data-widget="expandable-table" aria-expanded="false">
+          <td class='rowServicePackageID' style='display:none;'>${plist.id}</td>
           <td>${index + 1}</td>
           <td>${plist.package_name}</td>
           <td>
@@ -599,7 +598,7 @@ $(document).ready(function () {
                   <thead>
                       <tr>
                       <th>#</th>
-                      <th>Fuel Type</th>
+                      <th>Lubricant Type</th>
                       <th>Price</th>
                       <th>Select</th>
                       </tr>
@@ -608,6 +607,7 @@ $(document).ready(function () {
                       
                   ${data.fuelArry.map((fuel, fuelIndex) => `
                     <tr>
+                    <td class='rowFuelID' style='display:none;'>${fuel.id}</td>
                         <td>${fuelIndex + 1}</td>
                         <td>${fuel.name}</td>
                         <td>
@@ -615,7 +615,7 @@ $(document).ready(function () {
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">LKR</span>
                                 </div>
-                                <input value="${fuel.price}" type="text" class="form-control">
+                                <input value="${fuel.price}" type="text" class="form-control FuelPrice">
                                 <div class="input-group-append">
                                     <span class="input-group-text">.00</span>
                                 </div>
@@ -623,7 +623,7 @@ $(document).ready(function () {
                         </td>
                         <td>
                             <div class="custom-control custom-radio">
-                                <input class="custom-control-input" type="radio" id="fuelRadio${index + 1}_${fuelIndex + 1}" name="fuelRadio${index + 1}">
+                                <input class="custom-control-input fuel-radio" type="radio" id="fuelRadio${index + 1}_${fuelIndex + 1}" name="fuelRadio${index + 1}">
                                 <label for="fuelRadio${index + 1}_${fuelIndex + 1}" class="custom-control-label"></label>
                             </div>
                         </td>
@@ -651,6 +651,7 @@ $(document).ready(function () {
                       
                   ${data.filterArry.map((filter, filterIndex) => `
                   <tr>
+                    <td class='rowFilterID' style='display:none;'>${filter.id}</td>
                       <td>${filterIndex + 1}</td>
                       <td>${filter.name}</td>
                       <td>
@@ -658,7 +659,7 @@ $(document).ready(function () {
                               <div class="input-group-prepend">
                                   <span class="input-group-text">LKR</span>
                               </div>
-                              <input value="${filter.price}" type="text" class="form-control">
+                              <input value="${filter.price}" type="text" class="form-control FilterPrice">
                               <div class="input-group-append">
                                   <span class="input-group-text">.00</span>
                               </div>
@@ -666,7 +667,7 @@ $(document).ready(function () {
                       </td>
                       <td>
                           <div class="custom-control custom-radio">
-                              <input class="custom-control-input" type="radio" id="filterRadio${index + 1}_${filterIndex + 1}" name="filterRadio${index + 1}">
+                              <input class="custom-control-input filter-radio" type="radio" id="filterRadio${index + 1}_${filterIndex + 1}" name="filterRadio${index + 1}">
                               <label for="filterRadio${index + 1}_${filterIndex + 1}" class="custom-control-label"></label>
                           </div>
                       </td>
@@ -689,15 +690,11 @@ $(document).ready(function () {
           
           tableBodyServicePackage.append(row);
   
-      //     // Add the new item to the items array
-      //     // var item = {
-      //     //   rowID: row.find(".rowID")[0],
-      //     //   HoursInput: row.find(".hours")[0],
-      //     //   UnitPriceInput: row.find(".unit-price")[0],
-      //     //   discountInput: row.find(".discount")[0],
-      //     //   totalCell: row.find(".repair-total")[0],
-      //     // };
-      //     // repair_items.push(item);
+          // Add the new item to the items array
+          var item = {
+            rowFuelID: row.find(".rowServicePackageID")[0]
+          };
+          service_packages_items.push(item);
   
       //     // item.HoursInput.addEventListener("input", calculateRepairTotal);
       //     // item.UnitPriceInput.addEventListener("input", calculateRepairTotal);
@@ -710,6 +707,28 @@ $(document).ready(function () {
       }
   
     });
+
+    // ------------- Selected Lubricant Type -------
+    $(document).on('change', '.fuel-radio', function() {
+      if ($(this).is(':checked')) {
+          const selectedPrice = $(this).closest('tr').find('.FuelPrice').val();
+          const selectedId = $(this).closest('tr').find('.rowFuelID').text();
+          console.log('Selected Price:', selectedPrice);
+          console.log('Selected ID:', selectedId);
+          // Do whatever you need with the selected price and ID
+      }
+  });
+  
+    // ------------- Selected Filter Type -------
+    $(document).on('change', '.filter-radio', function() {
+      if ($(this).is(':checked')) {
+          const selectedPrice = $(this).closest('tr').find('.FilterPrice').val();
+          const selectedId = $(this).closest('tr').find('.rowFilterID').text();
+          console.log('Selected Price:', selectedPrice);
+          console.log('Selected ID:', selectedId);
+          // Do whatever you need with the selected price and ID
+      }
+  });
 
     $("#tableServicePackage").on("click", ".deleteServicePackageItem", function () {
       var listItem = $(this).data('id');  
@@ -732,9 +751,15 @@ $(document).ready(function () {
           service_packages_items.splice(indexToRemoveItems, 1);
         }
 
+      // console.log(service_packages_items)
+
         // calculateDisplay()
         // calculateTotal()
   
+    })
+
+    $("#job-card-step-4").click(function () {
+      stepper.next()
     })
 
 

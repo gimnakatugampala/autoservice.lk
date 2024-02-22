@@ -657,10 +657,10 @@
                         </div>
                         </div>
 
-                        <h4><b>Total - LKR 30,000/=</b></h4>
+                        <h4><b>Total - LKR <span id="service-package-total">00</span>/=</b></h4>
 
                         <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
-                        <button class="btn btn-primary" onclick="stepper.next()">Next</button>
+                        <button id="job-card-step-4" class="btn btn-primary" >Next</button>
                 </div>
                 <!-- Search Service Packages  - Step 4 -->
 
