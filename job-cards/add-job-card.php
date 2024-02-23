@@ -746,7 +746,7 @@
                     <h4><b>Total - LKR <span id="repair-final-total">00</span>/=</b></h4>
 
                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
-                    <button class="btn btn-primary" onclick="stepper.next()">Next</button>
+                    <button id="job-card-step-5" class="btn btn-primary">Next</button>
                 </div>
                 <!-- Repair Packages  - Step 5 -->
 
@@ -866,7 +866,7 @@
                     <h4><b>Total - LKR <span id="total-final-product">00</span>/=</b></h4>
 
                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
-                    <button class="btn btn-primary" onclick="stepper.next()">Next</button>
+                    <button id="job-card-step-6" class="btn btn-primary">Next</button>
                     <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
                 </div>
                 <!--  Products  - Step 6 -->

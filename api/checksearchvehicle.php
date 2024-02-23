@@ -1,6 +1,10 @@
 <?php
 require_once '../includes/db_config.php';
 
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 $_SESSION["job_card_vehicle_class_id"] = "";
 
 $vehicleID = $_POST['itemID'];
@@ -61,11 +65,24 @@ if ( $result->num_rows > 0 ) {
 }
 
 
+$sql_station = "SELECT * FROM service_station WHERE id = '{$_SESSION["station_id"]}'";
+$result_station = $conn->query( $sql_station );
+
+$station = array();
+
+if ( $result_station->num_rows > 0 ) {
+    while ( $row = $result_station->fetch_assoc() ) {
+        $station[] = $row;
+    }
+}
+
+
 
 echo json_encode([ 
 "vehicles" => $vehicle, 
 "cmbstatus"=>$status, 
 "cmbpaidstatus" => $paid_status,
-"cmbjobtypes"=>$job_card_type
+"cmbjobtypes"=>$job_card_type,
+"station"=>$station
 ]);
 ?>

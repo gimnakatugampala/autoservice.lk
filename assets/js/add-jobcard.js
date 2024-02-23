@@ -19,6 +19,8 @@ $(document).ready(function () {
 
     let jobCardCode;
     let invoiceCode;
+
+    let serviceStationInfo;
     
 
   
@@ -50,6 +52,7 @@ $(document).ready(function () {
         // console.log(status.cmbstatus)
 
         vehicle = data.vehicles
+        // serviceStationInfo
 
         $('#search-vehicle-content').html(`
         <div class="row my-4">
@@ -1035,6 +1038,11 @@ $(document).ready(function () {
       $(this).closest('tr').remove();
   
     })
+   
+    $("#job-card-step-5").click(function () {
+      console.log("Job Card 5")
+      stepper.next()
+    })
     // --------------- Step 5 ------------
 
 
@@ -1190,6 +1198,36 @@ $(document).ready(function () {
 
       $(this).closest('tr').remove();
   
+    })
+
+    $("#job-card-step-6").click(function () {
+  
+
+      // ------------------------- Service Package  --------------------
+      console.log(service_packages_items_fuel)
+      console.log(service_packages_items_filter)
+      console.log(selected_fuel)
+      console.log(selected_filter)
+      // ------------------------- Service Package  --------------------
+
+      // ------------------------- Repair Package  --------------------
+      console.log(repair_items)
+      console.log(selected_repairs)
+
+      // ------------------------- Washer  --------------------
+      console.log(items)
+      console.log(WasherValues)
+      // ------------------------- Washer  --------------------
+
+      // ------------------------- Products  --------------------
+      console.log(products_items)
+      console.log(selected_products)
+      // ------------------------- Products  --------------------
+
+      getInvoiceDetails(vehicle)
+
+
+      stepper.next()
     })
 
     //  ------------------------------- Step 6 --------------------------
