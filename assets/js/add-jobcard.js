@@ -446,6 +446,7 @@ $(document).ready(function () {
 
         <tr class="rowBody">
         <td style='display:none;' class='rowID'>${data.id}</td>
+        <td style='display:none;' class='rowCode'>${data.code}</td>
         <td>1</td>
         <td>Wash</td>
         <td>  
@@ -491,6 +492,7 @@ $(document).ready(function () {
 
       var row = $(".rowBody"); // Assuming you only have one row
       var item = {
+          rowCode: row.find(".rowCode")[0],
           rowID: row.find(".rowID")[0],
           quantityInput: row.find(".wash-qty")[0],
           priceInput: row.find(".wash-unit-price")[0],
@@ -1272,6 +1274,26 @@ $(document).ready(function () {
       const formattedDate = `${formattedDay}-${formattedMonth}-${year}`;
 
       $("#in_opening_date").text(`${formattedDate}`);
+
+      items.map((wash) => {
+        console.log(wash)
+      })
+
+      //  Wash ----------
+      $('#tb_jobcard_items').html(`
+          ${items.map((wash) => {
+              return `
+              <tr>
+              <td>${wash.rowCode.innerText}</td>
+              <td class="text-uppercase">Wash</td>
+              <td>${wash.quantityInput.value}</td>
+              <td>${wash.priceInput.value}</td>
+              <td>${wash.discountInput.value}</td>
+              <td>${wash.totalCell.innerText}</td>
+          </tr>
+                  `;
+          }).join('')}
+      `);
 
 
     }

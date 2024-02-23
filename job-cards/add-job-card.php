@@ -959,13 +959,12 @@
                                 <th>Item Description</th>
                                 <th>QTY / Labour Hr</th>
                                 <th>Unit Price (LKR)</th>
-                                <th>Amount (LKR)</th>
                                 <th>Discount (LKR)</th>
                                 <th>Total (LKR)</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
+                            <tbody id="tb_jobcard_items">
+                            <!-- <tr>
                                 <td>00-93987-3</td>
                                 <td class="text-uppercase">oil filter-micro mtw 62 (c-809)</td>
                                 <td>1.5</td>
@@ -982,7 +981,7 @@
                                 <td>1999.98</td>
                                 <td>999.998</td>
                                 <td>999.998</td>
-                            </tr>
+                            </tr> -->
                             
                             </tbody>
                             </table>
