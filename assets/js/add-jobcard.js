@@ -52,7 +52,7 @@ $(document).ready(function () {
         // console.log(status.cmbstatus)
 
         vehicle = data.vehicles
-        // serviceStationInfo
+        serviceStationInfo = data.station
 
         $('#search-vehicle-content').html(`
         <div class="row my-4">
@@ -293,7 +293,7 @@ $(document).ready(function () {
          // ---------------- INVOICE DETAILS ----------------
          jobCardCode = generateUUID()
          invoiceCode = generateUUID()
-         getInvoiceDetails(vehicle)
+         getInvoiceDetails(vehicle,serviceStationInfo)
          // ---------------- INVOICE DETAILS ----------------
 
       }
@@ -1224,7 +1224,7 @@ $(document).ready(function () {
       console.log(selected_products)
       // ------------------------- Products  --------------------
 
-      getInvoiceDetails(vehicle)
+      getInvoiceDetails(vehicle,serviceStationInfo)
 
 
       stepper.next()
@@ -1235,7 +1235,7 @@ $(document).ready(function () {
 
 
     // -------------------------- Step 7 ----------------------------
-    function getInvoiceDetails(vehicle) {
+    function getInvoiceDetails(vehicle,serviceStationInfo) {
       
       $("#in_vehicle_no").text(`${vehicle[0].vehicle_number}`);
       $("#in_jobcard_no").text(`${jobCardCode}`);
@@ -1250,6 +1250,12 @@ $(document).ready(function () {
       $("#in_chassis_no").text(`${vehicle[0].chassis_number}`);
       $("#in_engine_no").text(`${vehicle[0].engine_number}`);
       $("#in_payment_method").text(`${vehicle[0].engine_number}`);
+      $("#in_station_name").text(`${serviceStationInfo[0].service_name}`);
+      $("#in_station_address").text(`${serviceStationInfo[0].address == null ? "NULL" : `${serviceStationInfo[0].address} ${serviceStationInfo[0].street} ${serviceStationInfo[0].city}`}`);
+      $("#in_station_phone").text(`${serviceStationInfo[0].phone == null ? "NULL" : serviceStationInfo[0].phone}`);
+      $("#in_station_email").text(`${serviceStationInfo[0].email == null ? "NULL" : serviceStationInfo[0].email}`);
+      $('#in_station_logo').attr('src', serviceStationInfo[0].logo == null ? "" : `../uploads/stations/${serviceStationInfo[0].logo}`);
+
 
       const currentDate = new Date();
 

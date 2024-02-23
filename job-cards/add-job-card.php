@@ -878,34 +878,33 @@
                         <!-- title row -->
                         <div class="row">
                             <div class="col-md-1">
-                            <img width="150" src="../dist/img/system/logo_pistona.png" alt="Station Logo">
+                            <img id="in_station_logo" width="150" src="../dist/img/system/logo_pistona.png" alt="Station Logo">
                             </div>
                         
 
                             <div class="row col-md-10">
                             <div class="col-md-12">
                             <h5 class="text-center text-uppercase">
-                                <b>
-                                Pistona Automotive Solutions (Pvt) Ltd
+                                <b id="in_station_name">
+                                
                                 </b>
                             </h5>
                             </div>
 
                             <div class="col-md-12">
-                                <p class="text-center text-uppercase m-0 p-0">
-                                    385/45, Major Wasantha gunarathne mw, mahara kadawatha
+                                <p id="in_station_address" class="text-center text-uppercase m-0 p-0">
                                 </p>
                             </div>
 
                             <div class="col-md-12">
                                 <p class="text-center m-0 p-0">
-                                    Tel: 0117600800 Fax : 0112948098
+                                    Tel: <span id="in_station_phone"></span>
                                 </p>
                             </div>
 
                             <div class="col-md-12">
                                 <p class="text-center m-0 p-0">
-                                    Email: pistonaautomotivesolutions@gmail.com
+                                    Email: <span id="in_station_email"></span>
                                 </p>
                             </div>
                             <div class="col-md-12">
