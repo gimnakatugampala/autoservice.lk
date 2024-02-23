@@ -21,6 +21,11 @@ $(document).ready(function () {
     let invoiceCode;
 
     let serviceStationInfo;
+
+    const VAT = document.getElementById("in_vat_input");
+    VAT.addEventListener("input", function () {
+      displayCalculation()
+    })
     
 
   
@@ -616,6 +621,8 @@ $(document).ready(function () {
         data.servicePackage.forEach(function (plist) {
           var row = $(`<tr data-widget="expandable-table" aria-expanded="false">
           <td class='rowServicePackageID' style='display:none;'>${plist.id}</td>
+          <td class='rowServicePackageCode' style='display:none;'>${plist.code}</td>
+          <td class='rowServicePackageName' style='display:none;'>${plist.package_name}</td>
           <td>${counterId}</td>
           <td>${plist.package_name}</td>
           <td>
@@ -709,9 +716,6 @@ $(document).ready(function () {
                   </tr>
               `).join('')}
 
-
-                  
-                      
                   </tbody>
                   </table>
               </div>
@@ -727,13 +731,17 @@ $(document).ready(function () {
         
   
           var item = {
-            rowServicePackageID: row.find(".rowServicePackageID")[0]
+            rowServicePackageID: row.find(".rowServicePackageID")[0],
+            rowServicePackageCode: row.find(".rowServicePackageCode")[0],
+            rowServicePackageName: row.find(".rowServicePackageName")[0]
           };
           service_packages_items.push(item);
 
           // -------------- Fuel Type --------------
           var itemFuel = {
             rowServicePackageID: row.find(".rowServicePackageID")[0],
+            rowServicePackageCode: row.find(".rowServicePackageCode")[0],
+            rowServicePackageName: row.find(".rowServicePackageName")[0],
             rowFuelID: row.find(".rowFuelID")[0],
             FuelPrice: row.find(".FuelPrice")[0]
           };
@@ -742,6 +750,8 @@ $(document).ready(function () {
           // -------------- Filter Type
           var itemFilter = {
             rowServicePackageID: row.find(".rowServicePackageID")[0],
+            rowServicePackageCode: row.find(".rowServicePackageCode")[0],
+            rowServicePackageName: row.find(".rowServicePackageName")[0],
             rowFilterID: row.find(".rowFilterID")[0],
             FilterPrice: row.find(".FilterPrice")[0]
           };
@@ -934,6 +944,8 @@ $(document).ready(function () {
         data.forEach(function (plist) {
           var row = $("<tr>");
           row.append(`<td class='rowID' style='display:none;'>${plist.id}</td>`);
+          row.append(`<td class='rowCode' style='display:none;'>${plist.code}</td>`);
+          row.append(`<td class='rowName' style='display:none;'>${plist.name}</td>`);
           row.append(`<td>1.</td>`);
           row.append(`<td>${plist.name}</td>`);
           row.append(`<td>  
@@ -970,6 +982,8 @@ $(document).ready(function () {
   
           // Add the new item to the items array
           var item = {
+            rowCode: row.find(".rowCode")[0],
+            rowName: row.find(".rowName")[0],
             rowID: row.find(".rowID")[0],
             HoursInput: row.find(".hours")[0],
             UnitPriceInput: row.find(".unit-price")[0],
@@ -1100,6 +1114,8 @@ $(document).ready(function () {
         data.forEach(function (plist,index) {
           var row = $("<tr>");
           row.append(`<td class='rowProductID' style='display:none;'>${plist.id}</td>`);
+          row.append(`<td class='rowProductCode' style='display:none;'>${plist.code}</td>`);
+          row.append(`<td class='rowProductName' style='display:none;'>${plist.product_name}</td>`);
           row.append(`<td>${index + 1}.</td>`);
           row.append(`<td>${plist.product_name}</td>`);
           row.append(`<td>  
@@ -1135,6 +1151,8 @@ $(document).ready(function () {
         //   // Add the new item to the items array
           var item = {
             rowID: row.find(".rowProductID")[0],
+            rowCode: row.find(".rowProductCode")[0],
+            rowName: row.find(".rowProductName")[0],
             quantityInput: row.find(".quantityQty")[0],
             priceInput: row.find(".unitPriceProduct")[0],
             discountInput: row.find(".discountProduct")[0],
@@ -1247,8 +1265,8 @@ $(document).ready(function () {
       $("#in_contact_number").text(`${vehicle[0].phone}`);
       $("#in_model").text(`${vehicle[0].vehicle_model_name}`);
       $("#in_make").text(`${vehicle[0].vehicle_make_name}`);
-      $("#in_current_mileage").text(`${current_mileage}`);
-      $("#in_next_mileage").text(`${new_mileage}`);
+      $("#in_current_mileage").text(`${current_mileage} KM`);
+      $("#in_next_mileage").text(`${new_mileage} KM`);
       $("#in_chassis_no").text(`${vehicle[0].chassis_number}`);
       $("#in_engine_no").text(`${vehicle[0].engine_number}`);
       $("#in_payment_method").text(`${vehicle[0].engine_number}`);
@@ -1275,11 +1293,15 @@ $(document).ready(function () {
 
       $("#in_opening_date").text(`${formattedDate}`);
 
-      items.map((wash) => {
-        console.log(wash)
-      })
 
-      //  Wash ----------
+      // Calculate Sub Total
+      calculateSubtotal()
+
+      // Total
+      displayCalculation()
+
+      
+      //  ---------- LOAD Table
       $('#tb_jobcard_items').html(`
           ${items.map((wash) => {
               return `
@@ -1293,9 +1315,140 @@ $(document).ready(function () {
           </tr>
                   `;
           }).join('')}
+
+          ${repair_items.map((repair) => {
+            return `
+            <tr>
+            <td>${repair.rowCode.innerText}</td>
+            <td class="text-uppercase">${repair.rowName.innerText}</td>
+            <td>${repair.HoursInput.value}</td>
+            <td>${repair.UnitPriceInput.value}</td>
+            <td>${repair.discountInput.value}</td>
+            <td>${repair.totalCell.innerText}</td>
+        </tr>
+                `;
+        }).join('')}
+
+        ${products_items.map((product) => {
+          return `
+          <tr>
+          <td>${product.rowCode.innerText}</td>
+          <td class="text-uppercase">${product.rowName.innerText}</td>
+          <td>${product.quantityInput.value}</td>
+          <td>${product.priceInput.value}</td>
+          <td>${product.quantityInput.value}</td>
+          <td>${product.totalCell.innerText}</td>
+      </tr>
+              `;
+      }).join('')}
+
+      ${service_packages_items.map((spitems) => {
+
+         // Get the service package ID
+      const servicePackageId = spitems.rowServicePackageID.innerText;
+
+      // Initialize variables for fuel and filter totals
+      let fuelTotal = 0;
+      let filterTotal = 0;
+
+      // Calculate fuel total
+      service_packages_items_fuel.forEach((fuelItem) => {
+          if (fuelItem.rowServicePackageID.innerText  == servicePackageId) {
+              fuelTotal += parseFloat(fuelItem.FuelPrice.value);
+          }
+      });
+
+      // Calculate filter total
+      service_packages_items_filter.forEach((filterItem) => {
+          if (filterItem.rowServicePackageID.innerText  == servicePackageId) {
+              filterTotal += parseFloat(filterItem.FilterPrice.value);
+          }
+      });
+
+      // Calculate total
+      const total = fuelTotal + filterTotal;
+
+        return `
+        <tr>
+        <td>${spitems.rowServicePackageCode.innerText}</td>
+        <td class="text-uppercase">${spitems.rowServicePackageName.innerText}</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+        <td>${Number.parseFloat(total).toFixed(2)}</td>
+    </tr>
+            `;
+    }).join('')}
+
+
       `);
 
 
+    }
+
+
+    function calculateSubtotal() {
+
+      // Initialize total variable
+      let grandTotal = 0;
+
+      // Calculate total for 'items'
+      grandTotal += items.reduce((total, wash) => {
+          return total + parseFloat(wash.totalCell.innerText);
+      }, 0);
+
+      // Calculate total for 'repair_items'
+      grandTotal += repair_items.reduce((total, repair) => {
+          return total + parseFloat(repair.totalCell.innerText);
+      }, 0);
+
+      // Calculate total for 'products_items'
+      grandTotal += products_items.reduce((total, product) => {
+          return total + parseFloat(product.totalCell.innerText);
+      }, 0);
+
+      // Calculate total for 'service_packages_items'
+      grandTotal += service_packages_items.reduce((total, spitems) => {
+          // Get the service package ID
+          const servicePackageId = spitems.rowServicePackageID.innerText;
+
+          // Initialize variables for fuel and filter totals
+          let fuelTotal = 0;
+          let filterTotal = 0;
+
+          // Calculate fuel total
+          service_packages_items_fuel.forEach((fuelItem) => {
+              if (fuelItem.rowServicePackageID.innerText == servicePackageId) {
+                  fuelTotal += parseFloat(fuelItem.FuelPrice.value);
+              }
+          });
+
+          // Calculate filter total
+          service_packages_items_filter.forEach((filterItem) => {
+              if (filterItem.rowServicePackageID.innerText == servicePackageId) {
+                  filterTotal += parseFloat(filterItem.FilterPrice.value);
+              }
+          });
+
+          // Calculate total
+          const totalCal = fuelTotal + filterTotal;
+
+          return totalCal + parseFloat(totalCal);
+      }, 0);
+
+
+      $("#in_subtotal").text(`${grandTotal}`);
+      
+      
+    }
+
+    function displayCalculation(){
+      const VAT_value = VAT.value === "" ? 0 : parseFloat(VAT.value);
+      const subtotal = parseFloat($("#in_subtotal").text());
+      const final = subtotal + (subtotal * VAT_value / 100);
+      $("#in_total").text(final.toFixed(2));
+      
+      
     }
     
     // -------------------------- Step 7 ----------------------------

@@ -1005,13 +1005,13 @@
                             <table class="table">
                                 <tr>
                                 <th style="width:50%">Subtotal:</th>
-                                <td>LKR 250.30</td>
+                                <td>LKR <span id="in_subtotal">0</span></td>
                                 </tr>
                                 <tr>
-                                <th>VAT (9.3%) :</th>
+                                <th>VAT (%) :</th>
                                 <td>
                                     <div class="input-group w-50">
-                                    <input type="text" class="form-control">
+                                    <input id="in_vat_input" type="text" class="form-control">
                                     <div class="input-group-append">
                                     <span class="input-group-text">%</span>
                                     </div>
@@ -1020,7 +1020,7 @@
                                 </tr>
                                 <tr>
                                 <th>Total Amount :</th>
-                                <td>LKR 265.24</td>
+                                <td>LKR <span id="in_total">0</span></td>
                                 </tr>
                             </table>
                             </div>

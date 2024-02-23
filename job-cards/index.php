@@ -19,18 +19,16 @@
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-5">
+          <div class="col-sm-10">
             <h1>Pending Job Card List</h1>
           </div>
-          <div class="col-sm-7">
+          <div class="col-sm-2">
             <!-- <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active">Vehicles</li>
             </ol> -->
-            <a href="../job-cards/add-repair-order.php" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus"></i> Add Repair</a>
-            <a href="../job-cards/add-service-order.php" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus"></i> Add Service</a>
-            <a href="../job-cards/add-service-repair-order.php" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus"></i> Add Repair & Service</a>
-            <a href="../job-cards/add-wash-order.php" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus"></i> Add Washer</a>
+            
+            <a href="../job-cards/add-job-card.php" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus"></i> Add Job Card</a>
           </div>
 
         </div>
