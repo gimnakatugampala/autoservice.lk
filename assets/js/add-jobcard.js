@@ -194,56 +194,56 @@ $(document).ready(function () {
       console.log(vehicle)
 
 
-      // if(vehicle == null){
-      //   Swal.fire({
-      //     icon: "error",
-      //     title: "Error",
-      //     text: "Please Select Vehicle",
-      //   });
-      //   return
-      // }else if(current_mileage == ""){
-      //   Swal.fire({
-      //     icon: "error",
-      //     title: "Error",
-      //     text: "Please Enter Current Mileage",
-      //   });
-      //   return
-      // }else if(new_mileage == ""){
-      //   Swal.fire({
-      //     icon: "error",
-      //     title: "Error",
-      //     text: "Please Enter New Mileage",
-      //   });
-      //   return
-      // }else if(paid_status == null){
-      //   Swal.fire({
-      //     icon: "error",
-      //     title: "Error",
-      //     text: "Please Select Paid Status",
-      //   });
-      //   return
-      // }else if(job_card_type == null){
-      //   Swal.fire({
-      //     icon: "error",
-      //     title: "Error",
-      //     text: "Please Select Job Card Type",
-      //   });
-      //   return
-      // }else if(status == null){
-      //   Swal.fire({
-      //     icon: "error",
-      //     title: "Error",
-      //     text: "Please Select Status",
-      //   });
-      //   return
-      // }else if(notify == null){
-      //   Swal.fire({
-      //     icon: "error",
-      //     title: "Error",
-      //     text: "Please Select Notification Time",
-      //   });
-      //   return
-      // }else{
+      if(vehicle == null){
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Please Select Vehicle",
+        });
+        return
+      }else if(current_mileage == ""){
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Please Enter Current Mileage",
+        });
+        return
+      }else if(new_mileage == ""){
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Please Enter New Mileage",
+        });
+        return
+      }else if(paid_status == null){
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Please Select Paid Status",
+        });
+        return
+      }else if(job_card_type == null){
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Please Select Job Card Type",
+        });
+        return
+      }else if(status == null){
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Please Select Status",
+        });
+        return
+      }else if(notify == null){
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Please Select Notification Time",
+        });
+        return
+      }else{
 
       // --------------- Set Washer in Step 3 -----------
       if(job_card_type != "2" && job_card_type != "3"){
@@ -285,7 +285,7 @@ $(document).ready(function () {
         console.log(vehicle)
         console.log(notify)
 
-      // }
+      }
 
 
      
@@ -403,10 +403,13 @@ $(document).ready(function () {
         rowVehicleReportData.push(row);
     });
 
+  
+    
+    stepper.next()
     
     console.log(rowVehicleReportData);
     
-      stepper.next()
+      
     })
     // --------------- Step 2 ------------
 
