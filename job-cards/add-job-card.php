@@ -923,29 +923,27 @@
                         <!-- info row -->
                         <div class="row">
                         <div class="col-sm-6 mx-auto">
-                            <span><b>Order No</b></span> : <span>JMW435</span><br>
-                            <span><b>Customer Name</b></span> : <span class="text-uppercase">C19436&nbsp; MR GIMNA KATUGAMPALA</span><br>
-                            <span><b>Address</b></span> : <span class="text-uppercase">No:6A, Megoda Kolonnawa Wellampitiya.</span><br />
-                            <span><b>Contact No.</b></span> : <span class="text-uppercase">0764961707.</span><br />
+                            <span><b>Job Card No</b></span> : <span id="in_jobcard_no"></span><br>
+                            <span><b>Customer Name</b></span> : <span class="text-uppercase" id="in_vehicle_owner"></span><br>
+                            <span><b>Address</b></span> : <span class="text-uppercase" id="in_address"></span><br />
+                            <span><b>Contact No.</b></span> : <span class="text-uppercase" id="in_contact_number"></span><br />
                             <span><b>VAT No</b></span> : <span class="text-uppercase"></span><br />
-                            <span><b>Model Code</b></span> : <span class="text-uppercase">MC0125</span><br />
-                            <span><b>Make Code</b></span> : <span class="text-uppercase">HONDA</span><br />
-                            <span><b>Current Mileage</b></span> : <span class="text-uppercase">19,809.00</span><br />
-                            <span><b>Order Details</b></span> : <span class="text-uppercase">5th Full Service</span><br />
-                            <span><b>Order Times:</b></span> : <span class="text-uppercase">7th Time</span><br />
+                            <span><b>Model Code</b></span> : <span class="text-uppercase" id="in_model"></span><br />
+                            <span><b>Make Code</b></span> : <span class="text-uppercase" id="in_make"></span><br />
+                            <span><b>Current Mileage</b></span> : <span class="text-uppercase" id="in_current_mileage"></span><br />
+                       
                         </div>
                         <!-- /.col -->
 
                         <div class="col-sm-6 mx-auto">
-                            <span><b>Invoice No</b></span> : <span class="text-uppercase">IMW1898</span><br>
-                            <span><b>Invoice Date</b></span> : <span class="text-uppercase">25/03/2024</span><br>
-                            <span><b>Payment Method</b></span> : <span class="text-uppercase">Cash</span><br>
-                            <span><b>Vehicle No</b></span> : <span class="text-uppercase">CAT-8717</span><br>
-                            <span><b>Opening Date</b></span> : <span class="text-uppercase">25/03/2024</span><br>
-                            <span><b>Closing Date</b></span> : <span class="text-uppercase">25/03/2024</span><br>
-                            <span><b>Nxt Serv.Mileage</b></span> : <span class="text-uppercase">25,000 KM</span><br>
-                            <span><b>Chassis No</b></span> : <span class="text-uppercase">GM4-1108287</span><br>
-                            <span><b>Engine No</b></span> : <span class="text-uppercase">LEB-H15258306</span><br>
+                            <span><b>Invoice No</b></span> : <span class="text-uppercase" id="in_invoice_no"></span><br>
+                            <span><b>Invoice Date</b></span> : <span class="text-uppercase"></span><br>
+                            <span><b>Vehicle No</b></span> : <span class="text-uppercase" id="in_vehicle_no"></span><br>
+                            <span><b>Opening Date</b></span> : <span class="text-uppercase" id="in_opening_date"></span><br>
+                            <span><b>Closing Date</b></span> : <span class="text-uppercase"></span><br>
+                            <span><b>Nxt Serv.Mileage</b></span> : <span class="text-uppercase" id="in_next_mileage"></span><br>
+                            <span><b>Chassis No</b></span> : <span class="text-uppercase" id="in_chassis_no"></span><br>
+                            <span><b>Engine No</b></span> : <span class="text-uppercase" id="in_engine_no"></span><br>
 
                         </div>
                         <!-- /.col -->

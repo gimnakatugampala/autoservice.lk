@@ -16,6 +16,9 @@ $(document).ready(function () {
 
     var items = [];
     var WasherValues = []
+
+    let jobCardCode;
+    let invoiceCode;
     
 
   
@@ -32,6 +35,7 @@ $(document).ready(function () {
         success: function (data) {
 
           console.log(data)
+          
   
           // ---------------
               populateSearchVehicleContent(data);
@@ -270,12 +274,10 @@ $(document).ready(function () {
       }else{
         $('#washer-part-container').html(``)
       }
-
-   
-
       // --------------- Set Washer in Step 3 -----------
 
         stepper.next()
+
 
         console.log(current_mileage)
         console.log(new_mileage)
@@ -284,6 +286,12 @@ $(document).ready(function () {
         console.log(status)
         console.log(vehicle)
         console.log(notify)
+
+         // ---------------- INVOICE DETAILS ----------------
+         jobCardCode = generateUUID()
+         invoiceCode = generateUUID()
+         getInvoiceDetails(vehicle)
+         // ---------------- INVOICE DETAILS ----------------
 
       }
 
@@ -1185,6 +1193,46 @@ $(document).ready(function () {
     })
 
     //  ------------------------------- Step 6 --------------------------
+
+
+
+    // -------------------------- Step 7 ----------------------------
+    function getInvoiceDetails(vehicle) {
+      
+      $("#in_vehicle_no").text(`${vehicle[0].vehicle_number}`);
+      $("#in_jobcard_no").text(`${jobCardCode}`);
+      $("#in_invoice_no").text(`${invoiceCode}`);
+      $("#in_vehicle_owner").text(`${vehicle[0].first_name} ${vehicle[0].last_name}`);
+      $("#in_address").text(`${vehicle[0].address}`);
+      $("#in_contact_number").text(`${vehicle[0].phone}`);
+      $("#in_model").text(`${vehicle[0].vehicle_model_name}`);
+      $("#in_make").text(`${vehicle[0].vehicle_make_name}`);
+      $("#in_current_mileage").text(`${current_mileage}`);
+      $("#in_next_mileage").text(`${new_mileage}`);
+      $("#in_chassis_no").text(`${vehicle[0].chassis_number}`);
+      $("#in_engine_no").text(`${vehicle[0].engine_number}`);
+      $("#in_payment_method").text(`${vehicle[0].engine_number}`);
+
+      const currentDate = new Date();
+
+      // Get day, month, and year
+      const day = currentDate.getDate();
+      const month = currentDate.getMonth() + 1; // Month is zero-based, so we add 1
+      const year = currentDate.getFullYear();
+
+      // Pad single-digit day and month with leading zero if needed
+      const formattedDay = day < 10 ? `0${day}` : day;
+      const formattedMonth = month < 10 ? `0${month}` : month;
+
+      // Format date as "DD-MM-YYYY"
+      const formattedDate = `${formattedDay}-${formattedMonth}-${year}`;
+
+      $("#in_opening_date").text(`${formattedDate}`);
+
+
+    }
+    
+    // -------------------------- Step 7 ----------------------------
 
 
   });
