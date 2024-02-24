@@ -1453,6 +1453,50 @@ $(document).ready(function () {
       
       
     }
+
+    $("#submit_jobcard").click(function () {
+       
+        if(job_card_type == "1"){
+          $.ajax({
+            type: "POST",
+            url: "../api/add-jobcardwasher.php",
+            data: {
+                jobcardcode:jobCardCode,
+                jobcardInvoicecode:invoiceCode,
+                status:status,
+                paid_status:paid_status,
+                job_card_type:job_card_type,
+                vehicle_id:vehicle[0].vehicle_id,
+                vehicle_owner_id:vehicle[0].vehicle_owner_id,
+                vat:VAT.value,
+                washers:JSON.stringify(WasherValues)
+            },
+            success: function (response) {
+              
+                console.log(response)
+  
+            // if (response === "success") {
+            //     window.location.href = "../return/";
+            //     // console.log("Success")
+    
+            // }else {
+            //     Swal.fire({
+            //         icon: "error",
+            //         title: "Please Try Again",
+            //         text: "Something Went Wrong",
+            //     });
+            // }
+  
+            },
+            error:function (error) {
+                console.log(error)
+            }
+        });
+        }
+
+
+    })
+    
     
     // -------------------------- Step 7 ----------------------------
 

@@ -13,7 +13,8 @@ $vehicleID = $_POST['itemID'];
 
 $sql = "SELECT * ,
 vehicle_model.name AS vehicle_model_name,
-vehicle_make.name AS vehicle_make_name
+vehicle_make.name AS vehicle_make_name,
+vehicle.id AS vehicle_id
 FROM vehicle 
 JOIN vehicle_owner ON vehicle.vehicle_owner_id = vehicle_owner.id
 JOIN vehicle_model ON vehicle.vehicle_model_id = vehicle_model.id

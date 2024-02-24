@@ -1033,7 +1033,7 @@
                     </div>
 
                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button id="submit_jobcard" type="submit" class="btn btn-primary">Submit</button>
                 </div>
                 <!-- Generate Invoice  - Step 7 -->
 
