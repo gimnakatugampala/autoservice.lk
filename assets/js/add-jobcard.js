@@ -1292,6 +1292,7 @@ $(document).ready(function () {
       const formattedDate = `${formattedDay}-${formattedMonth}-${year}`;
 
       $("#in_opening_date").text(`${formattedDate}`);
+      
 
 
       // Calculate Sub Total
@@ -1415,6 +1416,7 @@ $(document).ready(function () {
           // Initialize variables for fuel and filter totals
           let fuelTotal = 0;
           let filterTotal = 0;
+          let totalCal = 0;
 
           // Calculate fuel total
           service_packages_items_fuel.forEach((fuelItem) => {
@@ -1431,9 +1433,9 @@ $(document).ready(function () {
           });
 
           // Calculate total
-          const totalCal = fuelTotal + filterTotal;
+           totalCal = fuelTotal + filterTotal;
 
-          return totalCal + parseFloat(totalCal);
+          return total + parseFloat(totalCal);
       }, 0);
 
 
@@ -1446,6 +1448,7 @@ $(document).ready(function () {
       const VAT_value = VAT.value === "" ? 0 : parseFloat(VAT.value);
       const subtotal = parseFloat($("#in_subtotal").text());
       const final = subtotal + (subtotal * VAT_value / 100);
+      $("#in_vat").text(`${VAT_value}`);
       $("#in_total").text(final.toFixed(2));
       
       
