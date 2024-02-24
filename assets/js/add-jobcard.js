@@ -1337,7 +1337,7 @@ $(document).ready(function () {
           <td class="text-uppercase">${product.rowName.innerText}</td>
           <td>${product.quantityInput.value}</td>
           <td>${product.priceInput.value}</td>
-          <td>${product.quantityInput.value}</td>
+          <td>${product.discountInput.value}</td>
           <td>${product.totalCell.innerText}</td>
       </tr>
               `;
@@ -1457,6 +1457,7 @@ $(document).ready(function () {
     $("#submit_jobcard").click(function () {
        
         if(job_card_type == "1"){
+
           $.ajax({
             type: "POST",
             url: "../api/add-jobcardwasher.php",
@@ -1492,6 +1493,76 @@ $(document).ready(function () {
                 console.log(error)
             }
         });
+
+
+        }else if(job_card_type == "2"){
+
+              const repairArr = repair_items.map(repair => ({
+                repairID:repair.rowID.innerText,
+                repairCode:repair.rowCode.innerText,
+                repairName:repair.rowName.innerText,
+                hours:repair.HoursInput.value,
+                price:repair.UnitPriceInput.value,
+                discount:repair.discountInput.value,
+                total: repair.totalCell.innerText
+            }));
+
+            const productArr = products_items.map(product => ({
+              productID:product.rowID.innerText,
+              productCode:product.rowCode.innerText,
+              productName:product.rowName.innerText,
+              qty:product.quantityInput.value,
+              price:product.priceInput.value,
+              discount:product.discountInput.value,
+              total: product.totalCell.innerText
+          }));
+
+
+
+
+console.log(repairArr);
+console.log(productArr);
+
+          $.ajax({
+            type: "POST",
+            url: "../api/add-jobcardrepair.php",
+            data: {
+                jobcardcode:jobCardCode,
+                jobcardInvoicecode:invoiceCode,
+                status:status,
+                paid_status:paid_status,
+                job_card_type:job_card_type,
+                vehicle_id:vehicle[0].vehicle_id,
+                vehicle_owner_id:vehicle[0].vehicle_owner_id,
+                vat:VAT.value,
+                repairs:JSON.stringify(repairArr),
+                products:JSON.stringify(productArr)
+                
+            },
+            success: function (response) {
+              
+                console.log(response)
+  
+            // if (response === "success") {
+            //     window.location.href = "../return/";
+            //     // console.log("Success")
+    
+            // }else {
+            //     Swal.fire({
+            //         icon: "error",
+            //         title: "Please Try Again",
+            //         text: "Something Went Wrong",
+            //     });
+            // }
+  
+            },
+            error:function (error) {
+                console.log(error)
+            }
+        });
+
+
+
         }
 
 
