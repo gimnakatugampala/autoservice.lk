@@ -20,6 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $notifyDate = $_POST['notifyDate'];
     $data_fuels = json_decode($_POST['fuels'], true);
     $data_filters = json_decode($_POST['filters'], true);
+    $data_vehicle_reports = json_decode($_POST['vehicle_reports'], true);
     
 
 
@@ -93,6 +94,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
 
                 }
+
+                // Vehicle Reports
+                foreach ($data_vehicle_reports as $row) {
+                    $CategoryID = $row['categoryId'];
+                    $SubCategoryID = $row['subcategoryId'];
+                    $Value = $row['value'];
+
+                    $VehicleReportSQL = "INSERT INTO job_card_vehicle_report (
+                        job_card_id,
+                        category_id,
+                        sub_category_id,
+                        value_id
+                        ) VALUES 
+                    ('$JobCardID',
+                     '$CategoryID',
+                     '$SubCategoryID',
+                     '$Value'
+                     )";
+                    if ($conn->query($VehicleReportSQL) !== true) {
+                        echo 'Error: ' . $VehicleReportSQL . '<br>' . $conn->error;
+                        exit();
+                    }
+
+                }
+
 
 
                 // ------------------ PAID -----------------------

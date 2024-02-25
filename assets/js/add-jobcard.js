@@ -411,7 +411,7 @@ $(document).ready(function () {
     $("#job-card-step-2").click(function () {
   
     rowVehicleReportData = []
-    
+
     $('table tbody tr').each(function(index) {
         // Object to store the data for the current row
         var row = {};
@@ -1596,111 +1596,111 @@ $(document).ready(function () {
 
         // --------------------- Vehicle Report --------------
 
-        //   let NextDate;
+          let NextDate;
 
-        // if(notify == "2"){
-        //   const currentDate = new Date();
+        if(notify == "2"){
+          const currentDate = new Date();
   
-        //   // Add 2 months to the current date
-        //   currentDate.setMonth(currentDate.getMonth() + 2);
+          // Add 2 months to the current date
+          currentDate.setMonth(currentDate.getMonth() + 2);
   
-        //   // Get day, month, and year from the new date
-        //   const day = currentDate.getDate();
-        //   const month = currentDate.getMonth() + 1; // Adding 1 since months are 0-indexed
-        //   const year = currentDate.getFullYear();
+          // Get day, month, and year from the new date
+          const day = currentDate.getDate();
+          const month = currentDate.getMonth() + 1; // Adding 1 since months are 0-indexed
+          const year = currentDate.getFullYear();
   
-        //   // Pad single-digit day and month with leading zero if needed
-        //   const formattedDay = day < 10 ? `0${day}` : day;
-        //   const formattedMonth = month < 10 ? `0${month}` : month;
+          // Pad single-digit day and month with leading zero if needed
+          const formattedDay = day < 10 ? `0${day}` : day;
+          const formattedMonth = month < 10 ? `0${month}` : month;
   
-        //   // Format date as "DD-MM-YYYY"
-        //   const formattedDate = `${formattedDay}-${formattedMonth}-${year}`;
+          // Format date as "DD-MM-YYYY"
+          const formattedDate = `${formattedDay}-${formattedMonth}-${year}`;
 
-        //   NextDate = formattedDate
-        // }else if(notify == "4"){
+          NextDate = formattedDate
+        }else if(notify == "4"){
 
-        //   const currentDate = new Date();
+          const currentDate = new Date();
   
-        //   // Add 2 months to the current date
-        //   currentDate.setMonth(currentDate.getMonth() + 4);
+          // Add 2 months to the current date
+          currentDate.setMonth(currentDate.getMonth() + 4);
   
-        //   // Get day, month, and year from the new date
-        //   const day = currentDate.getDate();
-        //   const month = currentDate.getMonth() + 1; // Adding 1 since months are 0-indexed
-        //   const year = currentDate.getFullYear();
+          // Get day, month, and year from the new date
+          const day = currentDate.getDate();
+          const month = currentDate.getMonth() + 1; // Adding 1 since months are 0-indexed
+          const year = currentDate.getFullYear();
   
-        //   // Pad single-digit day and month with leading zero if needed
-        //   const formattedDay = day < 10 ? `0${day}` : day;
-        //   const formattedMonth = month < 10 ? `0${month}` : month;
+          // Pad single-digit day and month with leading zero if needed
+          const formattedDay = day < 10 ? `0${day}` : day;
+          const formattedMonth = month < 10 ? `0${month}` : month;
   
-        //   // Format date as "DD-MM-YYYY"
-        //   const formattedDate = `${formattedDay}-${formattedMonth}-${year}`;
-        //   console.log(formattedDate);
+          // Format date as "DD-MM-YYYY"
+          const formattedDate = `${formattedDay}-${formattedMonth}-${year}`;
+          console.log(formattedDate);
 
-        //   NextDate = formattedDate
+          NextDate = formattedDate
 
-        // }else if(notify == "6"){
-        //   const currentDate = new Date();
+        }else if(notify == "6"){
+          const currentDate = new Date();
   
-        //   // Add 2 months to the current date
-        //   currentDate.setMonth(currentDate.getMonth() + 6);
+          // Add 2 months to the current date
+          currentDate.setMonth(currentDate.getMonth() + 6);
   
-        //   // Get day, month, and year from the new date
-        //   const day = currentDate.getDate();
-        //   const month = currentDate.getMonth() + 1; // Adding 1 since months are 0-indexed
-        //   const year = currentDate.getFullYear();
+          // Get day, month, and year from the new date
+          const day = currentDate.getDate();
+          const month = currentDate.getMonth() + 1; // Adding 1 since months are 0-indexed
+          const year = currentDate.getFullYear();
   
-        //   // Pad single-digit day and month with leading zero if needed
-        //   const formattedDay = day < 10 ? `0${day}` : day;
-        //   const formattedMonth = month < 10 ? `0${month}` : month;
+          // Pad single-digit day and month with leading zero if needed
+          const formattedDay = day < 10 ? `0${day}` : day;
+          const formattedMonth = month < 10 ? `0${month}` : month;
   
-        //   // Format date as "DD-MM-YYYY"
-        //   const formattedDate = `${formattedDay}-${formattedMonth}-${year}`;
+          // Format date as "DD-MM-YYYY"
+          const formattedDate = `${formattedDay}-${formattedMonth}-${year}`;
 
-        //   NextDate = formattedDate
+          NextDate = formattedDate
 
-        // }
+        }
          
 
-        //   $.ajax({
-        //     type: "POST",
-        //     url: "../api/add-jobcardservice.php",
-        //     data: {
-        //         jobcardcode:jobCardCode,
-        //         jobcardInvoicecode:invoiceCode,
-        //         status:status,
-        //         paid_status:paid_status,
-        //         job_card_type:job_card_type,
-        //         vehicle_id:vehicle[0].vehicle_id,
-        //         vehicle_owner_id:vehicle[0].vehicle_owner_id,
-        //         vat:VAT.value,
-        //         notifyMonth:notify,
-        //         notifyDate:NextDate,
-        //         fuels:JSON.stringify(selected_fuel),
-        //         filters:JSON.stringify(selected_filter)
-                
-        //     },
-        //     success: function (response) {
+          $.ajax({
+            type: "POST",
+            url: "../api/add-jobcardservice.php",
+            data: {
+                jobcardcode:jobCardCode,
+                jobcardInvoicecode:invoiceCode,
+                status:status,
+                paid_status:paid_status,
+                job_card_type:job_card_type,
+                vehicle_id:vehicle[0].vehicle_id,
+                vehicle_owner_id:vehicle[0].vehicle_owner_id,
+                vat:VAT.value,
+                notifyMonth:notify,
+                notifyDate:NextDate,
+                fuels:JSON.stringify(selected_fuel),
+                filters:JSON.stringify(selected_filter),
+                vehicle_reports:JSON.stringify(VehicleReportArr)  
+            },
+            success: function (response) {
               
-        //         console.log(response)
+                console.log(response)
   
-        //     // if (response === "success") {
-        //     //     window.location.href = "../return/";
-        //     //     // console.log("Success")
+            // if (response === "success") {
+            //     window.location.href = "../return/";
+            //     // console.log("Success")
     
-        //     // }else {
-        //     //     Swal.fire({
-        //     //         icon: "error",
-        //     //         title: "Please Try Again",
-        //     //         text: "Something Went Wrong",
-        //     //     });
-        //     // }
+            // }else {
+            //     Swal.fire({
+            //         icon: "error",
+            //         title: "Please Try Again",
+            //         text: "Something Went Wrong",
+            //     });
+            // }
   
-        //     },
-        //     error:function (error) {
-        //         console.log(error)
-        //     }
-        // });
+            },
+            error:function (error) {
+                console.log(error)
+            }
+        });
 
         }
 
