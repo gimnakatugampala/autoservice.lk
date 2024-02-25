@@ -69,18 +69,18 @@
 
                 <div class="col-md-12 my-2">
                     <h5><b>Repair Packages</b></h5>
-                    <table id="example2" class="table table-bordered table-hover">
+                    <table class="table table-bordered table-hover">
                     <thead>
                     <tr>
                         <th>Repair Package Name</th>
                         <th>Labour Hr (Hours)</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
+                    <tbody id="tb_service_record_repair">
+                    <!-- <tr>
                         <td>Lathe Work</td>
                         <td>4.8</td>
-                    </tr>
+                    </tr> -->
 
                     </tbody>
                     </table>
@@ -88,18 +88,18 @@
 
                 <div class="col-md-12 my-2">
                     <h5><b>Products</b></h5>
-                    <table id="example2" class="table table-bordered table-hover">
+                    <table  class="table table-bordered table-hover">
                     <thead>
                     <tr>
                         <th>Product Name</th>
                         <th>QTY</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
+                    <tbody id="tb_service_record_products">
+                    <!-- <tr>
                         <td>Head Light</td>
                         <td>4.8</td>
-                    </tr>
+                    </tr> -->
 
                     </tbody>
                     </table>
@@ -107,18 +107,18 @@
 
                 <div class="col-md-12 my-2">
                     <h5><b>Washers</b></h5>
-                    <table id="example2" class="table table-bordered table-hover">
+                    <table  class="table table-bordered table-hover">
                     <thead>
                     <tr>
                         <th>Washer Package Name</th>
                         <th>QTY</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
+                    <tbody id="tb_service_record_washer">
+                    <!-- <tr>
                         <td>Head Light</td>
                         <td>4.8</td>
-                    </tr>
+                    </tr> -->
 
                     </tbody>
                     </table>

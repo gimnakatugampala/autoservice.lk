@@ -4,7 +4,9 @@ $(document).ready(function () {
     const myParam = urlParams.get('code');
 
     document.addEventListener('DOMContentLoaded', getServiceRecords());
-    // var ServiceRecordsBody = $("#tb_service_records");
+    var ServiceRecordsRepairBody = $("#tb_service_record_repair");
+    var ServiceRecordsProductBody = $("#tb_service_record_products");
+    var ServiceRecordsWasherBody = $("#tb_service_record_washer");
 
     function getServiceRecords(){
         $.ajax({
@@ -18,43 +20,54 @@ $(document).ready(function () {
            
             // $("#service-records-vnumber").text(data.VehicleNumber);
 
-            // populateTableServiceRecords(data)
+            populateTableServiceRecordsRepair(data)
+            populateTableServiceRecordsProduct(data)
+            populateTableServiceRecordsWasher(data)
     
           },
           error: function () {},
         });
 
 
-        // function populateTableServiceRecords(data) {
-        //     data.jobcards.forEach(function (list) {
-        //       var row = $("<tr>");
-        //       row.append(`<td>${list.JOB_CARD_CODE}</td>`);
-        //       row.append(`<td>${list.SERVICE_STATION_NAME}</td>`);
-        //       row.append(`<td>${list.JOB_CARD_TYPE_NAME}</td>`);
-        //       if(list.JOB_CARD_STATUS == "Canceled"){
-        //           row.append(`<td><span class="badge badge-danger">${list.JOB_CARD_STATUS}</span></td>`);
-        //       }else if(list.JOB_CARD_STATUS == "Completed"){
-        //         row.append(`<td><span class="badge badge-success">${list.JOB_CARD_STATUS}</span></td>`);
-        //       }else if(list.JOB_CARD_STATUS == "Pending"){
-        //         row.append(`<td><span class="badge badge-primary">${list.JOB_CARD_STATUS}</span></td>`);
-        //       }
-        //       row.append(`<td>${list.CREATED_DATE}</td>`);
-        //       row.append(`<td>${list.COMPLETED_DATE == null ? "" : list.COMPLETED_DATE}</td>`);
-        //       row.append(`<td>${list.CURRENT_MILEAGE == null ? "" : list.CURRENT_MILEAGE}</td>`);
-        //       row.append(` <td>
-        //       <a href="../vehicle-search/service-record-details.php?code=${list.JOB_CARD_CODE}" type="button" class="btn bg-gradient-primary"><i class="fas fa-eye"></i></a>
-        //       <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-lg">
-        //           <i class="fas fa-chart-line"></i>
-        //       </button>
-        //       </td>`);
-        //       row.append("</tr>");
+        function populateTableServiceRecordsRepair(data) {
+            data.repairs.forEach(function (list) {
+              var row = $("<tr>");
+              row.append(`<td>${list.name}</td>`);
+              row.append(`<td>${list.hours}</td>`);
+              row.append("</tr>");
              
-        //       ServiceRecordsBody.append(row);
+              ServiceRecordsRepairBody.append(row);
  
       
              
-        //     });
-        //   }
+            });
+          }
+
+          function populateTableServiceRecordsProduct(data) {
+            data.products.forEach(function (list) {
+              var row = $("<tr>");
+              row.append(`<td>${list.product_name}</td>`);
+              row.append(`<td>${list.qty}</td>`);
+              row.append("</tr>");
+             
+              ServiceRecordsProductBody.append(row);
+      
+             
+            });
+          }
+
+          function populateTableServiceRecordsWasher(data) {
+            data.washer.forEach(function (list) {
+              var row = $("<tr>");
+              row.append(`<td>Washer</td>`);
+              row.append(`<td>${list.qty}</td>`);
+              row.append("</tr>");
+             
+              ServiceRecordsWasherBody.append(row);
+      
+             
+            });
+          }
     
       }
 
