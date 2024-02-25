@@ -1,7 +1,7 @@
 <?php
 require_once '../includes/db_config.php';
 
-$code = $_GET['code'];
+$code = $_POST['code'];
 
 
 $sql = "SELECT id,vehicle_number  FROM vehicle WHERE code = '$code'";

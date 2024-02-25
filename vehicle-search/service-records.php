@@ -1,6 +1,5 @@
 
 <?php include_once '../includes/header.php';?>
-<?php include_once '../api/getservicerecords.php';?>
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -49,7 +48,7 @@
               <!-- /.card-header -->
               <div class="card-body">
                 
-                <table id="example1" class="table table-bordered table-striped">
+                <table  class="table table-bordered table-striped">
                   <thead>
                   <tr>
                     <th>Job Number</th>
@@ -64,26 +63,7 @@
                   </thead>
                   <tbody id="tb_service_records">
 
-                  <?php foreach ($jobcards as $row) : ?>
-
-                  <tr>
-                    <td><?php echo  $row["JOB_CARD_CODE"]; ?></td>
-                    <td><?php echo  $row["SERVICE_STATION_NAME"]; ?></td>
-                    <td><?php echo  $row["JOB_CARD_TYPE_NAME"]; ?></td>
-                    <td><?php echo  $row["JOB_CARD_STATUS"]; ?></td>
-                    <td><?php echo  $row["CREATED_DATE"]; ?></td>
-                    <td><?php echo  $row["COMPLETED_DATE"]; ?></td>
-                    <td><?php echo  $row["CURRENT_MILEAGE"]; ?></td>
-                    <td>
-                    <a href="../vehicle-search/service-record-details.php?code=<?php echo  $row["JOB_CARD_CODE"]; ?>" type="button" class="btn bg-gradient-primary"><i class="fas fa-eye"></i></a>
-
-                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-lg">
-                        <i class="fas fa-chart-line"></i>
-                    </button>
-                    </td>
-                  </tr>
-
-                  <?php endforeach; ?>
+      
                 
                   </tbody>
                 </table>
