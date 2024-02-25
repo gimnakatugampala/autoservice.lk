@@ -18,6 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $vat = $_POST['vat'];
     $notifyMonth = $_POST['notifyMonth'];
     $notifyDate = $_POST['notifyDate'];
+    $current_mileage = $_POST['current_mileage'];
+    $new_mileage = $_POST['new_mileage'];
     $data_fuels = json_decode($_POST['fuels'], true);
     $data_filters = json_decode($_POST['filters'], true);
     $data_vehicle_reports = json_decode($_POST['vehicle_reports'], true);
@@ -144,6 +146,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
 
                 }
+
+                 // -- Current Milage
+                 $JobCardMileageSQL = "INSERT INTO job_card_mileage (
+                    job_card_id,
+                    current_mileage,
+                    next_mileage
+                    ) VALUES 
+                    ('$JobCardID',
+                    '$current_mileage',
+                    '$new_mileage'
+                    )";
+                    if ($conn->query($JobCardMileageSQL) !== true) {
+                        echo 'Error: ' . $JobCardMileageSQL . '<br>' . $conn->error;
+                        exit();
+                    }
 
 
 

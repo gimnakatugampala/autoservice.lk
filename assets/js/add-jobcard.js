@@ -1660,7 +1660,8 @@ $(document).ready(function () {
           NextDate = formattedDate
 
         }
-         
+        ;
+   
 
           $.ajax({
             type: "POST",
@@ -1676,6 +1677,8 @@ $(document).ready(function () {
                 vat:VAT.value,
                 notifyMonth:notify,
                 notifyDate:NextDate,
+                current_mileage,
+                new_mileage,
                 fuels:JSON.stringify(selected_fuel),
                 filters:JSON.stringify(selected_filter),
                 vehicle_reports:JSON.stringify(VehicleReportArr)  
@@ -1871,6 +1874,8 @@ $(document).ready(function () {
                 vat:VAT.value,
                 notifyMonth:notify,
                 notifyDate:NextDate,
+                current_mileage,
+                new_mileage,
                 fuels:JSON.stringify(selected_fuel),
                 filters:JSON.stringify(selected_filter),
                 vehicle_reports:JSON.stringify(VehicleReportArr),
@@ -2028,6 +2033,8 @@ $(document).ready(function () {
                   vat:VAT.value,
                   notifyMonth:notify,
                   notifyDate:NextDate,
+                  current_mileage,
+                  new_mileage,
                   fuels:JSON.stringify(selected_fuel),
                   filters:JSON.stringify(selected_filter),
                   vehicle_reports:JSON.stringify(VehicleReportArr),
