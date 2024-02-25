@@ -150,7 +150,7 @@
             
                 <div class="col-md-6">
                 <div class="form-group">
-                <label for="exampleInputEmail1">Select Fuel Type <span class="text-danger">*</span></label>
+                <label for="exampleInputEmail1">Select Lubricant Type <span class="text-danger">*</span></label>
                         <select id="cmbfueltype" class="custom-select">
                         <option disabled selected value="">Please Select</option>
                           <!-- <option>Car</option>
@@ -180,7 +180,7 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th>Fuel Type</th>
+                        <th>Lubricant Type</th>
                         <th>Price (LKR)</th>
                         <th>Actions</th>
                     </tr>

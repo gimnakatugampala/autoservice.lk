@@ -20,12 +20,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Edit Fuel Type</h1>
+            <h1>Edit Lubricant Type</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Manage Service Package</a></li>
-              <li class="breadcrumb-item active">Edit Fuel Type</li>
+              <li class="breadcrumb-item active">Edit Lubricant Type</li>
             </ol>
           </div>
 
@@ -48,7 +48,7 @@
 
               <div class="col-md-12">
                     <div class="form-group">
-                          <label for="fuel_type">Fuel Type <span class="text-danger">*</span></label>
+                          <label for="fuel_type">Lubricant Type <span class="text-danger">*</span></label>
                           <input type="text" class="form-control" id="fuel_type" placeholder="Name">
                       </div>
                 </div>

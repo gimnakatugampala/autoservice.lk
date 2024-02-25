@@ -21,14 +21,14 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-9">
-            <h1>Fuel Types List</h1>
+            <h1>Lubricant Types List</h1>
           </div>
           <div class="col-sm-3">
             <!-- <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active">Vehicles</li>
             </ol> -->
-            <a href="../service-packages/add-fuel-type.php" type="button" class="btn btn-block bg-gradient-primary"><i class="fas fa-plus"></i> Add Fuel Type</a>
+            <a href="../service-packages/add-fuel-type.php" type="button" class="btn btn-block bg-gradient-primary"><i class="fas fa-plus"></i> Add Lubricant Type</a>
           </div>
 
         </div>
@@ -45,7 +45,7 @@
             <!-- /.card -->
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Fuel Types</h3>
+                <h3 class="card-title">Lubricant Types</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -53,7 +53,7 @@
                   <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Fuel Type</th>
+                    <th>Lubricant Type</th>
                     <th>Created Date</th>
                     <th>Actions</th>
                   </tr>
