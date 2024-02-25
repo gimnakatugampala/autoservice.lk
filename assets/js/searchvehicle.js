@@ -31,11 +31,11 @@ $(document).ready(function () {
           <div class="row">
 
           <div class="col-md-10 mx-auto">
-            <a href="../vehicle-search/service-records.php" type="button" class="btn bg-gradient-secondary float-right"><i class="fas fa-history"></i> View Service Records</a>
+            <a href="../vehicle-search/service-records.php?code=${data[0].VEHICLE_CODE}" type="button" class="btn bg-gradient-secondary float-right"><i class="fas fa-history"></i> View Service Records</a>
           </div>
 
           <div class="col-md-10 mx-auto">
-              <img class="border"  width="280" height="200" src="../dist/img/system/car_img.png" alt="Vehicle">
+              <img class="border"  width="280" height="200" src="${data[0].vehicle_img == null ? '../dist/img/system/car_img.png' : `../uploads/vehicles/${data[0].vehicle_img}`}" alt="Vehicle">
           </div>
 
           <div class="col-md-9 mx-auto my-2">
@@ -51,7 +51,7 @@ $(document).ready(function () {
           <div class="row">
             <div class="col-md-4 mb-4">
                 <h6 class="text-uppercase m-0 p-0"><b>Vehicle Code</b></h6>
-                <p class="text-muted m-0 p-0">${data[0].code}</p>
+                <p class="text-muted m-0 p-0">${data[0].VEHICLE_CODE}</p>
             </div>
             <div class="col-md-4 mb-4">
                 <h6 class="text-uppercase m-0 p-0"><b>Vehicle Owner</b></h6>

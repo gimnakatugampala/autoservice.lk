@@ -8,6 +8,7 @@ if (session_status() == PHP_SESSION_NONE) {
 $vehicleID = $_POST['itemID'];
 
 $sql = "SELECT * ,
+vehicle.code AS VEHICLE_CODE,
 vehicle_year_manufacturer.year AS VEHICLE_YEAR,
 vehicle_fuel_type.name AS VEHICLE_FUEL_TYPE,
 vehicle_class.name AS VEHICLE_CLASS,

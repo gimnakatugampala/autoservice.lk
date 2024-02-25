@@ -1,5 +1,6 @@
 
 <?php include_once '../includes/header.php';?>
+<?php include_once '../api/getservicerecords.php';?>
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -53,6 +54,7 @@
                   <tr>
                     <th>Job Number</th>
                     <th>Station Name</th>
+                    <th>Job Card Type</th>
                     <th>Status</th>
                     <th>Start Date</th>
                     <th>End Date</th>
@@ -60,23 +62,28 @@
                     <th>Actions</th>
                   </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="tb_service_records">
+
+                  <?php foreach ($jobcards as $row) : ?>
 
                   <tr>
-                    <td>203909</td>
-                    <td>Pistona Automotive Solutions</td>
-                    <td>Completed</td>
-                    <td>2024-01-24</td>
-                    <td>2024-01-25</td>
-                    <td>50,000.00</td>
+                    <td><?php echo  $row["JOB_CARD_CODE"]; ?></td>
+                    <td><?php echo  $row["SERVICE_STATION_NAME"]; ?></td>
+                    <td><?php echo  $row["JOB_CARD_TYPE_NAME"]; ?></td>
+                    <td><?php echo  $row["JOB_CARD_STATUS"]; ?></td>
+                    <td><?php echo  $row["CREATED_DATE"]; ?></td>
+                    <td><?php echo  $row["COMPLETED_DATE"]; ?></td>
+                    <td><?php echo  $row["CURRENT_MILEAGE"]; ?></td>
                     <td>
-                    <a href="../vehicle-search/service-record-details.php" type="button" class="btn bg-gradient-primary"><i class="fas fa-eye"></i></a>
+                    <a href="../vehicle-search/service-record-details.php?code=<?php echo  $row["JOB_CARD_CODE"]; ?>" type="button" class="btn bg-gradient-primary"><i class="fas fa-eye"></i></a>
 
                     <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-lg">
                         <i class="fas fa-chart-line"></i>
                     </button>
                     </td>
                   </tr>
+
+                  <?php endforeach; ?>
                 
                   </tbody>
                 </table>
@@ -328,7 +335,11 @@
 </div>
 <!-- ./wrapper -->
 
+<script src="../plugins/jquery/jquery.min.js"></script>
+
 <?php include_once '../includes/footer.php';?>
+
+<script src="../assets/js/service-records.js"></script>
 
 </body>
 </html>
