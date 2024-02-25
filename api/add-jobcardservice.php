@@ -235,9 +235,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
+
+
+
+
                 }
             // ------------------ PAID -----------------------
 
+
+            // IF ----- Canceled ---------------------------
+            if($status == "2"){
+
+            $CanceledSQL = "INSERT INTO jobcard_cancel (
+                job_card_id
+                ) VALUES 
+                ('$JobCardID')";
+                if ($conn->query($CanceledSQL) !== true) {
+                    echo 'Error: ' . $CanceledSQL . '<br>' . $conn->error;
+                    exit();
+                }
+
+        }
+
+        // IF ----- Canceled ---------------------------
 
                 echo "success";
             }else{

@@ -58,6 +58,7 @@
                     <th>Vehicle Name</th>
                     <th>Job Card Type</th>
                     <th>Created Date</th>
+                    <th>Canceled Date</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -71,6 +72,7 @@
                       <td><?php echo  $row["vehicle_number"]; ?></td>
                       <td><?php echo  $row["JOB_CARD_TYPE"]; ?></td>
                       <td><?php echo  $row["JOB_CARD_PLACED_DATE"]; ?></td>
+                      <td><?php echo  $row["CANCELED_DATE"]; ?></td>
                     </tr>
 
                     <?php endforeach; ?>
