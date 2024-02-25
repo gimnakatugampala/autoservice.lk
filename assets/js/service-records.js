@@ -29,7 +29,13 @@ $(document).ready(function () {
               row.append(`<td>${list.JOB_CARD_CODE}</td>`);
               row.append(`<td>${list.SERVICE_STATION_NAME}</td>`);
               row.append(`<td>${list.JOB_CARD_TYPE_NAME}</td>`);
-              row.append(`<td>${list.JOB_CARD_STATUS}</td>`);
+              if(list.JOB_CARD_STATUS == "Canceled"){
+                  row.append(`<td><span class="badge badge-danger">${list.JOB_CARD_STATUS}</span></td>`);
+              }else if(list.JOB_CARD_STATUS == "Completed"){
+                row.append(`<td><span class="badge badge-success">${list.JOB_CARD_STATUS}</span></td>`);
+              }else if(list.JOB_CARD_STATUS == "Pending"){
+                row.append(`<td><span class="badge badge-primary">${list.JOB_CARD_STATUS}</span></td>`);
+              }
               row.append(`<td>${list.CREATED_DATE}</td>`);
               row.append(`<td>${list.COMPLETED_DATE == null ? "" : list.COMPLETED_DATE}</td>`);
               row.append(`<td>${list.CURRENT_MILEAGE == null ? "" : list.CURRENT_MILEAGE}</td>`);
