@@ -161,6 +161,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         echo 'Error: ' . $JobCardMileageSQL . '<br>' . $conn->error;
                         exit();
                     }
+                    
+
+                     // -------------- Mileage Update Vehicle
+                     $updateVehicleSQL = "UPDATE vehicle SET current_mileage = '$current_mileage' WHERE id = $vehicle_id";
+
+                     // Execute the SQL statement
+                     if ($conn->query($updateVehicleSQL) !== true) {
+                         echo 'Error updating vehicle current mileage: ' . $conn->error;
+                         exit();
+                     }
 
 
 
