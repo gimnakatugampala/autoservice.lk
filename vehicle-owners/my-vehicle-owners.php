@@ -1,5 +1,7 @@
 
 <?php include_once '../includes/header.php';?>
+<?php require_once '../api/my-vehicleowner-list.php' ?>
+
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -48,7 +50,8 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <div class="row my-4">
+
+                <!-- <div class="row my-4">
                     <div class="col-md-9">
                     <div class="row">
                         <div class="col-md-6">
@@ -69,11 +72,12 @@
                         <button data-toggle="modal" data-target="#modal-lg-email" type="button" class="btn bg-gradient-secondary"><i class="fas fa-at"></i> Send Email</button>
                         <button  data-toggle="modal" data-target="#modal-lg-sms" type="button" class="btn bg-gradient-secondary"><i class="fas fa-sms"></i> Send SMS</button>
                     </div>
-                </div>
+                </div> -->
+
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                    <th>ID</th>
+                    <th>Code</th>
                     <th>Full Name</th>
                     <th>Email</th>
                     <th>Phone Number</th>
@@ -81,15 +85,20 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>002</td>
-                    <td>Gimna Katugampala</td>
-                    <td>gimnakatugampala1@gmail.com</td>
-                    <td>0764961707</td>
-                    <td>
-                    <a href="../vehicle-owners/edit-vehicle-owner.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
-                    </td>
-                  </tr>
+
+                  <?php foreach ($vehicle_owners as $row) : ?>
+                    <tr>
+                      <td><?php echo  $row["VEHICLE_OWNER_CODE"]; ?></td>
+                      <td><?php echo  $row["first_name"] . ' ' . $row["last_name"]; ?></td>
+                      <td><?php echo  $row["email"]; ?></td>
+                      <td><?php echo  $row["phone"]; ?></td>
+                      <td>
+                      <a href="../vehicle-owners/edit-vehicle-owner.php?code=<?php echo $row['VEHICLE_OWNER_CODE'];?>" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
+                      </td>
+                      
+                   </tr>
+
+                  <?php endforeach; ?>
                
                 </table>
               </div>

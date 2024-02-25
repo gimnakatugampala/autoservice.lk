@@ -74,7 +74,7 @@
                       
                     </tr>
 
-                    <?php endforeach; ?>
+                  <?php endforeach; ?>
 
              
                
