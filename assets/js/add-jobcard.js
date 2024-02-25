@@ -1480,17 +1480,15 @@ $(document).ready(function () {
               
                 console.log(response)
   
-            // if (response === "success") {
-            //     window.location.href = "../return/";
-            //     // console.log("Success")
-    
-            // }else {
-            //     Swal.fire({
-            //         icon: "error",
-            //         title: "Please Try Again",
-            //         text: "Something Went Wrong",
-            //     });
-            // }
+            if (response === "success") {
+                window.location.href = "../job-cards/";    
+            }else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Please Try Again",
+                    text: "Something Went Wrong",
+                });
+            }
   
             },
             error:function (error) {
@@ -1545,17 +1543,15 @@ $(document).ready(function () {
               
                 console.log(response)
   
-            // if (response === "success") {
-            //     window.location.href = "../return/";
-            //     // console.log("Success")
-    
-            // }else {
-            //     Swal.fire({
-            //         icon: "error",
-            //         title: "Please Try Again",
-            //         text: "Something Went Wrong",
-            //     });
-            // }
+                if (response === "success") {
+                  window.location.href = "../job-cards/";    
+              }else {
+                  Swal.fire({
+                      icon: "error",
+                      title: "Please Try Again",
+                      text: "Something Went Wrong",
+                  });
+              }
   
             },
             error:function (error) {
@@ -1687,17 +1683,15 @@ $(document).ready(function () {
               
                 console.log(response)
   
-            // if (response === "success") {
-            //     window.location.href = "../return/";
-            //     // console.log("Success")
-    
-            // }else {
-            //     Swal.fire({
-            //         icon: "error",
-            //         title: "Please Try Again",
-            //         text: "Something Went Wrong",
-            //     });
-            // }
+                if (response === "success") {
+                  window.location.href = "../job-cards/";    
+              }else {
+                  Swal.fire({
+                      icon: "error",
+                      title: "Please Try Again",
+                      text: "Something Went Wrong",
+                  });
+              }
   
             },
             error:function (error) {
@@ -1748,17 +1742,15 @@ $(document).ready(function () {
               
                 console.log(response)
   
-            // if (response === "success") {
-            //     window.location.href = "../return/";
-            //     // console.log("Success")
-    
-            // }else {
-            //     Swal.fire({
-            //         icon: "error",
-            //         title: "Please Try Again",
-            //         text: "Something Went Wrong",
-            //     });
-            // }
+                if (response === "success") {
+                  window.location.href = "../job-cards/";    
+              }else {
+                  Swal.fire({
+                      icon: "error",
+                      title: "Please Try Again",
+                      text: "Something Went Wrong",
+                  });
+              }
   
             },
             error:function (error) {
@@ -1885,17 +1877,15 @@ $(document).ready(function () {
               
                 console.log(response)
   
-            // if (response === "success") {
-            //     window.location.href = "../return/";
-            //     // console.log("Success")
-    
-            // }else {
-            //     Swal.fire({
-            //         icon: "error",
-            //         title: "Please Try Again",
-            //         text: "Something Went Wrong",
-            //     });
-            // }
+                if (response === "success") {
+                  window.location.href = "../job-cards/";    
+              }else {
+                  Swal.fire({
+                      icon: "error",
+                      title: "Please Try Again",
+                      text: "Something Went Wrong",
+                  });
+              }
   
             },
             error:function (error) {
@@ -2046,17 +2036,15 @@ $(document).ready(function () {
                 
                   console.log(response)
     
-              // if (response === "success") {
-              //     window.location.href = "../return/";
-              //     // console.log("Success")
-      
-              // }else {
-              //     Swal.fire({
-              //         icon: "error",
-              //         title: "Please Try Again",
-              //         text: "Something Went Wrong",
-              //     });
-              // }
+                  if (response === "success") {
+                    window.location.href = "../job-cards/";    
+                }else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Please Try Again",
+                        text: "Something Went Wrong",
+                    });
+                }
     
               },
               error:function (error) {
