@@ -66,11 +66,46 @@ if ( $washerResults->num_rows > 0 ) {
 }
 // --------------- Washer of Job Card --------------------
 
+// --------------- Service Package Fuel of Job Card --------------------
+$jobCardFuelServicePackages_sql = "SELECT *
+FROM job_card_service_package_fuel 
+JOIN fuel_type ON job_card_service_package_fuel.fuel_type_id = fuel_type.id
+WHERE job_card_id = '$jobCardID'";
+$ServicePackageFuelResults = $conn->query( $jobCardFuelServicePackages_sql );
+
+$fuel_service_packages = array();
+if ( $ServicePackageFuelResults->num_rows > 0 ) {
+    while ( $row = $ServicePackageFuelResults->fetch_assoc() ) {
+        $fuel_service_packages[] = $row;
+    }
+}
+
+// --------------- Service Package Fuel of Job Card --------------------
+
+
+// --------------- Service Package Filter of Job Card --------------------
+$jobCardFilterServicePackages_sql = "SELECT *
+FROM job_card_service_package_filter 
+JOIN filter_type ON job_card_service_package_filter.filter_type_id = filter_type.id
+WHERE job_card_service_package_filter.job_card_id = '$jobCardID'";
+$ServicePackageFilterResults = $conn->query( $jobCardFilterServicePackages_sql );
+
+$filter_service_packages = array();
+if ( $ServicePackageFilterResults->num_rows > 0 ) {
+    while ( $row = $ServicePackageFilterResults->fetch_assoc() ) {
+        $filter_service_packages[] = $row;
+    }
+}
+
+// --------------- Service Package Filter of Job Card --------------------
+
 
 echo json_encode([
     "JobCardID"=>$jobCardID,
     "repairs"=>$repairs,
     "products"=>$products,
-    "washer"=>$washer
+    "washer"=>$washer,
+    "fuel_service_packages"=>$fuel_service_packages,
+    "filter_service_packages"=>$filter_service_packages
     ]);
 ?>
