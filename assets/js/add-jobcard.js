@@ -1763,6 +1763,301 @@ $(document).ready(function () {
             }
         });
 
+        }else if(job_card_type == "5"){
+
+          // --------------------- Vehicle Report --------------
+
+          function isEmpty(obj) {
+            return Object.keys(obj).length === 0 && obj.constructor === Object;
+        }
+
+        let VehicleReportArr;
+        
+
+         VehicleReportArr = rowVehicleReportData.map(obj => {
+            
+            if (isEmpty(obj)) {
+                return {
+                    categoryId: 0,
+                    subcategoryId: 0,
+                    value: 0
+                };
+            } else {
+                // Otherwise, return the object as it is
+                return obj;
+            }
+        });
+
+        console.log(VehicleReportArr)
+
+        // --------------------- Vehicle Report --------------
+
+          let NextDate;
+
+        if(notify == "2"){
+          const currentDate = new Date();
+  
+          // Add 2 months to the current date
+          currentDate.setMonth(currentDate.getMonth() + 2);
+  
+          // Get day, month, and year from the new date
+          const day = currentDate.getDate();
+          const month = currentDate.getMonth() + 1; // Adding 1 since months are 0-indexed
+          const year = currentDate.getFullYear();
+  
+          // Pad single-digit day and month with leading zero if needed
+          const formattedDay = day < 10 ? `0${day}` : day;
+          const formattedMonth = month < 10 ? `0${month}` : month;
+  
+          // Format date as "DD-MM-YYYY"
+          const formattedDate = `${formattedDay}-${formattedMonth}-${year}`;
+
+          NextDate = formattedDate
+        }else if(notify == "4"){
+
+          const currentDate = new Date();
+  
+          // Add 2 months to the current date
+          currentDate.setMonth(currentDate.getMonth() + 4);
+  
+          // Get day, month, and year from the new date
+          const day = currentDate.getDate();
+          const month = currentDate.getMonth() + 1; // Adding 1 since months are 0-indexed
+          const year = currentDate.getFullYear();
+  
+          // Pad single-digit day and month with leading zero if needed
+          const formattedDay = day < 10 ? `0${day}` : day;
+          const formattedMonth = month < 10 ? `0${month}` : month;
+  
+          // Format date as "DD-MM-YYYY"
+          const formattedDate = `${formattedDay}-${formattedMonth}-${year}`;
+          console.log(formattedDate);
+
+          NextDate = formattedDate
+
+        }else if(notify == "6"){
+          const currentDate = new Date();
+  
+          // Add 2 months to the current date
+          currentDate.setMonth(currentDate.getMonth() + 6);
+  
+          // Get day, month, and year from the new date
+          const day = currentDate.getDate();
+          const month = currentDate.getMonth() + 1; // Adding 1 since months are 0-indexed
+          const year = currentDate.getFullYear();
+  
+          // Pad single-digit day and month with leading zero if needed
+          const formattedDay = day < 10 ? `0${day}` : day;
+          const formattedMonth = month < 10 ? `0${month}` : month;
+  
+          // Format date as "DD-MM-YYYY"
+          const formattedDate = `${formattedDay}-${formattedMonth}-${year}`;
+
+          NextDate = formattedDate
+
+        }
+
+          $.ajax({
+            type: "POST",
+            url: "../api/add-jobcardwasher-service.php",
+            data: {
+                jobcardcode:jobCardCode,
+                jobcardInvoicecode:invoiceCode,
+                status:status,
+                paid_status:paid_status,
+                job_card_type:job_card_type,
+                vehicle_id:vehicle[0].vehicle_id,
+                vehicle_owner_id:vehicle[0].vehicle_owner_id,
+                vat:VAT.value,
+                notifyMonth:notify,
+                notifyDate:NextDate,
+                fuels:JSON.stringify(selected_fuel),
+                filters:JSON.stringify(selected_filter),
+                vehicle_reports:JSON.stringify(VehicleReportArr),
+                washers:JSON.stringify(WasherValues)
+            },
+            success: function (response) {
+              
+                console.log(response)
+  
+            // if (response === "success") {
+            //     window.location.href = "../return/";
+            //     // console.log("Success")
+    
+            // }else {
+            //     Swal.fire({
+            //         icon: "error",
+            //         title: "Please Try Again",
+            //         text: "Something Went Wrong",
+            //     });
+            // }
+  
+            },
+            error:function (error) {
+                console.log(error)
+            }
+        });
+
+
+        }else if(job_card_type == "6"){
+
+          //  ------------------- Repair ---------------------
+          const repairArr = repair_items.map(repair => ({
+            repairID:repair.rowID.innerText,
+            repairCode:repair.rowCode.innerText,
+            repairName:repair.rowName.innerText,
+            hours:repair.HoursInput.value,
+            price:repair.UnitPriceInput.value,
+            discount:repair.discountInput.value,
+            total: repair.totalCell.innerText
+        }));
+
+        const productArr = products_items.map(product => ({
+          productID:product.rowID.innerText,
+          productCode:product.rowCode.innerText,
+          productName:product.rowName.innerText,
+          qty:product.quantityInput.value,
+          price:product.priceInput.value,
+          discount:product.discountInput.value,
+          total: product.totalCell.innerText
+      }));
+
+             // --------------------- Vehicle Report --------------
+
+             function isEmpty(obj) {
+              return Object.keys(obj).length === 0 && obj.constructor === Object;
+          }
+  
+          let VehicleReportArr;
+          
+  
+           VehicleReportArr = rowVehicleReportData.map(obj => {
+              
+              if (isEmpty(obj)) {
+                  return {
+                      categoryId: 0,
+                      subcategoryId: 0,
+                      value: 0
+                  };
+              } else {
+                  // Otherwise, return the object as it is
+                  return obj;
+              }
+          });
+  
+          console.log(VehicleReportArr)
+  
+          // --------------------- Vehicle Report --------------
+  
+            let NextDate;
+  
+          if(notify == "2"){
+            const currentDate = new Date();
+    
+            // Add 2 months to the current date
+            currentDate.setMonth(currentDate.getMonth() + 2);
+    
+            // Get day, month, and year from the new date
+            const day = currentDate.getDate();
+            const month = currentDate.getMonth() + 1; // Adding 1 since months are 0-indexed
+            const year = currentDate.getFullYear();
+    
+            // Pad single-digit day and month with leading zero if needed
+            const formattedDay = day < 10 ? `0${day}` : day;
+            const formattedMonth = month < 10 ? `0${month}` : month;
+    
+            // Format date as "DD-MM-YYYY"
+            const formattedDate = `${formattedDay}-${formattedMonth}-${year}`;
+  
+            NextDate = formattedDate
+          }else if(notify == "4"){
+  
+            const currentDate = new Date();
+    
+            // Add 2 months to the current date
+            currentDate.setMonth(currentDate.getMonth() + 4);
+    
+            // Get day, month, and year from the new date
+            const day = currentDate.getDate();
+            const month = currentDate.getMonth() + 1; // Adding 1 since months are 0-indexed
+            const year = currentDate.getFullYear();
+    
+            // Pad single-digit day and month with leading zero if needed
+            const formattedDay = day < 10 ? `0${day}` : day;
+            const formattedMonth = month < 10 ? `0${month}` : month;
+    
+            // Format date as "DD-MM-YYYY"
+            const formattedDate = `${formattedDay}-${formattedMonth}-${year}`;
+            console.log(formattedDate);
+  
+            NextDate = formattedDate
+  
+          }else if(notify == "6"){
+            const currentDate = new Date();
+    
+            // Add 2 months to the current date
+            currentDate.setMonth(currentDate.getMonth() + 6);
+    
+            // Get day, month, and year from the new date
+            const day = currentDate.getDate();
+            const month = currentDate.getMonth() + 1; // Adding 1 since months are 0-indexed
+            const year = currentDate.getFullYear();
+    
+            // Pad single-digit day and month with leading zero if needed
+            const formattedDay = day < 10 ? `0${day}` : day;
+            const formattedMonth = month < 10 ? `0${month}` : month;
+    
+            // Format date as "DD-MM-YYYY"
+            const formattedDate = `${formattedDay}-${formattedMonth}-${year}`;
+  
+            NextDate = formattedDate
+  
+          }
+  
+            $.ajax({
+              type: "POST",
+              url: "../api/add-jobcard-all.php",
+              data: {
+                  jobcardcode:jobCardCode,
+                  jobcardInvoicecode:invoiceCode,
+                  status:status,
+                  paid_status:paid_status,
+                  job_card_type:job_card_type,
+                  vehicle_id:vehicle[0].vehicle_id,
+                  vehicle_owner_id:vehicle[0].vehicle_owner_id,
+                  vat:VAT.value,
+                  notifyMonth:notify,
+                  notifyDate:NextDate,
+                  fuels:JSON.stringify(selected_fuel),
+                  filters:JSON.stringify(selected_filter),
+                  vehicle_reports:JSON.stringify(VehicleReportArr),
+                  washers:JSON.stringify(WasherValues),
+                  repairs:JSON.stringify(repairArr),
+                  products:JSON.stringify(productArr)
+              },
+              success: function (response) {
+                
+                  console.log(response)
+    
+              // if (response === "success") {
+              //     window.location.href = "../return/";
+              //     // console.log("Success")
+      
+              // }else {
+              //     Swal.fire({
+              //         icon: "error",
+              //         title: "Please Try Again",
+              //         text: "Something Went Wrong",
+              //     });
+              // }
+    
+              },
+              error:function (error) {
+                  console.log(error)
+              }
+          });
+  
+
         }
 
 
