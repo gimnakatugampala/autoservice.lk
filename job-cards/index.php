@@ -1,5 +1,6 @@
 
 <?php include_once '../includes/header.php';?>
+<?php include_once '../api/pending-jobcard-list.php';?>
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -52,26 +53,32 @@
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                    <th>ID</th>
                     <th>Job Card Code</th>
                     <th>Vehicle Owner Name</th>
+                    <th>Phone</th>
                     <th>Vehicle Name</th>
+                    <th>Job Card Type</th>
                     <th>Created Date</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
                   <tbody>
 
+                  <?php foreach ($jobcards as $row) : ?>
+
                   <tr>
-                    <td>001</td>
-                    <td>AS344</td>
-                    <td>Gimna Katugampala</td>
-                    <td>KY-3038</td>
-                    <td>2024-01-15</td>
+                    <td><?php echo  $row["job_card_code"]; ?></td>
+                    <td><?php echo  $row["first_name"]; ?> <?php echo  $row["last_name"]; ?></td>
+                    <td><?php echo  $row["phone"]; ?></td>
+                    <td><?php echo  $row["vehicle_number"]; ?></td>
+                    <td><?php echo  $row["JOB_CARD_TYPE"]; ?></td>
+                    <td><?php echo  $row["JOB_CARD_PLACED_DATE"]; ?></td>
                     <td>
                     <a href="../job-cards/edit-job-card.php" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
                     </td>
                   </tr>
+
+                  <?php endforeach; ?>
                 
                   </tbody>
                 </table>
