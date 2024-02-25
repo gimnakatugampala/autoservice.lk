@@ -166,6 +166,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         }
 
 
+                    // Update Product QTY
+                    foreach ($data_products as $row) {
+                        $productID = $row['productID'];
+                        $qty = $row['qty'];
+                        $price = $row['price'];
+                        $discount = $row['discount'];
+
+                        // ------------------------- Update the New Product Quantity ------------------------------
+                    $query = "SELECT quantity FROM product WHERE id = $productID";
+                    $result = $conn->query($query);
+
+                    if ($result->num_rows > 0) {
+                        $current_quantity = $result->fetch_assoc()['quantity'];
+                        $new_quantity = $current_quantity - $qty;
+
+                        // Update the database with the new quantity
+                        $update_query = "UPDATE product SET quantity = $new_quantity WHERE id = $productID";
+
+                        if ($conn->query($update_query) === TRUE) {
+                            // echo "sucess";
+                        } else {
+                            echo "Error updating quantity: " . $conn->error;
+                        }
+                    }
+
+                // ------------------------------ Update the New Product Quantity -------------------------------
+
+                    }
+
+
 
 
                 }
