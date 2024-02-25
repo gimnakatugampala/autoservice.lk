@@ -15,7 +15,9 @@ $(document).ready(function () {
           success: function (data) {
             console.log(data);
     
-    
+           
+            $("#service-records-vnumber").text(data.VehicleNumber);
+
             populateTableServiceRecords(data)
     
           },
