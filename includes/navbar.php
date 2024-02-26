@@ -23,6 +23,12 @@
 
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <span class="dropdown-item dropdown-header">User Details</span>
+
+          <div class="dropdown-divider"></div>
+          <a  href="../station-profile/" class="dropdown-item">
+            <i class="fas fa-id-card mr-2"></i> Station Profile
+          </a>
+
           <div class="dropdown-divider"></div>
           <a id="stationLogout" href="#" class="dropdown-item">
             <i class="fas fa-sign-out-alt mr-2"></i> Station Logout
