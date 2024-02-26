@@ -19,8 +19,12 @@ $(document).ready(function () {
             console.log(data);
     
            
-            // $("#service-records-vnumber").text(data.VehicleNumber);
+            $("#vehicle_number_details").text(data.Vehicle);
+            $("#breadcrumb_vehicle_number").text(data.Vehicle);
 
+            
+            //  ------------------- Service Packages ----------------------
+            
             const combinedPackages = [];
 
             // Iterate through filterPackages
@@ -37,7 +41,9 @@ $(document).ready(function () {
                 }
             });
 
-            console.log(combinedPackages);
+            //  ------------------- Service Packages ----------------------
+
+           
            
             populateTableServiceRecordsPackages(combinedPackages)
             populateTableServiceRecordsRepair(data)

@@ -4,6 +4,8 @@ require_once '../includes/db_config.php';
 $code = $_POST['code'];
 
 $jobCardID = "";
+$vehicleID = "";
+$VehicleNumber = "";
 
 // Get THe Job Cards 
 $jobCards_sql = "SELECT *
@@ -16,6 +18,7 @@ if ( $jobcardsresults->num_rows > 0 ) {
     while ( $row = $jobcardsresults->fetch_assoc() ) {
         $jobcards[] = $row;
         $jobCardID = $row['id'];
+        $vehicleID = $row['vehicle_id'];
     }
 }
 
@@ -102,8 +105,20 @@ if ( $ServicePackageFilterResults->num_rows > 0 ) {
 // --------------- Service Package Filter of Job Card --------------------
 
 
+// ------------------ Vehicle -------------------------
+$sql = "SELECT vehicle_number  FROM vehicle WHERE id = '$vehicleID'";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $VehicleNumber = $row['vehicle_number'];
+}
+
+// ------------------ Vehicle -------------------------
+
+
 echo json_encode([
-    "JobCardID"=>$jobCardID,
+    "Vehicle"=>$VehicleNumber,
     "repairs"=>$repairs,
     "products"=>$products,
     "washer"=>$washer,
