@@ -70,6 +70,7 @@ if ( $washerResults->num_rows > 0 ) {
 $jobCardFuelServicePackages_sql = "SELECT *
 FROM job_card_service_package_fuel 
 JOIN fuel_type ON job_card_service_package_fuel.fuel_type_id = fuel_type.id
+JOIN service_packages ON job_card_service_package_fuel.service_package_id = service_packages.id
 WHERE job_card_id = '$jobCardID'";
 $ServicePackageFuelResults = $conn->query( $jobCardFuelServicePackages_sql );
 
@@ -87,6 +88,7 @@ if ( $ServicePackageFuelResults->num_rows > 0 ) {
 $jobCardFilterServicePackages_sql = "SELECT *
 FROM job_card_service_package_filter 
 JOIN filter_type ON job_card_service_package_filter.filter_type_id = filter_type.id
+JOIN service_packages ON job_card_service_package_filter.service_package_id = service_packages.id
 WHERE job_card_service_package_filter.job_card_id = '$jobCardID'";
 $ServicePackageFilterResults = $conn->query( $jobCardFilterServicePackages_sql );
 

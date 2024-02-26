@@ -48,20 +48,20 @@
 
                 <div class="col-md-12 my-2">
                     <h5><b>Service Package</b></h5>
-                    <table id="example2" class="table table-bordered table-hover">
+                    <table class="table table-bordered table-hover">
                     <thead>
                     <tr>
                         <th>Service Package Name</th>
-                        <th>Fuel Type</th>
+                        <th>Lubricant Type</th>
                         <th>Filter Type</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
+                    <tbody id="tb_service_record_packages">
+                    <!-- <tr>
                         <td>Toyota Car Package</td>
                         <td>Castrol/Valvoline 10W-30W</td>
                         <td>Castrol/Valvoline 10W-30W</td>
-                    </tr>
+                    </tr> -->
 
                     </tbody>
                     </table>

@@ -7,6 +7,7 @@ $(document).ready(function () {
     var ServiceRecordsRepairBody = $("#tb_service_record_repair");
     var ServiceRecordsProductBody = $("#tb_service_record_products");
     var ServiceRecordsWasherBody = $("#tb_service_record_washer");
+    var ServiceRecordsPackagesBody = $("#tb_service_record_packages");
 
     function getServiceRecords(){
         $.ajax({
@@ -20,6 +21,25 @@ $(document).ready(function () {
            
             // $("#service-records-vnumber").text(data.VehicleNumber);
 
+            const combinedPackages = [];
+
+            // Iterate through filterPackages
+            data.filter_service_packages.forEach(filterPackage => {
+                // Find matching service_package_id in fuel_service_packages
+                const matchingFuelPackage = data.fuel_service_packages.find(fuelPackage => fuelPackage.service_package_id === filterPackage.service_package_id);
+                if (matchingFuelPackage) {
+                    // Add fuel_type_id and filter_type_id to combinedPackages
+                    combinedPackages.push({
+                        service_package_name: filterPackage.package_name,
+                        filter_type_name: filterPackage.name,
+                        fuel_type_name: matchingFuelPackage.name
+                    });
+                }
+            });
+
+            console.log(combinedPackages);
+           
+            populateTableServiceRecordsPackages(combinedPackages)
             populateTableServiceRecordsRepair(data)
             populateTableServiceRecordsProduct(data)
             populateTableServiceRecordsWasher(data)
@@ -27,6 +47,22 @@ $(document).ready(function () {
           },
           error: function () {},
         });
+
+
+        function populateTableServiceRecordsPackages(combinedPackages) {
+            combinedPackages.forEach(function (list) {
+              var row = $("<tr>");
+              row.append(`<td>${list.service_package_name}</td>`);
+              row.append(`<td>${list.fuel_type_name}</td>`);
+              row.append(`<td>${list.filter_type_name}</td>`);
+              row.append("</tr>");
+             
+              ServiceRecordsPackagesBody.append(row);
+ 
+      
+             
+            });
+          }
 
 
         function populateTableServiceRecordsRepair(data) {
