@@ -1,5 +1,6 @@
 
 <?php include_once '../includes/header.php';?>
+<?php include_once '../api/service-notification-list.php';?>
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -61,16 +62,20 @@
                   </thead>
                   <tbody>
 
+                  <?php foreach ($notifications as $row) : ?>
+
                   <tr>
-                    <td>001</td>
-                    <td>Gimna Katugampala</td>
-                    <td>KY-3038</td>
-                    <td>2024-01-24</td>
-                    <td>50,000.00</td>
+                    <td><?php echo  $row["jobcard_code"]; ?></td>
+                    <td><?php echo  $row["first_name"]; ?> <?php echo  $row["last_name"]; ?></td>
+                    <td><?php echo  $row["vehicle_number"]; ?></td>
+                    <td><?php echo  $row["last_serv_date"]; ?></td>
+                    <td><?php echo  $row["curr_mileage"]; ?></td>
                     <td>
                     <button type="button" class="btn bg-gradient-warning"><i class="fas fa-paper-plane"></i></button>
                     </td>
                   </tr>
+
+                  <?php endforeach; ?>
                 
                   </tbody>
                 </table>
