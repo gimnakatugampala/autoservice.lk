@@ -249,6 +249,7 @@
 <script src="../assets/js/add-product.js"></script>
 <script src="../assets/js/addwasher.js"></script>
 <script src="../assets/js/add-repair.js"></script>
+<script src="../assets/js/add-station-profile.js"></script>
 <!-- <script src="../assets/js/add-service-package.js"></script> -->
 <!-- <script src="../assets/js/add-purchase.js"></script> -->
 <!-- <script src="../assets/js/add-por.js"></script> -->

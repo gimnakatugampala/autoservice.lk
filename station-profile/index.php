@@ -82,7 +82,7 @@
                 <div class="col-sm-12">
                 <div class="form-group">
                 <label>Address <span class="text-danger">*</span></label>
-                <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
+                <textarea id="address" class="form-control" rows="3" placeholder="Enter ..."></textarea>
                 </div>
                 </div>
 
@@ -105,7 +105,7 @@
     
                 <div class="col-md-12">
                 <button type="button" class="btn bg-gradient-secondary">Cancel</button>
-                <button type="button" class="btn bg-gradient-primary">Submit</button>
+                <button id="update_station_info" type="button" class="btn bg-gradient-primary">Submit</button>
                 </div>
 
               </div>
