@@ -1,0 +1,11 @@
+{
+    "repositories": [
+      {
+        "type": "git",
+        "url": "https://github.com/notifylk/notify-php.git"
+      }
+    ],
+    "require": {
+      "notifylk/notify-php": "*@dev"
+    }
+  }

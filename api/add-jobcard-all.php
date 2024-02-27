@@ -310,11 +310,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             job_card_id,
                             notify_date,
                             month_number,
+                            sent,
                             service_station_id
                             ) VALUES 
                             ('$JobCardID',
                             '$notifyDate',
                             '$notifyMonth',
+                             0,
                             '{$_SESSION["station_id"]}'
                             )";
                             if ($conn->query($JobNotificationSQL) !== true) {

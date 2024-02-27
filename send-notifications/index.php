@@ -49,7 +49,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example1" class="table table-bordered table-striped">
+                <table id="example1" class="table table-bordered table-striped tb_notification">
                   <thead>
                   <tr>
                     <th>ID</th>
@@ -71,7 +71,11 @@
                     <td><?php echo  $row["last_serv_date"]; ?></td>
                     <td><?php echo  $row["curr_mileage"]; ?></td>
                     <td>
-                    <button type="button" class="btn bg-gradient-warning"><i class="fas fa-paper-plane"></i></button>
+                    <button 
+                    data-jobcardid="<?php echo  $row["jobcard_id"]; ?>" 
+                    data-vo="<?php echo  $row["first_name"]; ?> <?php echo  $row["last_name"]; ?>" data-vno="<?php echo  $row["vehicle_number"]; ?>" 
+                    data-phone="<?php echo  $row["vehicle_o_phone"]; ?>" 
+                    type="button" class="btn bg-gradient-warning notificationItem"><i class="fas fa-paper-plane"></i></button>
                     </td>
                   </tr>
 
@@ -104,6 +108,8 @@
 </div>
 <!-- ./wrapper -->
 
+<script src="../plugins/jquery/jquery.min.js"></script>
+<script src="../assets/js/notification.js"></script>
 <?php include_once '../includes/footer.php';?>
 
 </body>
