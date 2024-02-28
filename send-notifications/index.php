@@ -109,8 +109,8 @@
 <!-- ./wrapper -->
 
 <script src="../plugins/jquery/jquery.min.js"></script>
-<script src="../assets/js/notification.js"></script>
 <?php include_once '../includes/footer.php';?>
 
+<script src="../assets/js/notification.js"></script>
 </body>
 </html>

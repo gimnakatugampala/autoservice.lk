@@ -1474,6 +1474,7 @@ $(document).ready(function () {
                 vehicle_id:vehicle[0].vehicle_id,
                 vehicle_owner_id:vehicle[0].vehicle_owner_id,
                 vat:VAT.value,
+                vehicle_number:vehicle[0].vehicle_number,
                 washers:JSON.stringify(WasherValues)
             },
             success: function (response) {
@@ -1535,6 +1536,7 @@ $(document).ready(function () {
                 vehicle_id:vehicle[0].vehicle_id,
                 vehicle_owner_id:vehicle[0].vehicle_owner_id,
                 vat:VAT.value,
+                vehicle_number:vehicle[0].vehicle_number,
                 repairs:JSON.stringify(repairArr),
                 products:JSON.stringify(productArr)
                 
@@ -1671,6 +1673,7 @@ $(document).ready(function () {
                 vehicle_id:vehicle[0].vehicle_id,
                 vehicle_owner_id:vehicle[0].vehicle_owner_id,
                 vat:VAT.value,
+                vehicle_number:vehicle[0].vehicle_number,
                 notifyMonth:notify,
                 notifyDate:NextDate,
                 current_mileage,
@@ -1734,6 +1737,7 @@ $(document).ready(function () {
                 vehicle_id:vehicle[0].vehicle_id,
                 vehicle_owner_id:vehicle[0].vehicle_owner_id,
                 vat:VAT.value,
+                vehicle_number:vehicle[0].vehicle_number,
                 washers:JSON.stringify(WasherValues),
                 repairs:JSON.stringify(repairArr),
                 products:JSON.stringify(productArr)
@@ -1864,6 +1868,7 @@ $(document).ready(function () {
                 vehicle_id:vehicle[0].vehicle_id,
                 vehicle_owner_id:vehicle[0].vehicle_owner_id,
                 vat:VAT.value,
+                vehicle_number:vehicle[0].vehicle_number,
                 notifyMonth:notify,
                 notifyDate:NextDate,
                 current_mileage,
@@ -2021,6 +2026,7 @@ $(document).ready(function () {
                   vehicle_id:vehicle[0].vehicle_id,
                   vehicle_owner_id:vehicle[0].vehicle_owner_id,
                   vat:VAT.value,
+                  vehicle_number:vehicle[0].vehicle_number,
                   notifyMonth:notify,
                   notifyDate:NextDate,
                   current_mileage,

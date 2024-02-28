@@ -16,6 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $vehicle_id = $_POST['vehicle_id'];
     $vehicle_owner_id = $_POST['vehicle_owner_id'];
     $vat = $_POST['vat'];
+    $vehicle_number = $_POST['vehicle_number'];
     $data_washers = json_decode($_POST['washers'], true);
     
 
@@ -65,8 +66,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         exit();
                     }
 
+                    // if($status == "1"){
+                    //     // ----------- SMS [Pending] --------------
+                    //     $status_name="Pending";
+                    //     $job_card_type_name="Washer";
+                    //     include_once '../api/send-jobcard-sms.php';
+                    //     // ----------- SMS [Pending] --------------
+                    // }
+
+
                     // ------------------------ IF PAID ------------------
-                    if($paid_status == "3"){
+                    if($paid_status == "3" && $status == "3"){
 
                         // Insert Invoice
                         $WasherInvoiceSQL = "INSERT INTO job_card_invoice (
