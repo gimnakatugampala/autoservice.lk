@@ -24,7 +24,14 @@ if ( $result->num_rows > 0 ) {
     while ( $row = $result->fetch_assoc() ) {
         $jobcards[] = $row;
     }
+
+    usort($jobcards, function($a, $b) {
+        return strtotime($b['JOB_CARD_PLACED_DATE']) - strtotime($a['JOB_CARD_PLACED_DATE']);
+    });
+    
+
 }
+
 
 // echo json_encode( $result );
 ?>

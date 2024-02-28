@@ -16,6 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $vehicle_id = $_POST['vehicle_id'];
     $vehicle_owner_id = $_POST['vehicle_owner_id'];
     $vat = $_POST['vat'];
+    $vehicle_number = $_POST['vehicle_number'];
     $data_washers = json_decode($_POST['washers'], true);
     $data_repairs = json_decode($_POST['repairs'], true);
     $data_products = json_decode($_POST['products'], true);
@@ -123,6 +124,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     }
 
+                    if($status == "1"){
+                        // ----------- SMS [Pending] --------------
+                        $status_name="Pending";
+                        $job_card_type_name="WnR";
+                        include_once '../api/send-jobcard-sms.php';
+                        // ----------- SMS [Pending] --------------
+                    }
+
 
                     // ------------------------ IF PAID ------------------
                     if($paid_status == "3"){
@@ -222,6 +231,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // ------------------------------ Update the New Product Quantity -------------------------------
 
                     }
+
+                     // ----------- SMS [Completed] --------------
+                     $status_name="Completed";
+                     $job_card_type_name="WnR";
+                     include_once '../api/send-jobcard-sms.php';
+                     // ----------- SMS [Completed] --------------
 
 
 

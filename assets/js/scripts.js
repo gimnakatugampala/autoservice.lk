@@ -7,24 +7,36 @@ function validateEmail(email) {
     return emailRegex.test(email);
 }
 
+function generateRandomString(length) {
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
+
 
 // Generate Code
 // Generate ID
-function generateUUID() { // Public Domain/MIT
-    var d = new Date().getTime();//Timestamp
-    var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now()*1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random() * 16;//random number between 0 and 16
-        if(d > 0){//Use timestamp until depleted
-            r = (d + r)%16 | 0;
-            d = Math.floor(d/16);
-        } else {//Use microseconds since page-load if supported
-            r = (d2 + r)%16 | 0;
-            d2 = Math.floor(d2/16);
+function generateUUID() {
+    var d = new Date().getTime(); // Timestamp
+    var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now() * 1000)) || 0; // Time in microseconds since page-load or 0 if unsupported
+    return 'xx4xsxyy'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 36; // Random number between 0 and 36 (inclusive)
+        var randChar;
+        if (r < 10) { // 0-9
+            randChar = String.fromCharCode(48 + r);
+        } else if (r < 26) { // a-z
+            randChar = String.fromCharCode(97 + r - 10);
+        } else { // A-Z
+            randChar = String.fromCharCode(65 + r - 26);
         }
-        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
-  }
+        return randChar;
+    }) + generateRandomString(12);
+}
+
 
 
 //   Remove Phone Number Zero

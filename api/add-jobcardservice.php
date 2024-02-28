@@ -20,6 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $notifyDate = $_POST['notifyDate'];
     $current_mileage = $_POST['current_mileage'];
     $new_mileage = $_POST['new_mileage'];
+    $vehicle_number = $_POST['vehicle_number'];
     $data_fuels = json_decode($_POST['fuels'], true);
     $data_filters = json_decode($_POST['filters'], true);
     $data_vehicle_reports = json_decode($_POST['vehicle_reports'], true);
@@ -145,6 +146,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                          exit();
                      }
 
+                     if($status == "1"){
+                        // ----------- SMS [Pending] --------------
+                        $status_name="Pending";
+                        $job_card_type_name="Service";
+                        include_once '../api/send-jobcard-sms.php';
+                        // ----------- SMS [Pending] --------------
+                    }
+    
 
                 // ------------------ PAID -----------------------
                 if($paid_status == "3"){
@@ -236,7 +245,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-
+                    // ----------- SMS [Completed] --------------
+                    $status_name="Completed";
+                    $job_card_type_name="Service";
+                    include_once '../api/send-jobcard-sms.php';
+                    // ----------- SMS [Completed] --------------
 
 
 
