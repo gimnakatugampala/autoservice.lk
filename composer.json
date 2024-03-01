@@ -6,6 +6,8 @@
       }
     ],
     "require": {
-      "notifylk/notify-php": "*@dev"
+      "notifylk/notify-php": "*@dev",
+        "phpmailer/phpmailer": "^6.9",
+        "tecnickcom/tcpdf": "*"
     }
   }
