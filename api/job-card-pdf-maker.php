@@ -78,59 +78,59 @@ $station_logo =$_SERVER['DOCUMENT_ROOT'].'';
         <table style="width:100%;" >
         <tr><td colspan="2">&nbsp;</td></tr>
 
-        <tr><td colspan="5" align="center"> <img  width="50" height="50" src="../uploads/stations/IMG-65cba69ec76876.46044841.png"></td></tr>
-        <tr><td colspan="2" align="center"><b>Pistona Automotive Solutions (Pvt) Ltd</b></td></tr>
-        <tr><td colspan="2" align="center">ADDRESS: 385/45, Major Wasantha gunarathne mw  kadawatha</td></tr>
-        <tr><td colspan="2" align="center">CONTACT: 0117600800 Fax : 0112948098</td></tr>
-        <tr><td colspan="2" align="center">EMAIL: pistonaautomotivesolutions@gmail.com</td></tr>
+        <tr><td colspan="5" align="center"> <img  width="50" height="50" src="../uploads/stations/'.$data_station[0]["logo"].'"></td></tr>
+        <tr><td colspan="2" align="center"><b>'.$data_station[0]["service_name"].'</b></td></tr>
+        <tr><td colspan="2" align="center">ADDRESS: '.$data_station[0]["address"].' '.$data_station[0]["street"].' '.$data_station[0]["city"].'</td></tr>
+        <tr><td colspan="2" align="center">CONTACT: '.$data_station[0]["phone"].'</td></tr>
+        <tr><td colspan="2" align="center">EMAIL: '.$data_station[0]["email"].'</td></tr>
         <tr><td colspan="2" align="center"><b>Invoice</b></td></tr>
     
         <p>------------------------------------------------------------------------------------------------------------------------------</p>
     
     
         <tr>
-        <td><b>JOB CARD NO</b>:JMW435</td>
-        <td align="right"><b>INVOICE NO</b>:FD4BSEIJL7XJBEZF6FWC</td>
+        <td><b>JOB CARD NO</b>:'.$jobcardcode.'</td>
+        <td align="right"><b>INVOICE NO</b>:'.$jobcardInvoicecode.'</td>
         </tr>
-    
+        
         <tr>
-        <td><b>CUSTOMER NAME</b>:GIMNA KATUGAMPALA</td>
-        <td align="right"><b>INVOICE DATE</b>:45646</td>
+        <td><b>CUSTOMER NAME</b>:'.$data_vehicle[0]["first_name"].' '.$data_vehicle[0]["last_name"].'</td>
+        <td align="right"><b>INVOICE DATE</b>:'.date("Y-m-d H:i:s").'</td>
         </tr>
 
 
         <tr>
-        <td><b>ADDRESS</b>:GIMNA KATUGAMPALA</td>
-        <td align="right"><b>VEHICLE NO</b>:45646</td>
+        <td><b>ADDRESS</b>:'.$data_vehicle[0]["address"].'</td>
+        <td align="right"><b>VEHICLE NO</b>:'.$data_vehicle[0]["vehicle_number"].'</td>
         </tr>
 
      
      
     
         <tr>
-        <td><b>CONTACT NO</b>:0764961707</td>
-        <td align="right"><b>OPENING DATE</b>:03-03-2024</td>
+        <td><b>CONTACT NO</b>:'.$data_vehicle[0]["phone"].'</td>
+        <td align="right"><b>OPENING DATE</b>:'.date("Y-m-d H:i:s").'</td>
         </tr>
 
 
         <tr>
-        <td><b>VAT NO</b>:7</td>
-        <td align="right"><b>CLOSING DATE</b>:03-03-2024</td>
+        <td><b>VAT NO</b>:'.$vat.'</td>
+        <td align="right"><b>CLOSING DATE</b>:'.date("Y-m-d H:i:s").'</td>
         </tr>
 
         <tr>
-        <td><b>MODEL CODE</b>:MC0125</td>
-        <td align="right"><b>NXT SERV.MILEAGE</b>:1200 KM</td>
+        <td><b>MODEL CODE</b>:'.$data_vehicle[0]["vehicle_model_name"].'</td>
+        <td align="right"><b>NXT SERV.MILEAGE</b>:N/A KM</td>
         </tr>
 
         <tr>
-        <td><b>MAKE CODE</b>:HONDA</td>
-        <td align="right"><b>CHASSIS NO</b>: ERT436</td>
+        <td><b>MAKE CODE</b>:'.$data_vehicle[0]["vehicle_make_name"].'</td>
+        <td align="right"><b>CHASSIS NO</b>: '.$data_vehicle[0]["chassis_number"].'</td>
         </tr>
 
         <tr>
-        <td><b>CURRENT MILEAGE</b>:19,809.00</td>
-        <td align="right"><b>ENGINE NO</b>:SDFWER</td>
+        <td><b>CURRENT MILEAGE</b>:'.$data_vehicle[0]["current_mileage"].' KM</td>
+        <td align="right"><b>ENGINE NO</b>:'.$data_vehicle[0]["engine_number"].'</td>
         </tr>
 
        
@@ -138,13 +138,8 @@ $station_logo =$_SERVER['DOCUMENT_ROOT'].'';
         </table>
         
              
-               
-        
-     
         <p>------------------------------------------------------------------------------------------------------------------------------</p>
-           
-    
-            <!-- Table row -->
+
             <div class="row my-3">
                 <div class="col-12 table-responsive">
                 <table class="table table-striped">
@@ -159,21 +154,33 @@ $station_logo =$_SERVER['DOCUMENT_ROOT'].'';
                     </tr>
                     </thead>
                     <tbody>
+
+
+                    ';
+
+                $subTotal = (floatval($data_washers[0]['quantity']) * floatval($data_washers[0]['price'])) - floatval($data_washers[0]['discount']);
+                
+                $totalAmount = floatval($subTotal) + (floatval($subTotal) * floatval($vat) / 100);
+
+             $content .= '
                     <tr>
-                    <td>00-93987-3</td>
-                    <td class="text-uppercase">oil filter-micro mtw 62 (c-809)</td>
-                    <td>1.5</td>
-                    <td>999.98</td>
-                    <td>1999.98</td>
-                    <td>999.998</td>
-                    </tr>
+                    <td>01</td>
+                    <td class="text-uppercase">WASH</td>
+                    <td>'.$data_washers[0]['quantity'].'</td>
+                    <td>'.$data_washers[0]['price'].'</td>
+                    <td>'.$data_washers[0]['discount'].'</td>
+                    <td>'.$subTotal.'</td>
+                    </tr> ';
+
+
+            $content .= '
                     
                     </tbody>
                 </table>
                 </div>
-                <!-- /.col -->
+          
             </div>
-            <!-- /.row -->
+         
     
     
     
@@ -181,15 +188,15 @@ $station_logo =$_SERVER['DOCUMENT_ROOT'].'';
             <table cellpadding="0" cellspacing="0">
             <table style="width:100%;">
             <tr>
-            <td align="right"><b>Subtotal:</b>LKR 250.30</td>
+            <td align="right"><b>Subtotal:</b>LKR '.$subTotal.'</td>
             </tr>
     
             <tr>
-            <td align="right"><b>VAT (%) :</b>56</td>
+            <td align="right"><b>VAT (%) :</b>'.$vat.'</td>
             </tr>
     
             <tr>
-            <td align="right"><b>Total Amount :</b>LKR 265.24</td>
+            <td align="right"><b>Total Amount :</b>LKR '.$totalAmount.'</td>
             </tr>
     
     

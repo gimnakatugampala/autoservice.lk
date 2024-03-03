@@ -1475,7 +1475,9 @@ $(document).ready(function () {
                 vehicle_owner_id:vehicle[0].vehicle_owner_id,
                 vat:VAT.value,
                 vehicle_number:vehicle[0].vehicle_number,
-                washers:JSON.stringify(WasherValues)
+                washers:JSON.stringify(WasherValues),
+                vehicleDetails:JSON.stringify(vehicle),
+                station:JSON.stringify(serviceStationInfo)
             },
             success: function (response) {
               
