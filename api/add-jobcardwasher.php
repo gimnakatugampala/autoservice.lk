@@ -23,11 +23,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $data_vehicle = json_decode($_POST['vehicleDetails'], true);
 
 
-    // -------------- STATION DATA -------------------
-
-    // -------------- STATION DATA -------------------
-
-
 
         // Save job Card
             $sql = "INSERT INTO job_card (job_card_code, 
@@ -162,7 +157,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
                             // ------------------ SEND EMAIL ----------------
-                            include_once '../api/job-card-pdf-maker.php';
+                            include_once '../api/job-card-washer-pdf-maker.php';
                             // ------------------ SEND EMAIL ----------------
 
                     }

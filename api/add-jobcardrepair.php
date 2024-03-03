@@ -19,6 +19,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $vehicle_number = $_POST['vehicle_number'];
     $data_repairs = json_decode($_POST['repairs'], true);
     $data_products = json_decode($_POST['products'], true);
+
+    
+    $data_station = json_decode($_POST['station'], true);
+    $data_vehicle = json_decode($_POST['vehicleDetails'], true);
     
 
 
@@ -204,11 +208,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
 
 
-                    // ----------- SMS [Completed] --------------
-                    $status_name="Completed";
-                    $job_card_type_name="Repair";
-                    include_once '../api/send-jobcard-sms.php';
-                    // ----------- SMS [Completed] --------------
+                    // // ----------- SMS [Completed] --------------
+                    // $status_name="Completed";
+                    // $job_card_type_name="Repair";
+                    // include_once '../api/send-jobcard-sms.php';
+                    // // ----------- SMS [Completed] --------------
+
+
+                    
+                    // ------------------ SEND EMAIL ----------------
+                    include_once '../api/job-card-repair-pdf-maker.php';
+                    // ------------------ SEND EMAIL ----------------
 
 
                 }

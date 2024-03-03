@@ -1540,7 +1540,9 @@ $(document).ready(function () {
                 vat:VAT.value,
                 vehicle_number:vehicle[0].vehicle_number,
                 repairs:JSON.stringify(repairArr),
-                products:JSON.stringify(productArr)
+                products:JSON.stringify(productArr),
+                vehicleDetails:JSON.stringify(vehicle),
+                station:JSON.stringify(serviceStationInfo)
                 
             },
             success: function (response) {
