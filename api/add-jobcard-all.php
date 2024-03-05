@@ -377,9 +377,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // include_once '../api/send-jobcard-sms.php';
                     // // ----------- SMS [Completed] --------------
 
-                             // ------------------ SEND EMAIL ----------------
-                             include_once '../api/job-card-all-pdf-maker.php';
-                             // ------------------ SEND EMAIL ----------------
+                    // ------------------ SEND EMAIL ----------------
+                    include_once '../api/job-card-all-pdf-maker.php';
+                    // ------------------ SEND EMAIL ----------------
 
 
 

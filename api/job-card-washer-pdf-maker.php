@@ -181,9 +181,7 @@ $station_logo =$_SERVER['DOCUMENT_ROOT'].'';
           
             </div>
          
-    
-    
-    
+
     
             <table cellpadding="0" cellspacing="0">
             <table style="width:100%;">
@@ -209,6 +207,11 @@ $station_logo =$_SERVER['DOCUMENT_ROOT'].'';
         '; 
 $pdf->writeHTML($content);
 $pdf->Output($file_location.$file_name, 'F'); // D means download
+
+
+// Send Email
+$email_invoice_path=$file_location.$file_name;
+require_once '../api/send-email-invoice.php';
 
 
 ?>

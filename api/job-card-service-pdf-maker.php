@@ -245,4 +245,9 @@ $pdf->writeHTML($content);
 $pdf->Output($file_location.$file_name, 'F'); // D means download
 
 
+// Send Email
+$email_invoice_path=$file_location.$file_name;
+require_once '../api/send-email-invoice.php';
+
+
 ?>
