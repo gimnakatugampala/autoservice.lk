@@ -665,6 +665,7 @@ $(document).ready(function () {
                     <tr>
                     <td class='rowFuelID' style='display:none;'>${fuel.id}</td>
                     <td class='rowServicePackageID' style='display:none;'>${plist.id}</td>
+                    <td class='rowServicePackageCode' style='display:none;'>${plist.code}</td>
                     <td class='rowServicePackageName' style='display:none;'>${plist.package_name}</td>
                         <td>${fuelIndex + 1}</td>
                         <td>${fuel.name}</td>
@@ -711,6 +712,7 @@ $(document).ready(function () {
                   <tr>
                     <td class='rowFilterID' style='display:none;'>${filter.id}</td>
                     <td class='rowServicePackageID' style='display:none;'>${plist.id}</td>
+                    <td class='rowServicePackageCode' style='display:none;'>${plist.code}</td>
                     <td class='rowServicePackageName' style='display:none;'>${plist.package_name}</td>
                       <td>${filterIndex + 1}</td>
                       <td>${filter.name}</td>
@@ -811,11 +813,13 @@ $(document).ready(function () {
           const ServicePackageId = $(this).closest('tr').find('.rowServicePackageID').text();
           const selectedPrice = $(this).closest('tr').find('.FuelPrice').val();
           const ServicePackageName = $(this).closest('tr').find('.rowServicePackageName').text()
+          const ServicePackageCode = $(this).closest('tr').find('.rowServicePackageCode').text()
           const selectedId = $(this).closest('tr').find('.rowFuelID').text();
           console.log('Selected Service Package ID:', ServicePackageId);
           console.log('Selected Price:', selectedPrice);
           console.log('Selected Fuel ID:', selectedId);
           console.log("Fuel Type");
+          console.log(ServicePackageCode);
 
           selected_fuel = selected_fuel.filter(item => !(item.ServicePackageId == ServicePackageId));
 
@@ -823,6 +827,7 @@ $(document).ready(function () {
           let i = {
             ServicePackageId,
             ServicePackageName,
+            ServicePackageCode,
             price:selectedPrice,
             typeId:selectedId
           }
@@ -840,6 +845,7 @@ $(document).ready(function () {
          const ServicePackageId = $(this).closest('tr').find('.rowServicePackageID').text();
           const selectedPrice = $(this).closest('tr').find('.FilterPrice').val();
           const selectedId = $(this).closest('tr').find('.rowFilterID').text();
+          const ServicePackageCode = $(this).closest('tr').find('.rowServicePackageCode').text()
           const ServicePackageName = $(this).closest('tr').find('.rowServicePackageName').text()
           console.log('Selected Service Package ID:', ServicePackageId);
           console.log('Selected Price:', selectedPrice);
@@ -853,6 +859,7 @@ $(document).ready(function () {
           let i = {
             ServicePackageId,
             ServicePackageName,
+            ServicePackageCode,
             price:selectedPrice,
             typeId:selectedId
           }

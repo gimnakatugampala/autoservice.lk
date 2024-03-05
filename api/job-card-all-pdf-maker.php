@@ -224,7 +224,7 @@ $station_logo =$_SERVER['DOCUMENT_ROOT'].'';
                         // Append table row to content
                         $content .= '
                             <tr>
-                                <td>'.$spitem['ServicePackageId'].'</td>
+                                <td>'.$spitem['ServicePackageCode'].'</td>
                                 <td class="text-uppercase">'.$spitem['ServicePackageName'].'</td>
                                 <td>1</td>
                                 <td>1</td>
