@@ -665,6 +665,7 @@ $(document).ready(function () {
                     <tr>
                     <td class='rowFuelID' style='display:none;'>${fuel.id}</td>
                     <td class='rowServicePackageID' style='display:none;'>${plist.id}</td>
+                    <td class='rowServicePackageName' style='display:none;'>${plist.package_name}</td>
                         <td>${fuelIndex + 1}</td>
                         <td>${fuel.name}</td>
                         <td>
@@ -710,6 +711,7 @@ $(document).ready(function () {
                   <tr>
                     <td class='rowFilterID' style='display:none;'>${filter.id}</td>
                     <td class='rowServicePackageID' style='display:none;'>${plist.id}</td>
+                    <td class='rowServicePackageName' style='display:none;'>${plist.package_name}</td>
                       <td>${filterIndex + 1}</td>
                       <td>${filter.name}</td>
                       <td>
@@ -808,6 +810,7 @@ $(document).ready(function () {
       if ($(this).is(':checked')) {
           const ServicePackageId = $(this).closest('tr').find('.rowServicePackageID').text();
           const selectedPrice = $(this).closest('tr').find('.FuelPrice').val();
+          const ServicePackageName = $(this).closest('tr').find('.rowServicePackageName').text()
           const selectedId = $(this).closest('tr').find('.rowFuelID').text();
           console.log('Selected Service Package ID:', ServicePackageId);
           console.log('Selected Price:', selectedPrice);
@@ -819,6 +822,7 @@ $(document).ready(function () {
 
           let i = {
             ServicePackageId,
+            ServicePackageName,
             price:selectedPrice,
             typeId:selectedId
           }
@@ -836,17 +840,19 @@ $(document).ready(function () {
          const ServicePackageId = $(this).closest('tr').find('.rowServicePackageID').text();
           const selectedPrice = $(this).closest('tr').find('.FilterPrice').val();
           const selectedId = $(this).closest('tr').find('.rowFilterID').text();
+          const ServicePackageName = $(this).closest('tr').find('.rowServicePackageName').text()
           console.log('Selected Service Package ID:', ServicePackageId);
           console.log('Selected Price:', selectedPrice);
           console.log('Selected Filter ID:', selectedId);
-          console.log("Filter Type");
-
+          console.log();
+          
 
           selected_filter = selected_filter.filter(item => !(item.ServicePackageId == ServicePackageId));
 
     
           let i = {
             ServicePackageId,
+            ServicePackageName,
             price:selectedPrice,
             typeId:selectedId
           }
@@ -1240,6 +1246,7 @@ $(document).ready(function () {
   
 
       // ------------------------- Service Package  --------------------
+      console.log(service_packages_items)
       console.log(service_packages_items_fuel)
       console.log(service_packages_items_filter)
       console.log(selected_fuel)
@@ -1595,6 +1602,7 @@ $(document).ready(function () {
         });
 
         console.log(VehicleReportArr)
+   
 
         // --------------------- Vehicle Report --------------
 
@@ -1684,7 +1692,10 @@ $(document).ready(function () {
                 new_mileage,
                 fuels:JSON.stringify(selected_fuel),
                 filters:JSON.stringify(selected_filter),
-                vehicle_reports:JSON.stringify(VehicleReportArr)  
+                vehicle_reports:JSON.stringify(VehicleReportArr),
+                selectedServicePackages:JSON.stringify(service_packages_items),
+                vehicleDetails:JSON.stringify(vehicle),
+                station:JSON.stringify(serviceStationInfo)
             },
             success: function (response) {
               
@@ -1744,7 +1755,9 @@ $(document).ready(function () {
                 vehicle_number:vehicle[0].vehicle_number,
                 washers:JSON.stringify(WasherValues),
                 repairs:JSON.stringify(repairArr),
-                products:JSON.stringify(productArr)
+                products:JSON.stringify(productArr),
+                vehicleDetails:JSON.stringify(vehicle),
+                station:JSON.stringify(serviceStationInfo)
             },
             success: function (response) {
               
@@ -1877,10 +1890,13 @@ $(document).ready(function () {
                 notifyDate:NextDate,
                 current_mileage,
                 new_mileage,
+                selectedServicePackages:JSON.stringify(service_packages_items),
                 fuels:JSON.stringify(selected_fuel),
                 filters:JSON.stringify(selected_filter),
                 vehicle_reports:JSON.stringify(VehicleReportArr),
-                washers:JSON.stringify(WasherValues)
+                washers:JSON.stringify(WasherValues),
+                vehicleDetails:JSON.stringify(vehicle),
+                station:JSON.stringify(serviceStationInfo)
             },
             success: function (response) {
               
@@ -2035,12 +2051,15 @@ $(document).ready(function () {
                   notifyDate:NextDate,
                   current_mileage,
                   new_mileage,
+                  selectedServicePackages:JSON.stringify(service_packages_items),
                   fuels:JSON.stringify(selected_fuel),
                   filters:JSON.stringify(selected_filter),
                   vehicle_reports:JSON.stringify(VehicleReportArr),
                   washers:JSON.stringify(WasherValues),
                   repairs:JSON.stringify(repairArr),
-                  products:JSON.stringify(productArr)
+                  products:JSON.stringify(productArr),
+                  vehicleDetails:JSON.stringify(vehicle),
+                  station:JSON.stringify(serviceStationInfo)
               },
               success: function (response) {
                 

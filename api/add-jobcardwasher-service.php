@@ -21,11 +21,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $current_mileage = $_POST['current_mileage'];
     $new_mileage = $_POST['new_mileage'];
     $vehicle_number = $_POST['vehicle_number'];
+
+
+    $data_service_packages = json_decode($_POST['selectedServicePackages'], true);
     $data_fuels = json_decode($_POST['fuels'], true);
     $data_filters = json_decode($_POST['filters'], true);
+
     $data_vehicle_reports = json_decode($_POST['vehicle_reports'], true);
     $data_washers = json_decode($_POST['washers'], true);
     
+    $data_station = json_decode($_POST['station'], true);
+    $data_vehicle = json_decode($_POST['vehicleDetails'], true);
 
 
         // Save job Card
@@ -186,7 +192,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
                     // ------------------------ IF PAID ------------------
-                    if($paid_status == "3"){
+                    if($paid_status == "3" && $status == "3"){
 
                         // Insert Invoice
                         $WasherInvoiceSQL = "INSERT INTO job_card_invoice (
@@ -274,11 +280,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 exit();
                             }
 
-                             // ----------- SMS [Completed] --------------
-                            $status_name="Completed";
-                            $job_card_type_name="WnS";
-                            include_once '../api/send-jobcard-sms.php';
-                            // ----------- SMS [Completed] --------------
+                            //  // ----------- SMS [Completed] --------------
+                            // $status_name="Completed";
+                            // $job_card_type_name="WnS";
+                            // include_once '../api/send-jobcard-sms.php';
+                            // // ----------- SMS [Completed] --------------
+
+                             // ------------------ SEND EMAIL ----------------
+                            include_once '../api/job-card-washer-service-pdf-maker.php';
+                            // ------------------ SEND EMAIL ----------------
 
 
 

@@ -17,15 +17,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $vehicle_owner_id = $_POST['vehicle_owner_id'];
     $vat = $_POST['vat'];
     $vehicle_number = $_POST['vehicle_number'];
-
     $data_washers = json_decode($_POST['washers'], true);
-    $data_repairs = json_decode($_POST['repairs'], true);
-    $data_products = json_decode($_POST['products'], true);
 
-     
     $data_station = json_decode($_POST['station'], true);
     $data_vehicle = json_decode($_POST['vehicleDetails'], true);
-    
+
 
 
         // Save job Card
@@ -73,73 +69,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         exit();
                     }
 
-
-                     // Add Products
-                    foreach ($data_products as $row) {
-                        $productID = $row['productID'];
-                        $qty = $row['qty'];
-                        $price = $row['price'];
-                        $discount = $row['discount'];
-
-                        $ProductsSQL = "INSERT INTO job_card_products (
-                            job_card_id,
-                            product_id,
-                            qty,
-                            price,
-                            discount
-                            ) VALUES 
-                        ('$JobCardID',
-                        '$productID',
-                        '$qty',
-                        '$price',
-                        '$discount'
-                        )";
-                        if ($conn->query($ProductsSQL) !== true) {
-                            echo 'Error: ' . $ProductsSQL . '<br>' . $conn->error;
-                            exit();
-                        }
-
-                    }
-
-
-                    // Add Repairs
-                    foreach ($data_repairs as $row) {
-                        $repairID = $row['repairID'];
-                        $hrs = $row['hours'];
-                        $price = $row['price'];
-                        $discount = $row['discount'];
-
-                        $RepairSQL = "INSERT INTO job_card_repair (
-                            job_card_id,
-                            repair_id,
-                            hours,
-                            unit_price,
-                            discount
-                            ) VALUES 
-                        ('$JobCardID',
-                        '$repairID',
-                        '$hrs',
-                        '$price',
-                        '$discount'
-                        )";
-                        if ($conn->query($RepairSQL) !== true) {
-                            echo 'Error: ' . $RepairSQL . '<br>' . $conn->error;
-                            exit();
-                        }
-
-                    }
-
                     if($status == "1"){
                         // ----------- SMS [Pending] --------------
                         $status_name="Pending";
-                        $job_card_type_name="WnR";
+                        $job_card_type_name="Washer";
                         include_once '../api/send-jobcard-sms.php';
                         // ----------- SMS [Pending] --------------
+
                     }
 
 
                     // ------------------------ IF PAID ------------------
-                    if($paid_status == "3"){
+                    if($paid_status == "3" && $status == "3"){
 
                         // Insert Invoice
                         $WasherInvoiceSQL = "INSERT INTO job_card_invoice (
@@ -208,65 +149,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             }
 
 
-                          // Update Product QTY
-                          foreach ($data_products as $row) {
-                            $productID = $row['productID'];
-                            $qty = $row['qty'];
-                            $price = $row['price'];
-                            $discount = $row['discount'];
+                            // // ----------- SMS [Completed] --------------
+                            // $status_name="Completed";
+                            // $job_card_type_name="Washer";
+                            // include_once '../api/send-jobcard-sms.php';
+                            // // ----------- SMS [Completed] --------------
 
-                            // ------------------------- Update the New Product Quantity ------------------------------
-                        $query = "SELECT quantity FROM product WHERE id = $productID";
-                        $result = $conn->query($query);
 
-                        if ($result->num_rows > 0) {
-                            $current_quantity = $result->fetch_assoc()['quantity'];
-                            $new_quantity = $current_quantity - $qty;
+                            // ------------------ SEND EMAIL ----------------
+                            include_once '../api/job-card-washer-pdf-maker.php';
+                            // ------------------ SEND EMAIL ----------------
 
-                            // Update the database with the new quantity
-                            $update_query = "UPDATE product SET quantity = $new_quantity WHERE id = $productID";
+                    }
 
-                            if ($conn->query($update_query) === TRUE) {
-                                // echo "sucess";
-                            } else {
-                                echo "Error updating quantity: " . $conn->error;
+
+
+                    // IF ----- Canceled ---------------------------
+                    if($status == "2"){
+
+                        $CanceledSQL = "INSERT INTO jobcard_cancel (
+                            job_card_id
+                            ) VALUES 
+                            ('$JobCardID')";
+                            if ($conn->query($CanceledSQL) !== true) {
+                                echo 'Error: ' . $CanceledSQL . '<br>' . $conn->error;
+                                exit();
                             }
-                        }
-
-                    // ------------------------------ Update the New Product Quantity -------------------------------
-
-                    }
-
-                    //  // ----------- SMS [Completed] --------------
-                    //  $status_name="Completed";
-                    //  $job_card_type_name="WnR";
-                    //  include_once '../api/send-jobcard-sms.php';
-                    //  // ----------- SMS [Completed] --------------
-
-                      // ------------------ SEND EMAIL ----------------
-                      include_once '../api/job-card-washer-repair-pdf-maker.php';
-                      // ------------------ SEND EMAIL ----------------
-
 
 
                     }
 
+                    // IF ----- Canceled ---------------------------
 
-                // IF ----- Canceled ---------------------------
-                if($status == "2"){
-
-                $CanceledSQL = "INSERT INTO jobcard_cancel (
-                    job_card_id
-                    ) VALUES 
-                    ('$JobCardID')";
-                    if ($conn->query($CanceledSQL) !== true) {
-                        echo 'Error: ' . $CanceledSQL . '<br>' . $conn->error;
-                        exit();
-                    }
-
-            }
-
-            // IF ----- Canceled ---------------------------
+                
 
 
                 echo "success";
