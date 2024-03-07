@@ -58,7 +58,7 @@
                     <th>Email</th>
                     <th>Phone Number</th>
                     <th>User Type</th>
-                    <th>Status</th>
+                    <!-- <th>Status</th> -->
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -72,9 +72,9 @@
                     <td><?php echo  $row["email"]; ?></td>
                     <td><?php echo  $row["contact_number"]; ?></td>
                     <td><?php echo  $row["userType"]; ?></td>
-                    <td><input type="checkbox" name="my-checkbox" checked data-bootstrap-switch></td>
+                    <!-- <td><input type="checkbox" name="my-checkbox" checked data-bootstrap-switch></td> -->
                       <td>
-                      <a href="../employees/employee-details.php" type="button" class="btn bg-gradient-primary"><i class="fas fa-eye"></i></a>
+                      <!-- <a href="../employees/employee-details.php" type="button" class="btn bg-gradient-primary"><i class="fas fa-eye"></i></a> -->
                       <a href="../employees/edit-employee.php?code=<?php echo $row['code'];?>" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
                       </td>
                       
