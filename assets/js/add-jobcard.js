@@ -1473,6 +1473,11 @@ $(document).ready(function () {
     }
 
     $("#submit_jobcard").click(function () {
+
+
+       // SHOW LOADING BTN
+       document.getElementById("submit_jobcard").style.display = "none"
+       document.getElementById("btn-loading").style.display = "block"
        
         if(job_card_type == "1"){
 

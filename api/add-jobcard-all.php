@@ -371,11 +371,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
 
 
-                    // // ----------- SMS [Completed] --------------
-                    // $status_name="Completed";
-                    // $job_card_type_name="Repair";
-                    // include_once '../api/send-jobcard-sms.php';
-                    // // ----------- SMS [Completed] --------------
+                    // ----------- SMS [Completed] --------------
+                    $status_name="Completed";
+                    $job_card_type_name="Repair";
+                    include_once '../api/send-jobcard-sms.php';
+                    // ----------- SMS [Completed] --------------
 
                     // ------------------ SEND EMAIL ----------------
                     include_once '../api/job-card-all-pdf-maker.php';
