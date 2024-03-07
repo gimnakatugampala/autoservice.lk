@@ -111,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
 
                 // ------------------ PAID -----------------------
-                if($paid_status == "3" && $status == "3"){
+                if($paid_status == "3" || $status == "3"){
                     //  Job Card Invoice
                     $JobCardInvoiceSQL = "INSERT INTO job_card_invoice (
                         invoice_code,
@@ -208,11 +208,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
 
 
-                    // // ----------- SMS [Completed] --------------
-                    // $status_name="Completed";
-                    // $job_card_type_name="Repair";
-                    // include_once '../api/send-jobcard-sms.php';
-                    // // ----------- SMS [Completed] --------------
+                    // ----------- SMS [Completed] --------------
+                    $status_name="Completed";
+                    $job_card_type_name="Repair";
+                    include_once '../api/send-jobcard-sms.php';
+                    // ----------- SMS [Completed] --------------
 
 
                     

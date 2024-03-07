@@ -251,7 +251,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
                     // ------------------------ IF PAID ------------------
-                    if($paid_status == "3" && $status == "3"){
+                    if($paid_status == "3" || $status == "3"){
 
                         // Insert Invoice
                         $WasherInvoiceSQL = "INSERT INTO job_card_invoice (

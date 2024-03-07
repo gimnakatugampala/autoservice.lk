@@ -24,7 +24,7 @@ try {
 
     //Recipients
     $mail->setFrom('no-reply@stations.autoservice.lk', 'autoservice.lk');
-    $mail->addAddress('gimnaktest@gmail.com');     //Add a recipient
+    $mail->addAddress($data_vehicle[0]["email"]);     //Add a recipient
     // $mail->addAddress('ellen@example.com');               //Name is optional
     // $mail->addReplyTo('info@example.com', 'Information');
     // $mail->addCC('cc@example.com');
