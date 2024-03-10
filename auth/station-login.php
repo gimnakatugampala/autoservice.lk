@@ -41,6 +41,16 @@
 </div>
 <div class="form-login">
 <button id="btn_station_login" class="btn btn-login" >Sign In</button>
+
+<span style="display: none;" id="btn-loading">
+    <button  type="button" class="btn btn-login">
+    <div class="spinner-border spinner-border-sm" role="status">
+        <span class="visually-hidden"></span>
+    </div>
+    </button>
+</span>
+
+
 </div>
 <!-- href="../auth/user-login.php" -->
 <div class="signinform text-center">

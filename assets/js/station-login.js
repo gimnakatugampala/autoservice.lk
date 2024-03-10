@@ -40,6 +40,11 @@ $(document).ready(function () {
         }
 
 
+        // SHOW LOADING BTN
+        document.getElementById("btn_station_login").style.display = "none"
+        document.getElementById("btn-loading").style.display = "inline-block"
+
+
         //  SAVE DATA
         $.ajax({
             type: "POST",

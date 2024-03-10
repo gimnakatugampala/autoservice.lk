@@ -69,7 +69,17 @@
     
     <div class="form-login">
         <a id="station_register_btn" class="btn btn-login">Sign Up</a>
+
+        <span style="display: none;"  id="btn-loading">
+            <button  type="button" class="btn btn-login">
+            <div class="spinner-border spinner-border-sm" role="status">
+                <span class="visually-hidden"></span>
+            </div>
+            </button>
+        </span>
+
     </div>
+    
 
 
 

@@ -45,6 +45,16 @@
           <!-- /.col -->
           <div class="col-4">
             <button id="btn_user_login" type="submit" class="btn btn-primary btn-block">Sign In</button>
+
+
+            <span style="display: none;" id="btn-loading">
+            <button  type="button" class="btn btn-primary btn-block">
+            <div class="spinner-border spinner-border-sm" role="status">
+                <span class="visually-hidden"></span>
+            </div>
+            </button>
+        </span>
+
           </div>
           <!-- /.col -->
         </div>

@@ -39,6 +39,10 @@ $(document).ready(function () {
 
         }
 
+        // SHOW LOADING BTN
+        document.getElementById("btn_user_login").style.display = "none"
+        document.getElementById("btn-loading").style.display = "inline-block"
+
 
         //  SAVE DATA
         $.ajax({

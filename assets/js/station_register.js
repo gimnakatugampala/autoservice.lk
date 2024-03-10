@@ -86,6 +86,12 @@ $(document).ready(function () {
         }
 
 
+         // SHOW LOADING BTN
+         document.getElementById("station_register_btn").style.display = "none"
+         document.getElementById("btn-loading").style.display = "inline-block"
+ 
+
+
     
 
         fetch('https://ipapi.co/json/')

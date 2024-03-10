@@ -55,6 +55,10 @@ $(document).ready(function () {
 
         }
 
+         // SHOW LOADING BTN
+         document.getElementById("btn-user-reg").style.display = "none"
+         document.getElementById("btn-loading").style.display = "inline-block"
+ 
     
 
         //  SAVE DATA
