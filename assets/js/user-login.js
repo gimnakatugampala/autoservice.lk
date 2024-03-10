@@ -41,7 +41,7 @@ $(document).ready(function () {
 
         // SHOW LOADING BTN
         document.getElementById("btn_user_login").style.display = "none"
-        document.getElementById("btn-loading").style.display = "inline-block"
+        document.getElementById("btn-loading").style.display = "block"
 
 
         //  SAVE DATA
@@ -66,6 +66,10 @@ $(document).ready(function () {
                     title: "Login failed",
                     text: "Please check your credentials.",
                   });
+
+                   // SHOW LOADING BTN
+                document.getElementById("btn_user_login").style.display = "block"
+                document.getElementById("btn-loading").style.display = "none"
               }
 
             },

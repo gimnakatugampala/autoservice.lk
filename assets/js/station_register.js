@@ -88,7 +88,7 @@ $(document).ready(function () {
 
          // SHOW LOADING BTN
          document.getElementById("station_register_btn").style.display = "none"
-         document.getElementById("btn-loading").style.display = "inline-block"
+         document.getElementById("btn-loading").style.display = "block"
  
 
 
@@ -144,12 +144,22 @@ $(document).ready(function () {
                     text: "Service Station Already Exist.",
                   });
 
+
+                  // SHOW LOADING BTN
+                  document.getElementById("station_register_btn").style.display = "block"
+                  document.getElementById("btn-loading").style.display = "none"
+
               }else {
                 Swal.fire({
                     icon: "error",
                     title: "Login failed",
                     text: "Please check your credentials.",
                   });
+
+
+                    // SHOW LOADING BTN
+                    document.getElementById("station_register_btn").style.display = "block"
+                    document.getElementById("btn-loading").style.display = "none"
               }
 
             },
