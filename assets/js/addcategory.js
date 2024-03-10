@@ -14,6 +14,11 @@ $(document).ready(function () {
               return
         }else{
 
+
+            // SHOW LOADING BTN
+        document.getElementById("btn_add_category").style.display = "none"
+        document.getElementById("btn-loading").style.display = "inline-block"
+
             //  SAVE DATA
             $.ajax({
                 type: "POST",

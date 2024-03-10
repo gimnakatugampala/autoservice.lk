@@ -1477,7 +1477,7 @@ $(document).ready(function () {
 
        // SHOW LOADING BTN
        document.getElementById("submit_jobcard").style.display = "none"
-       document.getElementById("btn-loading").style.display = "block"
+       document.getElementById("btn-loading").style.display = "inline-block"
        
         if(job_card_type == "1"){
 
@@ -1496,6 +1496,7 @@ $(document).ready(function () {
                 vehicle_number:vehicle[0].vehicle_number,
                 washers:JSON.stringify(WasherValues),
                 vehicleDetails:JSON.stringify(vehicle),
+                
                 station:JSON.stringify(serviceStationInfo)
             },
             success: function (response) {

@@ -2,6 +2,8 @@ $(document).ready(function () {
   
 
     $("#btn_add_vehicle").click(function () {
+
+        
   
         var vehicle_number = $("#vehicle_number").val();
         var engine_number = $("#engine_number").val();
@@ -66,6 +68,10 @@ $(document).ready(function () {
         form_data.append("vehicle_color",`${vehicle_color}`)
         form_data.append("my_image",vehicle_img.files.length == 0 ? null : img[0])
         // -------------------- DATA -------------------
+
+         // SHOW LOADING BTN
+       document.getElementById("btn_add_vehicle").style.display = "none"
+       document.getElementById("btn-loading").style.display = "inline-block"
 
 
             //  SAVE DATA

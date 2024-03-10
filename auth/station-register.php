@@ -7,7 +7,7 @@
 <div class="login-wrapper">
     
 <div class="login-img">
-<img style="object-fit: cover;" src="https://oldmillautos.com/wp-content/uploads/2020/04/Automotive-Car-Repair-Shop.jpg" alt="img">
+<img style="object-fit: cover;" src="../assets/img/system/station_register.jpg" alt="img">
 </div>
 
 <div class="login-content">

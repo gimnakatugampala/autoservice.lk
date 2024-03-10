@@ -223,6 +223,10 @@ $(document).ready(function () {
           return
       }else{
 
+         // SHOW LOADING BTN
+         document.getElementById("add_pruchase_order_return_btn").style.display = "none"
+         document.getElementById("btn-loading").style.display = "inline-block"
+
            //  SAVE DATA
            $.ajax({
             type: "POST",

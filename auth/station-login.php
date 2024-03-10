@@ -52,7 +52,7 @@
 </div>
 
 <div class="login-img">
-<img style="object-fit: cover;" src="https://autotechcollision.com/wp-content/uploads/2019/07/auto-service-repair-2000x1050-1170x650.jpg" alt="img">
+<img style="object-fit: cover;" src="../assets/img/system/login_station.jpg" alt="img">
 </div>
 
 </div>

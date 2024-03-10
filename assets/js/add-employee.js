@@ -119,6 +119,11 @@ $(document).ready(function () {
             console.log(con_pass)
 
 
+            // SHOW LOADING BTN
+        document.getElementById("btn_add_employee").style.display = "none"
+        document.getElementById("btn-loading").style.display = "inline-block"
+
+
              //  SAVE DATA
         $.ajax({
             type: "POST",

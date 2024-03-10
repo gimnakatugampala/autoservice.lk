@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     $("#btn_add_service_package_item").click(function () {
-       
+
         var service_package_item = $("#service_package_item").val();
    
 
@@ -13,6 +13,10 @@ $(document).ready(function () {
               });
               return
         }else{
+
+             // SHOW LOADING BTN
+        document.getElementById("btn_add_service_package_item").style.display = "none"
+        document.getElementById("btn-loading").style.display = "inline-block"
 
             //  SAVE DATA
             $.ajax({

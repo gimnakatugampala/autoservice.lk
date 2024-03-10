@@ -1,6 +1,8 @@
 $(document).ready(function () {
 
     $("#add-vehicle-owner-btn").click(function () {
+
+      
        
         var first_name = $("#first_name").val();
         var last_name = $("#last_name").val();
@@ -96,6 +98,10 @@ $(document).ready(function () {
         console.log(other_phone_number.replace(/\s/g, ''))
         console.log(address)
         console.log(city)
+
+           // SHOW LOADING BTN
+       document.getElementById("add-vehicle-owner-btn").style.display = "none"
+       document.getElementById("btn-loading").style.display = "inline-block"
 
 
         //  SAVE DATA

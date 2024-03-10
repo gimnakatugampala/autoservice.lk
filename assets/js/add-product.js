@@ -84,6 +84,10 @@ $(document).ready(function () {
 
         }else{
 
+            // SHOW LOADING BTN
+        document.getElementById("btn_add_product").style.display = "none"
+        document.getElementById("btn-loading").style.display = "inline-block"
+
             //  SAVE DATA
             $.ajax({
                 type: "POST",

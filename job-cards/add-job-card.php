@@ -1033,7 +1033,7 @@
 
                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                     <button id="submit_jobcard" type="submit" class="btn btn-primary">Submit</button>
-                    
+
                     <span style="display: none;" id="btn-loading">
                         <button  type="button" class="btn btn-primary">
                         <div class="spinner-border spinner-border-sm" role="status">

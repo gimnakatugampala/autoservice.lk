@@ -419,6 +419,11 @@ $(document).ready(function () {
     console.log(dataFuelTypes)
     console.log(dataFilterTypes)
 
+
+    // SHOW LOADING BTN
+    document.getElementById("btn_add_service_package").style.display = "none"
+    document.getElementById("btn-loading").style.display = "inline-block"
+
     //  SAVE DATA
     $.ajax({
       type: "POST",

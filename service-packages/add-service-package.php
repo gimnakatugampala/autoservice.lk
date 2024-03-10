@@ -272,6 +272,17 @@
                 <div class="col-md-4">
                 <button type="button" class="btn bg-gradient-secondary">Cancel</button>
                 <button id="btn_add_service_package" type="button" class="btn bg-gradient-primary">Submit</button>
+
+
+                <span style="display: none;" id="btn-loading">
+                        <button  type="button" class="btn bg-gradient-primary">
+                        <div class="spinner-border spinner-border-sm" role="status">
+                            <span class="visually-hidden"></span>
+                        </div>
+                        </button>
+                  </span>
+
+
                 </div>
 
               </div>

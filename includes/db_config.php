@@ -1,9 +1,12 @@
 <?php
+
+// LOCAL HOST SERVER
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "autoservice_db";
 
+// // TEST SERVER
 // $servername = "localhost";
 // $username = "autoserv_root";
 // $password = "AB{A926!}Pa7";

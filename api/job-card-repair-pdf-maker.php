@@ -5,9 +5,9 @@ require_once '../vendor/tecnickcom/tcpdf/tcpdf.php';
 
 
 // Production
-// $file_location = $_SERVER['DOCUMENT_ROOT']."/invoices/"; 
+// $file_location = $_SERVER['DOCUMENT_ROOT']."uploads/invoices/"; 
 
-// Development
+// // Development
 $file_location = $_SERVER['DOCUMENT_ROOT']."autoservice/uploads/invoices/"; 
 
 // -------------------- FILE NAME DEFINE -------------------
