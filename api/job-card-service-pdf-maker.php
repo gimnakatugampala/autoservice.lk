@@ -5,10 +5,10 @@ require_once '../vendor/tecnickcom/tcpdf/tcpdf.php';
 
 
 // Production
-// $file_location = $_SERVER['DOCUMENT_ROOT']."uploads/invoices/"; 
+$file_location = $_SERVER['DOCUMENT_ROOT']."uploads/invoices/"; 
 
 // // Development
-$file_location = $_SERVER['DOCUMENT_ROOT']."autoservice/uploads/invoices/"; 
+// $file_location = $_SERVER['DOCUMENT_ROOT']."autoservice/uploads/invoices/"; 
 
 // -------------------- FILE NAME DEFINE -------------------
 $datetime=date('dmY_hms');
