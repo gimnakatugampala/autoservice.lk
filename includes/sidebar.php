@@ -1,3 +1,5 @@
+<?php require_once '../api/count-notification.php'; ?>
+
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
@@ -291,7 +293,7 @@
           <li class="nav-item">
             <a href="../send-notifications/" class="nav-link">
               <i class="nav-icon fas fa-envelope"></i>
-              <p>Send Notifications <span class="badge badge-info right">2</span></p>
+              <p>Send Notifications <?php echo ($notification_count == "" || $notification_count == "0") ? '' : "<span class='badge badge-info right'>$notification_count</span>"; ?> </p>
             </a>
           </li>
 
