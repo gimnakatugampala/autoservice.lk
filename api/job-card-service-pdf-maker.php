@@ -1,14 +1,17 @@
 <?php                
 
 require_once '../includes/db_config.php';
+require_once '../includes/environment.php';
 require_once '../vendor/tecnickcom/tcpdf/tcpdf.php';
 
 
-// Production
-$file_location = $_SERVER['DOCUMENT_ROOT']."uploads/invoices/"; 
-
-// // Development
-// $file_location = $_SERVER['DOCUMENT_ROOT']."autoservice/uploads/invoices/"; 
+if($env == 'd'){
+    // Development
+    $file_location = $_SERVER['DOCUMENT_ROOT']."autoservice/uploads/invoices/"; 
+}else{
+    // Production
+    $file_location = $_SERVER['DOCUMENT_ROOT']."uploads/invoices/"; 
+}
 
 // -------------------- FILE NAME DEFINE -------------------
 $datetime=date('dmY_hms');
