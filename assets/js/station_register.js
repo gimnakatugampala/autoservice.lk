@@ -89,11 +89,11 @@ $(document).ready(function () {
          // SHOW LOADING BTN
          document.getElementById("station_register_btn").style.display = "none"
          document.getElementById("btn-loading").style.display = "block"
- 
-
 
     
 
+
+  
         fetch('https://ipapi.co/json/')
         .then(response => {
             return response.json();
@@ -140,8 +140,20 @@ $(document).ready(function () {
               } else if (response == "User Exist"){
                 Swal.fire({
                     icon: "error",
-                    title: "Login failed",
+                    title: "Register failed",
                     text: "Service Station Already Exist.",
+                  });
+
+
+                  // SHOW LOADING BTN
+                  document.getElementById("station_register_btn").style.display = "block"
+                  document.getElementById("btn-loading").style.display = "none"
+
+              }else if (response == "Email is Invalid"){
+                Swal.fire({
+                    icon: "error",
+                    title: "Register failed",
+                    text: "Email is Invalid.",
                   });
 
 
@@ -152,7 +164,7 @@ $(document).ready(function () {
               }else {
                 Swal.fire({
                     icon: "error",
-                    title: "Login failed",
+                    title: "Register failed",
                     text: "Please check your credentials.",
                   });
 
@@ -176,10 +188,5 @@ $(document).ready(function () {
 
       
 
-    // Swal.fire({
-    //     icon: "error",
-    //     title: "Error",
-    //     text: "Please Enter your Username",
-    //   });
 
 })

@@ -90,6 +90,18 @@ $(document).ready(function () {
                 document.getElementById("btn-user-reg").style.display = "block"
                 document.getElementById("btn-loading").style.display = "none"
 
+              }else if (response == "Email is Invalid"){
+                Swal.fire({
+                    icon: "error",
+                    title: "Register failed",
+                    text: "Email is Invalid.",
+                  });
+
+
+                  // SHOW LOADING BTN
+                  document.getElementById("btn-user-reg").style.display = "block"
+                  document.getElementById("btn-loading").style.display = "none"
+
               }else {
                 Swal.fire({
                     icon: "error",

@@ -39,7 +39,7 @@ if (!isset($_SESSION["station_id"]) || $_SESSION["station_id"] == null) {
      <h3 class="text-center">Admin Register</h3>
       <p class="login-box-msg">Register to start your session</p>
 
-   
+      
 
         <label class="form-label">Email address</label>
         <div class="input-group mb-3">

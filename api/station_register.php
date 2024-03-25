@@ -8,15 +8,50 @@ require_once '../includes/db_config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
- 
+    
     $station_code = $_POST['station_code'];
     $station_name = $_POST['station_name'];
     $email =  $_POST['email'];
     $password = $_POST['password'];
     $latitude = $_POST['lat'];
     $long = $_POST['long'];
-    
+
     $hashed_password = sha1($password);
+
+
+    // ----------------- VALIDATE EMAIL ---------------
+
+    
+        // Initialize cURL.
+        $ch = curl_init();
+
+        // Set the URL that you want to GET by using the CURLOPT_URL option.
+        curl_setopt($ch, CURLOPT_URL, "https://emailvalidation.abstractapi.com/v1/?api_key=0892248f7ee647f7889b380959b6d56c&email=$email");
+
+        // Set CURLOPT_RETURNTRANSFER so that the content is returned as a variable.
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        // Set CURLOPT_FOLLOWLOCATION to true to follow redirects.
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+
+        // Execute the request.
+        $data = curl_exec($ch);
+
+        // Close the cURL handle.
+        curl_close($ch);
+
+        // Print the data out onto the page.
+        $response = json_decode($data, true);
+
+        if ($response['deliverability'] != 'DELIVERABLE') {
+            echo "Email is Invalid";
+            return;
+        }
+              
+
+        // ----------------- VALIDATE EMAIL ---------------
+
+ 
 
     $sql = "SELECT * FROM service_station WHERE email = '$email' OR service_name = '$station_name'";
     $result = $conn->query($sql);
