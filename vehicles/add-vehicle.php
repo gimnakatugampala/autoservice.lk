@@ -55,7 +55,7 @@
 
                 <div class="col-md-6">
                     <div class="form-group">
-                          <label for="exampleInputEmail1">Engine Number <span class="text-danger">*</span></label>
+                          <label for="exampleInputEmail1">Engine Number </label>
                           <input oninput="convertToUppercase(this)" type="text" class="form-control" id="engine_number" placeholder="Engine Number">
                       </div>
                 </div>
@@ -188,7 +188,7 @@
 
                 <div class="col-md-6">
                     <div class="form-group">
-                          <label for="chassis_number">Chassis Number <span class="text-danger">*</span></label>
+                          <label for="chassis_number">Chassis Number </label>
                           <input oninput="convertToUppercase(this)" type="email" class="form-control" id="chassis_number" placeholder="Chassis Number">
                       </div>
                 </div>

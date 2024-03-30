@@ -29,20 +29,6 @@ $(document).ready(function () {
               text: "Please Enter Vehicle Number.",
           });
           return
-      }else if(engine_number == ""){
-          Swal.fire({
-              icon: "error",
-              title: "Error",
-              text: "Please Enter Enter Engine Number.",
-          });
-          return
-      }else if(chassis_number == ""){
-          Swal.fire({
-              icon: "error",
-              title: "Error",
-              text: "Please Enter Enter Chassis Number.",
-          });
-          return
       }else if(vehicle_color == ""){
           Swal.fire({
               icon: "error",

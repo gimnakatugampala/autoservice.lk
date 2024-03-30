@@ -2,7 +2,7 @@ $(document).ready(function () {
     var dropdown = document.getElementById("cmbsearchvehicles");
     // var SearchVehicleContentDOM = $("#search-vehicle-content");
 
-    document.addEventListener('DOMContentLoaded', getVehicleReport());
+    // document.addEventListener('DOMContentLoaded', getVehicleReport());
 
     let vehicle;
     let current_mileage;
@@ -271,6 +271,13 @@ $(document).ready(function () {
         return
       }else{
 
+        //  ----- SHOW / HIDE Vehicle report based on joib card type
+        if(job_card_type == "6" || job_card_type == "3" || job_card_type == "5"){
+          getVehicleReport()
+        }else{
+          $('#vehicle-report-container').html(`Report Not Available`)
+        }
+
       // --------------- Set Washer in Step 3 -----------
       if(job_card_type != "2" && job_card_type != "3"){
 
@@ -294,7 +301,7 @@ $(document).ready(function () {
         });
         
       }else{
-        $('#washer-part-container').html(``)
+        $('#washer-part-container').html(`Washer Not Available`)
       }
       // --------------- Set Washer in Step 3 -----------
 
@@ -333,10 +340,13 @@ $(document).ready(function () {
         success: function (data) {
 
           console.log(data)
+
+        
+            // ---------------
+                populateVehicleReportContent(data);
+            // ---------------
+         
   
-          // ---------------
-              populateVehicleReportContent(data);
-          // ---------------
         },
         error: function () {},
       });
