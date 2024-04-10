@@ -8,9 +8,13 @@ require_once '../includes/db_config.php';
 
  $stationID = $_SESSION['station_id'];
 
-$sql = "SELECT *
+$sql = "SELECT *,
+product_category.name AS product_cat_name
 FROM product 
-WHERE is_deleted = 0 AND service_station_id = '$stationID' ORDER BY created_date DESC";
+LEFT JOIN product_category ON product.product_category_id = product_category.id
+WHERE product.is_deleted = 0 AND 
+product.service_station_id = '$stationID' 
+ORDER BY product.created_date DESC";
 $result = $conn->query( $sql );
 
 $product = array();

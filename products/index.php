@@ -54,7 +54,7 @@
                   <tr>
                     <th>ID</th>
                     <th>Product Name</th>
-                    <th>Warrenty</th>
+                    <th>Warrenty (Yrs)</th>
                     <th>Category</th>
                     <th>QTY Available</th>
                     <th>Actions</th>
@@ -67,7 +67,7 @@
                       <td><?php echo  $row["code"]; ?></td>
                       <td><?php echo  $row["product_name"]; ?></td>
                       <td><?php echo  $row["warrenty"]; ?></td>
-                      <td><?php echo  $row["created_date"]; ?></td>
+                      <td><?php echo  $row["product_cat_name"]; ?></td>
                       <td><?php echo  $row["quantity"]; ?></td>
                       <td>
                       <a href="../products/edit-product.php?code=<?php echo  $row["code"]; ?>" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
