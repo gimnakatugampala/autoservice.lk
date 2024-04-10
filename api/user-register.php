@@ -70,7 +70,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // SESSIONS
                  $row = $result->fetch_assoc();
                  $_SESSION["user_id"] = $row["id"];
-                 $_SESSION["user_emp_name"] = $row["first_name"] == null ? "Admin" : $row["first_name"] . " ". $row["last_name"];
+                 
+                 if($row["first_name"] == null){
+                    $_SESSION["user_emp_name"] = "Admin";
+                }else{
+                    $_SESSION["user_emp_name"] = $row["first_name"] . " ". $row["last_name"];
+                }
 
                  $sql = "INSERT INTO user_session (station_id,user_id) 
                  VALUES ('{$_SESSION["station_id"]}','{$_SESSION["user_id"]}')";

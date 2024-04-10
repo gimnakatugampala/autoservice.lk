@@ -18,7 +18,7 @@ if($env == 'd'){
 }
 
 // GET THE CURRENT EMP
-$curr_emp =  $_SESSION["user_emp_name"] = $row["first_name"] == null ? "Admin" : $row["first_name"] . " ". $row["last_name"];
+$curr_emp =  $_SESSION["user_emp_name"];
 
 // -------------------- FILE NAME DEFINE -------------------
 $datetime=date('dmY_hms');

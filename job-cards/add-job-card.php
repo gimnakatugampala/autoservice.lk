@@ -831,7 +831,7 @@
                             <span><b>Model Code</b></span> : <span class="text-uppercase" id="in_model"></span><br />
                             <span><b>Make Code</b></span> : <span class="text-uppercase" id="in_make"></span><br />
                             <span><b>Current Mileage</b></span> : <span class="text-uppercase" id="in_current_mileage"></span><br />
-                            <span><b>Employee Name</b></span> : <span class="text-uppercase" id="in_emp_name"><?php echo $_SESSION["user_emp_name"] == null ? "Admin" : $_SESSION["user_emp_name"];?></span><br />
+                            <span><b>Employee Name</b></span> : <span class="text-uppercase" ><?php echo $_SESSION["user_emp_name"];?></span><br />
                        
                         </div>
                         <!-- /.col -->
