@@ -42,11 +42,14 @@ $(document).ready(function () {
 
           <div class="col-md-9 mx-auto my-2">
             <div class="d-flex align-items-center justify-content-evenly">
+              ${data[0].current_mileage != null ? `<span class="mx-1"><b><i>${data[0].current_mileage} KM</i></b></span> `: '' }
               <span class="text-secondary mx-1"><b>${data[0].vehicle_color}</b></span>
               <div class="border inline mx-1" style="width:11px;height:11px;background-color:${data[0].vehicle_color};border-radius:50%" ></div>
               <span class="h4 m-0 p-0"><b>${data[0].vehicle_number}</b></span>
             </div>
           </div>
+
+        
 
           <div class="col-md-10 mx-auto my-4">
 
@@ -83,6 +86,7 @@ $(document).ready(function () {
                 <h6 class="text-uppercase m-0 p-0"><b>Year Of Manufacturer</b></h6>
                 <p class="text-muted m-0 p-0">${data[0].VEHICLE_YEAR}</p>
             </div>
+            
           </div>
 
           </div>

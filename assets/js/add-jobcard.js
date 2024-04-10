@@ -92,7 +92,7 @@ $(document).ready(function () {
 
                 <p class="m-0 p-0 text-secondary">${data.vehicles[0].first_name} ${data.vehicles[0].last_name}</p>
                 <p class="m-0 p-0 text-secondary">+94 ${removeLeadingZeros(data.vehicles[0].phone)}</p>
-                <p class="m-0 p-0 text-secondary">Prev Mileage : 56,000 KM</p>
+                <p class="m-0 p-0 text-secondary">Prev Mileage : ${data.vehicles[0].current_mileage == null ? 0 : data.vehicles[0].current_mileage} KM</p>
               </div>
                 </div>
             </div>
