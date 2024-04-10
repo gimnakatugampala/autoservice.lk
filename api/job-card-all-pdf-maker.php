@@ -4,6 +4,10 @@ require_once '../includes/db_config.php';
 require_once '../includes/environment.php';
 require_once '../vendor/tecnickcom/tcpdf/tcpdf.php';
 
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 if($env == 'd'){
     // Development
     $file_location = $_SERVER['DOCUMENT_ROOT']."autoservice/uploads/invoices/"; 
@@ -12,6 +16,9 @@ if($env == 'd'){
     $file_location = $_SERVER['DOCUMENT_ROOT']."uploads/invoices/"; 
 }
 
+
+// GET THE CURRENT EMP
+$curr_emp =  $_SESSION["user_emp_name"] = $row["first_name"] == null ? "Admin" : $row["first_name"] . " ". $row["last_name"];
 
 
 // -------------------- FILE NAME DEFINE -------------------
@@ -137,6 +144,12 @@ $station_logo =$_SERVER['DOCUMENT_ROOT'].'';
         <td align="right"><b>ENGINE NO</b>:'.$data_vehicle[0]["engine_number"].'</td>
         </tr>
 
+        <tr>
+        <td><b>EMPLOYEE NAME</b>:'.$curr_emp.'</td>
+        <td align="right"><b>JOB CARD TYPE</b> : ALL</td>
+        </tr>
+
+   
        
         </table>
         </table>

@@ -831,6 +831,7 @@
                             <span><b>Model Code</b></span> : <span class="text-uppercase" id="in_model"></span><br />
                             <span><b>Make Code</b></span> : <span class="text-uppercase" id="in_make"></span><br />
                             <span><b>Current Mileage</b></span> : <span class="text-uppercase" id="in_current_mileage"></span><br />
+                            <span><b>Employee Name</b></span> : <span class="text-uppercase" id="in_emp_name"><?php echo $_SESSION["user_emp_name"] == null ? "Admin" : $_SESSION["user_emp_name"];?></span><br />
                        
                         </div>
                         <!-- /.col -->
@@ -844,6 +845,8 @@
                             <span><b>Nxt Serv.Mileage</b></span> : <span class="text-uppercase" id="in_next_mileage"></span><br>
                             <span><b>Chassis No</b></span> : <span class="text-uppercase" id="in_chassis_no"></span><br>
                             <span><b>Engine No</b></span> : <span class="text-uppercase" id="in_engine_no"></span><br>
+                            <span><b>Job Card Type</b></span> : <span class="text-uppercase" id="in_job_card_type"></span><br>
+                            
 
                         </div>
                         <!-- /.col -->

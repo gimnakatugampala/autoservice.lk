@@ -1315,9 +1315,21 @@ $(document).ready(function () {
       $("#in_station_phone").text(`${serviceStationInfo[0].phone == null ? "NULL" : serviceStationInfo[0].phone}`);
       $("#in_station_email").text(`${serviceStationInfo[0].email == null ? "NULL" : serviceStationInfo[0].email}`);
       $('#in_station_logo').attr('src', serviceStationInfo[0].logo == null ? "" : `../uploads/stations/${serviceStationInfo[0].logo}`);
+      
+      if(job_card_type == "1"){
+        $("#in_job_card_type").text(`Washer Only`);
+      }else if(job_card_type == "2"){
+        $("#in_job_card_type").text(`Repair Only`);
+      }else if(job_card_type == "3"){
+        $("#in_job_card_type").text(`Service Only`);
+      }else if(job_card_type == "4"){
+        $("#in_job_card_type").text(`Washer & Repair Only`);
+      }else if(job_card_type == "5"){
+        $("#in_job_card_type").text(`Washer & Service Only`);
+      }else if(job_card_type == "6"){
+        $("#in_job_card_type").text(`ALL`);
+      }
 
-
-    
 
       $("#in_opening_date").text(`${formattedDate}`);
       

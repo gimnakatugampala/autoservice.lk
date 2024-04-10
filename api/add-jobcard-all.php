@@ -45,7 +45,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             vehicle_id,
             vehicle_owner_id,
             vat,
-            service_station_id) 
+            service_station_id,
+            employee_id
+            ) 
             VALUES ('$jobcardcode', 
             '$status',
             '$paid_status',
@@ -53,7 +55,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             '$vehicle_id',
             '$vehicle_owner_id',
             '$vat',
-            '{$_SESSION["station_id"]}')";
+            '{$_SESSION["station_id"]}',
+            '{$_SESSION["user_id"]}')
+            ";
             if ($conn->query($sql) === TRUE) {
 
                 $JobCardID = $conn->insert_id;
