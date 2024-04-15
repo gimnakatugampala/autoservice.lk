@@ -1,8 +1,5 @@
 $(document).ready(function () {
     var dropdown = document.getElementById("cmbsearchvehicles");
-    // var SearchVehicleContentDOM = $("#search-vehicle-content");
-
-    // document.addEventListener('DOMContentLoaded', getVehicleReport());
 
     let vehicle;
     let current_mileage;
@@ -206,6 +203,7 @@ $(document).ready(function () {
 
 
     // ---------------- Step 1 --------------
+    // ---------------------------------------
     $("#job-card-step-1").click(function () {
 
     
@@ -292,7 +290,8 @@ $(document).ready(function () {
   
             console.log(vehicle[0].vehicle_class_id)
             console.log(data)
-    
+
+ 
             // ---------------
             populateWasherTable(data[0])
             // ---------------
@@ -308,13 +307,13 @@ $(document).ready(function () {
         stepper.next()
 
 
-        console.log(current_mileage)
-        console.log(new_mileage)
-        console.log(paid_status)
-        console.log(job_card_type)
-        console.log(status)
-        console.log(vehicle)
-        console.log(notify)
+        // console.log(current_mileage)
+        // console.log(new_mileage)
+        // console.log(paid_status)
+        // console.log(job_card_type)
+        // console.log(status)
+        // console.log(vehicle)
+        // console.log(notify)
 
          // ---------------- INVOICE DETAILS ----------------
          jobCardCode = generateUUID()
@@ -328,9 +327,13 @@ $(document).ready(function () {
      
 
     })
+     // ---------------------------------------
   // ---------------- Step 1 --------------
 
+
+
     // --------------- Step 2 ------------
+     // ---------------------------------------
     function getVehicleReport(){
 
       $.ajax({
@@ -453,9 +456,11 @@ $(document).ready(function () {
     
       
     })
+     // ---------------------------------------
     // --------------- Step 2 ------------
 
     // --------------- Step 3 ------------
+     // ---------------------------------------
     function populateWasherTable(data) {
 
       $('#washer-part-container').html(`
@@ -543,7 +548,9 @@ $(document).ready(function () {
     }
 
     function calculateWasherTotal() {
+
       // var totalAmount = 0;
+      WasherValues = [];
       items.forEach(function (item) {
         
         // document.getElementById("wash-final-total").textContent = "0"
@@ -558,7 +565,7 @@ $(document).ready(function () {
         // totalAmount += itemTotal;
         // document.getElementById("wash-final-total").textContent = itemTotal;
 
-        WasherValues = [];
+        // WasherValues = [];
 
         WasherValues.push({
           washerID:rowID,
@@ -578,10 +585,12 @@ $(document).ready(function () {
       console.log(WasherValues)
       stepper.next()
     })
+     // ---------------------------------------
     // --------------- Step 3 ------------
 
 
     //  ---------------------- Step 4 -------------
+     // ---------------------------------------
     var dropdownServicePackage = document.getElementById("cmbservicepackages");
     var tableBodyServicePackage = $("#table-jobcard-service-packages");
 
@@ -921,13 +930,11 @@ $(document).ready(function () {
       console.log(selected_fuel)
       console.log(selected_filter)
     })
-
-
-
-
+     // ---------------------------------------
     //  ---------------------- Step 4 -------------
 
     // --------------- Step 5 ------------
+     // ---------------------------------------
     var dropdownRepair = document.getElementById("cmbrepair");
     var tableBodyRepair = $("#table-jobcard-repair");
     var repair_items = [];
@@ -1098,6 +1105,7 @@ $(document).ready(function () {
       console.log("Job Card 5")
       stepper.next()
     })
+     // ---------------------------------------
     // --------------- Step 5 ------------
 
 
@@ -2121,7 +2129,6 @@ $(document).ready(function () {
 
 
     })
-    
     
     // -------------------------- Step 7 ----------------------------
 

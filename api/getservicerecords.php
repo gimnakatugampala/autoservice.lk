@@ -22,6 +22,7 @@ if ($result->num_rows > 0) {
 // Get THe Job Cards OF vehicle ID
 $jobCards_sql = "SELECT 
 job_card.job_card_code AS JOB_CARD_CODE, 
+job_card_type.id AS JOB_CARD_TYPE_ID, 
 job_card_type.type AS JOB_CARD_TYPE_NAME, 
 service_station.service_name AS SERVICE_STATION_NAME,
 status.status AS JOB_CARD_STATUS,

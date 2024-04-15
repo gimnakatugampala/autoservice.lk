@@ -41,12 +41,18 @@ $(document).ready(function () {
               row.append(`<td>${list.CREATED_DATE}</td>`);
               row.append(`<td>${list.COMPLETED_DATE == null ? "" : list.COMPLETED_DATE}</td>`);
               row.append(`<td>${list.CURRENT_MILEAGE == null ? "" : list.CURRENT_MILEAGE}</td>`);
-              row.append(` <td>
+              if(list.JOB_CARD_TYPE_ID != 1){
+                row.append(` <td>
               <a href="../vehicle-search/service-record-details.php?code=${list.JOB_CARD_CODE}" type="button" class="btn bg-gradient-primary"><i class="fas fa-eye"></i></a>
               <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-lg">
                   <i class="fas fa-chart-line"></i>
               </button>
-              </td>`);
+              </td>`);  
+              }else{
+                row.append(` <td>
+                <a href="../vehicle-search/service-record-details.php?code=${list.JOB_CARD_CODE}" type="button" class="btn bg-gradient-primary"><i class="fas fa-eye"></i></a>
+                </td>`);
+              }
               row.append("</tr>");
              
               ServiceRecordsBody.append(row);

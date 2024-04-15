@@ -133,6 +133,9 @@ $(document).ready(function () {
                     title: "Error",
                     text: "Vehicle Owner Already Exist.",
                 });
+
+                document.getElementById("add-vehicle-owner-btn").style.display = "inline-block"
+                document.getElementById("btn-loading").style.display = "none"
             }
 
             },
