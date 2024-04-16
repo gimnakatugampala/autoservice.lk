@@ -118,38 +118,39 @@ $(document).ready(function () {
                             </tr>
                         </thead>
                         <tbody>
-                        ${data.vehicle_subcategory.filter(subcategory => subcategory.vehicle_condition_category_id === category.id).map(subcategory => {
+                        ${data.job_card_vehicle_report
+                            .filter(subcategory => subcategory.vehicle_condition_category_id == category.id).map(subcategory => {
                           return `
                           <tr data-category-id="${category.id}" data-subcategory-id="${subcategory.id}">
                                   <td>${subcategory.sub_category}</td>
                                   <input type="hidden" value="${subcategory.id}">
                                   <td> 
                                       <div class="form-check">
-                                          <input value="1" class="form-check-input" type="radio" name="radio${subcategory.id}">
+                                          <input value="1" class="form-check-input" type="radio" name="radio${subcategory.id}" ${subcategory.value_id == "1" ? "checked" : ""} ${shouldDisable(subcategory.value_id, 1)}>
                                           <label class="form-check-label">Worse</label>
                                       </div>
                                   </td>
                                   <td> 
                                       <div class="form-check">
-                                          <input value="2" class="form-check-input" type="radio" name="radio${subcategory.id}">
+                                          <input value="2" class="form-check-input" type="radio" name="radio${subcategory.id}" ${subcategory.value_id == "2" ? "checked" : ""} ${shouldDisable(subcategory.value_id, 2)}>
                                           <label class="form-check-label">Bad</label>
                                       </div>
                                   </td>
                                   <td> 
                                       <div class="form-check">
-                                          <input value="3" class="form-check-input" type="radio" name="radio${subcategory.id}">
+                                          <input value="3" class="form-check-input" type="radio" name="radio${subcategory.id}" ${subcategory.value_id == "3" ? "checked" : ""} ${shouldDisable(subcategory.value_id, 3)}>
                                           <label class="form-check-label">Ok</label>
                                       </div>
                                   </td>
                                   <td> 
                                       <div class="form-check">
-                                          <input value="4" class="form-check-input" type="radio" name="radio${subcategory.id}">
+                                          <input value="4" class="form-check-input" type="radio" name="radio${subcategory.id}" ${subcategory.value_id == "4" ? "checked" : ""} ${shouldDisable(subcategory.value_id, 4)}>
                                           <label class="form-check-label">Good</label>
                                       </div>
                                   </td>
                                   <td> 
                                       <div class="form-check">
-                                          <input value="5" class="form-check-input" type="radio" name="radio${subcategory.id}">
+                                          <input value="5" class="form-check-input" type="radio" name="radio${subcategory.id}" ${subcategory.value_id == "5" ? "checked" : ""} ${shouldDisable(subcategory.value_id, 5)}>
                                           <label class="form-check-label">Perfect</label>
                                       </div>
                                   </td>
@@ -161,6 +162,11 @@ $(document).ready(function () {
                 </div>`;
         }).join('')}
     `);
+    
+    function shouldDisable(valueId, desiredId) {
+        return valueId != desiredId ? "disabled" : "";
+    }
+    
     }
 
   }

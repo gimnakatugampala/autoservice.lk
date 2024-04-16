@@ -444,8 +444,10 @@ $(document).ready(function () {
             }
         });
 
-        // Push the row object containing radio button values and subcategory ID into the rowVehicleReportData array
-        rowVehicleReportData.push(row);
+        if (!$.isEmptyObject(row)) {
+          // Push the row object containing radio button values and subcategory ID into the rowVehicleReportData array
+          rowVehicleReportData.push(row);
+      }
     });
 
   

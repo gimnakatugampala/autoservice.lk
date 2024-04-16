@@ -27,15 +27,20 @@ if ( $results->num_rows > 0 ) {
     }
 }
 
-$sqlJobCardReports = "SELECT *  FROM job_card_vehicle_report WHERE job_card_id = '$jobCardId'";
+$sqlJobCardReports = "SELECT *
+                      FROM job_card_vehicle_report
+                      LEFT JOIN vehicle_condition_sub_category
+                      ON job_card_vehicle_report.sub_category_id = vehicle_condition_sub_category.id
+                      WHERE job_card_vehicle_report.job_card_id = '$jobCardId'";
 $resultJobCardReports = $conn->query($sqlJobCardReports);
 
 $jobcardsVR = array();
-if ( $resultJobCardReports->num_rows > 0 ) {
-    while ( $row = $resultJobCardReports->fetch_assoc() ) {
+if ($resultJobCardReports->num_rows > 0) {
+    while ($row = $resultJobCardReports->fetch_assoc()) {
         $jobcardsVR[] = $row;
     }
 }
+
 
 
 echo json_encode([
