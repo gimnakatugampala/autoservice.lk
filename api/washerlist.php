@@ -18,3 +18,5 @@ if ( $result->num_rows > 0 ) {
 
 // echo json_encode( $result );
 ?>
+
+<!--  need to adjust according to the service station -->

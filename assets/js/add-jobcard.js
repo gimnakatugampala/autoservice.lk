@@ -277,7 +277,7 @@ $(document).ready(function () {
         }
 
       // --------------- Set Washer in Step 3 -----------
-      if(job_card_type != "2" && job_card_type != "3"){
+      if(job_card_type != "2" || job_card_type != "3"){
 
         $.ajax({
           type: "POST",
@@ -307,13 +307,13 @@ $(document).ready(function () {
         stepper.next()
 
 
-        // console.log(current_mileage)
-        // console.log(new_mileage)
-        // console.log(paid_status)
-        // console.log(job_card_type)
-        // console.log(status)
-        // console.log(vehicle)
-        // console.log(notify)
+        console.log(current_mileage)
+        console.log(new_mileage)
+        console.log(paid_status)
+        console.log(job_card_type)
+        console.log(status)
+        console.log(vehicle)
+        console.log(notify)
 
          // ---------------- INVOICE DETAILS ----------------
          jobCardCode = generateUUID()
@@ -445,9 +445,9 @@ $(document).ready(function () {
         });
 
         if (!$.isEmptyObject(row)) {
-          // Push the row object containing radio button values and subcategory ID into the rowVehicleReportData array
-          rowVehicleReportData.push(row);
-      }
+        // Push the row object containing radio button values and subcategory ID into the rowVehicleReportData array
+        rowVehicleReportData.push(row);
+    }
     });
 
   
@@ -464,6 +464,8 @@ $(document).ready(function () {
     // --------------- Step 3 ------------
      // ---------------------------------------
     function populateWasherTable(data) {
+
+      console.log(data)
 
       $('#washer-part-container').html(`
       <div class="col-md-12">
@@ -552,7 +554,7 @@ $(document).ready(function () {
     function calculateWasherTotal() {
 
       // var totalAmount = 0;
-      WasherValues = [];
+     
       items.forEach(function (item) {
         
         // document.getElementById("wash-final-total").textContent = "0"

@@ -11,14 +11,14 @@ $dbname = "autoservice_db";
 // // TEST SERVER
 // $servername = "localhost";
 // $username = "autoserv_root";
-// $password = "AB{A926!}Pa7";
+// $password = "PBh*n[{iR9Gs";
 // $dbname = "autoserv_autoservice_test_db";
 
 
 // // PRODUCTION SERVER
 // $servername = "localhost";
 // $username = "autoserv_root";
-// $password = "AB{A926!}Pa7";
+// $password = "PBh*n[{iR9Gs";
 // $dbname = "autoserv_autoservice_db";
 
 
