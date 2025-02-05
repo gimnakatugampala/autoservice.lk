@@ -3,6 +3,9 @@
 // include_once '../includes/environment.php';
 
 // LOCAL HOST SERVER
+// gimna.exon@gmail.com
+// 9922557gimna
+// gimnakatugampala9@gmail.com
 $servername = "localhost";
 $username = "root";
 $password = "";
