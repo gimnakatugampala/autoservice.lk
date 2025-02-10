@@ -70,6 +70,23 @@ $(document).ready(function () {
         vehicle = data.vehicles
         serviceStationInfo = data.station
 
+        // Define vehicle images based on vehicle_class_id
+    const vehicleImages = {
+      1: "../assets/img/vehicle-img/light_motor_cycle.jpg",
+      2: "../assets/img/vehicle-img/motor_cycles.jpg",
+      3: "../assets/img/vehicle-img/three_wheeler.jpg",
+      4: "../assets/img/vehicle-img/van.jpg",
+      5: "../assets/img/vehicle-img/car.jpg",
+      6: "../assets/img/vehicle-img/Light_Motor_Lorry.jpg",
+      7: "../assets/img/vehicle-img/motor_lorry.jpg",
+      8: "../assets/img/vehicle-img/Heavy_Motor_Lorry.jpg",
+      9: "../assets/img/vehicle-img/light_bus.jpg"
+      
+  };
+
+  // Default image if no matching class is found
+  let vehicleImage = vehicleImages[vehicle[0].vehicle_class_id] || "../assets/img/vehicle-img/default.jpg";
+
         $('#search-vehicle-content').html(`
         <div class="row my-4">
         <div class="col-md-5 mx-auto">
@@ -77,9 +94,18 @@ $(document).ready(function () {
    
               <div class="mx-auto my-2">
 
+
+              <img 
+                src="${vehicleImage}"
+                style="width: 80px; height: 80px; border-radius: 50%;object-fit: cover;"
+                alt="Profile Image"
+              />
+
                 <div class="d-flex align-items-center">
 
-                  <span class="m-0 p-0 d-flex align-items-center text-secondary mr-2">
+                <span class="m-0 p-0 d-flex align-items-center text-secondary mr-2">
+
+
                     <span class="mr-1">Color: </span>
                     <div class="border inline" style="width:11px;height:11px;background-color:${data.vehicles[0].vehicle_color};border-radius:50%" ></div>
                   </span>
