@@ -466,6 +466,10 @@ $(document).ready(function () {
      // ---------------------------------------
     function populateWasherTable(data) {
 
+      //  // Clear previous content and reset items array to prevent duplication
+        $('#washer-part-container').html('');
+        items = []; // Reset items array
+
       console.log(data)
 
       $('#washer-part-container').html(`
@@ -581,6 +585,8 @@ $(document).ready(function () {
         
         $("#wash-final-total").text(itemTotal.toFixed(2));
         // console.log(totalAmount)
+        console.log(itemTotal)
+        console.log(WasherValues)
       });
       
     }
