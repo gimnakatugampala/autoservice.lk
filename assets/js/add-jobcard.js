@@ -80,7 +80,10 @@ $(document).ready(function () {
       6: "../assets/img/vehicle-img/Light_Motor_Lorry.jpg",
       7: "../assets/img/vehicle-img/motor_lorry.jpg",
       8: "../assets/img/vehicle-img/Heavy_Motor_Lorry.jpg",
-      9: "../assets/img/vehicle-img/light_bus.jpg"
+      9: "../assets/img/vehicle-img/light_bus.jpg",
+      10: "../assets/img/vehicle-img/Hand_Tractors.jpg",
+      11: "../assets/img/vehicle-img/Land_Vehicle.jpg",
+      12: "../assets/img/vehicle-img/Special_purpose_Vehicle.jpg"
       
   };
 
