@@ -277,7 +277,7 @@ $(document).ready(function () {
         }
 
       // --------------- Set Washer in Step 3 -----------
-      if(job_card_type != "2" || job_card_type != "3"){
+      if(job_card_type != "2" && job_card_type != "3"){
 
         $.ajax({
           type: "POST",
@@ -290,6 +290,7 @@ $(document).ready(function () {
   
             console.log(vehicle[0].vehicle_class_id)
             console.log(data)
+            console.log(job_card_type)
 
  
             // ---------------
@@ -642,10 +643,15 @@ $(document).ready(function () {
   
             }else{
               counterId += 1;
-              populateTableServicePackage(data,counterId);
+              console.log(job_card_type)
+
+              // if(job_card_type == 3){
+                populateTableServicePackage(data,counterId);
+                selected_service_packages.push(data.servicePackage[0])
+              // }
+                
+               
               // console.log(data)
-              selected_service_packages.push(data.servicePackage[0])
-              return
             }
   
           // ---------------
