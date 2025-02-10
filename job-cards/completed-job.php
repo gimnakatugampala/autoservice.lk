@@ -52,9 +52,9 @@
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                    <th>ID</th>
                     <th>Job Card Code</th>
                     <th>Vehicle Owner Name</th>
+                    <th>Phone</th>
                     <th>Vehicle Name</th>
                     <th>Job Card Type</th>
                     <th>Created Date</th>
