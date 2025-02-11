@@ -126,34 +126,34 @@
                       <!-- title row -->
                       <div class="row">
                             <div class="col-md-1">
-                            <img id="in_station_logo" width="150" src="https://img.freepik.com/premium-vector/gas-station-icon-with-fuel-concept_11481-928.jpg?semt=ais_hybrid" alt="Station Logo">
+                            <img id="mdl_in_station_logo" width="150" src="https://img.freepik.com/premium-vector/gas-station-icon-with-fuel-concept_11481-928.jpg?semt=ais_hybrid" alt="Station Logo">
                             </div>
                         
 
                             <div class="row col-md-10">
                             <div class="col-md-12">
                             <h4 class="text-center text-uppercase">
-                                <b id="in_station_name">
+                                <b id="mdl_in_station_name">
                                  ABC Service Station
                                 </b>
                             </h4>
                             </div>
 
                             <div class="col-md-12">
-                                <p id="in_station_address" class="text-center text-uppercase m-0 p-0">
+                                <p id="mdl_in_station_address" class="text-center text-uppercase m-0 p-0">
                                 120/5 Vidya Mawatha, Colombo 00700
                                 </p>
                             </div>
 
                             <div class="col-md-12">
                                 <p class="text-center m-0 p-0">
-                                    Tel: <span id="in_station_phone">+94 764961707</span>
+                                    Tel: <span id="mdl_in_station_phone">+94 764961707</span>
                                 </p>
                             </div>
 
                             <div class="col-md-12">
                                 <p class="text-center m-0 p-0">
-                                    Email: <span id="in_station_email">abcservicestation@gmail.com</span>
+                                    Email: <span id="mdl_in_station_email">abcservicestation@gmail.com</span>
                                 </p>
                             </div>
                             <div class="col-md-12">
@@ -171,29 +171,29 @@
                         <!-- info row -->
                         <div class="row my-4">
                         <div class="col-sm-6 mx-auto">
-                            <span><b>Job Card No</b></span> : <span id="in_jobcard_no">5n4esIAcheTUd08xYrDK</span><br>
-                            <span><b>Customer Name</b></span> : <span class="text-uppercase" id="in_vehicle_owner">Gimna Katugampala</span><br>
-                            <span><b>Address</b></span> : <span class="text-uppercase" id="in_address">Colombo</span><br />
-                            <span><b>Contact No.</b></span> : <span class="text-uppercase" id="in_contact_number">0764961707</span><br />
-                            <span><b>VAT No (%)</b></span> : <span class="text-uppercase" id="in_vat">4.5</span><br />
-                            <span><b>Model Code</b></span> : <span class="text-uppercase" id="in_model">S10 Pickup 2WD</span><br />
-                            <span><b>Make Code</b></span> : <span class="text-uppercase" id="in_make">Honda</span><br />
-                            <span><b>Current Mileage</b></span> : <span class="text-uppercase" id="in_current_mileage">1000 KM</span><br />
+                            <span><b>Job Card No</b></span> : <span id="mdl_in_jobcard_no">5n4esIAcheTUd08xYrDK</span><br>
+                            <span><b>Customer Name</b></span> : <span class="text-uppercase" id="mdl_in_vehicle_owner">Gimna Katugampala</span><br>
+                            <span><b>Address</b></span> : <span class="text-uppercase" id="mdl_in_address">Colombo</span><br />
+                            <span><b>Contact No.</b></span> : <span class="text-uppercase" id="mdl_in_contact_number">0764961707</span><br />
+                            <span><b>VAT No (%)</b></span> : <span class="text-uppercase" id="mdl_in_vat">4.5</span><br />
+                            <span><b>Model Code</b></span> : <span class="text-uppercase" id="mdl_in_model">S10 Pickup 2WD</span><br />
+                            <span><b>Make Code</b></span> : <span class="text-uppercase" id="mdl_in_make">Honda</span><br />
+                            <span><b>Current Mileage</b></span> : <span class="text-uppercase" id="mdl_in_current_mileage">1000 KM</span><br />
                             <span><b>Employee Name</b></span> : <span class="text-uppercase" ><?php echo $_SESSION["user_emp_name"];?></span><br />
                        
                         </div>
                         <!-- /.col -->
 
                         <div class="col-sm-6 mx-auto">
-                            <span><b>Invoice No</b></span> : <span class="text-uppercase" id="in_invoice_no">le4Csn69bAP3eIpkYuHy</span><br>
+                            <span><b>Invoice No</b></span> : <span class="text-uppercase" id="mdl_in_invoice_no">le4Csn69bAP3eIpkYuHy</span><br>
                             <span><b>Invoice Date</b></span> : <span class="text-uppercase"></span>11-02-2025<br>
-                            <span><b>Vehicle No</b></span> : <span class="text-uppercase" id="in_vehicle_no">DAH-0987</span><br>
-                            <span><b>Opening Date</b></span> : <span class="text-uppercase" id="in_opening_date">11-02-2025</span><br>
+                            <span><b>Vehicle No</b></span> : <span class="text-uppercase" id="mdl_in_vehicle_no">DAH-0987</span><br>
+                            <span><b>Opening Date</b></span> : <span class="text-uppercase" id="mdl_in_opening_date">11-02-2025</span><br>
                             <span><b>Closing Date</b></span> : <span class="text-uppercase">11-02-2025</span><br>
-                            <span><b>Nxt Serv.Mileage</b></span> : <span class="text-uppercase" id="in_next_mileage">5500 KM</span><br>
-                            <span><b>Chassis No</b></span> : <span class="text-uppercase" id="in_chassis_no">390DFG</span><br>
-                            <span><b>Engine No</b></span> : <span class="text-uppercase" id="in_engine_no">234456</span><br>
-                            <span><b>Job Card Type</b></span> : <span class="text-uppercase" id="in_job_card_type">Washer Only</span><br>
+                            <span><b>Nxt Serv.Mileage</b></span> : <span class="text-uppercase" id="mdl_in_next_mileage">5500 KM</span><br>
+                            <span><b>Chassis No</b></span> : <span class="text-uppercase" id="mdl_in_chassis_no">390DFG</span><br>
+                            <span><b>Engine No</b></span> : <span class="text-uppercase" id="mdl_in_engine_no">234456</span><br>
+                            <span><b>Job Card Type</b></span> : <span class="text-uppercase" id="mdl_in_job_card_type">Washer Only</span><br>
                             
 
                         </div>
