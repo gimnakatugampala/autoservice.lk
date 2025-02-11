@@ -827,7 +827,7 @@
                             <span><b>Customer Name</b></span> : <span class="text-uppercase" id="in_vehicle_owner"></span><br>
                             <span><b>Address</b></span> : <span class="text-uppercase" id="in_address"></span><br />
                             <span><b>Contact No.</b></span> : <span class="text-uppercase" id="in_contact_number"></span><br />
-                            <span><b>VAT No</b></span> : <span class="text-uppercase" id="in_vat"></span><br />
+                            <span><b>VAT No (%)</b></span> : <span class="text-uppercase" id="in_vat"></span><br />
                             <span><b>Model Code</b></span> : <span class="text-uppercase" id="in_model"></span><br />
                             <span><b>Make Code</b></span> : <span class="text-uppercase" id="in_make"></span><br />
                             <span><b>Current Mileage</b></span> : <span class="text-uppercase" id="in_current_mileage"></span><br />

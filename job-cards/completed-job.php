@@ -107,7 +107,7 @@
         <div class="modal-dialog modal-xl">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Invoice #4379473</h4>
+              <h4 class="modal-title">Invoice #le4Csn69bAP3eIpkYuHy</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -123,50 +123,83 @@
           
             <!-- Main content -->
             <div class="invoice p-3 mb-3">
-              <!-- title row -->
-              <div class="row">
-                <div class="col-12">
-                  <h4>
-                    <i class="fas fa-globe"></i> AdminLTE, Inc.
-                    <small class="float-right">Date: 2/10/2014</small>
-                  </h4>
-                </div>
-                <!-- /.col -->
-              </div>
-              <!-- info row -->
-              <div class="row invoice-info">
-                <div class="col-sm-4 invoice-col">
-                  From
-                  <address>
-                    <strong>Admin, Inc.</strong><br>
-                    795 Folsom Ave, Suite 600<br>
-                    San Francisco, CA 94107<br>
-                    Phone: (804) 123-5432<br>
-                    Email: info@almasaeedstudio.com
-                  </address>
-                </div>
-                <!-- /.col -->
-                <div class="col-sm-4 invoice-col">
-                  To
-                  <address>
-                    <strong>John Doe</strong><br>
-                    795 Folsom Ave, Suite 600<br>
-                    San Francisco, CA 94107<br>
-                    Phone: (555) 539-1037<br>
-                    Email: john.doe@example.com
-                  </address>
-                </div>
-                <!-- /.col -->
-                <div class="col-sm-4 invoice-col">
-                  <b>Invoice #007612</b><br>
-                  <br>
-                  <b>Order ID:</b> 4F3S8J<br>
-                  <b>Payment Due:</b> 2/22/2014<br>
-                  <b>Account:</b> 968-34567
-                </div>
-                <!-- /.col -->
-              </div>
-              <!-- /.row -->
+                      <!-- title row -->
+                      <div class="row">
+                            <div class="col-md-1">
+                            <img id="in_station_logo" width="150" src="https://img.freepik.com/premium-vector/gas-station-icon-with-fuel-concept_11481-928.jpg?semt=ais_hybrid" alt="Station Logo">
+                            </div>
+                        
+
+                            <div class="row col-md-10">
+                            <div class="col-md-12">
+                            <h4 class="text-center text-uppercase">
+                                <b id="in_station_name">
+                                 ABC Service Station
+                                </b>
+                            </h4>
+                            </div>
+
+                            <div class="col-md-12">
+                                <p id="in_station_address" class="text-center text-uppercase m-0 p-0">
+                                120/5 Vidya Mawatha, Colombo 00700
+                                </p>
+                            </div>
+
+                            <div class="col-md-12">
+                                <p class="text-center m-0 p-0">
+                                    Tel: <span id="in_station_phone">+94 764961707</span>
+                                </p>
+                            </div>
+
+                            <div class="col-md-12">
+                                <p class="text-center m-0 p-0">
+                                    Email: <span id="in_station_email">abcservicestation@gmail.com</span>
+                                </p>
+                            </div>
+                            <div class="col-md-12">
+                            <h2 class="text-center text-uppercase">
+                                Invoice
+                            </h2>
+                            </div>
+                            </div>
+
+                            <!-- /.col -->
+                        </div>
+
+                        <hr>
+
+                        <!-- info row -->
+                        <div class="row my-4">
+                        <div class="col-sm-6 mx-auto">
+                            <span><b>Job Card No</b></span> : <span id="in_jobcard_no">5n4esIAcheTUd08xYrDK</span><br>
+                            <span><b>Customer Name</b></span> : <span class="text-uppercase" id="in_vehicle_owner">Gimna Katugampala</span><br>
+                            <span><b>Address</b></span> : <span class="text-uppercase" id="in_address">Colombo</span><br />
+                            <span><b>Contact No.</b></span> : <span class="text-uppercase" id="in_contact_number">0764961707</span><br />
+                            <span><b>VAT No (%)</b></span> : <span class="text-uppercase" id="in_vat">4.5</span><br />
+                            <span><b>Model Code</b></span> : <span class="text-uppercase" id="in_model">S10 Pickup 2WD</span><br />
+                            <span><b>Make Code</b></span> : <span class="text-uppercase" id="in_make">Honda</span><br />
+                            <span><b>Current Mileage</b></span> : <span class="text-uppercase" id="in_current_mileage">1000 KM</span><br />
+                            <span><b>Employee Name</b></span> : <span class="text-uppercase" ><?php echo $_SESSION["user_emp_name"];?></span><br />
+                       
+                        </div>
+                        <!-- /.col -->
+
+                        <div class="col-sm-6 mx-auto">
+                            <span><b>Invoice No</b></span> : <span class="text-uppercase" id="in_invoice_no">le4Csn69bAP3eIpkYuHy</span><br>
+                            <span><b>Invoice Date</b></span> : <span class="text-uppercase"></span>11-02-2025<br>
+                            <span><b>Vehicle No</b></span> : <span class="text-uppercase" id="in_vehicle_no">DAH-0987</span><br>
+                            <span><b>Opening Date</b></span> : <span class="text-uppercase" id="in_opening_date">11-02-2025</span><br>
+                            <span><b>Closing Date</b></span> : <span class="text-uppercase">11-02-2025</span><br>
+                            <span><b>Nxt Serv.Mileage</b></span> : <span class="text-uppercase" id="in_next_mileage">5500 KM</span><br>
+                            <span><b>Chassis No</b></span> : <span class="text-uppercase" id="in_chassis_no">390DFG</span><br>
+                            <span><b>Engine No</b></span> : <span class="text-uppercase" id="in_engine_no">234456</span><br>
+                            <span><b>Job Card Type</b></span> : <span class="text-uppercase" id="in_job_card_type">Washer Only</span><br>
+                            
+
+                        </div>
+                        <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
 
               <!-- Table row -->
               <div class="row">
@@ -174,41 +207,22 @@
                   <table class="table table-striped">
                     <thead>
                     <tr>
-                      <th>Qty</th>
-                      <th>Product</th>
-                      <th>Serial #</th>
-                      <th>Description</th>
-                      <th>Subtotal</th>
+                      <th>Code</th>
+                      <th>Item Description</th>
+                      <th>QTY / Labour Hr</th>
+                      <th>Unit Price (LKR)</th>
+                      <th>Discount (LKR)</th>
+                      <th>Total (LKR)</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
+                      <td>k141smgmNglR2gpiMLnJ</td>
+                      <td>Wash</td>
                       <td>1</td>
-                      <td>Call of Duty</td>
-                      <td>455-981-221</td>
-                      <td>El snort testosterone trophy driving gloves handsome</td>
-                      <td>$64.50</td>
-                    </tr>
-                    <tr>
-                      <td>1</td>
-                      <td>Need for Speed IV</td>
-                      <td>247-925-726</td>
-                      <td>Wes Anderson umami biodiesel</td>
-                      <td>$50.00</td>
-                    </tr>
-                    <tr>
-                      <td>1</td>
-                      <td>Monsters DVD</td>
-                      <td>735-845-642</td>
-                      <td>Terry Richardson helvetica tousled street art master</td>
-                      <td>$10.70</td>
-                    </tr>
-                    <tr>
-                      <td>1</td>
-                      <td>Grown Ups Blue Ray</td>
-                      <td>422-568-642</td>
-                      <td>Tousled lomo letterpress</td>
-                      <td>$25.99</td>
+                      <td>1500</td>
+                      <td>0</td>
+                      <td>1500.00</td>
                     </tr>
                     </tbody>
                   </table>
@@ -234,25 +248,21 @@
                 </div>
                 <!-- /.col -->
                 <div class="col-6">
-                  <p class="lead">Amount Due 2/22/2014</p>
+                  <p class="lead">Paid Date 2/22/2014</p>
 
                   <div class="table-responsive">
                     <table class="table">
                       <tr>
                         <th style="width:50%">Subtotal:</th>
-                        <td>$250.30</td>
+                        <td>LKR 250.30</td>
                       </tr>
                       <tr>
-                        <th>Tax (9.3%)</th>
-                        <td>$10.34</td>
-                      </tr>
-                      <tr>
-                        <th>Shipping:</th>
-                        <td>$5.80</td>
+                        <th>VAT (9.3%)</th>
+                        <td>10.34</td>
                       </tr>
                       <tr>
                         <th>Total:</th>
-                        <td>$265.24</td>
+                        <td>LKR 265.24</td>
                       </tr>
                     </table>
                   </div>
@@ -265,9 +275,6 @@
               <div class="row no-print">
                 <div class="col-12">
                   <a  rel="noopener" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
-                  <button type="button" class="btn btn-success float-right"><i class="far fa-credit-card"></i> Submit
-                    Payment
-                  </button>
                   <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
                     <i class="fas fa-download"></i> Generate PDF
                   </button>
