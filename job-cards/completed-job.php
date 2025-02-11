@@ -257,8 +257,8 @@
                         <td>LKR 250.30</td>
                       </tr>
                       <tr>
-                        <th>VAT (9.3%)</th>
-                        <td>10.34</td>
+                        <th>VAT (%)</th>
+                        <td>10.34 %</td>
                       </tr>
                       <tr>
                         <th>Total:</th>
