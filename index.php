@@ -34,7 +34,7 @@ if(isset($_SESSION['user_id']) && isset($_SESSION['station_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>AUTOSERVICE.LK</title>
 </head>
 <body>
 
