@@ -1,321 +1,250 @@
 <?php include_once '../includes/auth-header.php'; ?>
 
 <style>
-.login-page {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.login-box {
-    width: 400px;
-}
-
-.card {
-    border: none;
-    border-radius: 1rem;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-}
-
-.card-header {
-    background: transparent;
-    border: none;
-    padding: 2rem 2rem 0;
-}
-
-.card-body {
-    padding: 2rem;
-}
-
-.brand-logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1.5rem;
-}
-
-.brand-logo img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.brand-text {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: #333;
-    margin-left: 1rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.login-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 0.5rem;
-    text-align: center;
-}
-
-.login-subtitle {
-    color: #6c757d;
-    text-align: center;
-    margin-bottom: 2rem;
-    font-size: 0.95rem;
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-group label {
-    font-weight: 500;
-    color: #495057;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-}
-
-.form-control {
-    border-radius: 0.5rem;
-    border: 1px solid #e0e0e0;
-    padding: 0.75rem 1rem;
-    font-size: 0.95rem;
-    transition: all 0.3s ease;
-}
-
-.form-control:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
-}
-
-.input-group-text {
-    border-radius: 0.5rem 0 0 0.5rem;
-    border: 1px solid #e0e0e0;
-    background: #f8f9fa;
-    color: #667eea;
-}
-
-.input-group .form-control {
-    border-left: none;
-    border-radius: 0 0.5rem 0.5rem 0;
-}
-
-.input-group:focus-within .input-group-text {
-    border-color: #667eea;
-    background: #667eea;
-    color: white;
-}
-
-.btn-login {
-    width: 100%;
-    padding: 0.75rem;
-    font-weight: 600;
-    border-radius: 0.5rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border: none;
-    color: white;
-    font-size: 1rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.btn-login:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-    color: white;
-}
-
-.btn-login:active {
-    transform: translateY(0);
-}
-
-.forgot-password {
-    text-align: right;
-    margin-top: -0.5rem;
-    margin-bottom: 1.5rem;
-}
-
-.forgot-password a {
-    color: #667eea;
-    font-size: 0.875rem;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.forgot-password a:hover {
-    color: #764ba2;
-    text-decoration: underline;
-}
-
-.signup-link {
-    text-align: center;
-    margin-top: 1.5rem;
-    color: #6c757d;
-    font-size: 0.95rem;
-}
-
-.signup-link a {
-    color: #667eea;
-    font-weight: 600;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.signup-link a:hover {
-    color: #764ba2;
-    text-decoration: underline;
-}
-
-.spinner-border-sm {
-    width: 1rem;
-    height: 1rem;
-}
-
-#btn-loading .btn-login {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    opacity: 0.7;
-    cursor: not-allowed;
-}
-
-/* Password visibility toggle */
-.toggle-password {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: #6c757d;
-    z-index: 10;
-    transition: color 0.3s ease;
-}
-
-.toggle-password:hover {
-    color: #667eea;
-}
-
-.password-wrapper {
-    position: relative;
-}
-
-.password-wrapper .form-control {
-    padding-right: 45px;
-}
-
-/* Animation for form elements */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
+    :root {
+        --primary-blue: #007bff;
+        --hover-blue: #0056b3;
+        --bg-light: #f8f9fa;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
-.card {
-    animation: fadeInUp 0.6s ease;
-}
+    body.account-page {
+        background-color: var(--bg-light);
+        font-family: 'Inter', sans-serif;
+    }
+
+    .login-wrapper {
+        display: flex;
+        min-height: 100vh;
+        overflow: hidden;
+    }
+
+    .login-content {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+        background: #fff;
+    }
+
+    .login-userset {
+        width: 100%;
+        max-width: 400px;
+        animation: fadeInRight 0.8s ease-out;
+    }
+
+    .login-logo {
+        margin-bottom: 30px;
+    }
+
+    .login-logo h4 {
+        font-weight: 700;
+        color: var(--primary-blue);
+        letter-spacing: -0.5px;
+    }
+
+    .login-userheading h3 {
+        font-size: 24px;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 5px !important;
+    }
+
+    .login-userheading h4 {
+        font-size: 15px;
+        color: #777;
+        margin-bottom: 25px !important;
+    }
+
+    .form-login label {
+        font-weight: 600;
+        font-size: 14px;
+        color: #444;
+        margin-bottom: 8px;
+    }
+
+    .form-addons, .pass-group {
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .form-addons input, .pass-group input {
+        width: 100%;
+        padding: 12px 15px;
+        padding-right: 45px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+
+    .form-addons input:focus, .pass-group input:focus {
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        outline: none;
+    }
+
+    .form-addons img {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 18px;
+        opacity: 0.6;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #777;
+    }
+
+    .btn-login {
+        background-color: var(--primary-blue);
+        color: #fff;
+        width: 100%;
+        padding: 12px;
+        font-weight: 700;
+        border-radius: 8px;
+        border: none;
+        transition: background 0.3s, transform 0.2s;
+        margin-top: 10px;
+    }
+
+    .btn-login:hover {
+        background-color: var(--hover-blue);
+        color: #fff;
+        transform: translateY(-1px);
+    }
+
+    .alreadyuser a {
+        color: var(--primary-blue);
+        font-size: 14px;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    .alreadyuser a:hover {
+        text-decoration: underline;
+    }
+
+    .signinform h4 {
+        font-size: 14px;
+        margin-top: 20px;
+        color: #666;
+    }
+
+    .signinform .hover-a {
+        color: var(--primary-blue);
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .login-img {
+        flex: 1.2;
+        display: block;
+    }
+
+    .login-img img {
+        width: 100%;
+        height: 100vh;
+        object-fit: cover;
+    }
+
+    @keyframes fadeInRight {
+        from { opacity: 0; transform: translateX(20px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 991px) {
+        .login-img { display: none; }
+    }
 </style>
 
-<body class="login-page">
-    <div class="login-box">
-        <div class="card">
-            <div class="card-header">
-                <div class="brand-logo">
-                    <img src="../assets/img/system/autoservice_logo.jpg" alt="AutoService Logo">
-                    <h4 class="brand-text">autoservice.lk</h4>
-                </div>
-                <h3 class="login-title">Welcome Back</h3>
-                <p class="login-subtitle">Sign in to your service station account</p>
-            </div>
-            
-            <div class="card-body">
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <i class="fas fa-envelope"></i>
-                                </span>
+<body class="account-page">
+    <div class="main-wrapper">
+        <div class="account-content">
+            <div class="login-wrapper">
+                <div class="login-content">
+                    <div class="login-userset">
+                        <div class="login-logo">
+                            <div class="d-flex align-items-center">
+                                <img width="45" src="../assets/img/system/autoservice_logo.jpg" alt="Logo" class="rounded shadow-sm">
+                                <h4 class="ml-2 mb-0">autoservice.lk</h4>
                             </div>
-                            <input type="email" 
-                                   class="form-control" 
-                                   id="email" 
-                                   placeholder="Enter your email"
-                                   required>
                         </div>
-                    </div>
+                        
+                        <div class="login-userheading">
+                            <h3>Welcome Back</h3>
+                            <h4>Manage your service station dashboard</h4>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <div class="password-wrapper">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">
-                                        <i class="fas fa-lock"></i>
-                                    </span>
+                        <form id="loginForm">
+                            <div class="form-login">
+                                <label>Station Email</label>
+                                <div class="form-addons">
+                                    <input id="email" type="email" placeholder="station@example.com" required>
+                                    <img src="../assets/img/icons/mail.svg" alt="mail icon">
                                 </div>
-                                <input type="password" 
-                                       class="form-control" 
-                                       id="password" 
-                                       placeholder="Enter your password"
-                                       required>
                             </div>
-                            <i class="fas fa-eye toggle-password" onclick="togglePassword()"></i>
+
+                            <div class="form-login">
+                                <label>Password</label>
+                                <div class="pass-group">
+                                    <input id="password" type="password" class="pass-input" placeholder="••••••••" required>
+                                    <span class="fas toggle-password fa-eye-slash"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-login d-flex justify-content-end">
+                                <div class="alreadyuser">
+                                    <h4><a href="forgetpassword.html">Forgot Password?</a></h4>
+                                </div>
+                            </div>
+
+                            <div class="form-login">
+                                <button type="button" id="btn_station_login" class="btn btn-login">Sign In</button>
+                                
+                                <div style="display: none;" id="btn-loading">
+                                    <button type="button" class="btn btn-login" disabled>
+                                        <span class="spinner-border spinner-border-sm mr-2" role="status"></span>
+                                        Authenticating...
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="signinform text-center">
+                            <h4>Don’t have an account? <a href="../auth/station-register.php" class="hover-a">Create Station Account</a></h4>
                         </div>
                     </div>
+                </div>
 
-                    <div class="forgot-password">
-                        <a href="forgetpassword.html">Forgot Password?</a>
-                    </div>
-
-                    <button type="submit" id="btn_station_login" class="btn btn-login">
-                        Sign In
-                    </button>
-
-                    <span style="display: none;" id="btn-loading">
-                        <button type="button" class="btn btn-login" disabled>
-                            <span class="spinner-border spinner-border-sm" role="status"></span>
-                            <span class="ml-2">Signing in...</span>
-                        </button>
-                    </span>
-                </form>
-
-                <div class="signup-link">
-                    Don't have an account? <a href="../auth/station-register.php">Sign Up</a>
+                <div class="login-img">
+                    <img src="../assets/img/system/login_station.jpg" alt="Service Station Background">
                 </div>
             </div>
         </div>
     </div>
 
+    <?php include_once '../includes/auth-footer.php'; ?>
+    
     <script>
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const toggleIcon = document.querySelector('.toggle-password');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            }
-        }
-
-        // Prevent form submission on Enter (will be handled by your existing JS)
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        $(document).ready(function() {
+            // Password toggle logic
+            $(document).on('click', '.toggle-password', function() {
+                $(this).toggleClass("fa-eye fa-eye-slash");
+                var input = $(".pass-input");
+                if (input.attr("type") == "password") {
+                    input.attr("type", "text");
+                } else {
+                    input.attr("type", "password");
+                }
+            });
         });
     </script>
-
-    <?php include_once '../includes/auth-footer.php'; ?>
 </body>
 </html>
