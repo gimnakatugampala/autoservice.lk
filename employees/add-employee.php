@@ -1,26 +1,33 @@
-
 <?php include_once '../includes/header.php';?>
 
-<body class="hold-transition sidebar-mini">
+<style>
+    /* AdminLTE custom tweaks */
+    .content-wrapper { background-color: #f4f6f9; }
+    .card-primary.card-outline { border-top: 3px solid #007bff; }
+    .form-group label { font-weight: 600; color: #495057; }
+    .text-danger { margin-left: 2px; }
+    
+    /* Input Group refinement */
+    .input-group-text {
+        background-color: #f8f9fa;
+        color: #007bff;
+    }
+</style>
+
+<body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
   <?php include_once '../includes/loader.php';?>
 
-  <!-- Navbar -->
   <?php include_once '../includes/navbar.php'; ?>
-  <!-- /.navbar -->
+  <?php include_once '../includes/sidebar.php';?>
 
-  <!-- Main Sidebar Container -->
- <?php include_once '../includes/sidebar.php';?>
-
-  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Add Employee</h1>
+            <h1 class="m-0 font-weight-bold text-dark"><i class="fas fa-user-plus mr-2 text-primary"></i>Add Employee</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -28,166 +35,176 @@
               <li class="breadcrumb-item active">Add Employee</li>
             </ol>
           </div>
-
         </div>
-      </div><!-- /.container-fluid -->
-    </section>
+      </div></section>
 
 
-    <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
       
-            <!-- /.card -->
-            <div class="card">
+            <div class="card card-primary card-outline shadow-sm">
+              <div class="card-header">
+                <h3 class="card-title text-bold">Personal & Account Information</h3>
+              </div>
               <div class="card-body">
 
-              <div class="row">
+              <form id="addEmployeeForm">
+                <div class="row">
 
-                <div class="col-md-6">
-                    <div class="form-group">
-                          <label for="exampleInputEmail1">First Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="first_name" placeholder="First Name">
-                      </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-group">
-                          <label for="exampleInputEmail1">Last Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="last_name" placeholder="Last Name">
-                      </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-group">
-                          <label for="exampleInputEmail1">NIC <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="nic" placeholder="National Identity Number">
-                      </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-group">
-                          <label for="exampleInputEmail1">Email <span class="text-danger">*</span></label>
-                          <input type="email" class="form-control" id="email" placeholder="Email">
-                      </div>
-                </div>
-
-                <div class="col-md-6">
-                <div class="form-group">
-                  <label>Phone Number <span class="text-danger">*</span></label>
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                    </div>
-                    <input id="phone_number" type="text" class="form-control" data-inputmask='"mask": "099 9999 999"' data-mask>
-                  </div>
-                </div>
-                </div>
-
-
-                <div class="col-md-6">
-                <div class="form-group">
-                  <label>Other Phone Number</label>
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                    </div>
-                    <input id="other_phone_number" type="text" class="form-control" data-inputmask='"mask": "099 9999 999"' data-mask>
-                  </div>
-                </div>
-                </div>
-
-                <div class="col-md-6">
-                <div class="form-group">
-                  <label>Date of Birth</label>
-                  <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                        <input id="dob" type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
-                        <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                  <div class="col-md-6">
+                      <div class="form-group">
+                            <label for="first_name">First Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="first_name" placeholder="First Name">
                         </div>
-                    </div>
-                </div>
-                </div>
+                  </div>
 
-                <div class="col-md-6">
-                <div class="form-group">
-                  <label>User Type</label>
-                  <select id="cmbusertypes" class="form-control select2" style="width: 100%;">
-                    <!-- <option selected="selected">Alabama</option>
-                    <option>Alaska</option>
-                    <option>California</option>
-                    <option>Delaware</option>
-                    <option>Tennessee</option>
-                    <option>Texas</option>
-                    <option>Washington</option> -->
-                  </select>
-                </div>
-                </div>
-
-                <div class="col-md-6">
-                <div class="form-group">
-                  <label>Password</label>
-                  <input type="password" class="form-control" id="pass" placeholder="Password">
-                </div>
-                </div>
-
-                <div class="col-md-6">
-                <div class="form-group">
-                  <label>Confirm Password</label>
-                  <input type="password" class="form-control" id="con_pass" placeholder="Password">
-                </div>
-                </div>
-
-    
-
-          
-
-                <div class="col-md-12">
-                <button type="button" class="btn bg-gradient-secondary">Cancel</button>
-                <button id="btn_add_employee" type="button" class="btn bg-gradient-primary">Submit</button>
-
-                <span style="display: none;" id="btn-loading">
-                        <button  type="button" class="btn bg-gradient-primary">
-                        <div class="spinner-border spinner-border-sm" role="status">
-                            <span class="visually-hidden"></span>
+                  <div class="col-md-6">
+                      <div class="form-group">
+                            <label for="last_name">Last Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="last_name" placeholder="Last Name">
                         </div>
-                        </button>
-                  </span>
+                  </div>
 
+                  <div class="col-md-6">
+                      <div class="form-group">
+                            <label for="nic">NIC <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                                </div>
+                                <input type="text" class="form-control" id="nic" placeholder="National Identity Number">
+                            </div>
+                        </div>
+                  </div>
+
+                  <div class="col-md-6">
+                      <div class="form-group">
+                            <label for="email">Email <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                </div>
+                                <input type="email" class="form-control" id="email" placeholder="Email Address">
+                            </div>
+                        </div>
+                  </div>
+
+                  <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Phone Number <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                      </div>
+                      <input id="phone_number" type="text" class="form-control" data-inputmask='"mask": "099 9999 999"' data-mask placeholder="Primary Phone">
+                    </div>
+                  </div>
+                  </div>
+
+
+                  <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Other Phone Number</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
+                      </div>
+                      <input id="other_phone_number" type="text" class="form-control" data-inputmask='"mask": "099 9999 999"' data-mask placeholder="Secondary Phone">
+                    </div>
+                  </div>
+                  </div>
+
+                  <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Date of Birth</label>
+                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                          <input id="dob" type="text" class="form-control datetimepicker-input" data-target="#reservationdate" placeholder="Select Date"/>
+                          <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                              <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                          </div>
+                      </div>
+                  </div>
+                  </div>
+
+                  <div class="col-md-6">
+                  <div class="form-group">
+                    <label>User Type <span class="text-danger">*</span></label>
+                    <select id="cmbusertypes" class="form-control select2" style="width: 100%;">
+                      </select>
+                  </div>
+                  </div>
+
+                  <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Password <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                        </div>
+                        <input type="password" class="form-control" id="pass" placeholder="Password">
+                    </div>
+                  </div>
+                  </div>
+
+                  <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Confirm Password <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-shield-alt"></i></span>
+                        </div>
+                        <input type="password" class="form-control" id="con_pass" placeholder="Confirm Password">
+                    </div>
+                  </div>
+                  </div>
+
+                  <div class="col-md-12 mt-4 border-top pt-3 text-right">
+                    <button type="button" class="btn btn-secondary px-4 mr-2" onclick="window.history.back();">Cancel</button>
+                    <button id="btn_add_employee" type="button" class="btn btn-primary px-5 shadow-sm font-weight-bold">Submit Employee</button>
+
+                    <span style="display: none;" id="btn-loading">
+                          <button type="button" class="btn btn-primary px-5" disabled>
+                            <div class="spinner-border spinner-border-sm" role="status">
+                                <span class="visually-hidden"></span>
+                            </div>
+                            Processing...
+                          </button>
+                    </span>
+                  </div>
 
                 </div>
+              </form>
 
               </div>
-
-
               </div>
-              <!-- /.card-body -->
             </div>
-            <!-- /.card -->
           </div>
-          <!-- /.col -->
         </div>
-        <!-- /.row -->
-      </div>
-      <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-
+      </section>
+    </div>
   <?php include_once '../includes/sub-footer.php';?>
 
-  <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-</div>
-<!-- ./wrapper -->
-
+    </aside>
+  </div>
 <?php include_once '../includes/footer.php';?>
+
+<script>
+    // Standard AdminLTE initialization for Datepicker & Select2
+    $(function () {
+        if ($.fn.select2) {
+            $('.select2').select2({ theme: 'bootstrap4' });
+        }
+        if ($.fn.datetimepicker) {
+            $('#reservationdate').datetimepicker({ format: 'L' });
+        }
+        if ($.fn.inputmask) {
+            $('[data-mask]').inputmask();
+        }
+    });
+</script>
 
 </body>
 </html>
