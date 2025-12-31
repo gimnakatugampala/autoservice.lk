@@ -1,108 +1,139 @@
-
 <?php include_once '../includes/header.php';?>
 <?php include_once '../api/fuellist.php';?>
 
-<body class="hold-transition sidebar-mini">
+<style>
+    /* AdminLTE professional standards */
+    .content-wrapper { background-color: #f4f6f9; }
+    .card-primary.card-outline { border-top: 3px solid #007bff; }
+    
+    .table thead th {
+        border-top: 0;
+        border-bottom: 2px solid #dee2e6;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #495057;
+    }
+
+    .btn-action-sm {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        margin: 0 2px;
+    }
+</style>
+
+<body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
   <?php include_once '../includes/loader.php';?>
 
-  <!-- Navbar -->
   <?php include_once '../includes/navbar.php'; ?>
-  <!-- /.navbar -->
+  <?php include_once '../includes/sidebar.php';?>
 
-  <!-- Main Sidebar Container -->
- <?php include_once '../includes/sidebar.php';?>
-
-  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-9">
-            <h1>Lubricant Types List</h1>
+            <h1 class="m-0 font-weight-bold text-dark">Lubricant Types List</h1>
           </div>
           <div class="col-sm-3">
-            <!-- <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Vehicles</li>
-            </ol> -->
-            <a href="../service-packages/add-fuel-type.php" type="button" class="btn btn-block bg-gradient-primary"><i class="fas fa-plus"></i> Add Lubricant Type</a>
+            <a href="../service-packages/add-fuel-type.php" class="btn btn-primary btn-block elevation-2">
+                <i class="fas fa-plus-circle mr-1"></i> Add Lubricant Type
+            </a>
           </div>
-
         </div>
-      </div><!-- /.container-fluid -->
-    </section>
+      </div></section>
 
-
-    <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
       
-            <!-- /.card -->
-            <div class="card">
+            <div class="card card-primary card-outline shadow-sm">
               <div class="card-header">
-                <h3 class="card-title">Lubricant Types</h3>
+                <h3 class="card-title text-bold"><i class="fas fa-oil-can mr-2 text-primary"></i> Lubricant Inventory</h3>
+                <div class="card-tools">
+                   <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                    <i class="fas fa-expand"></i>
+                  </button>
+                </div>
               </div>
-              <!-- /.card-header -->
               <div class="card-body">
-                <table id="example1" class="table table-bordered table-striped">
+                <table id="example1" class="table table-hover table-striped table-valign-middle">
                   <thead>
                   <tr>
-                    <th>ID</th>
+                    <th style="width: 100px;">ID</th>
                     <th>Lubricant Type</th>
                     <th>Created Date</th>
-                    <th>Actions</th>
+                    <th class="text-center" style="width: 150px;">Actions</th>
                   </tr>
                   </thead>
                   <tbody>
 
-                  <?php foreach ($fuel_type as $row) : ?>
-                    <tr>
-                      <td><?php echo  $row["code"]; ?></td>
-                      <td><?php echo  $row["name"]; ?></td>
-                      <td><?php echo  $row["created_date"]; ?></td>
-                      <td>
-                      <a href="../service-packages/edit-fuel-type.php?code=<?php echo  $row["code"]; ?>" type="button" class="btn bg-gradient-info"><i class="fas fa-pen"></i></a>
-                       <a type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></a>
-                      </td>
-                      
-                    </tr>
+                  <?php if(isset($fuel_type) && (is_array($fuel_type) || is_object($fuel_type))): ?>
+                    <?php foreach ($fuel_type as $row) : ?>
+                      <tr>
+                        <td class="text-muted font-italic">#<?php echo  $row["code"]; ?></td>
+                        <td class="font-weight-bold">
+                            <i class="fas fa-flask text-gray mr-2" style="font-size: 0.8rem;"></i>
+                            <?php echo  $row["name"]; ?>
+                        </td>
+                        <td>
+                            <span class="text-muted"><i class="far fa-calendar-alt mr-1"></i> <?php echo  $row["created_date"]; ?></span>
+                        </td>
+                        <td class="text-center">
+                          <a href="../service-packages/edit-fuel-type.php?code=<?php echo  $row["code"]; ?>" 
+                             class="btn btn-info btn-action-sm shadow-sm" 
+                             data-toggle="tooltip" 
+                             title="Edit Type">
+                             <i class="fas fa-pen fa-xs"></i>
+                          </a>
+                          <a href="#" 
+                             class="btn btn-danger btn-action-sm shadow-sm" 
+                             data-toggle="tooltip" 
+                             title="Delete Type">
+                             <i class="fas fa-trash fa-xs"></i>
+                          </a>
+                        </td>
+                      </tr>
+                    <?php endforeach; ?>
+                  <?php endif; ?>
 
-                  <?php endforeach; ?>
-
-                
                   </tbody>
                 </table>
               </div>
-              <!-- /.card-body -->
+              </div>
             </div>
-            <!-- /.card -->
           </div>
-          <!-- /.col -->
         </div>
-        <!-- /.row -->
-      </div>
-      <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-
+      </section>
+    </div>
   <?php include_once '../includes/sub-footer.php';?>
 
-  <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-</div>
-<!-- ./wrapper -->
-
+    </aside>
+  </div>
 <?php include_once '../includes/footer.php';?>
+
+<script>
+  $(function () {
+    if (!$.fn.DataTable.isDataTable('#example1')) {
+        $("#example1").DataTable({
+          "responsive": true, 
+          "lengthChange": true, 
+          "autoWidth": false,
+          "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    }
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+</script>
 
 </body>
 </html>
