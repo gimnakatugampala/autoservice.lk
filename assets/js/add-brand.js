@@ -31,8 +31,17 @@ $(document).ready(function () {
                     console.log(response)
 
                 if (response === "success") {
-                    window.location.href = "../products/brand-list.php";
-                    // console.log("Success")
+                  Swal.fire({
+                            icon: "success",
+                            title: "Success!",
+                            text: "Brand added successfully!",
+                            confirmButtonColor: "#007bff",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Redirect ONLY after user clicks the OK button
+                                window.location.href = "../products/brand-list.php";
+                            }
+                        });
         
                 }else {
                     Swal.fire({
