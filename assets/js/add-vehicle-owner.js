@@ -124,8 +124,17 @@ $(document).ready(function () {
                 console.log(response)
 
             if (response === "success") {
-                window.location.href = "../vehicle-owners/";
-                // console.log("Success")
+              Swal.fire({
+                            icon: "success",
+                            title: "Success!",
+                            text: "Vehicle owner added successfully!",
+                            confirmButtonColor: "#007bff",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // REDIRECT after confirmation
+                                window.location.href = "../vehicle-owners/";
+                            }
+                        });
     
             }else {
                 Swal.fire({
