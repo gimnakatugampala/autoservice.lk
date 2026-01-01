@@ -43,8 +43,17 @@ $(document).ready(function () {
                 console.log(response)
 
             if (response === "success") {
-                window.location.href = "../washer/";
-                // console.log("Success")
+             Swal.fire({
+                            icon: "success",
+                            title: "Success!",
+                            text: "Washer added successfully!",
+                            confirmButtonColor: "#007bff",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // REDIRECT after confirmation
+                                window.location.href = "../washer/";
+                            }
+                        });
     
             }else if(response == "Washer Exist"){
                 Swal.fire({
