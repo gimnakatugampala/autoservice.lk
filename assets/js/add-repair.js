@@ -80,8 +80,17 @@ $(document).ready(function () {
                     console.log(response)
 
                 if (response === "success") {
-                    window.location.href = "../repair/";
-                    // console.log("Success")
+                   Swal.fire({
+                            icon: "success",
+                            title: "Success!",
+                            text: "Repair added successfully!",
+                            confirmButtonColor: "#007bff",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // REDIRECT ONLY after clicking OK
+                                window.location.href = "../repair/";
+                            }
+                        });
         
                 }else {
                     Swal.fire({
