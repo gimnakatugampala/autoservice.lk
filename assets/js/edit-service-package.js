@@ -458,8 +458,16 @@ $(document).ready(function () {
 
         if (response === "success") {
 
-          window.location.href = "../service-packages/";
-
+         Swal.fire({
+                        icon: "success",
+                        title: "Updated!",
+                        text: "Service Package updated successfully!",
+                        confirmButtonColor: "#007bff",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "../service-packages/";
+                        }
+                    });
         }else {
           Swal.fire({
               icon: "error",
