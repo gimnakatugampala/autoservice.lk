@@ -242,8 +242,17 @@ $(document).ready(function () {
                 console.log(response)
 
             if (response === "success") {
-                window.location.href = "../purchase-order/";
-                // console.log("Success")
+               Swal.fire({
+                            icon: "success",
+                            title: "Success!",
+                            text: "Purchase Order added successfully!",
+                            confirmButtonColor: "#007bff",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // REDIRECT after confirmation
+                                window.location.href = "../purchase-order/";
+                            }
+                        });
     
             }else {
                 Swal.fire({
