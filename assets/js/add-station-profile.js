@@ -108,7 +108,19 @@ $(document).ready(function () {
                     console.log(response)
 
                 if (response === "success") {
-                    window.location.href = "../vehicles/";
+
+                    Swal.fire({
+                            icon: "success",
+                            title: "Success!",
+                            text: "Station profile updated successfully!",
+                            confirmButtonColor: "#007bff",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Redirect after user clicks OK
+                                window.location.href = "../vehicles/";
+                            }
+                        });
+                    
         
                 }else {
                     Swal.fire({
