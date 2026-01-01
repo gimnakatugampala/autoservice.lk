@@ -1,26 +1,33 @@
-
 <?php include_once '../includes/header.php';?>
 
-<body class="hold-transition sidebar-mini">
+<style>
+    /* AdminLTE professional standards */
+    .content-wrapper { background-color: #f4f6f9; }
+    .card-primary.card-outline { border-top: 3px solid #007bff; }
+    .form-group label { font-weight: 600; color: #495057; }
+    .text-danger { margin-left: 2px; }
+    
+    /* Input Group refinement */
+    .input-group-text {
+        background-color: #f8f9fa;
+        color: #007bff;
+    }
+</style>
+
+<body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
   <?php include_once '../includes/loader.php';?>
 
-  <!-- Navbar -->
   <?php include_once '../includes/navbar.php'; ?>
-  <!-- /.navbar -->
+  <?php include_once '../includes/sidebar.php';?>
 
-  <!-- Main Sidebar Container -->
- <?php include_once '../includes/sidebar.php';?>
-
-  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Add Product</h1>
+            <h1 class="m-0 font-weight-bold text-dark"><i class="fas fa-plus-circle mr-2 text-primary"></i>Add New Product</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -28,20 +35,19 @@
               <li class="breadcrumb-item active">Add Product</li>
             </ol>
           </div>
-
         </div>
-      </div><!-- /.container-fluid -->
-    </section>
+      </div></section>
 
 
-    <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
       
-            <!-- /.card -->
-            <div class="card">
+            <div class="card card-primary card-outline shadow-sm">
+              <div class="card-header border-0">
+                <h3 class="card-title text-bold">Product Specification</h3>
+              </div>
               <div class="card-body">
 
               <div class="row">
@@ -49,94 +55,109 @@
                 <div class="col-md-6">
                     <div class="form-group">
                           <label for="product_name">Product Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="product_name" placeholder="Name">
-                      </div>
-                </div>
-
-                <div class="col-md-6">
-                <div class="form-group">
-                <label for="exampleInputEmail1">Select Category <span class="text-danger">*</span></label>
-                        <select id="cmbproductcategory" class="custom-select">
-                          <!-- <option>Car</option>
-                          <option>Van</option>
-                          <option>Bus</option>
-                          <option>Lorry</option>
-                          <option>option 5</option> -->
-                        </select>
-                      </div>
-                </div>
-
-            
-
-                <div class="col-md-6">
-                <div class="form-group">
-                <label for="exampleInputEmail1">Select Brand <span class="text-danger">*</span></label>
-                        <select id="cmbproductbrand" class="custom-select">
-                          <!-- <option>Car</option>
-                          <option>Van</option>
-                          <option>Bus</option>
-                          <option>Lorry</option>
-                          <option>option 5</option> -->
-                        </select>
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-box"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="product_name" placeholder="Enter Product Name">
+                          </div>
                       </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label for="cmbproductcategory">Select Category <span class="text-danger">*</span></label>
+                        <select id="cmbproductcategory" class="custom-select">
+                          <option disabled selected value="">-- Choose Category --</option>
+                          </select>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="cmbproductbrand">Select Brand <span class="text-danger">*</span></label>
+                        <select id="cmbproductbrand" class="custom-select">
+                           <option disabled selected value="">-- Choose Brand --</option>
+                          </select>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
                           <label for="product_warrenty">Warrenty <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="product_warrenty" placeholder="Warrenty">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-shield-alt"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="product_warrenty" placeholder="e.g. 1 Year / No Warrenty">
+                          </div>
                       </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
                           <label for="product_quantity">Quantity <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="product_quantity" placeholder="Quantity">
-                      </div>
-                </div>
-
-                <div class="col-md-6">
-                <div class="form-group">
-                <label for="exampleInputEmail1">Availability <span class="text-danger">*</span></label>
-                        <select id="cmbavailablity" class="custom-select">
-                          <!-- <option>Car</option>
-                          <option>Van</option>
-                          <option>Bus</option>
-                          <option>Lorry</option>
-                          <option>option 5</option> -->
-                        </select>
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-sort-numeric-up-alt"></i></span>
+                            </div>
+                            <input type="number" class="form-control" id="product_quantity" placeholder="Stock Amount">
+                          </div>
                       </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label for="cmbavailablity">Availability <span class="text-danger">*</span></label>
+                        <select id="cmbavailablity" class="custom-select border-primary text-primary font-weight-bold">
+                          </select>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
                           <label for="selling_price">Selling Price (LKR)<span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="selling_price" placeholder="Selling Price">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text font-weight-bold text-xs">LKR</span>
+                            </div>
+                            <input type="text" class="form-control" id="selling_price" placeholder="0.00">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-tags"></i></span>
+                            </div>
+                          </div>
                       </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
                           <label for="buying_price">Buying Price (LKR)<span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="buying_price" placeholder="Buying Price">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text font-weight-bold text-xs">LKR</span>
+                            </div>
+                            <input type="text" class="form-control" id="buying_price" placeholder="0.00">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-file-invoice-dollar"></i></span>
+                            </div>
+                          </div>
                       </div>
                 </div>
 
-        
-            
+                <div class="col-md-12 mt-4 border-top pt-3 text-right">
+                    <button type="button" class="btn btn-secondary px-4 mr-2" onclick="window.history.back();">Cancel</button>
+                    <button id="btn_add_product" type="button" class="btn btn-primary px-5 shadow-sm font-weight-bold">
+                        <i class="fas fa-save mr-1"></i> Submit Product
+                    </button>
 
-                <div class="col-md-4">
-                <button type="button" class="btn bg-gradient-secondary">Cancel</button>
-                <button id="btn_add_product" type="button" class="btn bg-gradient-primary">Submit</button>
 
-
-                <span style="display: none;" id="btn-loading">
-                        <button  type="button" class="btn bg-gradient-primary">
-                        <div class="spinner-border spinner-border-sm" role="status">
-                            <span class="visually-hidden"></span>
-                        </div>
+                    <span style="display: none;" id="btn-loading">
+                        <button  type="button" class="btn btn-primary px-5 shadow-sm" disabled>
+                            <div class="spinner-border spinner-border-sm" role="status">
+                                <span class="visually-hidden"></span>
+                            </div>
                         </button>
-                  </span>
+                    </span>
 
                 </div>
 
@@ -144,30 +165,17 @@
 
 
               </div>
-              <!-- /.card-body -->
+              </div>
             </div>
-            <!-- /.card -->
           </div>
-          <!-- /.col -->
         </div>
-        <!-- /.row -->
-      </div>
-      <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-
+      </section>
+    </div>
   <?php include_once '../includes/sub-footer.php';?>
 
-  <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-</div>
-<!-- ./wrapper -->
-
+    </aside>
+  </div>
 <?php include_once '../includes/footer.php';?>
 
 </body>
