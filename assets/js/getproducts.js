@@ -111,8 +111,17 @@ $(document).ready(function () {
                   console.log(response)
 
               if (response === "success") {
-                  window.location.href = "../products/";
-                  // console.log("Success")
+                Swal.fire({
+                            icon: "success",
+                            title: "Updated!",
+                            text: "Product updated successfully!",
+                            confirmButtonColor: "#007bff",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // REDIRECT only after user clicks OK
+                                window.location.href = "../products/";
+                            }
+                        });
       
               }else {
                   Swal.fire({
