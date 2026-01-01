@@ -73,7 +73,17 @@ $(document).ready(function () {
 
                   if (response === "success") {
 
-                    window.location.href = "../vehicles/";
+                    Swal.fire({
+                            icon: "success",
+                            title: "Success!",
+                            text: "Vehicle added successfully!",
+                            confirmButtonColor: "#007bff",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Redirect after user clicks OK
+                                window.location.href = "../vehicles/";
+                            }
+                        });
         
                   }else if(response == "Vehicle Exist"){
 
