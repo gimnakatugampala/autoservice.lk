@@ -2,7 +2,7 @@
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="#" class="brand-link">
+    <a href="../dashboard/" class="brand-link text-center">
       <img src="../assets/img/system/autoservice_logo.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">autoservice.lk</span>
     </a>
@@ -33,9 +33,11 @@
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+
+          <li class="nav-header">MAIN NAVIGATION</li>
 
           <li class="nav-item">
             <a href="#" class="nav-link">
@@ -177,7 +179,7 @@
      
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-charging-station"></i>
+              <i class="nav-icon fas fa-wrench"></i>
               <p>
                  Manage Repairs
                 <i class="right fas fa-angle-left"></i>
@@ -201,7 +203,7 @@
 
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-shower"></i>
+              <i class="nav-icon fas fa-spray-can"></i>
               <p>
                  Manage Washers
                 <i class="right fas fa-angle-left"></i>
@@ -225,7 +227,7 @@
     
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-money-bill"></i>
+              <i class="nav-icon fas fa-clipboard-list"></i>
               <p>
                 Manage Job Cards
                 <i class="right fas fa-angle-left"></i>
@@ -285,24 +287,27 @@
 
           <li class="nav-item">
             <a href="../vehicle-search/" class="nav-link">
-              <i class="nav-icon far fa-calendar-alt"></i>
+              <i class="nav-icon fas fa-search"></i>
               <p>Vehicle Search</p>
             </a>
           </li>
 
           <li class="nav-item">
             <a href="../send-notifications/" class="nav-link">
-              <i class="nav-icon fas fa-envelope"></i>
-              <p>Send Notifications <?php echo ($notification_count == "" || $notification_count == "0") ? '' : "<span class='badge badge-info right'>$notification_count</span>"; ?> </p>
+              <i class="nav-icon fas fa-bell"></i>
+              <p>
+                Send Notifications 
+                <?php echo ($notification_count == "" || $notification_count == "0") ? '' : "<span class='badge badge-warning right'>$notification_count</span>"; ?> 
+              </p>
             </a>
           </li>
 
 
-          <li class="nav-header">INVENTORY</li>
+          <li class="nav-header">INVENTORY MANAGEMENT</li>
 
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-shopping-bag"></i>
+              <i class="nav-icon fas fa-boxes"></i>
               <p>
                 Manage Products
                 <i class="right fas fa-angle-left"></i>
@@ -355,7 +360,7 @@
 
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-cash-register"></i>
+              <i class="nav-icon fas fa-shopping-cart"></i>
               <p>
                 Manage Purchases
                 <i class="right fas fa-angle-left"></i>
@@ -403,7 +408,7 @@
     
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-users"></i>
+              <i class="nav-icon fas fa-truck"></i>
               <p>
                 Manage Suppliers
                 <i class="right fas fa-angle-left"></i>
