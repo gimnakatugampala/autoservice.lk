@@ -31,8 +31,17 @@ $(document).ready(function () {
                     console.log(response)
 
                 if (response === "success") {
-                    window.location.href = "../service-packages/fuel-types.php";
-                    // console.log("Success")
+              Swal.fire({
+                            icon: "success",
+                            title: "Success!",
+                            text: "Fuel Type added successfully!",
+                            confirmButtonColor: "#007bff",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // REDIRECT ONLY after user clicks OK
+                                window.location.href = "../service-packages/fuel-types.php";
+                            }
+                        });
         
                 }else {
                     Swal.fire({
