@@ -257,8 +257,16 @@ $(document).ready(function () {
                 console.log(response)
 
             if (response === "success") {
-                window.location.href = "../return/";
-                // console.log("Success")
+                Swal.fire({
+                            icon: "success",
+                            title: "Updated!",
+                            text: "Purchase Order Return updated successfully!",
+                            confirmButtonColor: "#007bff",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "../return/";
+                            }
+                        });
     
             }else {
                 Swal.fire({
