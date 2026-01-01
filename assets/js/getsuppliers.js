@@ -87,8 +87,17 @@ $(document).ready(function () {
               console.log(response)
 
           if (response === "success") {
-              window.location.href = "../suppliers/";
-              // console.log("Success")
+            Swal.fire({
+                            icon: "success",
+                            title: "Updated!",
+                            text: "Supplier updated successfully!",
+                            confirmButtonColor: "#007bff",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // REDIRECT only after user clicks OK
+                                window.location.href = "../suppliers/";
+                            }
+                        });
   
           }else if(response == "Supplier Exist"){
 
