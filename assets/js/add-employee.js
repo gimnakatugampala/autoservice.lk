@@ -146,7 +146,17 @@ $(document).ready(function () {
                 console.log(response)
 
             if (response === "success") {
-                window.location.href = "../employees/";
+               Swal.fire({
+                            icon: "success",
+                            title: "Success!",
+                            text: "Employee added successfully!",
+                            confirmButtonColor: "#007bff",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // REDIRECT AFTER CLICKING OK
+                                window.location.href = "../employees/";
+                            }
+                        });
     
             }else if(response == "Employee Exist"){
 
