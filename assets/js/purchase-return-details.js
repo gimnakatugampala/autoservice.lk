@@ -1,100 +1,97 @@
 $(document).ready(function () {
-    // Extract code from URL: ?code=XXXX
     const urlParams = new URLSearchParams(window.location.search);
     const returnCode = urlParams.get('code');
 
     if (returnCode) {
         getReturnDetails(returnCode);
     } else {
-        alert("No return code provided in URL");
-        console.error("No return code found in URL");
+        alert("Error: No return code found in the URL.");
     }
 
-   function getReturnDetails(code) {
-    $.ajax({
-        url: "../api/getpurchaseorderreturn.php",
-        type: "POST",
-        data: { code: code },
-        dataType: "JSON",
-        success: function (response) {
-            console.log("Processing Data:", response);
+    function getReturnDetails(code) {
+        $.ajax({
+            url: "../api/getpurchaseorderreturndetails.php",
+            type: "POST",
+            data: { code: code },
+            dataType: "JSON",
+            success: function (response) {
+                if (response.status === "success") {
+                    const header = response.header;
+                    const products = response.products || [];
 
-            // Handle multiple response formats safely
-            let header = null;
-            if (response.status === "success") {
-                header = response.header;
-            } else if (response.data_content && response.data_content.length > 0) {
-                header = response.data_content[0];
-            } else if (response.id) {
-                header = response.id;
-            }
+                    // 1. Update Station Info
+                    $("#station_name, #from_station_name").text(header.station_name || "Pistona Automotive");
+                    const fullAddr = [header.station_address, header.station_street, header.station_city].filter(Boolean).join(", ");
+                    $("#station_address, #from_station_address").text(fullAddr || "Address not set");
+                    $("#station_phone, #from_station_phone").text("Tel: " + (header.station_phone || "N/A"));
+                    $("#station_email, #from_station_email").text("Email: " + (header.station_email || "N/A"));
 
-            let products = response.products || [];
+                    if (header.station_logo) {
+                        $("#station_logo").attr("src", "../uploads/stations/" + header.station_logo);
+                    }
 
-            if (header) {
-                // 1. Station Details
-                const stationName = header.station_name || "Pistona Automotive Solutions (Pvt) Ltd";
-                const addrParts = [header.station_address, header.station_street, header.station_city].filter(Boolean);
-                const fullAddr = addrParts.join(", ") || "385/45, Major Wasantha Gunarathne Mw, Mahara Kadawatha";
+                    // 2. Update Supplier Info
+                    const supplierFull = (header.supplier_first_name || "") + " " + (header.supplier_last_name || "");
+                    $("#lbl_supplier_name").text(supplierFull.trim() || "Unknown Supplier");
+                    $("#lbl_supplier_address").text(header.supplier_address || "N/A");
+                    $("#lbl_supplier_phone").text(header.supplier_phone || "N/A");
+                    $("#lbl_supplier_email").text(header.supplier_email || "N/A");
 
-                $("#station_name, #from_station_name").text(stationName);
-                $("#station_address, #from_station_address").html(fullAddr);
-                $("#station_phone, #from_station_phone").text("Tel: " + (header.station_phone || "0117600800"));
-                $("#station_email, #from_station_email").text("Email: " + (header.station_email || "pistonaautomotivesolutions@gmail.com"));
+                    // 3. Return Metadata
+                    $("#lbl_por_code").text(header.por_code);
+                    $("#lbl_return_date").text(header.por_date);
+                    $("#lbl_payment_method").text(header.payment_method_name || "Not Specified");
+                    $("#lbl_note").text(header.note || "No notes provided");
 
-                if (header.station_logo) {
-                    $("#station_logo").attr("src", "../uploads/stations/" + header.station_logo);
+                    // Status Badges
+                    const sName = header.status_name || "Pending";
+                    const sClass = sName.toLowerCase() === 'completed' ? 'badge-success' : 'badge-warning';
+                    $("#lbl_status").html(`<span class="badge ${sClass}">${sName}</span>`);
+
+                    const pName = header.paid_status_name || "Not Paid";
+                    const pClass = pName.toLowerCase() === 'paid' ? 'badge-success' : 'badge-danger';
+                    $("#lbl_paid_status").html(`<span class="badge ${pClass}">${pName}</span>`);
+
+                    // 4. Populate Items Table
+                    let rows = "";
+                    if (products.length > 0) {
+                        products.forEach(item => {
+                            const unitPrice = parseFloat(item.purchase_price || 0);
+                            const qty = parseFloat(item.qty || 0);
+                            const disc = parseFloat(item.discount || 0);
+                            const amount = unitPrice * qty;
+                            const total = amount - disc;
+
+                            rows += `<tr>
+                                <td>${item.product_code}</td>
+                                <td>${item.product_name}</td>
+                                <td class="text-center">${qty}</td>
+                                <td class="text-right">${unitPrice.toFixed(2)}</td>
+                                <td class="text-right">${amount.toFixed(2)}</td>
+                                <td class="text-right">${disc.toFixed(2)}</td>
+                                <td class="text-right"><strong>${total.toFixed(2)}</strong></td>
+                            </tr>`;
+                        });
+                    } else {
+                        rows = '<tr><td colspan="7" class="text-center">No items found for this return.</td></tr>';
+                    }
+                    $("#tb_return_details").html(rows);
+
+                    // 5. Totals
+                    const sub = parseFloat(header.sub_total || 0);
+                    const vat = parseFloat(header.vat_amount || 0);
+                    $("#lbl_subtotal").text("LKR " + sub.toFixed(2));
+                    $("#lbl_vat").text("LKR " + vat.toFixed(2));
+                    $("#lbl_total").text((sub + vat).toFixed(2));
+
+                } else {
+                    alert(response.message);
                 }
-
-                // 2. Supplier Details
-                const sName = ((header.supplier_first_name || "") + " " + (header.supplier_last_name || "")).trim();
-                $("#lbl_supplier_name").text(sName || "---");
-                $("#lbl_supplier_address").text(header.supplier_address || "---");
-                $("#lbl_supplier_phone").text(header.supplier_phone || "---");
-                $("#lbl_supplier_email").text(header.supplier_email || "---");
-
-                // 3. Return Info
-                $("#lbl_por_code").text(header.por_code || header.code || "---");
-                $("#lbl_return_date").text(header.por_date || header.purchase_o_r_date || "---");
-                $("#lbl_payment_method").text(header.payment_method_name || "---");
-
-                // Status Badges
-                const statusName = header.status_name || "Pending";
-                $("#lbl_status").html(`<span class="badge badge-info">${statusName}</span>`);
-                const paidName = header.paid_status_name || "Not Paid";
-                $("#lbl_paid_status").html(`<span class="badge badge-warning">${paidName}</span>`);
-
-                // 4. Products Table
-                let rows = "";
-                products.forEach(item => {
-                    let price = parseFloat(item.purchase_price || 0);
-                    let qty = parseFloat(item.qty || 0);
-                    let disc = parseFloat(item.discount || 0);
-                    let total = (price * qty) - disc;
-
-                    rows += `<tr>
-                        <td>${item.product_code || 'N/A'}</td>
-                        <td class="text-uppercase">${item.product_name || 'N/A'}</td>
-                        <td class="text-center">${qty}</td>
-                        <td class="text-right">${price.toFixed(2)}</td>
-                        <td class="text-right">${(price * qty).toFixed(2)}</td>
-                        <td class="text-right">${disc.toFixed(2)}</td>
-                        <td class="text-right font-weight-bold">${total.toFixed(2)}</td>
-                    </tr>`;
-                });
-                $("#tb_return_details").html(rows);
-
-                // 5. Totals
-                const sub = parseFloat(header.sub_total || 0);
-                const vat = parseFloat(header.vat_amount || 0);
-                $("#lbl_subtotal").text("LKR " + sub.toFixed(2));
-                $("#lbl_vat").text("LKR " + vat.toFixed(2));
-                $("#lbl_total").text((sub + vat).toFixed(2));
-
-            } else {
-                alert("Data structure error: Check console");
+            },
+            error: function (xhr) {
+                console.error("Critical Error:", xhr.responseText);
+                alert("An error occurred while communicating with the server.");
             }
-        }
-    });
-}
+        });
+    }
 });
