@@ -21,6 +21,7 @@
               <li class="breadcrumb-item active">Add Brand</li>
             </ol>
           </div>
+
         </div>
       </div></section>
 
@@ -32,45 +33,44 @@
       
             <div class="card card-primary card-outline shadow">
               <div class="card-header">
-                <h3 class="card-title">Brand Details</h3>
+                <h3 class="card-title text-bold">New Brand Entry</h3>
               </div>
               <div class="card-body">
 
-                <div class="row">
-                  <div class="col-md-12">
+              <div class="row">
+
+                <div class="col-md-12">
                     <div class="form-group">
-                      <label for="brand_name">Brand Name <span class="text-danger">*</span></label>
-                      <div class="input-group">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text"><i class="fas fa-copyright"></i></span>
-                        </div>
-                        <input type="text" class="form-control" id="brand_name" placeholder="Enter brand name (e.g., Toyota, Castrol)">
+                          <label for="brand_name">Brand Name <span class="text-danger">*</span></label>
+                          <div class="input-group">
+                              <div class="input-group-prepend">
+                                  <span class="input-group-text"><i class="fas fa-copyright"></i></span>
+                              </div>
+                              <input type="text" class="form-control" id="brand_name" placeholder="Enter Brand Name (e.g. Toyota, Castrol)">
+                          </div>
+                          <small class="text-muted">Enter the unique name of the brand.</small>
                       </div>
-                      <small class="text-muted">Enter the unique name for the product brand.</small>
-                    </div>
-                  </div>
                 </div>
 
               </div>
+
+
+              </div>
               <div class="card-footer text-right">
-                <button type="button" class="btn btn-secondary mr-2" onclick="window.history.back();">
-                  <i class="fas fa-times mr-1"></i> Cancel
-                </button>
-                
-                <button id="btn_add_brand" type="button" class="btn btn-primary px-4">
-                  <i class="fas fa-save mr-1"></i> Submit
+                <button type="button" class="btn btn-secondary shadow-sm mr-2 px-4" onclick="window.history.back();">Cancel</button>
+                <button id="btn_add_brand" type="button" class="btn btn-primary shadow-sm px-4">
+                    <i class="fas fa-save mr-1"></i> Submit
                 </button>
 
                 <span style="display: none;" id="btn-loading">
-                  <button type="button" class="btn btn-primary px-4" disabled>
-                    <div class="spinner-border spinner-border-sm" role="status">
-                      <span class="visually-hidden"></span>
-                    </div>
-                    Processing...
-                  </button>
+                    <button type="button" class="btn btn-primary px-4" disabled>
+                        <div class="spinner-border spinner-border-sm" role="status">
+                            <span class="visually-hidden"></span>
+                        </div>
+                        Processing...
+                    </button>
                 </span>
               </div>
-
             </div>
             </div>
           </div>
