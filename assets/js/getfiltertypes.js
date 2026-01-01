@@ -34,8 +34,17 @@ $(document).ready(function () {
                   console.log(response)
 
               if (response === "success") {
-                  window.location.href = "../service-packages/filter-types.php";
-                  // console.log("Success")
+                Swal.fire({
+                            icon: "success",
+                            title: "Updated!",
+                            text: "Filter Type updated successfully!",
+                            confirmButtonColor: "#007bff",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // REDIRECT only after user clicks OK
+                                window.location.href = "../service-packages/filter-types.php";
+                            }
+                        });
       
               }else {
                   Swal.fire({
