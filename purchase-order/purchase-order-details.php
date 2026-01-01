@@ -38,11 +38,13 @@
                   <div class="row">
                     <div class="col-12">
                       <div class="row mb-4">
+                        <div class="col-2"></div>
                         <div class="col-2 text-center">
                           <img id="station_logo" width="100" src="../assets/img/system/autoservice_logo.jpg" alt="Station Logo" 
                                onerror="this.onerror=null; this.src='../dist/img/system/logo_pistona.png';">
                         </div>
-                        <div class="col-10">
+                        
+                        <div class="col-8">
                           <h4 class="m-0 text-uppercase">
                             <strong id="station_name">Pistona Automotive Solutions (Pvt) Ltd</strong>
                           </h4>
