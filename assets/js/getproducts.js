@@ -4,7 +4,10 @@ $(document).ready(function () {
     const urlParams = new URLSearchParams(window.location.search);
     const myParam = urlParams.get('code');
 
-    document.addEventListener('DOMContentLoaded', getProducts());
+    // Load dropdowns first, then get product data
+    loadDropdowns().then(() => {
+        getProducts();
+    });
 
     $("#btn_update_product").click(function () {
        
@@ -96,7 +99,7 @@ $(document).ready(function () {
               type: "POST",
               url: "../api/editproduct.php",
               data: {
-                  id:dataIdValue,
+                    id: dataIdValue,
                   product_name:product_name,
                   productcategory:productcategory,
                   productbrand:productbrand,
@@ -118,7 +121,6 @@ $(document).ready(function () {
                             confirmButtonColor: "#007bff",
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                // REDIRECT only after user clicks OK
                                 window.location.href = "../products/";
                             }
                         });
@@ -127,58 +129,134 @@ $(document).ready(function () {
                   Swal.fire({
                       icon: "error",
                       title: "Please Try Again",
-                      text: "Something Went Wrong",
+                      text: "Something Went Wrong: " + response,
                   });
               }
 
               },
               error:function (error) {
                   console.log(error)
+                  Swal.fire({
+                      icon: "error",
+                      title: "Error",
+                      text: "Failed to update product",
+                  });
               }
           });
       }
+    });
 
+  function loadDropdowns() {
+        // IMPORTANT: All functions inside here must return the $.ajax object
+        return Promise.all([
+            loadProductCategories(),
+            loadProductBrands(),
+            loadAvailability()
+        ]);
+    }
 
-      
+    function loadProductCategories() {
+        return $.ajax({
+            type: "POST",
+            url: "../api/cmb/productcategorylist.php",
+            dataType: "json",
+            success: function (data) {
+                var categorySelect = $("#cmbproductcategory");
+                categorySelect.empty().append('<option value="" disabled selected>-- Choose Category --</option>');
+                $.each(data, function (key, value) {
+                    categorySelect.append('<option value="' + value.id + '">' + value.name + "</option>");
+                });
+            }
+        });
+    }
 
-           
-       })
+    function loadProductBrands() {
+        return $.ajax({
+            type: "POST",
+            url: "../api/cmb/productbrand.php",
+            dataType: "json",
+            success: function (data) {
+                var brandSelect = $("#cmbproductbrand");
+                brandSelect.empty().append('<option value="" disabled selected>-- Choose Brand --</option>');
+                $.each(data, function (key, value) {
+                    brandSelect.append('<option value="' + value.id + '">' + value.brand_name + "</option>");
+                });
+            }
+        });
+    }
 
+    function loadAvailability() {
+        // ADDED 'return' here to make it a promise
+        return $.ajax({
+            type: "POST",
+            url: "../api/cmb/productavailability.php",
+            dataType: "json",
+            success: function (data) {
+                console.log(data)
+                var availabilitySelect = $("#cmbavailablity");
+                availabilitySelect.empty().append('<option value="" disabled selected>-- Choose Availability --</option>');
+                $.each(data, function (key, value) {
+                    availabilitySelect.append('<option value="' + value.id + '">' + value.availability + "</option>");
+                });
+            }
+        });
+    }
 
-   function getProducts(){
-       $.ajax({
-         type: "POST",
-         url: "../api/getproducts.php",
-         data: { code: myParam },
-         dataType: "json",
-         success: function (data) {
-           console.log(data);
-   
-           let ProductNameElement = document.getElementById("product_name");
-           let ProductCategoryElement = document.getElementById("cmbproductcategory");
-           let ProductBrandElement = document.getElementById("cmbproductbrand");
-           let ProductWarrentyElement = document.getElementById("product_warrenty");
-           let ProductQuantityElement = document.getElementById("product_quantity");
-           let AvailabilityElement = document.getElementById("cmbavailablity");
-           let SellingPriceElement = document.getElementById("selling_price");
-           let BuyingPriceElement = document.getElementById("buying_price");
-           var buttonElement = document.getElementById("btn_update_product");
-        
-           buttonElement.setAttribute("data-id", data.data_content[0].id);
-           ProductNameElement.value = data.data_content[0].product_name
-           ProductCategoryElement.value = data.data_content[0].product_category_id
-           ProductBrandElement.value = data.data_content[0].product_brand_id
-           ProductWarrentyElement.value = data.data_content[0].warrenty
-           ProductQuantityElement.value = data.data_content[0].quantity
-           AvailabilityElement.value = data.data_content[0].product_availability_id
-           SellingPriceElement.value = data.data_content[0].selling_price
-           BuyingPriceElement.value = data.data_content[0].buying_price
-        
+    // Get Product Data
+    function getProducts(){
+        if (!myParam) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "No product code provided",
+            });
+            return;
+        }
 
-   
-         },
-         error: function () {},
-       });
-   
-     }
-})
+        $.ajax({
+            type: "POST",
+            url: "../api/getproducts.php",
+            data: { code: myParam },
+            dataType: "json",
+            success: function (data) {
+                console.log("Product data:", data);
+
+                if (data.data_content && data.data_content.length > 0) {
+                    let productData = data.data_content[0];
+                    
+                    // Store product ID in button
+                    var buttonElement = $("#btn_update_product");
+                    buttonElement.attr("data-id", productData.id);
+                    
+                    // Populate form fields
+                    $("#product_name").val(productData.product_name);
+                    $("#cmbproductcategory").val(productData.product_category_id);
+                    $("#cmbproductbrand").val(productData.product_brand_id);
+                    $("#product_warrenty").val(productData.warrenty);
+                    $("#product_quantity").val(productData.quantity);
+                    $("#cmbavailablity").val(productData.product_availability_id);
+                    $("#selling_price").val(productData.selling_price);
+                    $("#buying_price").val(productData.buying_price);
+                    
+                    console.log("Product ID set:", productData.id);
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "Product not found",
+                    }).then(() => {
+                        window.location.href = "../products/";
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error loading product:", error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Failed to load product data",
+                });
+            }
+        });
+    }
+});
