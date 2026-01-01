@@ -1,26 +1,43 @@
-
 <?php include_once '../includes/header.php';?>
 
-<body class="hold-transition sidebar-mini">
+<style>
+    /* Styling to match AdminLTE professional standards for Edit View */
+    .content-wrapper { background-color: #f4f6f9; }
+    .card-info.card-outline { border-top: 3px solid #17a2b8; }
+    .form-group label { font-weight: 600; color: #495057; }
+    
+    /* Table refinement */
+    .table thead th {
+        background-color: #f8f9fa;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid #dee2e6;
+    }
+    
+    /* Summary section styling */
+    .summary-box {
+        background: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        padding: 15px;
+    }
+</style>
+
+<body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
   <?php include_once '../includes/loader.php';?>
 
-  <!-- Navbar -->
   <?php include_once '../includes/navbar.php'; ?>
-  <!-- /.navbar -->
+  <?php include_once '../includes/sidebar.php';?>
 
-  <!-- Main Sidebar Container -->
- <?php include_once '../includes/sidebar.php';?>
-
-  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Edit Purchase Order</h1>
+            <h1 class="m-0 font-weight-bold text-dark"><i class="fas fa-edit mr-2 text-info"></i>Edit Purchase Order</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -30,43 +47,38 @@
           </div>
 
         </div>
-      </div><!-- /.container-fluid -->
-    </section>
+      </div></section>
 
 
-    <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
       
-            <!-- /.card -->
-            <div class="card">
+            <div class="card card-info card-outline shadow-sm">
+              <div class="card-header border-0">
+                <h3 class="card-title text-bold">Update Order Information</h3>
+              </div>
               <div class="card-body">
 
               <div class="row">
 
               <div class="col-md-6">
                 <div class="form-group">
-                <label for="exampleInputEmail1">Select Supplier <span class="text-danger">*</span></label>
-                        <select id="cmbsuppliers"  class="custom-select">
+                <label for="cmbsuppliers">Select Supplier <span class="text-danger">*</span></label>
+                        <select id="cmbsuppliers"  class="custom-select shadow-none">
                         <option value="" selected disabled>Please Select</option>
-                          <!-- <option>Car</option>
-                          <option>Van</option>
-                          <option>Bus</option>
-                          <option>Lorry</option>
-                          <option>option 5</option> -->
-                        </select>
+                          </select>
                       </div>
                 </div>
 
                 <div class="col-md-6">
                 <div class="form-group">
-                <label for="exampleInputEmail1">Purchase Date <span class="text-danger">*</span></label>
+                <label for="purchase-date">Purchase Date <span class="text-danger">*</span></label>
                 <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                        <input type="text" id="purchase-date" class="form-control datetimepicker-input" data-target="#reservationdate"/>
+                        <input type="text" id="purchase-date" class="form-control datetimepicker-input shadow-none" data-target="#reservationdate" placeholder="Select Date"/>
                         <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            <div class="input-group-text bg-info text-white border-info"><i class="fa fa-calendar"></i></div>
                         </div>
                     </div>
                
@@ -75,155 +87,123 @@
 
                 <div class="col-md-12">
                 <div class="form-group">
-                <label for="exampleInputEmail1">Select Products <span class="text-danger">*</span></label>
-                        <select id="cmbproducts" class="custom-select">
+                <label for="cmbproducts">Select Products <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            </div>
+                            <select id="cmbproducts" class="custom-select shadow-none border-info">
+                              <option value="" selected disabled>Find Products to Add to List...</option>
+                              </select>
+                        </div>
+                      </div>
+                </div>
+
+                <div class="col-md-12 mt-3 mb-4">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped border">
+                      <thead>
+                        <tr>
+                          <th>Product Name</th>
+                          <th style="width: 150px;">QTY</th>
+                          <th style="width: 180px;">Purchase Price (LKR)</th>
+                          <th style="width: 150px;">Discount (LKR)</th>
+                          <th style="width: 180px;">Total Cost (LKR)</th>
+                          <th style="width: 50px;"></th>
+                        </tr>
+                      </thead>
+                      <tbody id="tb_update_puchaseorder_products">
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+
+                <div class="col-md-3">
+                <div class="form-group">
+                <label for="cmbpaidstatus">Paid Status <span class="text-danger">*</span></label>
+                        <select id="cmbpaidstatus" class="custom-select shadow-none">
                         <option value="" selected disabled>Please Select</option>
-                          <!-- <option>Car</option>
-                          <option>Van</option>
-                          <option>Bus</option>
-                          <option>Lorry</option>
-                          <option>option 5</option> -->
-                        </select>
+                          </select>
                       </div>
                 </div>
 
                 <div class="col-md-3">
                 <div class="form-group">
-                <label for="exampleInputEmail1">Paid Status <span class="text-danger">*</span></label>
-                        <select id="cmbpaidstatus" class="custom-select">
-                        <option value="" selected disabled>Please Select</option>
-                          <!-- <option>Car</option>
-                          <option>Van</option>
-                          <option>Bus</option>
-                          <option>Lorry</option>
-                          <option>option 5</option> -->
-                        </select>
-                      </div>
-                </div>
-
-                <div class="col-md-3">
-                <div class="form-group">
-                    <label for="paid_amount">Paid Amount</label>
-                    <input type="text" class="form-control" id="paid_amount" placeholder="0.00">
+                    <label for="paid_amount">Paid Amount (LKR)</label>
+                    <input type="text" class="form-control shadow-none font-weight-bold" id="paid_amount" placeholder="0.00">
                   </div>
                 </div>
 
                 <div class="col-md-3">
                 <div class="form-group">
-                <label for="exampleInputEmail1">Status <span class="text-danger">*</span></label>
-                        <select id="cmbstatus" class="custom-select">
+                <label for="cmbstatus">Order Status <span class="text-danger">*</span></label>
+                        <select id="cmbstatus" class="custom-select shadow-none">
                         <option value="" selected disabled>Please Select</option>
-                          <!-- <option>Car</option>
-                          <option>Van</option>
-                          <option>Bus</option>
-                          <option>Lorry</option>
-                          <option>option 5</option> -->
-                        </select>
+                          </select>
                       </div>
                 </div>
 
                 <div class="col-md-3">
                 <div class="form-group">
-                <label for="exampleInputEmail1">Payment Method <span class="text-danger">*</span></label>
-                        <select id="cmbpaymentmethod" class="custom-select">
+                <label for="cmbpaymentmethod">Payment Method <span class="text-danger">*</span></label>
+                        <select id="cmbpaymentmethod" class="custom-select shadow-none">
                         <option value="" selected disabled>Please Select</option>
-                          <!-- <option>Car</option>
-                          <option>Van</option>
-                          <option>Bus</option>
-                          <option>Lorry</option>
-                          <option>option 5</option> -->
-                        </select>
+                          </select>
                       </div>
-                </div>
-
-                <div class="col-md-12">
-                <table class="table table-striped">
-                  <thead>
-                    <tr>
-                      <th>Product Name</th>
-                      <th>QTY</th>
-                      <th>Purchase Price (LKR)</th>
-                      <th>Discount (LKR)</th>
-                      <th>Total Cost (LKR)</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody id="tb_update_puchaseorder_products">
-                    <!-- <tr>
-                      <td>Oil Barrel</td>
-                      <td><input type="text" class="form-control"></td>
-                      <td><input type="text" class="form-control"></td>
-                      <td><input type="text" class="form-control"></td>
-                      <td>20.00</td>
-                      <td><button type="button" class="btn bg-gradient-danger"><i class="fas fa-trash"></i></button></td>
-                    </tr> -->
-                  </tbody>
-                </table>
                 </div>
 
         
                 <div class="col-md-6"></div>
 
                 <div class="col-md-6">
-                <div class="table-responsive">
-                <table class="table">
-                  <tr>
-                    <th style="width:50%">Sub Total:</th>
-                    <td id="subtotal">0.00</td>
-                  </tr>
-                  <tr>
-                    <th>VAT (%)</th>
-                    <td><input type="text" value="0" class="form-control w-50" id="vat"></td>
-                  </tr>
-                  <tr style="display:none;">
-                    <th>Paid Amount</th>
-                    <td id="paid">0.00</td>
-                  </tr>
-                  <tr>
-                    <th>To Be Paid:</th>
-                    <td><u id="to_be_paid" style="text-decoration-style: double;">0.00</u></td>
-                  </tr>
-                </table>
+                <div class="summary-box shadow-sm mb-4">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-borderless font-weight-bold mb-0">
+                          <tr>
+                            <th style="width:50%">Sub Total:</th>
+                            <td id="subtotal" class="text-right">0.00</td>
+                          </tr>
+                          <tr>
+                            <th class="align-middle">VAT (%)</th>
+                            <td class="text-right"><input type="text" value="0" class="form-control form-control-sm w-50 ml-auto text-right font-weight-bold" id="vat"></td>
+                          </tr>
+                          <tr style="display:none;">
+                            <th>Paid Amount</th>
+                            <td id="paid" class="text-right">0.00</td>
+                          </tr>
+                          <tr class="border-top border-info">
+                            <th class="text-lg">To Be Paid:</th>
+                            <td class="text-right text-lg text-info"><span id="to_be_paid" style="text-decoration: underline; text-decoration-style: double;">0.00</span></td>
+                          </tr>
+                        </table>
+                    </div>
                 </div>
-                    
                 </div>
                 
             
 
-                <div class="col-md-4">
-                <button type="button" class="btn bg-gradient-secondary">Cancel</button>
-                <button id="btn_update_purchase_order" type="button" class="btn bg-gradient-primary">Update</button>
+                <div class="col-md-12 text-right border-top pt-3 mt-2">
+                    <button type="button" class="btn btn-secondary px-4 mr-2" onclick="window.history.back();">Cancel</button>
+                    <button id="btn_update_purchase_order" type="button" class="btn btn-info px-5 shadow-sm font-weight-bold">
+                        <i class="fas fa-save mr-1"></i> Update Purchase Order
+                    </button>
                 </div>
 
               </div>
 
 
               </div>
-              <!-- /.card-body -->
+              </div>
             </div>
-            <!-- /.card -->
           </div>
-          <!-- /.col -->
         </div>
-        <!-- /.row -->
-      </div>
-      <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-
+      </section>
+    </div>
   <?php include_once '../includes/sub-footer.php';?>
 
-  <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-</div>
-<!-- ./wrapper -->
-
-<!-- jQuery -->
+    </aside>
+  </div>
 <script src="../plugins/jquery/jquery.min.js"></script>
 
 <?php include_once '../includes/footer.php';?>
