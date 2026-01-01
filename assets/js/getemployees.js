@@ -122,7 +122,17 @@ console.log(dataIdValue)
               console.log(response)
 
           if (response === "success") {
-              window.location.href = "../employees/";
+             Swal.fire({
+                            icon: "success",
+                            title: "Updated!",
+                            text: "Employee details updated successfully!",
+                            confirmButtonColor: "#007bff",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // REDIRECT only after user clicks OK
+                                window.location.href = "../employees/";
+                            }
+                        });
   
           }else if(response == "Employee Exist"){
 
