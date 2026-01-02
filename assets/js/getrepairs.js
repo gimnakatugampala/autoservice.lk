@@ -101,7 +101,7 @@ $(document).ready(function () {
         
                     console.log(response)
 
-                if (response === "success") {
+                if (response.trim() === "success") {
                   Swal.fire({
                             icon: "success",
                             title: "Updated!",
