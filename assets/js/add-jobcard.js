@@ -127,14 +127,14 @@ $(document).ready(function () {
         <div class="row">
             <div class="col-md-4 mx-auto">
             <div class="form-group">
-            <label for="current-mileage">Current Mileage (KM)</label>
+            <label for="current-mileage">Current Mileage (KM) <span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="current-mileage" placeholder="Current Mileage">
             </div>
             </div>
 
             <div class="col-md-4 mx-auto">
             <div class="form-group">
-            <label for="new-mileage">Next Mileage (KM)</label>
+            <label for="new-mileage">Next Mileage (KM) <span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="new-mileage" placeholder="Next Mileage">
             </div>
             </div>
@@ -144,7 +144,7 @@ $(document).ready(function () {
 
             <div class="col-sm-4">
                 <div class="form-group">
-                <label>Paid Status</label>
+                <label>Paid Status <span class="text-danger">*</span></label>
                 <select id="cmbpaidstatus" class="custom-select">
                 <option value="" selected disabled>Please Select</option>
                 ${data.cmbpaidstatus.map((state) => {
@@ -156,7 +156,7 @@ $(document).ready(function () {
 
             <div class="col-sm-4">
                 <div class="form-group">
-                <label>Job Card Type</label>
+                <label>Job Card Type <span class="text-danger">*</span></label>
                 <select id="cmbjobcardtype" class="custom-select">
                     <option value="" selected disabled>Please Select</option> 
                     ${data.cmbjobtypes.map((state) => {
@@ -168,7 +168,7 @@ $(document).ready(function () {
 
             <div class="col-sm-4">
             <div class="form-group">
-            <label>Status</label>
+            <label>Status <span class="text-danger">*</span></label>
             <select id="cmbstatus" class="custom-select">
                 <option value="" selected disabled>Please Select</option> 
                 ${data.cmbstatus.map((state) => {
@@ -494,131 +494,97 @@ $(document).ready(function () {
     // --------------- Step 3 ------------
      // ---------------------------------------
     function populateWasherTable(data) {
+    // Clear previous content
+    $('#washer-part-container').html('');
+    items = []; 
 
-      //  // Clear previous content and reset items array to prevent duplication
-        $('#washer-part-container').html('');
-        items = []; // Reset items array
+    if (!data) {
+        $('#washer-part-container').html('<p class="text-danger">No washer package found for this vehicle class.</p>');
+        return;
+    }
 
-      console.log(data)
-
-      $('#washer-part-container').html(`
+    $('#washer-part-container').html(`
       <div class="col-md-12">
         <table class="table table-striped">
-        <thead>
-            <tr>
-            <th>#</th>
-            <th>Washer Package Name</th>
-            <th>QTY</th>
-            <th>Unit Price (LKR)</th>
-            <th>Discount (LKR)</th>
-            <th>Total (LKR)</th>
-            </tr>
-        </thead>
-        <tbody>
-
-
-
-        <tr class="rowBody">
-        <td style='display:none;' class='rowID'>${data.id}</td>
-        <td style='display:none;' class='rowCode'>${data.code}</td>
-        <td>1</td>
-        <td>Wash</td>
-        <td>  
-            <div class="input-group">
-            <input value="1" type="text" class="form-control wash-qty">
-            <div class="input-group-append">
-                <span class="input-group-text">.00</span>
-            </div>
-            </div>
-        </td>
-        
-        <td>  
-            <div class="input-group">
-            <input value="${data.price}" type="text" class="form-control wash-unit-price">
-            <div class="input-group-append">
-                <span class="input-group-text">.00</span>
-            </div>
-            </div>
-        </td>
-
-        <td>  
-            <div class="input-group">
-            <input value="0" type="text" class="form-control wash-discount">
-            <div class="input-group-append">
-                <span class="input-group-text">.00</span>
-            </div>
-            </div>
-        </td>
-
-        <td>  
-            <p class="h6 wash-total">00</p>
-        </td>
-        </tr>
-
-        </tbody>
+            <thead>
+                <tr>
+                    <th>Washer Package Name</th>
+                    <th>QTY</th>
+                    <th>Unit Price (LKR)</th>
+                    <th>Discount (LKR)</th>
+                    <th>Total (LKR)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="rowBody">
+                    <td style='display:none;' class='rowID'>${data.id}</td>
+                    <td style='display:none;' class='rowCode'>${data.code}</td>
+                    <td>Wash (${data.code})</td>
+                    <td>   
+                        <input value="1" type="number" class="form-control wash-qty">
+                    </td>
+                    <td>   
+                        <input value="${data.price}" type="number" class="form-control wash-unit-price">
+                    </td>
+                    <td>   
+                        <input value="0" type="number" class="form-control wash-discount">
+                    </td>
+                    <td>   
+                        <p class="h6 font-weight-bold wash-total">0.00</p>
+                    </td>
+                </tr>
+            </tbody>
         </table>
+        <h4><b>Total - LKR <span id="wash-final-total">0.00</span>/=</b></h4>
+      </div>
+    `);
 
-        <h4><b>Total - LKR <span id="wash-final-total"></span>/=</b></h4>
+    var row = $(".rowBody");
+    var item = {
+      rowCode: row.find(".rowCode")[0],
+        // rowID: row.find(".rowID")[0],
+        quantityInput: row.find(".wash-qty")[0],
+        priceInput: row.find(".wash-unit-price")[0],
+        discountInput: row.find(".wash-discount")[0],
+        totalCell: row.find(".wash-total")[0],
+    };
 
-    </div>
+    items.push(item);
 
-      `)
+    // Attach listeners
+    [item.quantityInput, item.priceInput, item.discountInput].forEach(input => {
+        input.addEventListener("input", calculateWasherTotal);
+    });
 
-      var row = $(".rowBody"); // Assuming you only have one row
-      var item = {
-          rowCode: row.find(".rowCode")[0],
-          rowID: row.find(".rowID")[0],
-          quantityInput: row.find(".wash-qty")[0],
-          priceInput: row.find(".wash-unit-price")[0],
-          discountInput: row.find(".wash-discount")[0],
-          totalCell: row.find(".wash-total")[0],
-      };
+    calculateWasherTotal();
+}
 
-      items.push(item);
+   function calculateWasherTotal() {
+    let grandTotal = 0;
+    WasherValues = []; // Clear array to avoid accumulating duplicates on every keystroke
 
-      item.quantityInput.addEventListener("input", calculateWasherTotal);
-      item.priceInput.addEventListener("input", calculateWasherTotal);
-      item.discountInput.addEventListener("input", calculateWasherTotal);
-  
-      calculateWasherTotal();
+    items.forEach(function (item) {
+        var rowID = item.rowID.innerText;
+        var quantity = parseFloat(item.quantityInput.value) || 0;
+        var price = parseFloat(item.priceInput.value) || 0;
+        var discount = parseFloat(item.discountInput.value) || 0;
 
-
-    }
-
-    function calculateWasherTotal() {
-
-      // var totalAmount = 0;
-     
-      items.forEach(function (item) {
-        
-        // document.getElementById("wash-final-total").textContent = "0"
-        var rowID = parseFloat(item.rowID.innerText);
-        var quantity = parseFloat(item.quantityInput.value);
-        var price = parseFloat(item.priceInput.value);
-        var discount = parseFloat(item.discountInput.value);
-  
-        var itemTotal = quantity * price - discount;
+        var itemTotal = (quantity * price) - discount;
         item.totalCell.textContent = itemTotal.toFixed(2);
         
-        // totalAmount += itemTotal;
-        // document.getElementById("wash-final-total").textContent = itemTotal;
+        grandTotal += itemTotal;
 
-        // WasherValues = [];
-
+        // Push clean data into the global array used for the API
         WasherValues.push({
-          washerID:rowID,
-          price,
-          quantity,
-          discount
-        })
-        
-        $("#wash-final-total").text(itemTotal.toFixed(2));
-        // console.log(totalAmount)
-        console.log(itemTotal)
-        console.log(WasherValues)
-      });
-      
-    }
+            washerID: rowID,
+            price: price,
+            quantity: quantity,
+            discount: discount
+        });
+    });
+
+    $("#wash-final-total").text(grandTotal.toFixed(2));
+}
 
     $("#job-card-step-3").click(function () {
       console.log(items)
