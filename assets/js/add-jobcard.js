@@ -496,7 +496,7 @@ $(document).ready(function () {
     function populateWasherTable(data) {
     // Clear previous content
     $('#washer-part-container').html('');
-    items = []; 
+    
 
     if (!data) {
         $('#washer-part-container').html('<p class="text-danger">No washer package found for this vehicle class.</p>');
@@ -542,13 +542,14 @@ $(document).ready(function () {
     var row = $(".rowBody");
     var item = {
       rowCode: row.find(".rowCode")[0],
-        // rowID: row.find(".rowID")[0],
+        rowID: row.find(".rowID")[0],
         quantityInput: row.find(".wash-qty")[0],
         priceInput: row.find(".wash-unit-price")[0],
         discountInput: row.find(".wash-discount")[0],
         totalCell: row.find(".wash-total")[0],
     };
-
+    
+    items = []; 
     items.push(item);
 
     // Attach listeners
