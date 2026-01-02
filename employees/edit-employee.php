@@ -112,7 +112,7 @@
 
                     <div class="col-md-6">
                     <div class="form-group">
-                      <label>Date of Birth</label>
+                      <label>Date of Birth</label> <span class="text-danger">*</span></label>
                       <div class="input-group date" id="reservationdate" data-target-input="nearest">
                             <input id="dob" type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
                             <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
