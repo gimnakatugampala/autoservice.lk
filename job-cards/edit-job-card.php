@@ -1128,7 +1128,7 @@
 
 <?php include_once '../includes/footer.php';?>
 
-<script src="../assets/js/add-jobcard.js"></script>
+<script src="../assets/js/edit-jobcard.js"></script>
 
 </body>
 </html>
