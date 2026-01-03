@@ -130,3 +130,4 @@ if ($row = $res->fetch_assoc()) {
 }
 
 echo json_encode($response);
+?>

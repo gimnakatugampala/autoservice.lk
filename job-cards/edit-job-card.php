@@ -137,10 +137,7 @@
                     <div id="washer-part" class="content" role="tabpanel">
                       <div class="row">
                         <div class="col-md-12">
-                          <h5 class="text-center"><b>Search Washer Packages</b></h5>
-                          <select class="custom-select mb-4" id="cmbsearchwashers">
-                            <option value="" selected disabled>Please Select</option>
-                          </select>
+                          <h5 class="text-center"><b>Washer Packages</b></h5>
 
                           <table class="table table-striped" id="table-jobcard-washer">
                             <thead>
@@ -168,17 +165,14 @@
                     <div id="service-package-part" class="content" role="tabpanel">
                       <div class="row">
                         <div class="col-md-12">
-                          <h5 class="text-center"><b>Select Service Packages</b></h5>
-                          <select class="custom-select mb-4" id="cmbsearchservicepackages">
-                            <option value="" selected disabled>Search Service Packages</option>
-                          </select>
+                          <h5 class="text-center"><b>Service Packages</b></h5>
 
                           <table class="table table-bordered table-hover" id="table-service-packages">
                             <thead>
                               <tr>
                                 <th>#</th>
                                 <th>Service Package Name</th>
-                                <th>Actions</th>
+                                <th>Total (LKR)</th>
                               </tr>
                             </thead>
                             <tbody></tbody>
@@ -196,10 +190,7 @@
                     <div id="maintenance-part" class="content" role="tabpanel">
                       <div class="row">
                         <div class="col-md-12">
-                          <h5 class="text-center"><b>Select Repair Packages</b></h5>
-                          <select class="custom-select mb-4" id="cmbsearchrepair">
-                            <option value="" selected disabled>Search Repair Packages</option>
-                          </select>
+                          <h5 class="text-center"><b>Repair Packages</b></h5>
                         </div>
                       </div>
 
@@ -228,10 +219,7 @@
                     <div id="select-products-part" class="content" role="tabpanel">
                       <div class="row">
                         <div class="col-md-12">
-                          <h5 class="text-center"><b>Select Products</b></h5>
-                          <select class="custom-select mb-4" id="cmbsearchproducts">
-                            <option value="" selected disabled>Search Products</option>
-                          </select>
+                          <h5 class="text-center"><b>Products</b></h5>
                         </div>
                       </div>
 
@@ -381,8 +369,10 @@
   <aside class="control-sidebar control-sidebar-dark"></aside>
 </div>
 
-<script src="../plugins/jquery/jquery.min.js"></script>
+<!-- Load footer scripts (which will conditionally exclude cmb scripts for this page) -->
 <?php include_once '../includes/footer.php';?>
+
+<!-- Load edit-jobcard.js AFTER footer scripts -->
 <script src="../assets/js/edit-jobcard.js"></script>
 
 </body>

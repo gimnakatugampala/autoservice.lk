@@ -146,10 +146,19 @@
     })
 
   })
-  // BS-Stepper Init
+  
+  <?php
+  // Check if we're on edit-jobcard or add-jobcard page
+  $currentPage = basename($_SERVER['PHP_SELF']);
+  $excludeStepperPages = ['edit-jobcard.php', 'add-jobcard.php'];
+  
+  if (!in_array($currentPage, $excludeStepperPages)) {
+  ?>
+  // BS-Stepper Init (only for pages that need default stepper)
   document.addEventListener('DOMContentLoaded', function () {
     window.stepper = new Stepper(document.querySelector('.bs-stepper'))
   })
+  <?php } ?>
 
   // DropzoneJS Demo Code Start
   Dropzone.autoDiscover = false
@@ -210,6 +219,13 @@
 <script src="../assets/js/getuserdetails.js"></script>
 <script src="../assets/js/logout.js"></script>
 
+<?php
+// Conditionally load CMB scripts - EXCLUDE from edit-jobcard and add-jobcard pages
+$currentPage = basename($_SERVER['PHP_SELF']);
+$excludeCmbPages = ['edit-jobcard.php'];
+
+if (!in_array($currentPage, $excludeCmbPages)) {
+?>
 <script src="../assets/js/cmb/cmbusertype.js"></script>
 <script src="../assets/js/cmb/cmbvehicleclass.js"></script>
 <script src="../assets/js/cmb/cmbvehiclemanufacturers.js"></script>
@@ -233,7 +249,14 @@
 <script src="../assets/js/cmb/cmbjobcardtypes.js"></script>
 <script src="../assets/js/cmb/cmbrepair.js"></script>
 <script src="../assets/js/cmb/cmbservicepackages.js"></script>
+<?php } ?>
 
+<?php
+// Conditionally load page-specific scripts
+$excludeFormPages = ['edit-jobcard.php'];
+
+if (!in_array($currentPage, $excludeFormPages)) {
+?>
 <script src="../assets/js/user-register.js"></script>
 <script src="../assets/js/user-login.js"></script>
 
@@ -250,6 +273,7 @@
 <script src="../assets/js/addwasher.js"></script>
 <script src="../assets/js/add-repair.js"></script>
 <script src="../assets/js/add-station-profile.js"></script>
+<?php } ?>
 <!-- <script src="../assets/js/add-service-package.js"></script> -->
 <!-- <script src="../assets/js/add-purchase.js"></script> -->
 <!-- <script src="../assets/js/add-por.js"></script> -->
