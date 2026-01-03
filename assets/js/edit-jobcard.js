@@ -1,166 +1,389 @@
-$(document).ready(function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const jobCode = urlParams.get('code');
-    
-    // Global State (matching add-jobcard structures)
-    let vehicle = null, serviceStationInfo = null;
-    let items = [], repair_items = [], products_items = [], WasherValues = [];
-    let selected_fuel = [], selected_filter = [], selected_service_packages = [];
-    let job_card_db_id = null;
+<?php include_once '../includes/header.php';?>
 
-    if (!jobCode) { window.location.href = "index.php"; return; }
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
 
-    // Initialize Stepper
-    window.stepper = new Stepper(document.querySelector('.bs-stepper'));
+  <?php include_once '../includes/loader.php';?>
+  <?php include_once '../includes/navbar.php'; ?>
+  <?php include_once '../includes/sidebar.php';?>
 
-    // 1. LOAD DATA FROM DATABASE
-    $.ajax({
-        type: "POST",
-        url: "../api/get-jobcard-details.php",
-        data: { code: jobCode },
-        dataType: "json",
-        success: function (res) {
-            if (!res.success) { alert("Job Card not found"); return; }
-            
-            const jc = res.job_card;
-            job_card_db_id = jc.id;
-            vehicle = [jc]; // Set global vehicle object
-            serviceStationInfo = res.station;
+  <div class="content-wrapper">
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Edit Job Card</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="../index.php">Home</a></li>
+              <li class="breadcrumb-item"><a href="index.php">Job Cards</a></li>
+              <li class="breadcrumb-item active">Edit</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            // Step 1 Population
-            populateSearchVehicleContent({ vehicles: [jc], station: res.station, cmbpaidstatus: [], cmbjobtypes: [], cmbstatus: [] });
-            
-            // Re-fetch dropdowns but set values after they load
-            loadDropdownsForEdit(jc);
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-default">
+              <div class="card-body p-2">
 
-            // Step 2 & 3: Reports & Washers
-            if (jc.job_card_type_id == "6" || jc.job_card_type_id == "3" || jc.job_card_type_id == "5") {
-                getVehicleReport(); // This fetches subcategories
-            }
-            
-            if (res.washers.length > 0) {
-                populateWasherTable({ id: res.washers[0].washer_id, price: res.washers[0].price, code: res.washers[0].code });
-                $(".wash-qty").val(res.washers[0].qty);
-                $(".wash-discount").val(res.washers[0].discount);
-                calculateWasherTotal();
-            }
+                <div class="bs-stepper">
+                  <div class="row bs-stepper-header" role="tablist">
+                    
+                    <div class="col-md-2">
+                      <div class="step" data-target="#search-vehicle-part">
+                        <button type="button" class="step-trigger" role="tab">
+                          <span class="bs-stepper-circle">1</span>
+                          <span class="bs-stepper-label">Search Vehicle</span>
+                        </button>
+                      </div>
+                    </div>
 
-            // Step 5: Repairs
-            res.repairs.forEach(r => {
-                renderRepairRow({ id: r.repair_id, code: r.code, name: r.name, price: r.unit_price, hours: r.hours, discount: r.discount });
-            });
+                    <div class="col-md-2">
+                      <div class="step" data-target="#vehicle-report-part">
+                        <button type="button" class="step-trigger" role="tab">
+                          <span class="bs-stepper-circle">2</span>
+                          <span class="bs-stepper-label">Vehicle Report</span>
+                        </button>
+                      </div>
+                    </div>
 
-            // Step 6: Products
-            res.products.forEach(p => {
-                renderProductRow({ id: p.product_id, code: p.code, name: p.product_name, price: p.price, qty: p.qty, discount: p.discount });
-            });
-            
-            // Pre-fill VAT
-            $("#in_vat_input").val(jc.vat);
-        }
-    });
+                    <div class="col-md-1">
+                      <div class="step" data-target="#washer-part">
+                        <button type="button" class="step-trigger" role="tab">
+                          <span class="bs-stepper-circle">3</span>
+                          <span class="bs-stepper-label">Washer</span>
+                        </button>
+                      </div>
+                    </div>
 
-    function loadDropdownsForEdit(jc) {
-        // Logic to pre-select dropdown values once they are fetched via AJAX
-        $.ajax({ type: "POST", url: "../api/cmb/paidstatus.php", success: (data) => {
-            let html = '<option value="" disabled>Select</option>';
-            JSON.parse(data).forEach(s => html += `<option value="${s.id}" ${s.id == jc.paid_status_id ? 'selected':''}>${s.status}</option>`);
-            $("#cmbpaidstatus").html(html);
-        }});
-        // ... Repeat for status and job types ...
-    }
+                    <div class="col-md-2">
+                      <div class="step" data-target="#service-package-part">
+                        <button type="button" class="step-trigger" role="tab">
+                          <span class="bs-stepper-circle">4</span>
+                          <span class="bs-stepper-label">Service Packages</span>
+                        </button>
+                      </div>
+                    </div>
 
-    // 2. REUSE & ADAPT ROW RENDERING FUNCTIONS
-    function renderRepairRow(data) {
-        var tableBody = $("#table-jobcard-repair");
-        var row = $(`<tr>
-            <td class='rowID' style='display:none;'>${data.id}</td>
-            <td class='rowCode'>${data.code}</td>
-            <td class='rowName'>${data.name}</td>
-            <td><input value="${data.hours}" type="text" class="form-control hours"></td>
-            <td><input value="${data.price}" type="text" class="form-control unit-price"></td>
-            <td><input value="${data.discount}" type="text" class="form-control discount"></td>
-            <td><p class="repair-total">0.00</p></td>
-            <td><button type="button" class="btn btn-sm btn-danger remove-row"><i class="fas fa-trash"></i></button></td>
-        </tr>`);
-        tableBody.append(row);
-        var item = { rowCode: row.find(".rowCode")[0], rowName: row.find(".rowName")[0], rowID: row.find(".rowID")[0], HoursInput: row.find(".hours")[0], UnitPriceInput: row.find(".unit-price")[0], discountInput: row.find(".discount")[0], totalCell: row.find(".repair-total")[0] };
-        repair_items.push(item);
-        $(row).find('input').on('input', calculateRepairTotal);
-        calculateRepairTotal();
-    }
+                    <div class="col-md-2">
+                      <div class="step" data-target="#maintenance-part">
+                        <button type="button" class="step-trigger" role="tab">
+                          <span class="bs-stepper-circle">5</span>
+                          <span class="bs-stepper-label">Repair Packages</span>
+                        </button>
+                      </div>
+                    </div>
 
-    function renderProductRow(data) {
-        var tableBody = $("#table-jobcard-products");
-        var row = $(`<tr>
-            <td class='rowProductID' style='display:none;'>${data.id}</td>
-            <td class='rowProductCode'>${data.code}</td>
-            <td class='rowProductName'>${data.name}</td>
-            <td><input value="${data.qty}" type="text" class="form-control quantityQty"></td>
-            <td><input value="${data.price}" type="text" class="form-control unitPriceProduct"></td>
-            <td><input value="${data.discount}" type="text" class="form-control discountProduct"></td>
-            <td><p class="totalProduct">0.00</p></td>
-            <td><button type="button" class="btn btn-sm btn-danger remove-row"><i class="fas fa-trash"></i></button></td>
-        </tr>`);
-        tableBody.append(row);
-        var item = { rowID: row.find(".rowProductID")[0], rowCode: row.find(".rowProductCode")[0], rowName: row.find(".rowProductName")[0], quantityInput: row.find(".quantityQty")[0], priceInput: row.find(".unitPriceProduct")[0], discountInput: row.find(".discountProduct")[0], totalCell: row.find(".totalProduct")[0] };
-        products_items.push(item);
-        $(row).find('input').on('input', calculateProductTotal);
-        calculateProductTotal();
-    }
+                    <div class="col-md-1">
+                      <div class="step" data-target="#select-products-part">
+                        <button type="button" class="step-trigger" role="tab">
+                          <span class="bs-stepper-circle">6</span>
+                          <span class="bs-stepper-label">Products</span>
+                        </button>
+                      </div>
+                    </div>
 
-    // 3. THE UPDATE SUBMISSION
-    $("#submit_update_jobcard").click(function () {
-        $("#submit_update_jobcard").hide();
-        $("#btn-loading").show();
+                    <div class="col-md-2">
+                      <div class="step" data-target="#generate-invoice-part">
+                        <button type="button" class="step-trigger" role="tab">
+                          <span class="bs-stepper-circle">7</span>
+                          <span class="bs-stepper-label">Generate Invoice</span>
+                        </button>
+                      </div>
+                    </div>
 
-        const updatePayload = {
-            job_card_id: job_card_db_id,
-            status: $("#cmbstatus").val(),
-            paid_status: $("#cmbpaidstatus").val(),
-            vat: $("#in_vat_input").val(),
-            washers: JSON.stringify(WasherValues),
-            repairs: JSON.stringify(repair_items.map(r => ({
-                repairID: r.rowID.innerText,
-                hours: r.HoursInput.value,
-                price: r.UnitPriceInput.value,
-                discount: r.discountInput.value
-            }))),
-            products: JSON.stringify(products_items.map(p => ({
-                productID: p.rowID.innerText,
-                qty: p.quantityInput.value,
-                price: p.priceInput.value,
-                discount: p.discountInput.value
-            })))
-        };
+                  </div>
 
-        $.ajax({
-            type: "POST",
-            url: "../api/update-jobcard.php", // CREATE THIS FILE
-            data: updatePayload,
-            success: function (res) {
-                if (res.trim() === "success") {
-                    Swal.fire({ icon: "success", title: "Job Card Updated" }).then(() => window.location.href="index.php");
-                } else {
-                    alert("Error: " + res);
-                    $("#submit_update_jobcard").show();
-                    $("#btn-loading").hide();
-                }
-            }
-        });
-    });
+                  <div class="bs-stepper-content">
 
-    // Handle button clicks to move steps
-    $("#job-card-step-1").click(() => stepper.next());
-    $("#job-card-step-2").click(() => stepper.next());
-    $("#job-card-step-3").click(() => stepper.next());
-    $("#job-card-step-4").click(() => stepper.next());
-    $("#job-card-step-5").click(() => stepper.next());
-    // Step 6 preview logic
-    $("#job-card-step-6").click(() => {
-        getInvoiceDetails(vehicle, serviceStationInfo);
-        stepper.next();
-    });
+                    <!-- STEP 1: Search Vehicle -->
+                    <div id="search-vehicle-part" class="content" role="tabpanel">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h5 class="text-center"><b>Vehicle Information</b></h5>
+                        </div>
+                      </div>
 
-    // ... INCLUDE ALL YOUR CALCULATION FUNCTIONS (calculateRepairTotal, calculateProductTotal, calculateSubtotal, etc.) ...
-});
+                      <div id="search-vehicle-content">
+                        <div class="d-flex justify-content-center my-4">
+                          <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <button class="btn btn-primary" id="job-card-step-1">Next</button>
+                    </div>
+
+                    <!-- STEP 2: Vehicle Report -->
+                    <div id="vehicle-report-part" class="content" role="tabpanel">
+                      <div class="row">
+                        <div class="col-md-10 table-responsive p-0 mx-auto my-2" id="vehicle-report-tables">
+                          <!-- Tables will be dynamically loaded here -->
+                        </div>
+                      </div>
+
+                      <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                      <button class="btn btn-primary" id="job-card-step-2">Next</button>
+                    </div>
+
+                    <!-- STEP 3: Washers -->
+                    <div id="washer-part" class="content" role="tabpanel">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h5 class="text-center"><b>Search Washer Packages</b></h5>
+                          <select class="custom-select mb-4" id="cmbsearchwashers">
+                            <option value="" selected disabled>Please Select</option>
+                          </select>
+
+                          <table class="table table-striped" id="table-jobcard-washer">
+                            <thead>
+                              <tr>
+                                <th>#</th>
+                                <th>Washer Package Name</th>
+                                <th>QTY</th>
+                                <th>Unit Price (LKR)</th>
+                                <th>Discount (LKR)</th>
+                                <th>Total (LKR)</th>
+                              </tr>
+                            </thead>
+                            <tbody></tbody>
+                          </table>
+
+                          <h4><b>Total - LKR <span id="washer-grand-total">0.00</span></b></h4>
+                        </div>
+                      </div>
+
+                      <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                      <button class="btn btn-primary" id="job-card-step-3">Next</button>
+                    </div>
+
+                    <!-- STEP 4: Service Packages -->
+                    <div id="service-package-part" class="content" role="tabpanel">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h5 class="text-center"><b>Select Service Packages</b></h5>
+                          <select class="custom-select mb-4" id="cmbsearchservicepackages">
+                            <option value="" selected disabled>Search Service Packages</option>
+                          </select>
+
+                          <table class="table table-bordered table-hover" id="table-service-packages">
+                            <thead>
+                              <tr>
+                                <th>#</th>
+                                <th>Service Package Name</th>
+                                <th>Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody></tbody>
+                          </table>
+
+                          <h4><b>Total - LKR <span id="service-package-grand-total">0.00</span></b></h4>
+                        </div>
+                      </div>
+
+                      <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                      <button class="btn btn-primary" id="job-card-step-4">Next</button>
+                    </div>
+
+                    <!-- STEP 5: Repairs -->
+                    <div id="maintenance-part" class="content" role="tabpanel">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h5 class="text-center"><b>Select Repair Packages</b></h5>
+                          <select class="custom-select mb-4" id="cmbsearchrepair">
+                            <option value="" selected disabled>Search Repair Packages</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <table class="table table-striped" id="table-jobcard-repair">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Repair Package Name</th>
+                            <th>Labour Hr</th>
+                            <th>Unit Price (LKR)</th>
+                            <th>Discount (LKR)</th>
+                            <th>Total (LKR)</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody></tbody>
+                      </table>
+
+                      <h4><b>Total - LKR <span id="repair-grand-total">0.00</span></b></h4>
+
+                      <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                      <button class="btn btn-primary" id="job-card-step-5">Next</button>
+                    </div>
+
+                    <!-- STEP 6: Products -->
+                    <div id="select-products-part" class="content" role="tabpanel">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h5 class="text-center"><b>Select Products</b></h5>
+                          <select class="custom-select mb-4" id="cmbsearchproducts">
+                            <option value="" selected disabled>Search Products</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <table class="table table-striped" id="table-jobcard-products">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Product Name</th>
+                            <th>QTY</th>
+                            <th>Unit Price (LKR)</th>
+                            <th>Discount (LKR)</th>
+                            <th>Total (LKR)</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody></tbody>
+                      </table>
+
+                      <h4><b>Total - LKR <span id="product-grand-total">0.00</span></b></h4>
+
+                      <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                      <button class="btn btn-primary" id="job-card-step-6">Next</button>
+                    </div>
+
+                    <!-- STEP 7: Invoice Preview -->
+                    <div id="generate-invoice-part" class="content" role="tabpanel">
+                      <div class="invoice p-3 mb-3">
+                        <!-- Title Row -->
+                        <div class="row">
+                          <div class="col-md-1">
+                            <img width="150" id="station-logo" src="../dist/img/system/logo_pistona.png" alt="Station Logo">
+                          </div>
+
+                          <div class="row col-md-10">
+                            <div class="col-md-12">
+                              <h5 class="text-center text-uppercase">
+                                <b id="station-name">Station Name</b>
+                              </h5>
+                            </div>
+                            <div class="col-md-12">
+                              <p class="text-center text-uppercase m-0 p-0" id="station-address">
+                                Station Address
+                              </p>
+                            </div>
+                            <div class="col-md-12">
+                              <p class="text-center m-0 p-0" id="station-contact">
+                                Tel: Phone | Fax: Fax
+                              </p>
+                            </div>
+                            <div class="col-md-12">
+                              <p class="text-center m-0 p-0" id="station-email">
+                                Email: email@example.com
+                              </p>
+                            </div>
+                            <div class="col-md-12">
+                              <h5 class="text-center text-uppercase">Invoice</h5>
+                            </div>
+                          </div>
+                        </div>
+
+                        <hr>
+
+                        <!-- Info Row -->
+                        <div class="row">
+                          <div class="col-sm-6 mx-auto" id="invoice-customer-info">
+                            <!-- Customer info will be loaded here -->
+                          </div>
+                          <div class="col-sm-6 mx-auto" id="invoice-job-info">
+                            <!-- Job info will be loaded here -->
+                          </div>
+                        </div>
+
+                        <!-- Table Row -->
+                        <div class="row my-3">
+                          <div class="col-12 table-responsive">
+                            <table class="table table-striped">
+                              <thead>
+                                <tr>
+                                  <th>Code</th>
+                                  <th>Item Description</th>
+                                  <th>QTY / Labour Hr</th>
+                                  <th>Unit Price (LKR)</th>
+                                  <th>Amount (LKR)</th>
+                                  <th>Discount (LKR)</th>
+                                  <th>Total (LKR)</th>
+                                </tr>
+                              </thead>
+                              <tbody id="invoice-items-tbody">
+                                <!-- Invoice items will be loaded here -->
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        <!-- Total Section -->
+                        <div class="row">
+                          <div class="col-6"></div>
+                          <div class="col-6">
+                            <div class="table-responsive">
+                              <table class="table">
+                                <tr>
+                                  <th style="width:50%">Subtotal:</th>
+                                  <td>LKR <span id="invoice-subtotal">0.00</span></td>
+                                </tr>
+                                <tr>
+                                  <th>VAT:</th>
+                                  <td>
+                                    <div class="input-group w-50">
+                                      <input type="text" class="form-control" id="in_vat_input" value="0">
+                                      <div class="input-group-append">
+                                        <span class="input-group-text">%</span>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <th>Total Amount:</th>
+                                  <td>LKR <span id="invoice-grand-total">0.00</span></td>
+                                </tr>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                      <button type="button" class="btn btn-success" id="submit_update_jobcard">
+                        <i class="fas fa-save"></i> Update Job Card
+                      </button>
+                      <button type="button" class="btn btn-success" id="btn-loading" style="display:none;">
+                        <i class="fas fa-spinner fa-spin"></i> Updating...
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <?php include_once '../includes/sub-footer.php';?>
+  <aside class="control-sidebar control-sidebar-dark"></aside>
+</div>
+
+<script src="../plugins/jquery/jquery.min.js"></script>
+<?php include_once '../includes/footer.php';?>
+<script src="../assets/js/edit-jobcard.js"></script>
+
+</body>
+</html>
