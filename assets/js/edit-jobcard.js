@@ -51,10 +51,13 @@ $(document).ready(function () {
     const formattedMonth = month < 10 ? `0${month}` : month;
     const formattedDate = `${formattedDay}-${formattedMonth}-${year}`;
 
-    const VAT = document.getElementById("in_vat_input");
-    VAT.addEventListener("input", function () {
-        displayCalculation();
-    });
+   const VAT = document.getElementById("in_vat_input");
+    // ADDED: Null check for VAT element
+    if (VAT) {
+        VAT.addEventListener("input", function () {
+            displayCalculation();
+        });
+    }
 
     // Load existing job card data
     if (jobCardCode) {
@@ -520,11 +523,13 @@ $(document).ready(function () {
     }
 
     // Calculation functions
-    function calculateWasherTotal() {
-        let grandTotal = 0;
-        WasherValues = [];
+  function calculateWasherTotal() {
+    let grandTotal = 0;
+    WasherValues = [];
 
-        items.forEach(function (item) {
+    items.forEach(function (item) {
+        // FIXED: Check if properties exist before accessing innerText or value
+        if (item.rowID && item.quantityInput && item.priceInput && item.totalCell) {
             var rowID = item.rowID.innerText;
             var quantity = parseFloat(item.quantityInput.value) || 0;
             var price = parseFloat(item.priceInput.value) || 0;
@@ -541,10 +546,11 @@ $(document).ready(function () {
                 quantity: quantity,
                 discount: discount
             });
-        });
+        }
+    });
 
-        $("#washer-grand-total").text(grandTotal.toFixed(2));
-    }
+    $("#washer-grand-total").text(grandTotal.toFixed(2));
+}
 
     function calculateServicePackageTotal() {
         let totalAmount = 0;
@@ -623,19 +629,22 @@ $(document).ready(function () {
         updateInvoiceItems();
     }
 
-    function calculateSubtotal() {
+   function calculateSubtotal() {
         let grandTotal = 0;
 
-        // Washers
-        grandTotal += items.reduce((total, wash) => total + parseFloat(wash.totalCell.innerText || 0), 0);
+        // FIXED: Added parseFloat and null checks for internal text
+        items.forEach(wash => {
+            if(wash.totalCell) grandTotal += parseFloat(wash.totalCell.innerText || 0);
+        });
         
-        // Repairs
-        grandTotal += repair_items.reduce((total, repair) => total + parseFloat(repair.totalCell.innerText || 0), 0);
+        repair_items.forEach(repair => {
+            if(repair.totalCell) grandTotal += parseFloat(repair.totalCell.innerText || 0);
+        });
         
-        // Products
-        grandTotal += products_items.reduce((total, product) => total + parseFloat(product.totalCell.innerText || 0), 0);
+        products_items.forEach(product => {
+            if(product.totalCell) grandTotal += parseFloat(product.totalCell.innerText || 0);
+        });
 
-        // Service Packages (Fuels + Filters)
         selected_fuel.forEach((fuel) => {
             grandTotal += parseFloat(fuel.price) || 0;
         });
@@ -647,9 +656,13 @@ $(document).ready(function () {
         $("#invoice-subtotal").text(grandTotal.toFixed(2));
     }
 
-    function displayCalculation() {
-        const VAT_value = VAT.value === "" ? 0 : parseFloat(VAT.value);
-        const subtotal = parseFloat($("#invoice-subtotal").text());
+function displayCalculation() {
+        // FIXED: Safe access to VAT and subtotal
+        const VAT_element = document.getElementById("in_vat_input");
+        const VAT_value = (VAT_element && VAT_element.value !== "") ? parseFloat(VAT_element.value) : 0;
+        const subtotalText = $("#invoice-subtotal").text();
+        const subtotal = parseFloat(subtotalText) || 0;
+        
         const final = subtotal + (subtotal * VAT_value / 100);
         $("#invoice-grand-total").text(final.toFixed(2));
     }
@@ -658,15 +671,18 @@ $(document).ready(function () {
         let html = '';
 
         // Washers
-        items.forEach(wash => {
+    items.forEach(wash => {
+            // FIXED: Check innerText safely
+            const code = wash.rowCode ? wash.rowCode.innerText : "N/A";
+            const total = wash.totalCell ? wash.totalCell.innerText : "0.00";
             html += `<tr>
-                <td>${wash.rowCode.innerText}</td>
+                <td>${code}</td>
                 <td class="text-uppercase">Wash</td>
                 <td>${wash.quantityInput.value}</td>
                 <td>${wash.priceInput.value}</td>
                 <td>${parseFloat(wash.quantityInput.value * wash.priceInput.value).toFixed(2)}</td>
                 <td>${wash.discountInput.value}</td>
-                <td>${wash.totalCell.innerText}</td>
+                <td>${total}</td>
             </tr>`;
         });
 

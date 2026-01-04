@@ -1,27 +1,30 @@
 document.addEventListener("DOMContentLoaded", function () {
     const categorySelect = document.getElementById("cmbproductbrand");
 
-    // Function to load categories using AJAX
+    // Exit gracefully if the element is not on this page
+    if (!categorySelect) return;
+
     function loadCategories() {
         const xhr = new XMLHttpRequest();
         xhr.open("GET", "../api/cmb/productbrand.php", true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                const categories = JSON.parse(xhr.responseText);
-                populateCategorySelect(categories);
-                // console.log(categories)
+                try {
+                    const categories = JSON.parse(xhr.responseText);
+                    populateCategorySelect(categories);
+                } catch (e) {
+                    console.error("Error parsing brands JSON");
+                }
             }
         };
         xhr.send();
     }
 
-    // Function to populate the select tab
     function populateCategorySelect(categories) {
-
-        categories.forEach(function (category) {
+        categories.forEach((category) => {
             const option = document.createElement("option");
             option.value = category.id;
-            option.textContent = category.brand_name;
+            option.textContent = category.brand;
             categorySelect.appendChild(option);
         });
     }
