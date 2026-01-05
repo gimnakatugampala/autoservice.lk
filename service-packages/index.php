@@ -81,6 +81,8 @@
 
                   <?php if(isset($service_packages) && (is_array($service_packages) || is_object($service_packages))): ?>
                     <?php foreach ($service_packages as $row) : ?>
+
+                      
                       <tr>
                         <td class="text-muted">#<?php echo  $row["code"]; ?></td>
                         <td class="font-weight-bold"><?php echo  $row["package_name"]; ?></td>
@@ -102,9 +104,16 @@
                              <i class="fas fa-pen fa-xs"></i>
                           </a>
                         </td>
-                        <td class="text-center">
-                            <input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-color="success" data-size="small">
-                        </td>
+                      <td class="text-center">
+    <input type="checkbox" 
+           name="my-checkbox" 
+           data-id="<?php echo $row['spid']; ?>" 
+           <?php echo ($row['is_deleted'] == 0) ? 'checked' : ''; ?> 
+           data-bootstrap-switch 
+           data-off-color="danger" 
+           data-on-color="success" 
+           data-size="small">
+</td>
                       </tr>
                     <?php endforeach; ?>
                   <?php endif; ?>
@@ -145,6 +154,9 @@
     $('[data-toggle="tooltip"]').tooltip();
   })
 </script>
+
+
+<script src="../assets/js/service-package-status.js"></script>
 
 </body>
 </html>
