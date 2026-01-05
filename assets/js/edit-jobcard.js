@@ -1166,10 +1166,30 @@ $(document).ready(function () {
                     Swal.fire({ icon: 'error', title: 'Error', text: response.message || 'Failed to update job card' });
                 }
             },
-            error: function (xhr, status, error) {
+         error: function (xhr, status, error) {
+                console.error("AJAX Error:", status, error);
+                console.error("Response Text:", xhr.responseText);
+                
                 $('#btn-loading').hide();
                 $('#submit_update_jobcard').show();
-                Swal.fire({ icon: 'error', title: 'Error', text: 'An error occurred while updating the job card' });
+
+                // 1. Capture the server's response
+                let serverMessage = xhr.responseText;
+                
+                // 2. Clean up HTML tags if PHP outputted a full error page
+                if (serverMessage) {
+                    serverMessage = serverMessage.replace(/<[^>]*>?/gm, ''); // Strip HTML
+                    serverMessage = serverMessage.substring(0, 300); // Limit length
+                } else {
+                    serverMessage = "Check console (F12) for details.";
+                }
+
+                // 3. Show the specific error
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Server Error: ' + xhr.status,
+                    text: serverMessage
+                });
             }
         });
     });
