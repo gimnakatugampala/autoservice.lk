@@ -1,16 +1,11 @@
 <?php
-// Prevent any stray text output
-ob_clean(); 
+// Clear any previous output to ensure clean JSON
+ob_clean();
 header('Content-Type: application/json');
 
 require_once '../includes/db_config.php';
 
-// Check connection
-if ($conn->connect_error) {
-    echo json_encode(['success' => false, 'message' => 'DB Connection Failed: ' . $conn->connect_error]);
-    exit;
-}
-
+// Check for ID
 if (!isset($_POST['id']) || empty($_POST['id'])) {
     echo json_encode(['success' => false, 'message' => 'No Job Card ID provided.']);
     exit;
@@ -19,8 +14,7 @@ if (!isset($_POST['id']) || empty($_POST['id'])) {
 $job_card_id = $conn->real_escape_string($_POST['id']);
 
 try {
-    // 1. Fetch Header Info
-    // Note: Used aliases to prevent column name collisions
+    // 1. Fetch Header Info (Job Card, Station, Customer, Vehicle)
     $sql = "SELECT 
                 jc.id, jc.job_card_code, jc.vat, jc.created_date as job_date,
                 jci.invoice_code, jci.date as invoice_date,
@@ -44,75 +38,64 @@ try {
     $result = $conn->query($sql);
     
     if (!$result) {
-        throw new Exception("Header Query Failed: " . $conn->error);
+        throw new Exception("Database Error (Header): " . $conn->error);
     }
     
     if ($result->num_rows == 0) {
-        throw new Exception("Job Card not found with ID: " . $job_card_id);
+        throw new Exception("Job Card not found.");
     }
     
     $header_data = $result->fetch_assoc();
 
-    // 2. Fetch Items
+    // 2. Fetch Items (Washers, Repairs, Products, Packages)
     $items = [];
 
-    // Helper function to run query and merge items
-    function fetchItems($conn, $sql, &$items) {
+    // Helper to safely fetch items
+    function getItems($conn, $sql, &$items) {
         $res = $conn->query($sql);
-        if (!$res) {
-            throw new Exception("Item Query Failed: " . $conn->error . " | SQL: " . $sql);
-        }
-        while($row = $res->fetch_assoc()) {
-            // Ensure numeric values are numbers, not strings
-            $row['qty'] = floatval($row['qty']);
-            $row['price'] = floatval($row['price']);
-            $row['discount'] = floatval($row['discount']);
-            $items[] = $row;
+        if($res) {
+            while($row = $res->fetch_assoc()) {
+                // Ensure numbers are floats
+                $row['qty'] = (float)$row['qty'];
+                $row['price'] = (float)$row['price'];
+                $row['discount'] = (float)$row['discount'];
+                $items[] = $row;
+            }
         }
     }
 
     // Washers
-    $sql_wash = "SELECT w.code, 'Vehicle Wash' as name, jcw.qty, jcw.price, jcw.discount 
-                 FROM job_card_washer jcw 
-                 JOIN washers w ON jcw.washer_id = w.id 
-                 WHERE jcw.job_card_id = '$job_card_id'";
-    fetchItems($conn, $sql_wash, $items);
+    getItems($conn, "SELECT w.code, 'Vehicle Wash' as name, jcw.qty, jcw.price, jcw.discount 
+                     FROM job_card_washer jcw JOIN washers w ON jcw.washer_id = w.id 
+                     WHERE jcw.job_card_id = '$job_card_id'", $items);
 
     // Repairs
-    $sql_repair = "SELECT r.code, r.name, jcr.hours as qty, jcr.unit_price as price, jcr.discount 
-                   FROM job_card_repair jcr 
-                   JOIN repair r ON jcr.repair_id = r.id 
-                   WHERE jcr.job_card_id = '$job_card_id'";
-    fetchItems($conn, $sql_repair, $items);
+    getItems($conn, "SELECT r.code, r.name, jcr.hours as qty, jcr.unit_price as price, jcr.discount 
+                     FROM job_card_repair jcr JOIN repair r ON jcr.repair_id = r.id 
+                     WHERE jcr.job_card_id = '$job_card_id'", $items);
 
     // Products
-    $sql_prod = "SELECT p.code, p.product_name as name, jcp.qty, jcp.price, jcp.discount 
-                 FROM job_card_products jcp 
-                 JOIN product p ON jcp.product_id = p.id 
-                 WHERE jcp.job_card_id = '$job_card_id'";
-    fetchItems($conn, $sql_prod, $items);
+    getItems($conn, "SELECT p.code, p.product_name as name, jcp.qty, jcp.price, jcp.discount 
+                     FROM job_card_products jcp JOIN product p ON jcp.product_id = p.id 
+                     WHERE jcp.job_card_id = '$job_card_id'", $items);
 
     // Fuels
-    $sql_fuel = "SELECT ft.code, CONCAT('Fuel: ', ft.name) as name, 1 as qty, jcpf.price, 0 as discount 
-                 FROM job_card_service_package_fuel jcpf 
-                 JOIN fuel_type ft ON jcpf.fuel_type_id = ft.id 
-                 WHERE jcpf.job_card_id = '$job_card_id'";
-    fetchItems($conn, $sql_fuel, $items);
+    getItems($conn, "SELECT ft.code, CONCAT('Fuel: ', ft.name) as name, 1 as qty, jcpf.price, 0 as discount 
+                     FROM job_card_service_package_fuel jcpf JOIN fuel_type ft ON jcpf.fuel_type_id = ft.id 
+                     WHERE jcpf.job_card_id = '$job_card_id'", $items);
 
     // Filters
-    $sql_filter = "SELECT ft.code, CONCAT('Filter: ', ft.name) as name, 1 as qty, jcpf.price, 0 as discount 
-                   FROM job_card_service_package_filter jcpf 
-                   JOIN filter_type ft ON jcpf.filter_type_id = ft.id 
-                   WHERE jcpf.job_card_id = '$job_card_id'";
-    fetchItems($conn, $sql_filter, $items);
+    getItems($conn, "SELECT ft.code, CONCAT('Filter: ', ft.name) as name, 1 as qty, jcpf.price, 0 as discount 
+                     FROM job_card_service_package_filter jcpf JOIN filter_type ft ON jcpf.filter_type_id = ft.id 
+                     WHERE jcpf.job_card_id = '$job_card_id'", $items);
 
-    // 3. Totals
+    // 3. Calculate Totals
     $subtotal = 0;
     foreach($items as $item) {
         $subtotal += ($item['qty'] * $item['price']) - $item['discount'];
     }
     
-    $vat_percent = floatval($header_data['vat']);
+    $vat_percent = (float)$header_data['vat'];
     $vat_amount = $subtotal * ($vat_percent / 100);
     $grand_total = $subtotal + $vat_amount;
 
