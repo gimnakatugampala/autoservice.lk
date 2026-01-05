@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    console.log("Edit Job Card Script Loaded");
+    
     // Initialize BS Stepper
     var stepperElement = document.querySelector('.bs-stepper');
     if (stepperElement) {
@@ -6,65 +8,84 @@ $(document).ready(function () {
             linear: false,
             animation: true
         });
-    } else {
-        console.error("Stepper element not found!");
+        console.log("Stepper initialized");
+        
+        // Force show first step
+        setTimeout(() => {
+            if (window.stepper) {
+                window.stepper.to(1);
+            }
+            
+            // Manually ensure first content is visible
+            const firstContent = document.querySelector('#search-vehicle-part');
+            if (firstContent) {
+                firstContent.classList.add('active', 'dstepper-block');
+                firstContent.style.display = 'block';
+                console.log("First step forced to show");
+            }
+            
+            const firstStep = document.querySelector('.step[data-target="#search-vehicle-part"]');
+            if (firstStep) {
+                firstStep.classList.add('active');
+            }
+        }, 200);
     }
 
     // Get job card code from URL
     const urlParams = new URLSearchParams(window.location.search);
     const jobCardCode = urlParams.get('code');
 
-    console.log("Job Card Code from URL:", jobCardCode);
+    window.showStepContent = function(stepIndex) {
+        // 1. Hide all content parts
+        $('.bs-stepper-content .content').removeClass('active dstepper-block').hide();
 
-    let vehicle;
-    let current_mileage;
-    let new_mileage;
-    let paid_status;
-    let job_card_type;
-    let status;
-    let notify;
-    let jobCardId;
-    let invoiceCode;
-    let serviceStationInfo;
+        // 2. Select the specific content div (stepIndex - 1 because eq is 0-indexed)
+        var targetContent = $('.bs-stepper-content .content').eq(stepIndex - 1);
 
-    var rowVehicleReportData = [];
-    var items = [];
-    var WasherValues = [];
-    var service_packages_items = [];
-    var service_packages_items_fuel = [];
-    var service_packages_items_filter = [];
-    var selected_service_packages = [];
-    var selected_fuel = [];
-    var selected_filter = [];
-    var repair_items = [];
-    var selected_repairs = [];
-    var products_items = [];
-    var selected_products = [];
+        // 3. Show the target content
+        if (targetContent.length) {
+            targetContent.addClass('active dstepper-block').show();
+            targetContent.css('display', 'block'); 
+        }
+    };
 
-    let counterId = 0;
 
-    const currentDate = new Date();
-    const day = currentDate.getDate();
-    const month = currentDate.getMonth() + 1;
-    const year = currentDate.getFullYear();
-    const formattedDay = day < 10 ? `0${day}` : day;
-    const formattedMonth = month < 10 ? `0${month}` : month;
-    const formattedDate = `${formattedDay}-${formattedMonth}-${year}`;
-
-   const VAT = document.getElementById("in_vat_input");
-    // ADDED: Null check for VAT element
-    if (VAT) {
-        VAT.addEventListener("input", function () {
-            displayCalculation();
-        });
+    function showStepContent(stepIndex) {
+        $('.bs-stepper-content .content').removeClass('active dstepper-block').hide();
+        var targetContent = $('.bs-stepper-content .content').eq(stepIndex - 1);
+        if (targetContent.length) {
+            targetContent.addClass('active dstepper-block').show();
+            targetContent.css('display', 'block'); 
+        }
     }
 
-    // Load existing job card data
-    if (jobCardCode) {
-        console.log("Loading job card with code:", jobCardCode);
-        loadJobCardData(jobCardCode);
-    } else {
-        console.error("No job card code provided in URL");
+    // Global variables
+    let vehicle = [];
+    let current_mileage = 0;
+    let new_mileage = 0;
+    let paid_status = "";
+    let job_card_type = "";
+    let status = "";
+    let notify = "";
+    let jobCardId = 0;
+    let invoiceCode = "";
+    let serviceStationInfo = [];
+
+    let rowVehicleReportData = [];
+    let items = [];
+    let WasherValues = [];
+    let selected_service_packages = [];
+    let selected_fuel = [];
+    let selected_filter = [];
+    let repair_items = [];
+    let selected_repairs = [];
+    let products_items = [];
+    let selected_products = [];
+
+    console.log("Job Card Code:", jobCardCode);
+
+    // Check for job card code
+    if (!jobCardCode) {
         Swal.fire({
             icon: "warning",
             title: "No Job Card Code",
@@ -72,19 +93,40 @@ $(document).ready(function () {
         }).then(() => {
             window.location.href = "../job-cards/";
         });
+        return;
     }
 
+    // Load job card data
+    loadJobCardData(jobCardCode);
+
+    // ============================================
+    // FUNCTION DEFINITIONS
+    // ============================================
+
     function loadJobCardData(code) {
+        console.log("Loading job card data for:", code);
+        
         $.ajax({
             type: "POST",
             url: "../api/get-jobcard-data.php",
             data: { code: code },
             dataType: "json",
+            beforeSend: function() {
+                $('#search-vehicle-content').html(`
+                    <div class="d-flex justify-content-center my-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                `);
+            },
             success: function (data) {
                 console.log("Loaded job card data:", data);
                 
                 if (data.success) {
-                    populateExistingData(data);
+                    setTimeout(() => {
+                        populateExistingData(data);
+                    }, 100);
                 } else {
                     Swal.fire({
                         icon: "error",
@@ -101,7 +143,7 @@ $(document).ready(function () {
                 Swal.fire({
                     icon: "error",
                     title: "Error",
-                    text: "Failed to load job card data. Please check if the API file exists at: ../api/get-jobcard-data.php",
+                    text: "Failed to load job card data",
                 });
             }
         });
@@ -114,6 +156,7 @@ $(document).ready(function () {
         // Store essential data
         jobCardId = jc.id;
         invoiceCode = jc.invoice_code || generateUUID();
+        
         vehicle = [{
             vehicle_id: jc.vehicle_id,
             vehicle_number: jc.vehicle_number,
@@ -122,6 +165,7 @@ $(document).ready(function () {
             vehicle_class_id: jc.vehicle_class_id,
             vehicle_color: jc.vehicle_color,
             vehicle_model_id: jc.vehicle_model_id,
+            vehicle_owner_id: jc.vehicle_owner_id,
             first_name: jc.first_name,
             last_name: jc.last_name,
             phone: jc.phone,
@@ -132,74 +176,43 @@ $(document).ready(function () {
         }];
 
         serviceStationInfo = data.station;
-        current_mileage = jc.job_mileage;
-        new_mileage = jc.next_mileage;
+        current_mileage = jc.job_mileage || 0;
+        new_mileage = jc.next_mileage || 0;
         paid_status = jc.paid_status_id;
         job_card_type = jc.job_card_type_id;
         status = jc.status_id;
-        notify = jc.notify_month;
+        notify = jc.notify_month || 2;
 
-        console.log("Vehicle data:", vehicle);
-        console.log("Job card type:", job_card_type);
+        console.log("Stored values:", {
+            jobCardId,
+            current_mileage,
+            new_mileage,
+            paid_status,
+            job_card_type,
+            status,
+            notify
+        });
 
-        // Populate Step 1 - Vehicle Information
-        console.log("Populating vehicle info...");
+        // Populate all steps in sequence
         populateVehicleInfo(data);
-
-        // Populate Step 2 - Vehicle Report
-        console.log("Populating vehicle reports...");
-        if (data.reports && data.reports.length > 0) {
-            populateVehicleReports(data.reports);
-        } else {
-            if (job_card_type == "6" || job_card_type == "3" || job_card_type == "5") {
-                $('#vehicle-report-tables').html(`<p class="text-center text-muted">No vehicle reports found for this job card.</p>`);
-            } else {
-                $('#vehicle-report-tables').html(`<p class="text-center text-muted">Vehicle reports not available for this job card type.</p>`);
-            }
-        }
-
-        // Populate Step 3 - Washers
-        console.log("Populating washers...");
-        if (data.washers && data.washers.length > 0) {
-            populateWashers(data.washers);
-        } else {
-            $('#table-jobcard-washer tbody').html(`<tr><td colspan="6" class="text-center text-muted">No washers found for this job card.</td></tr>`);
-        }
-
-        // Populate Step 4 - Service Packages
-        console.log("Populating service packages...");
-        if (data.fuels && data.fuels.length > 0) {
-            populateServicePackages(data.fuels, data.filters);
-        } else {
-            $('#table-service-packages tbody').html(`<tr><td colspan="3" class="text-center text-muted">No service packages found for this job card.</td></tr>`);
-        }
-
-        // Populate Step 5 - Repairs
-        console.log("Populating repairs...");
-        if (data.repairs && data.repairs.length > 0) {
-            populateRepairs(data.repairs);
-        } else {
-            $('#table-jobcard-repair tbody').html(`<tr><td colspan="7" class="text-center text-muted">No repairs found for this job card.</td></tr>`);
-        }
-
-        // Populate Step 6 - Products
-        console.log("Populating products...");
-        if (data.products && data.products.length > 0) {
-            populateProducts(data.products);
-        } else {
-            $('#table-jobcard-products tbody').html(`<tr><td colspan="7" class="text-center text-muted">No products found for this job card.</td></tr>`);
-        }
-
-        // Populate Step 7 - Invoice
-        console.log("Generating invoice...");
-        getInvoiceDetails(vehicle, serviceStationInfo);
-
-        console.log("Data population complete!");
+        populateVehicleReports(data.reports);
+        populateWashers(data.washers);
+        populateServicePackages(data.fuels, data.filters);
+        populateRepairs(data.repairs);
+        populateProducts(data.products);
+        
+        // Wait for DOM updates before invoice
+        setTimeout(() => {
+            getInvoiceDetails(vehicle, serviceStationInfo);
+        }, 200);
+        
+        console.log("Data population complete");
     }
 
     function populateVehicleInfo(data) {
-        console.log("populateVehicleInfo called with:", data);
+        console.log("Populating vehicle info...");
         const jc = data.job_card;
+        
         const vehicleImages = {
             1: "../assets/img/vehicle-img/light_motor_cycle.jpg",
             2: "../assets/img/vehicle-img/motor_cycles.jpg",
@@ -215,24 +228,24 @@ $(document).ready(function () {
             12: "../assets/img/vehicle-img/Special_purpose_Vehicle.jpg"
         };
 
-        let vehicleImage = vehicleImages[jc.vehicle_class_id] || "../assets/img/vehicle-img/default.jpg";
+        let vehicleImage = vehicleImages[jc.vehicle_class_id] || "../assets/img/vehicle-img/car.jpg";
 
         const htmlContent = `
             <div class="row my-4">
                 <div class="col-md-5 mx-auto">
                     <div class="card p-3 py-4 border border-dark text-center">
                         <div class="mx-auto my-2">
-                            <img src="${vehicleImage}" style="width: 80px; height: 80px; border-radius: 50%;object-fit: cover;" alt="Profile Image" />
-                            <div class="d-flex align-items-center justify-content-center">
+                            <img src="${vehicleImage}" style="width: 80px; height: 80px; border-radius: 50%;object-fit: cover;" alt="Vehicle" />
+                            <div class="d-flex align-items-center justify-content-center mt-2">
                                 <span class="m-0 p-0 d-flex align-items-center text-secondary mr-2">
                                     <span class="mr-1">Color: </span>
-                                    <div class="border inline" style="width:11px;height:11px;background-color:${jc.vehicle_color};border-radius:50%"></div>
+                                    <div class="border" style="width:15px;height:15px;background-color:${jc.vehicle_color};border-radius:50%"></div>
                                 </span>
                                 <span class="h4 m-0 p-0"><b>${jc.vehicle_number}</b></span>
                             </div>
-                            <p class="m-0 p-0 text-secondary">${jc.first_name} ${jc.last_name}</p>
+                            <p class="m-0 p-0 text-secondary mt-2">${jc.first_name} ${jc.last_name}</p>
                             <p class="m-0 p-0 text-secondary">+94 ${removeLeadingZeros(jc.phone)}</p>
-                            <p class="m-0 p-0 text-secondary">Prev Mileage : ${jc.current_mileage || 0} KM</p>
+                            <p class="m-0 p-0 text-secondary">Previous Mileage: ${jc.current_mileage || 0} KM</p>
                         </div>
                     </div>
                 </div>
@@ -242,13 +255,13 @@ $(document).ready(function () {
                 <div class="col-md-4 mx-auto">
                     <div class="form-group">
                         <label for="current-mileage">Current Mileage (KM) <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="current-mileage" placeholder="Current Mileage" value="${current_mileage || ''}">
+                        <input type="number" class="form-control" id="current-mileage" placeholder="Current Mileage" value="${current_mileage}">
                     </div>
                 </div>
                 <div class="col-md-4 mx-auto">
                     <div class="form-group">
-                        <label for="new-mileage">Next Mileage (KM) <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="new-mileage" placeholder="Next Mileage" value="${new_mileage || ''}">
+                        <label for="new-mileage">Next Service Mileage (KM) <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="new-mileage" placeholder="Next Mileage" value="${new_mileage}">
                     </div>
                 </div>
             </div>
@@ -258,10 +271,10 @@ $(document).ready(function () {
                     <div class="form-group">
                         <label>Paid Status <span class="text-danger">*</span></label>
                         <select id="cmbpaidstatus" class="custom-select">
-                            <option value="" selected disabled>Please Select</option>
-                            ${data.cmbpaidstatus.map((state) => {
-                                return `<option value="${state.id}" ${state.id == paid_status ? 'selected' : ''}>${state.status}</option>`;
-                            }).join('')}
+                            <option value="" disabled>Please Select</option>
+                            ${data.cmbpaidstatus.map(state => 
+                                `<option value="${state.id}" ${state.id == paid_status ? 'selected' : ''}>${state.status}</option>`
+                            ).join('')}
                         </select>
                     </div>
                 </div>
@@ -269,10 +282,10 @@ $(document).ready(function () {
                     <div class="form-group">
                         <label>Job Card Type <span class="text-danger">*</span></label>
                         <select id="cmbjobcardtype" class="custom-select" disabled>
-                            <option value="" selected disabled>Please Select</option> 
-                            ${data.cmbjobtypes.map((state) => {
-                                return `<option value="${state.id}" ${state.id == job_card_type ? 'selected' : ''}>${state.type}</option>`;
-                            }).join('')}
+                            <option value="" disabled>Please Select</option> 
+                            ${data.cmbjobtypes.map(state => 
+                                `<option value="${state.id}" ${state.id == job_card_type ? 'selected' : ''}>${state.type}</option>`
+                            ).join('')}
                         </select>
                     </div>
                 </div>
@@ -280,37 +293,32 @@ $(document).ready(function () {
                     <div class="form-group">
                         <label>Status <span class="text-danger">*</span></label>
                         <select id="cmbstatus" class="custom-select">
-                            <option value="" selected disabled>Please Select</option> 
-                            ${data.cmbstatus.map((state) => {
-                                return `<option value="${state.id}" ${state.id == status ? 'selected' : ''}>${state.status}</option>`;
-                            }).join('')}
+                            <option value="" disabled>Please Select</option> 
+                            ${data.cmbstatus.map(state => 
+                                `<option value="${state.id}" ${state.id == status ? 'selected' : ''}>${state.status}</option>`
+                            ).join('')}
                         </select>
                     </div>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-6 mx-auto">
-                    <label>Notify Me <span class="text-danger">*</span></label>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6 mx-auto">
-                    <div class="row">
-                        <div class="col-md-4 mx-auto">
+                <div class="col-md-8 mx-auto">
+                    <label>Notify Customer For Next Service <span class="text-danger">*</span></label>
+                    <div class="row mt-2">
+                        <div class="col-md-4">
                             <div class="custom-control custom-radio">
                                 <input value="2" class="custom-control-input" type="radio" id="customRadio2" name="customRadio" ${notify == 2 ? 'checked' : ''}>
                                 <label for="customRadio2" class="custom-control-label">In 2 Months</label>
                             </div>
                         </div>
-                        <div class="col-md-4 mx-auto">
+                        <div class="col-md-4">
                             <div class="custom-control custom-radio">
                                 <input value="4" class="custom-control-input" type="radio" id="customRadio4" name="customRadio" ${notify == 4 ? 'checked' : ''}>
                                 <label for="customRadio4" class="custom-control-label">In 4 Months</label>
                             </div>
                         </div>
-                        <div class="col-md-4 mx-auto">
+                        <div class="col-md-4">
                             <div class="custom-control custom-radio">
                                 <input value="6" class="custom-control-input" type="radio" id="customRadio6" name="customRadio" ${notify == 6 ? 'checked' : ''}>
                                 <label for="customRadio6" class="custom-control-label">In 6 Months</label>
@@ -322,75 +330,212 @@ $(document).ready(function () {
         `;
 
         $('#search-vehicle-content').html(htmlContent);
-        console.log("Vehicle info populated successfully");
+        $('#search-vehicle-content').show().css('display', 'block');
+        
+        console.log("Vehicle info populated");
     }
 
     function populateVehicleReports(reports) {
-        // Implementation for vehicle reports based on job card type
-        if (job_card_type == "6" || job_card_type == "3" || job_card_type == "5") {
-            getVehicleReport(reports);
-        } else {
-            $('#vehicle-report-tables').html(`<p class="text-center">Report Not Available</p>`);
+        console.log("Populating vehicle reports...", reports);
+        
+        if (!reports || reports.length === 0) {
+            if (job_card_type == "6" || job_card_type == "3" || job_card_type == "5") {
+                console.log("Loading vehicle report template...");
+                $.ajax({
+                    type: "POST",
+                    url: "../api/getvehiclereport.php",
+                    dataType: "json",
+                    success: function (data) {
+                        console.log("Vehicle report template loaded");
+                        populateVehicleReportContent(data, []);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Failed to load vehicle report:", error);
+                        $('#vehicle-report-tables').html(`<p class="text-center text-danger">Failed to load vehicle report template</p>`);
+                    }
+                });
+            } else {
+                $('#vehicle-report-tables').html(`<p class="text-center text-muted">Vehicle reports not available for this job card type.</p>`);
+            }
+            return;
         }
+
+        $.ajax({
+            type: "POST",
+            url: "../api/getvehiclereport.php",
+            dataType: "json",
+            success: function (data) {
+                populateVehicleReportContent(data, reports);
+            }
+        });
+    }
+
+    function populateVehicleReportContent(data, existingReports) {
+        console.log("Building vehicle report content...");
+        
+        const tablesHTML = data.vehicle_category.map(category => `
+            <div class="col-md-10 table-responsive p-0 mx-auto my-2">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th style="width: 30%">${category.category}</th>
+                            <th class="text-center">Worse</th>
+                            <th class="text-center">Bad</th>
+                            <th class="text-center">Ok</th>
+                            <th class="text-center">Good</th>
+                            <th class="text-center">Perfect</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    ${data.vehicle_subcategory
+                        .filter(sub => sub.vehicle_condition_category_id === category.id)
+                        .map(sub => {
+                            const existing = existingReports.find(r => r.sub_category_id == sub.id);
+                            const selectedValue = existing ? existing.value_id : null;
+                            
+                            return `
+                                <tr data-category-id="${category.id}" data-subcategory-id="${sub.id}">
+                                    <td>${sub.sub_category}</td>
+                                    <td class="text-center">
+                                        <input value="1" class="form-check-input" type="radio" 
+                                            name="radio${sub.id}" ${selectedValue == 1 ? 'checked' : ''}>
+                                    </td>
+                                    <td class="text-center">
+                                        <input value="2" class="form-check-input" type="radio" 
+                                            name="radio${sub.id}" ${selectedValue == 2 ? 'checked' : ''}>
+                                    </td>
+                                    <td class="text-center">
+                                        <input value="3" class="form-check-input" type="radio" 
+                                            name="radio${sub.id}" ${selectedValue == 3 ? 'checked' : ''}>
+                                    </td>
+                                    <td class="text-center">
+                                        <input value="4" class="form-check-input" type="radio" 
+                                            name="radio${sub.id}" ${selectedValue == 4 ? 'checked' : ''}>
+                                    </td>
+                                    <td class="text-center">
+                                        <input value="5" class="form-check-input" type="radio" 
+                                            name="radio${sub.id}" ${selectedValue == 5 ? 'checked' : ''}>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            </div>
+        `).join('');
+        
+        $('#vehicle-report-tables').html(tablesHTML);
+        console.log("Vehicle report content populated");
+
+        collectVehicleReportData();
+        $('#vehicle-report-tables input[type="radio"]').on('change', collectVehicleReportData);
+    }
+
+    function collectVehicleReportData() {
+        rowVehicleReportData = [];
+        $('#vehicle-report-tables tr[data-category-id]').each(function() {
+            const categoryId = $(this).data('category-id');
+            const subcategoryId = $(this).data('subcategory-id');
+            const selectedRadio = $(this).find('input[type="radio"]:checked');
+            
+            if (selectedRadio.length > 0) {
+                rowVehicleReportData.push({
+                    categoryId: categoryId,
+                    subcategoryId: subcategoryId,
+                    value: parseInt(selectedRadio.val())
+                });
+            }
+        });
+        console.log("Collected vehicle report data:", rowVehicleReportData);
     }
 
     function populateWashers(washers) {
-        if (washers.length > 0) {
-            const washer = washers[0];
+        console.log("Populating washers...", washers);
+        
+        if (!washers || washers.length === 0) {
             $('#table-jobcard-washer tbody').html(`
-                <tr class="rowBody">
-                    <td style='display:none;' class='rowID'>${washer.washer_id}</td>
-                    <td style='display:none;' class='rowCode'>${washer.code}</td>
-                    <td>1.</td>
-                    <td>Wash (${washer.code})</td>
-                    <td><input value="${washer.qty}" type="number" class="form-control wash-qty"></td>
-                    <td><input value="${washer.price}" type="number" class="form-control wash-unit-price"></td>
-                    <td><input value="${washer.discount}" type="number" class="form-control wash-discount"></td>
-                    <td><p class="h6 font-weight-bold wash-total">0.00</p></td>
-                </tr>
+                <tr><td colspan="8" class="text-center text-muted">No washers added</td></tr>
             `);
-
-            var row = $(".rowBody");
-            var item = {
-                rowCode: row.find(".rowCode")[0],
-                rowID: row.find(".rowID")[0],
-                quantityInput: row.find(".wash-qty")[0],
-                priceInput: row.find(".wash-unit-price")[0],
-                discountInput: row.find(".wash-discount")[0],
-                totalCell: row.find(".wash-total")[0],
-            };
-            
-            items = [item];
-
-            [item.quantityInput, item.priceInput, item.discountInput].forEach(input => {
-                input.addEventListener("input", calculateWasherTotal);
-            });
-
-            calculateWasherTotal();
+            console.log("No washers to display");
+            return;
         }
+
+        const washer = washers[0];
+        const row = $(`
+            <tr class="rowBody">
+                <td style='display:none;' class='rowID'>${washer.washer_id}</td>
+                <td style='display:none;' class='rowCode'>${washer.code}</td>
+                <td>1</td>
+                <td>Wash (${washer.code})</td>
+                <td><input value="${washer.qty}" type="number" class="form-control wash-qty" min="0" step="1"></td>
+                <td><input value="${washer.price}" type="number" class="form-control wash-unit-price" min="0" step="0.01"></td>
+                <td><input value="${washer.discount}" type="number" class="form-control wash-discount" min="0" step="0.01"></td>
+                <td><p class="h6 font-weight-bold wash-total">0.00</p></td>
+            </tr>
+        `);
+
+        $('#table-jobcard-washer tbody').html(row);
+
+        const item = {
+            rowCode: row.find(".rowCode")[0],
+            rowID: row.find(".rowID")[0],
+            quantityInput: row.find(".wash-qty")[0],
+            priceInput: row.find(".wash-unit-price")[0],
+            discountInput: row.find(".wash-discount")[0],
+            totalCell: row.find(".wash-total")[0],
+        };
+        
+        items = [item];
+
+        $(item.quantityInput).on('input', calculateWasherTotal);
+        $(item.priceInput).on('input', calculateWasherTotal);
+        $(item.discountInput).on('input', calculateWasherTotal);
+
+        calculateWasherTotal();
+        console.log("Washers populated");
     }
 
     function populateServicePackages(fuels, filters) {
-        if (!fuels || fuels.length === 0) return;
+        console.log("Populating service packages...", {fuels, filters});
+        
+        if ((!fuels || fuels.length === 0) && (!filters || filters.length === 0)) {
+            $('#table-service-packages tbody').html(`
+                <tr><td colspan="3" class="text-center text-muted">No service packages added</td></tr>
+            `);
+            console.log("No service packages to display");
+            return;
+        }
 
-        // Group fuels and filters by service package
+        selected_fuel = [];
+        selected_filter = [];
+        selected_service_packages = [];
+
         const packageMap = {};
         
-        fuels.forEach(f => {
-            if (!packageMap[f.service_package_id]) {
-                packageMap[f.service_package_id] = { 
-                    id: f.service_package_id,
-                    fuels: [], 
-                    filters: [] 
-                };
-            }
-            packageMap[f.service_package_id].fuels.push({
-                id: f.fuel_type_id,
-                name: f.fuel_name,
-                price: f.price,
-                selected: true
+        if (fuels) {
+            fuels.forEach(f => {
+                if (!packageMap[f.service_package_id]) {
+                    packageMap[f.service_package_id] = { 
+                        id: f.service_package_id,
+                        fuels: [], 
+                        filters: [] 
+                    };
+                }
+                packageMap[f.service_package_id].fuels.push({
+                    id: f.fuel_type_id,
+                    name: f.fuel_name,
+                    price: parseFloat(f.price)
+                });
+                
+                selected_fuel.push({
+                    ServicePackageId: f.service_package_id,
+                    ServicePackageName: `Service Package`,
+                    ServicePackageCode: `SP-${f.service_package_id}`,
+                    price: parseFloat(f.price),
+                    typeId: f.fuel_type_id
+                });
             });
-        });
+        }
 
         if (filters) {
             filters.forEach(f => {
@@ -404,64 +549,86 @@ $(document).ready(function () {
                 packageMap[f.service_package_id].filters.push({
                     id: f.filter_type_id,
                     name: f.filter_name,
-                    price: f.price,
-                    selected: true
+                    price: parseFloat(f.price)
+                });
+                
+                selected_filter.push({
+                    ServicePackageId: f.service_package_id,
+                    ServicePackageName: `Service Package`,
+                    ServicePackageCode: `SP-${f.service_package_id}`,
+                    price: parseFloat(f.price),
+                    typeId: f.filter_type_id
                 });
             });
         }
 
-        // Populate each service package
-        Object.keys(packageMap).forEach((pkgId, index) => {
+        let html = '';
+        let index = 1;
+        Object.keys(packageMap).forEach(pkgId => {
             const pkg = packageMap[pkgId];
-            counterId = index + 1;
+            let total = 0;
+            let itemsList = [];
             
-            // Store selected fuel/filter for this package
-            const selectedFuelForPkg = pkg.fuels.find(f => f.selected);
-            const selectedFilterForPkg = pkg.filters.find(f => f.selected);
-
-            if (selectedFuelForPkg) {
-                selected_fuel.push({
-                    ServicePackageId: pkgId,
-                    ServicePackageName: `Package ${pkgId}`,
-                    ServicePackageCode: `PKG-${pkgId}`,
-                    price: selectedFuelForPkg.price,
-                    typeId: selectedFuelForPkg.id
-                });
-            }
-
-            if (selectedFilterForPkg) {
-                selected_filter.push({
-                    ServicePackageId: pkgId,
-                    ServicePackageName: `Package ${pkgId}`,
-                    ServicePackageCode: `PKG-${pkgId}`,
-                    price: selectedFilterForPkg.price,
-                    typeId: selectedFilterForPkg.id
-                });
-            }
-
-            // Add to selected packages
+            pkg.fuels.forEach(f => {
+                itemsList.push(f.name);
+                total += f.price;
+            });
+            
+            pkg.filters.forEach(f => {
+                itemsList.push(f.name);
+                total += f.price;
+            });
+            
+            html += `
+                <tr>
+                    <td>${index++}</td>
+                    <td>Service Package #${pkgId}<br><small class="text-muted">${itemsList.join(', ')}</small></td>
+                    <td><strong>LKR ${total.toFixed(2)}</strong></td>
+                </tr>
+            `;
+            
             selected_service_packages.push({ id: pkgId });
         });
 
+        $('#table-service-packages tbody').html(html);
         calculateServicePackageTotal();
+        console.log("Service packages populated");
     }
 
     function populateRepairs(repairs) {
-        repairs.forEach((repair, index) => {
-            var row = $("<tr>");
-            row.append(`<td class='rowID' style='display:none;'>${repair.repair_id}</td>`);
-            row.append(`<td class='rowCode' style='display:none;'>${repair.code}</td>`);
-            row.append(`<td class='rowName' style='display:none;'>${repair.name}</td>`);
-            row.append(`<td>${index + 1}.</td>`);
-            row.append(`<td>${repair.name}</td>`);
-            row.append(`<td><div class="input-group"><input value="${repair.hours}" type="text" class="form-control hours"><div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>`);
-            row.append(`<td><div class="input-group"><input value="${repair.unit_price}" type="text" class="form-control unit-price"><div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>`);
-            row.append(`<td><div class="input-group"><input value="${repair.discount}" type="text" class="form-control discount"><div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>`);
-            row.append(`<td><p class="h6 repair-total">0.00</p></td>`);
-            row.append(`<td><button data-id="${repair.repair_id}" type="button" class="btn bg-gradient-danger deleteRepairItem"><i class="fas fa-trash"></i></button></td>`);
-            $("#table-jobcard-repair").append(row);
+        console.log("Populating repairs...", repairs);
+        
+        repair_items = [];
+        selected_repairs = [];
+        
+        if (!repairs || repairs.length === 0) {
+            $('#table-jobcard-repair tbody').html(`
+                <tr><td colspan="10" class="text-center text-muted">No repairs added</td></tr>
+            `);
+            console.log("No repairs to display");
+            return;
+        }
 
-            var item = {
+        repairs.forEach((repair, index) => {
+            const row = $(`
+                <tr>
+                    <td class='rowID' style='display:none;'>${repair.repair_id}</td>
+                    <td class='rowCode' style='display:none;'>${repair.code}</td>
+                    <td class='rowName' style='display:none;'>${repair.name}</td>
+                    <td>${index + 1}</td>
+                    <td>${repair.name}</td>
+                    <td><input value="${repair.hours}" type="number" class="form-control hours" min="0" step="0.5"></td>
+                    <td><input value="${repair.unit_price}" type="number" class="form-control unit-price" min="0" step="0.01"></td>
+                    <td><input value="${repair.discount}" type="number" class="form-control discount" min="0" step="0.01"></td>
+                    <td><p class="h6 repair-total">0.00</p></td>
+                    <td><button data-id="${repair.repair_id}" type="button" class="btn btn-sm bg-gradient-danger deleteRepairItem">
+                        <i class="fas fa-trash"></i></button></td>
+                </tr>
+            `);
+            
+            $("#table-jobcard-repair tbody").append(row);
+
+            const item = {
                 rowCode: row.find(".rowCode")[0],
                 rowName: row.find(".rowName")[0],
                 rowID: row.find(".rowID")[0],
@@ -470,34 +637,54 @@ $(document).ready(function () {
                 discountInput: row.find(".discount")[0],
                 totalCell: row.find(".repair-total")[0],
             };
+            
             repair_items.push(item);
 
-            item.HoursInput.addEventListener("input", calculateRepairTotal);
-            item.UnitPriceInput.addEventListener("input", calculateRepairTotal);
-            item.discountInput.addEventListener("input", calculateRepairTotal);
+            $(item.HoursInput).on("input", calculateRepairTotal);
+            $(item.UnitPriceInput).on("input", calculateRepairTotal);
+            $(item.discountInput).on("input", calculateRepairTotal);
 
             selected_repairs.push({ id: repair.repair_id });
         });
 
         calculateRepairTotal();
+        console.log("Repairs populated");
     }
 
     function populateProducts(products) {
-        products.forEach((product, index) => {
-            var row = $("<tr>");
-            row.append(`<td class='rowProductID' style='display:none;'>${product.product_id}</td>`);
-            row.append(`<td class='rowProductCode' style='display:none;'>${product.code}</td>`);
-            row.append(`<td class='rowProductName' style='display:none;'>${product.product_name}</td>`);
-            row.append(`<td>${index + 1}.</td>`);
-            row.append(`<td>${product.product_name}</td>`);
-            row.append(`<td><div class="input-group"><input value="${product.qty}" type="text" class="form-control quantityQty"><div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>`);
-            row.append(`<td><div class="input-group"><input value="${product.price}" type="text" class="form-control unitPriceProduct"><div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>`);
-            row.append(`<td><div class="input-group"><input value="${product.discount}" type="text" class="form-control discountProduct"><div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>`);
-            row.append(`<td><p class="h6 totalProduct">0.00</p></td>`);
-            row.append(`<td><button data-id="${product.product_id}" type="button" class="btn bg-gradient-danger deleteProductsItem"><i class="fas fa-trash"></i></button></td>`);
-            $("#table-jobcard-products").append(row);
+        console.log("Populating products...", products);
+        
+        products_items = [];
+        selected_products = [];
+        
+        if (!products || products.length === 0) {
+            $('#table-jobcard-products tbody').html(`
+                <tr><td colspan="10" class="text-center text-muted">No products added</td></tr>
+            `);
+            console.log("No products to display");
+            return;
+        }
 
-            var item = {
+        products.forEach((product, index) => {
+            const row = $(`
+                <tr>
+                    <td class='rowProductID' style='display:none;'>${product.product_id}</td>
+                    <td class='rowProductCode' style='display:none;'>${product.code}</td>
+                    <td class='rowProductName' style='display:none;'>${product.product_name}</td>
+                    <td>${index + 1}</td>
+                    <td>${product.product_name}</td>
+                    <td><input value="${product.qty}" type="number" class="form-control quantityQty" min="0" step="1"></td>
+                    <td><input value="${product.price}" type="number" class="form-control unitPriceProduct" min="0" step="0.01"></td>
+                    <td><input value="${product.discount}" type="number" class="form-control discountProduct" min="0" step="0.01"></td>
+                    <td><p class="h6 totalProduct">0.00</p></td>
+                    <td><button data-id="${product.product_id}" type="button" class="btn btn-sm bg-gradient-danger deleteProductsItem">
+                        <i class="fas fa-trash"></i></button></td>
+                </tr>
+            `);
+            
+            $("#table-jobcard-products tbody").append(row);
+
+            const item = {
                 rowID: row.find(".rowProductID")[0],
                 rowCode: row.find(".rowProductCode")[0],
                 rowName: row.find(".rowProductName")[0],
@@ -506,471 +693,605 @@ $(document).ready(function () {
                 discountInput: row.find(".discountProduct")[0],
                 totalCell: row.find(".totalProduct")[0],
             };
+            
             products_items.push(item);
 
-            item.quantityInput.addEventListener("input", calculateProductTotal);
-            item.priceInput.addEventListener("input", calculateProductTotal);
-            item.discountInput.addEventListener("input", calculateProductTotal);
+            $(item.quantityInput).on("input", calculateProductTotal);
+            $(item.priceInput).on("input", calculateProductTotal);
+            $(item.discountInput).on("input", calculateProductTotal);
 
             selected_products.push({ id: product.product_id });
         });
 
         calculateProductTotal();
+        console.log("Products populated");
     }
 
-    function populateDropdowns(data) {
-        // This would populate the search dropdowns if needed
-    }
-
-    // Calculation functions
-  function calculateWasherTotal() {
-    let grandTotal = 0;
-    WasherValues = [];
-
-    items.forEach(function (item) {
-        // FIXED: Check if properties exist before accessing innerText or value
-        if (item.rowID && item.quantityInput && item.priceInput && item.totalCell) {
-            var rowID = item.rowID.innerText;
-            var quantity = parseFloat(item.quantityInput.value) || 0;
-            var price = parseFloat(item.priceInput.value) || 0;
-            var discount = parseFloat(item.discountInput.value) || 0;
-
-            var itemTotal = (quantity * price) - discount;
-            item.totalCell.textContent = itemTotal.toFixed(2);
-            
-            grandTotal += itemTotal;
-
-            WasherValues.push({
-                washerID: rowID,
-                price: price,
-                quantity: quantity,
-                discount: discount
-            });
+    function getInvoiceDetails(vehicleData, stationData) {
+        console.log("Generating invoice...", {vehicleData, stationData});
+        
+        if (!vehicleData || vehicleData.length === 0 || !stationData || stationData.length === 0) {
+            console.error("Missing vehicle or station data");
+            return;
         }
-    });
 
-    $("#washer-grand-total").text(grandTotal.toFixed(2));
-}
-
-    function calculateServicePackageTotal() {
-        let totalAmount = 0;
-
-        selected_filter.forEach((filter) => {
-            totalAmount += parseFloat(filter.price) || 0;
-        });
-
-        selected_fuel.forEach((fuel) => {
-            totalAmount += parseFloat(fuel.price) || 0;
-        });
-
-        $("#service-package-grand-total").text(totalAmount.toFixed(2));
-    }
-
-    function calculateRepairTotal() {
-        var totalAmount = 0;
-        repair_items.forEach(function (item) {
-            var hours = item.HoursInput.value == "" ? 0 : parseFloat(item.HoursInput.value);
-            var unitPrice = item.UnitPriceInput.value == "" ? 0 : parseFloat(item.UnitPriceInput.value);
-            var discount = item.discountInput.value == "" ? 0 : parseFloat(item.discountInput.value);
-
-            var itemTotal = hours * unitPrice - discount;
-            item.totalCell.textContent = itemTotal.toFixed(2);
-
-            totalAmount += itemTotal;
-        });
-        $("#repair-grand-total").text(totalAmount.toFixed(2));
-    }
-
-    function calculateProductTotal() {
-        var totalAmount = 0;
-        products_items.forEach(function (item) {
-            var quantity = item.quantityInput.value == "" ? 0 : parseFloat(item.quantityInput.value);
-            var price = item.priceInput.value == "" ? 0 : parseFloat(item.priceInput.value);
-            var discount = item.discountInput.value == "" ? 0 : parseFloat(item.discountInput.value);
-
-            var itemTotal = quantity * price - discount;
-            item.totalCell.textContent = itemTotal.toFixed(2);
-
-            totalAmount += itemTotal;
-        });
-        $("#product-grand-total").text(totalAmount.toFixed(2));
-    }
-
-    function getInvoiceDetails(vehicle, serviceStationInfo) {
-        const jc = vehicle[0];
-        const station = serviceStationInfo[0];
+        const jc = vehicleData[0];
+        const station = stationData[0];
 
         $("#station-logo").attr('src', station.logo ? `../uploads/stations/${station.logo}` : '../dist/img/system/logo_pistona.png');
         $("#station-name").text(station.service_name || 'Station Name');
-        $("#station-address").text(station.address ? `${station.address} ${station.street || ''} ${station.city || ''}` : 'Station Address');
-        $("#station-contact").text(`Tel: ${station.phone || 'Phone'} | Fax: ${station.fax || 'Fax'}`);
-        $("#station-email").text(`Email: ${station.email || 'email@example.com'}`);
+        $("#station-address").text([station.address, station.street, station.city].filter(Boolean).join(', ') || 'Station Address');
+        $("#station-contact").text(`Tel: ${station.phone || 'N/A'} | Fax: ${station.other_phone || 'N/A'}`);
+    // Continuing from getInvoiceDetails function...
+        $("#station-email").text(`Email: ${station.email || 'N/A'}`);
 
+        // Customer Info
         $("#invoice-customer-info").html(`
-            <span><b>Customer Name</b></span>: <span class="text-uppercase">${jc.first_name} ${jc.last_name}</span><br>
-            <span><b>Address</b></span>: <span class="text-uppercase">${jc.address}</span><br>
-            <span><b>Contact No.</b></span>: <span>${jc.phone}</span><br>
-            <span><b>Vehicle No</b></span>: <span class="text-uppercase">${jc.vehicle_number}</span><br>
-            <span><b>Model</b></span>: <span class="text-uppercase">${jc.vehicle_model_name}</span><br>
-            <span><b>Make</b></span>: <span class="text-uppercase">${jc.vehicle_make_name}</span><br>
+            <p class="mb-1"><strong>Customer Name:</strong> ${jc.first_name} ${jc.last_name}</p>
+            <p class="mb-1"><strong>Phone:</strong> +94 ${removeLeadingZeros(jc.phone)}</p>
+            <p class="mb-1"><strong>Address:</strong> ${jc.address || 'N/A'}</p>
         `);
 
-        $("#invoice-job-info").html(`
-            <span><b>Job Card No</b></span>: <span>${jobCardCode}</span><br>
-            <span><b>Invoice No</b></span>: <span>${invoiceCode}</span><br>
-            <span><b>Current Mileage</b></span>: <span>${current_mileage} KM</span><br>
-            <span><b>Next Mileage</b></span>: <span>${new_mileage} KM</span><br>
-            <span><b>Chassis No</b></span>: <span>${jc.chassis_number}</span><br>
-            <span><b>Engine No</b></span>: <span>${jc.engine_number}</span><br>
+        // Vehicle Info
+        $("#invoice-vehicle-info").html(`
+            <p class="mb-1"><strong>Vehicle Number:</strong> ${jc.vehicle_number}</p>
+            <p class="mb-1"><strong>Make & Model:</strong> ${jc.vehicle_make_name} ${jc.vehicle_model_name}</p>
+            <p class="mb-1"><strong>Chassis Number:</strong> ${jc.chassis_number || 'N/A'}</p>
+            <p class="mb-1"><strong>Engine Number:</strong> ${jc.engine_number || 'N/A'}</p>
         `);
 
-        calculateSubtotal();
-        displayCalculation();
-        updateInvoiceItems();
+        // Invoice Details
+        $("#invoice-code").text(invoiceCode);
+        $("#invoice-date").text(new Date().toLocaleDateString());
+        $("#invoice-mileage").text(`${current_mileage} KM`);
+
+        // Populate invoice items
+        generateInvoiceItems();
+        calculateInvoiceTotal();
+        
+        console.log("Invoice generated");
     }
 
-   function calculateSubtotal() {
+    function generateInvoiceItems() {
+        let html = '';
+        let itemIndex = 1;
+
+        // Add Washers
+        items.forEach(item => {
+            const qty = parseFloat($(item.quantityInput).val()) || 0;
+            const price = parseFloat($(item.priceInput).val()) || 0;
+            const discount = parseFloat($(item.discountInput).val()) || 0;
+            const amount = qty * price;
+            const total = amount - discount;
+
+            if (qty > 0) {
+                html += `
+                    <tr>
+                        <td>${$(item.rowCode).text()}</td>
+                        <td>Wash Service</td>
+                        <td>${qty}</td>
+                        <td>${price.toFixed(2)}</td>
+                        <td>${amount.toFixed(2)}</td>
+                        <td>${discount.toFixed(2)}</td>
+                        <td>${total.toFixed(2)}</td>
+                    </tr>
+                `;
+            }
+        });
+
+        // Add Service Packages (Fuels)
+        selected_fuel.forEach(fuel => {
+            html += `
+                <tr>
+                    <td>${fuel.ServicePackageCode}</td>
+                    <td>Fuel - Service Package</td>
+                    <td>1</td>
+                    <td>${fuel.price.toFixed(2)}</td>
+                    <td>${fuel.price.toFixed(2)}</td>
+                    <td>0.00</td>
+                    <td>${fuel.price.toFixed(2)}</td>
+                </tr>
+            `;
+        });
+
+        // Add Service Packages (Filters)
+        selected_filter.forEach(filter => {
+            html += `
+                <tr>
+                    <td>${filter.ServicePackageCode}</td>
+                    <td>Filter - Service Package</td>
+                    <td>1</td>
+                    <td>${filter.price.toFixed(2)}</td>
+                    <td>${filter.price.toFixed(2)}</td>
+                    <td>0.00</td>
+                    <td>${filter.price.toFixed(2)}</td>
+                </tr>
+            `;
+        });
+
+        // Add Repairs
+        repair_items.forEach(item => {
+            const hours = parseFloat($(item.HoursInput).val()) || 0;
+            const price = parseFloat($(item.UnitPriceInput).val()) || 0;
+            const discount = parseFloat($(item.discountInput).val()) || 0;
+            const amount = hours * price;
+            const total = amount - discount;
+
+            if (hours > 0) {
+                html += `
+                    <tr>
+                        <td>${$(item.rowCode).text()}</td>
+                        <td>${$(item.rowName).text()}</td>
+                        <td>${hours}</td>
+                        <td>${price.toFixed(2)}</td>
+                        <td>${amount.toFixed(2)}</td>
+                        <td>${discount.toFixed(2)}</td>
+                        <td>${total.toFixed(2)}</td>
+                    </tr>
+                `;
+            }
+        });
+
+        // Add Products
+        products_items.forEach(item => {
+            const qty = parseFloat($(item.quantityInput).val()) || 0;
+            const price = parseFloat($(item.priceInput).val()) || 0;
+            const discount = parseFloat($(item.discountInput).val()) || 0;
+            const amount = qty * price;
+            const total = amount - discount;
+
+            if (qty > 0) {
+                html += `
+                    <tr>
+                        <td>${$(item.rowCode).text()}</td>
+                        <td>${$(item.rowName).text()}</td>
+                        <td>${qty}</td>
+                        <td>${price.toFixed(2)}</td>
+                        <td>${amount.toFixed(2)}</td>
+                        <td>${discount.toFixed(2)}</td>
+                        <td>${total.toFixed(2)}</td>
+                    </tr>
+                `;
+            }
+        });
+
+        if (html === '') {
+            html = '<tr><td colspan="7" class="text-center text-muted">No items added</td></tr>';
+        }
+
+        $('#invoice-items-tbody').html(html);
+    }
+
+    function calculateWasherTotal() {
+        WasherValues = [];
         let grandTotal = 0;
 
-        // FIXED: Added parseFloat and null checks for internal text
-        items.forEach(wash => {
-            if(wash.totalCell) grandTotal += parseFloat(wash.totalCell.innerText || 0);
-        });
-        
-        repair_items.forEach(repair => {
-            if(repair.totalCell) grandTotal += parseFloat(repair.totalCell.innerText || 0);
-        });
-        
-        products_items.forEach(product => {
-            if(product.totalCell) grandTotal += parseFloat(product.totalCell.innerText || 0);
-        });
+        items.forEach(item => {
+            const qty = parseFloat($(item.quantityInput).val()) || 0;
+            const price = parseFloat($(item.priceInput).val()) || 0;
+            const discount = parseFloat($(item.discountInput).val()) || 0;
+            const amount = qty * price;
+            const total = amount - discount;
 
-        selected_fuel.forEach((fuel) => {
-            grandTotal += parseFloat(fuel.price) || 0;
-        });
+            $(item.totalCell).text(total.toFixed(2));
+            grandTotal += total;
 
-        selected_filter.forEach((filter) => {
-            grandTotal += parseFloat(filter.price) || 0;
-        });
-
-        $("#invoice-subtotal").text(grandTotal.toFixed(2));
-    }
-
-function displayCalculation() {
-        // FIXED: Safe access to VAT and subtotal
-        const VAT_element = document.getElementById("in_vat_input");
-        const VAT_value = (VAT_element && VAT_element.value !== "") ? parseFloat(VAT_element.value) : 0;
-        const subtotalText = $("#invoice-subtotal").text();
-        const subtotal = parseFloat(subtotalText) || 0;
-        
-        const final = subtotal + (subtotal * VAT_value / 100);
-        $("#invoice-grand-total").text(final.toFixed(2));
-    }
-
-    function updateInvoiceItems() {
-        let html = '';
-
-        // Washers
-    items.forEach(wash => {
-            // FIXED: Check innerText safely
-            const code = wash.rowCode ? wash.rowCode.innerText : "N/A";
-            const total = wash.totalCell ? wash.totalCell.innerText : "0.00";
-            html += `<tr>
-                <td>${code}</td>
-                <td class="text-uppercase">Wash</td>
-                <td>${wash.quantityInput.value}</td>
-                <td>${wash.priceInput.value}</td>
-                <td>${parseFloat(wash.quantityInput.value * wash.priceInput.value).toFixed(2)}</td>
-                <td>${wash.discountInput.value}</td>
-                <td>${total}</td>
-            </tr>`;
-        });
-
-        // Service Packages
-        const groupedPackages = {};
-        selected_fuel.forEach(fuel => {
-            if (!groupedPackages[fuel.ServicePackageId]) {
-                groupedPackages[fuel.ServicePackageId] = {
-                    code: fuel.ServicePackageCode,
-                    name: fuel.ServicePackageName,
-                    total: 0
-                };
+            if (qty > 0) {
+                WasherValues.push({
+                    washerID: $(item.rowID).text(),
+                    code: $(item.rowCode).text(),
+                    qty: qty,
+                    price: price,
+                    discount: discount,
+                    total: total
+                });
             }
-            groupedPackages[fuel.ServicePackageId].total += parseFloat(fuel.price);
+        });
+
+        $("#washer-grand-total").text(grandTotal.toFixed(2));
+        calculateInvoiceTotal();
+    }
+
+    function calculateServicePackageTotal() {
+        let grandTotal = 0;
+
+        selected_fuel.forEach(fuel => {
+            grandTotal += fuel.price;
         });
 
         selected_filter.forEach(filter => {
-            if (!groupedPackages[filter.ServicePackageId]) {
-                groupedPackages[filter.ServicePackageId] = {
-                    code: filter.ServicePackageCode,
-                    name: filter.ServicePackageName,
-                    total: 0
-                };
-            }
-            groupedPackages[filter.ServicePackageId].total += parseFloat(filter.price);
+            grandTotal += filter.price;
         });
 
-        Object.values(groupedPackages).forEach(pkg => {
-            html += `<tr>
-                <td>${pkg.code}</td>
-                <td class="text-uppercase">${pkg.name}</td>
-                <td>1</td>
-                <td>${pkg.total.toFixed(2)}</td>
-                <td>${pkg.total.toFixed(2)}</td>
-                <td>0.00</td>
-                <td>${pkg.total.toFixed(2)}</td>
-            </tr>`;
+        $("#service-package-grand-total").text(grandTotal.toFixed(2));
+        calculateInvoiceTotal();
+    }
+
+    function calculateRepairTotal() {
+        let grandTotal = 0;
+
+        repair_items.forEach(item => {
+            const hours = parseFloat($(item.HoursInput).val()) || 0;
+            const price = parseFloat($(item.UnitPriceInput).val()) || 0;
+            const discount = parseFloat($(item.discountInput).val()) || 0;
+            const amount = hours * price;
+            const total = amount - discount;
+
+            $(item.totalCell).text(total.toFixed(2));
+            grandTotal += total;
         });
+
+        $("#repair-grand-total").text(grandTotal.toFixed(2));
+        calculateInvoiceTotal();
+    }
+
+    function calculateProductTotal() {
+        let grandTotal = 0;
+
+        products_items.forEach(item => {
+            const qty = parseFloat($(item.quantityInput).val()) || 0;
+            const price = parseFloat($(item.priceInput).val()) || 0;
+            const discount = parseFloat($(item.discountInput).val()) || 0;
+            const amount = qty * price;
+            const total = amount - discount;
+
+            $(item.totalCell).text(total.toFixed(2));
+            grandTotal += total;
+        });
+
+        $("#product-grand-total").text(grandTotal.toFixed(2));
+        calculateInvoiceTotal();
+    }
+
+    function calculateInvoiceTotal() {
+        let subtotal = 0;
+
+        // Washers
+        items.forEach(item => {
+            const qty = parseFloat($(item.quantityInput).val()) || 0;
+            const price = parseFloat($(item.priceInput).val()) || 0;
+            const discount = parseFloat($(item.discountInput).val()) || 0;
+            subtotal += (qty * price) - discount;
+        });
+
+        // Service Packages
+        selected_fuel.forEach(fuel => subtotal += fuel.price);
+        selected_filter.forEach(filter => subtotal += filter.price);
 
         // Repairs
-        repair_items.forEach(repair => {
-            html += `<tr>
-                <td>${repair.rowCode.innerText}</td>
-                <td class="text-uppercase">${repair.rowName.innerText}</td>
-                <td>${repair.HoursInput.value}</td>
-                <td>${repair.UnitPriceInput.value}</td>
-                <td>${parseFloat(repair.HoursInput.value * repair.UnitPriceInput.value).toFixed(2)}</td>
-                <td>${repair.discountInput.value}</td>
-                <td>${repair.totalCell.innerText}</td>
-            </tr>`;
+        repair_items.forEach(item => {
+            const hours = parseFloat($(item.HoursInput).val()) || 0;
+            const price = parseFloat($(item.UnitPriceInput).val()) || 0;
+            const discount = parseFloat($(item.discountInput).val()) || 0;
+            subtotal += (hours * price) - discount;
         });
 
         // Products
-        products_items.forEach(product => {
-            html += `<tr>
-                <td>${product.rowCode.innerText}</td>
-                <td class="text-uppercase">${product.rowName.innerText}</td>
-                <td>${product.quantityInput.value}</td>
-                <td>${product.priceInput.value}</td>
-                <td>${parseFloat(product.quantityInput.value * product.priceInput.value).toFixed(2)}</td>
-                <td>${product.discountInput.value}</td>
-                <td>${product.totalCell.innerText}</td>
-            </tr>`;
+        products_items.forEach(item => {
+            const qty = parseFloat($(item.quantityInput).val()) || 0;
+            const price = parseFloat($(item.priceInput).val()) || 0;
+            const discount = parseFloat($(item.discountInput).val()) || 0;
+            subtotal += (qty * price) - discount;
         });
 
-        $("#invoice-items-tbody").html(html);
+        const vatRate = parseFloat($('#in_vat_input').val()) || 0;
+        const vatAmount = (subtotal * vatRate) / 100;
+        const grandTotal = subtotal + vatAmount;
+
+        $('#invoice-subtotal').text(subtotal.toFixed(2));
+        $('#invoice-grand-total').text(grandTotal.toFixed(2));
     }
 
-    // Step navigation
-    $("#job-card-step-1").click(function () {
-        current_mileage = $("#current-mileage").val();
-        new_mileage = $("#new-mileage").val();
-        paid_status = $("#cmbpaidstatus").val();
-        status = $("#cmbstatus").val();
+    // ============================================
+    // EVENT HANDLERS
+    // ============================================
+
+    // VAT input change
+    $(document).on('input', '#in_vat_input', calculateInvoiceTotal);
+
+    // Step 1: Next Button
+    $('#job-card-step-1').on('click', function() {
+        current_mileage = parseInt($('#current-mileage').val());
+        new_mileage = parseInt($('#new-mileage').val());
+        paid_status = $('#cmbpaidstatus').val();
+        status = $('#cmbstatus').val();
         notify = $('input[name="customRadio"]:checked').val();
 
-        if (!current_mileage || !new_mileage || !paid_status || !status || !notify) {
+        if (!current_mileage || current_mileage <= 0) {
             Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: "Please fill all required fields",
+                icon: 'warning',
+                title: 'Validation Error',
+                text: 'Please enter current mileage'
+            });
+            return;
+        }
+
+        if (!new_mileage || new_mileage <= 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Validation Error',
+                text: 'Please enter next service mileage'
+            });
+            return;
+        }
+
+        if (!paid_status) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Validation Error',
+                text: 'Please select paid status'
+            });
+            return;
+        }
+
+        if (!status) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Validation Error',
+                text: 'Please select status'
             });
             return;
         }
 
         stepper.next();
+        showStepContent(2);
     });
 
-    $("#job-card-step-2").click(function () {
+    // Step 2: Next Button
+    $('#job-card-step-2').on('click', function() {
+        collectVehicleReportData();
         stepper.next();
+        showStepContent(3);
     });
 
-    $("#job-card-step-3").click(function () {
+    // Step 3: Next Button
+    $('#job-card-step-3').on('click', function() {
         stepper.next();
+        showStepContent(4);
     });
 
-    $("#job-card-step-4").click(function () {
+    // Step 4: Next Button
+    $('#job-card-step-4').on('click', function() {
         stepper.next();
+        showStepContent(5);
     });
 
-    $("#job-card-step-5").click(function () {
+    // Step 5: Next Button
+    $('#job-card-step-5').on('click', function() {
         stepper.next();
+        showStepContent(6);
     });
 
-    $("#job-card-step-6").click(function () {
-        getInvoiceDetails(vehicle, serviceStationInfo);
+    // Step 6: Next Button
+    $('#job-card-step-6').on('click', function() {
+        generateInvoiceItems();
+        calculateInvoiceTotal();
         stepper.next();
+        showStepContent(7);
     });
 
-    // Submit update
-    $("#submit_update_jobcard").click(function () {
-        $("#submit_update_jobcard").hide();
-        $("#btn-loading").show();
+    // Handle "Previous" button clicks - Update stepper.previous() calls
+    $(document).on('click', 'button[onclick="stepper.previous()"]', function(e) {
+        e.preventDefault();
+        stepper.previous();
+        
+        // Determine which step to show based on current active step
+        const activeStep = $('.step.active').index() + 1;
+        if (activeStep > 0) {
+            showStepContent(activeStep);
+        }
+    });
 
-        const repairArr = repair_items.map(repair => ({
-            repairID: repair.rowID.innerText,
-            repairCode: repair.rowCode.innerText,
-            repairName: repair.rowName.innerText,
-            hours: repair.HoursInput.value,
-            price: repair.UnitPriceInput.value,
-            discount: repair.discountInput.value,
-            total: repair.totalCell.innerText
-        }));
+    // Handle step trigger clicks (when clicking on step numbers)
+    $('.step-trigger').on('click', function() {
+        setTimeout(function() {
+            const activeStep = $('.step.active');
+            const stepIndex = activeStep.index() + 1;
+            showStepContent(stepIndex);
+        }, 100);
+    });
 
-        const productArr = products_items.map(product => ({
-            productID: product.rowID.innerText,
-            productCode: product.rowCode.innerText,
-            productName: product.rowName.innerText,
-            qty: product.quantityInput.value,
-            price: product.priceInput.value,
-            discount: product.discountInput.value,
-            total: product.totalCell.innerText
-        }));
+    // Delete Repair Item
+    $(document).on('click', '.deleteRepairItem', function() {
+        const repairId = $(this).data('id');
+        
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to remove this repair item?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, remove it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $(this).closest('tr').remove();
+                
+                // Remove from arrays
+                repair_items = repair_items.filter(item => $(item.rowID).text() != repairId);
+                selected_repairs = selected_repairs.filter(r => r.id != repairId);
+                
+                // Reindex rows
+                $('#table-jobcard-repair tbody tr').each(function(index) {
+                    $(this).find('td:eq(1)').text(index + 1);
+                });
+                
+                calculateRepairTotal();
+                
+                Swal.fire('Removed!', 'Repair item has been removed.', 'success');
+            }
+        });
+    });
 
+    // Delete Product Item
+    $(document).on('click', '.deleteProductsItem', function() {
+        const productId = $(this).data('id');
+        
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to remove this product?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, remove it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $(this).closest('tr').remove();
+                
+                // Remove from arrays
+                products_items = products_items.filter(item => $(item.rowID).text() != productId);
+                selected_products = selected_products.filter(p => p.id != productId);
+                
+                // Reindex rows
+                $('#table-jobcard-products tbody tr').each(function(index) {
+                    $(this).find('td:eq(1)').text(index + 1);
+                });
+                
+                calculateProductTotal();
+                
+                Swal.fire('Removed!', 'Product has been removed.', 'success');
+            }
+        });
+    });
+
+    // Submit Update Job Card
+    $('#submit_update_jobcard').on('click', function() {
+        // Validate
+        if (!current_mileage || current_mileage <= 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Validation Error',
+                text: 'Please enter current mileage'
+            });
+            stepper.to(1);
+            return;
+        }
+
+        if (!paid_status || !status) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Validation Error',
+                text: 'Please complete all required fields'
+            });
+            stepper.to(1);
+            return;
+        }
+
+        // Prepare data
+        const jobCardData = {
+            job_card_id: jobCardId,
+            vehicle_id: vehicle[0].vehicle_id,
+            current_mileage: current_mileage,
+            new_mileage: new_mileage,
+            paid_status: paid_status,
+            job_card_type: job_card_type,
+            status: status,
+            notify: notify,
+            invoice_code: invoiceCode,
+            vat: parseFloat($('#in_vat_input').val()) || 0,
+            vehicle_reports: rowVehicleReportData,
+            washers: WasherValues,
+            service_packages: selected_service_packages,
+            fuels: selected_fuel,
+            filters: selected_filter,
+            repairs: [],
+            products: []
+        };
+
+        // Add repair details
+        repair_items.forEach(item => {
+            const hours = parseFloat($(item.HoursInput).val()) || 0;
+            if (hours > 0) {
+                jobCardData.repairs.push({
+                    repair_id: $(item.rowID).text(),
+                    code: $(item.rowCode).text(),
+                    name: $(item.rowName).text(),
+                    hours: hours,
+                    unit_price: parseFloat($(item.UnitPriceInput).val()) || 0,
+                    discount: parseFloat($(item.discountInput).val()) || 0
+                });
+            }
+        });
+
+        // Add product details
+        products_items.forEach(item => {
+            const qty = parseFloat($(item.quantityInput).val()) || 0;
+            if (qty > 0) {
+                jobCardData.products.push({
+                    product_id: $(item.rowID).text(),
+                    code: $(item.rowCode).text(),
+                    name: $(item.rowName).text(),
+                    qty: qty,
+                    price: parseFloat($(item.priceInput).val()) || 0,
+                    discount: parseFloat($(item.discountInput).val()) || 0
+                });
+            }
+        });
+
+        console.log("Submitting job card data:", jobCardData);
+
+        // Show loading button
+        $('#submit_update_jobcard').hide();
+        $('#btn-loading').show();
+
+        // Submit via AJAX
         $.ajax({
             type: "POST",
             url: "../api/update-jobcard.php",
-            data: {
-                job_card_id: jobCardId,
-                status: status,
-                paid_status: paid_status,
-                vat: VAT.value,
-                current_mileage: current_mileage,
-                new_mileage: new_mileage,
-                notify: notify,
-                washers: JSON.stringify(WasherValues),
-                repairs: JSON.stringify(repairArr),
-                products: JSON.stringify(productArr),
-                fuels: JSON.stringify(selected_fuel),
-                filters: JSON.stringify(selected_filter),
-                vehicle_reports: JSON.stringify(rowVehicleReportData),
-                vehicleDetails: JSON.stringify(vehicle),
-                station: JSON.stringify(serviceStationInfo)
-            },
+            data: JSON.stringify(jobCardData),
+            contentType: 'application/json',
+            dataType: "json",
             success: function (response) {
-                console.log(response);
+                console.log("Update response:", response);
                 
-                if (response === "success") {
+                $('#btn-loading').hide();
+                $('#submit_update_jobcard').show();
+
+                if (response.success) {
                     Swal.fire({
-                        icon: "success",
-                        title: "Job Card Updated!",
-                        text: "The job card has been updated successfully.",
-                        confirmButtonColor: "#007bff",
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = "../job-cards/";
-                        }
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Job card updated successfully',
+                        showConfirmButton: true,
+                        timer: 3000
+                    }).then(() => {
+                        window.location.href = "../job-cards/";
                     });
                 } else {
                     Swal.fire({
-                        icon: "error",
-                        title: "Please Try Again",
-                        text: "Something Went Wrong: " + response,
+                        icon: 'error',
+                        title: 'Error',
+                        text: response.message || 'Failed to update job card'
                     });
-                    $("#submit_update_jobcard").show();
-                    $("#btn-loading").hide();
                 }
             },
-            error: function (error) {
-                console.log(error);
+            error: function (xhr, status, error) {
+                console.error("AJAX Error:", status, error);
+                console.error("Response:", xhr.responseText);
+                
+                $('#btn-loading').hide();
+                $('#submit_update_jobcard').show();
+
                 Swal.fire({
-                    icon: "error",
-                    title: "Error",
-                    text: "Failed to update job card",
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while updating the job card'
                 });
-                $("#submit_update_jobcard").show();
-                $("#btn-loading").hide();
             }
         });
     });
 
-    // Delete handlers
-    $("#table-jobcard-repair").on("click", ".deleteRepairItem", function () {
-        var listItem = $(this).data('id');
-        
-        let indexToRemove = selected_repairs.findIndex(item => item.id == listItem);
-        if (indexToRemove !== -1) {
-            selected_repairs.splice(indexToRemove, 1);
-        }
+    // ============================================
+    // UTILITY FUNCTIONS
+    // ============================================
 
-        let indexToRemoveItems = repair_items.findIndex(item => item.rowID.innerText == listItem);
-        if (indexToRemoveItems !== -1) {
-            repair_items.splice(indexToRemoveItems, 1);
-        }
-
-        calculateRepairTotal();
-        $(this).closest('tr').remove();
-    });
-
-    $("#table-jobcard-products").on("click", ".deleteProductsItem", function () {
-        var listItem = $(this).data('id');
-        
-        let indexToRemove = selected_products.findIndex(item => item.id == listItem);
-        if (indexToRemove !== -1) {
-            selected_products.splice(indexToRemove, 1);
-        }
-
-        let indexToRemoveItems = products_items.findIndex(item => item.rowID.innerText == listItem);
-        if (indexToRemoveItems !== -1) {
-            products_items.splice(indexToRemoveItems, 1);
-        }
-
-        calculateProductTotal();
-        $(this).closest('tr').remove();
-    });
-
-    // Helper functions
-    function removeLeadingZeros(str) {
-        return str.replace(/^0+/, '');
+    function removeLeadingZeros(phoneNumber) {
+        return phoneNumber.replace(/^0+/, '');
     }
 
     function generateUUID() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
+        return 'INV-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
     }
 
-    function getVehicleReport(existingReports) {
-        $.ajax({
-            type: "POST",
-            url: "../api/getvehiclereport.php",
-            dataType: "json",
-            success: function (data) {
-                populateVehicleReportContent(data, existingReports);
-            },
-            error: function () {
-                console.log("Failed to load vehicle report");
-            }
-        });
-    }
-
-    function populateVehicleReportContent(data, existingReports) {
-        $('#vehicle-report-tables').html(`
-            ${data.vehicle_category.map((category) => {
-                return `
-                    <div class="col-md-10 table-responsive p-0 mx-auto my-2">
-                        <table class="table table-striped table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>${category.category}</th>
-                                    <th>Worse</th>
-                                    <th>Bad</th>
-                                    <th>Ok</th>
-                                    <th>Good</th>
-                                    <th>Perfect</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            ${data.vehicle_subcategory.filter(subcategory => subcategory.vehicle_condition_category_id === category.id).map(subcategory => {
-                                const existingReport = existingReports.find(r => r.sub_category_id == subcategory.id);
-                                const selectedValue = existingReport ? existingReport.value_id : null;
-                                
-                                return `
-                                    <tr data-category-id="${category.id}" data-subcategory-id="${subcategory.id}">
-                                        <td>${subcategory.sub_category}</td>
-                                        <td><div class="form-check"><input value="1" class="form-check-input" type="radio" name="radio${subcategory.id}" ${selectedValue == 1 ? 'checked' : ''}><label class="form-check-label">Worse</label></div></td>
-                                        <td><div class="form-check"><input value="2" class="form-check-input" type="radio" name="radio${subcategory.id}" ${selectedValue == 2 ? 'checked' : ''}><label class="form-check-label">Bad</label></div></td>
-                                        <td><div class="form-check"><input value="3" class="form-check-input" type="radio" name="radio${subcategory.id}" ${selectedValue == 3 ? 'checked' : ''}><label class="form-check-label">Ok</label></div></td>
-                                        <td><div class="form-check"><input value="4" class="form-check-input" type="radio" name="radio${subcategory.id}" ${selectedValue == 4 ? 'checked' : ''}><label class="form-check-label">Good</label></div></td>
-                                        <td><div class="form-check"><input value="5" class="form-check-input" type="radio" name="radio${subcategory.id}" ${selectedValue == 5 ? 'checked' : ''}><label class="form-check-label">Perfect</label></div></td>
-                                    </tr>
-                                `;
-                            }).join('')}
-                            </tbody>
-                        </table>
-                    </div>`;
-            }).join('')}
-        `);
-    }
 });

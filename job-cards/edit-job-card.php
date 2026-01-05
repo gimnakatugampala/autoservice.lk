@@ -1,4 +1,107 @@
 <?php include_once '../includes/header.php';?>
+<style>
+/* 1. Header Fix - Removed .row class from selector so it actually applies */
+.bs-stepper-header {
+    margin: 0 !important;
+    padding: 10px 0 !important;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* 2. Remove default margins from columns inside the header */
+.bs-stepper-header .col-md-1,
+.bs-stepper-header .col-md-2 {
+    margin-bottom: 0 !important;
+    padding-bottom: 5px !important;
+    padding-top: 5px !important;
+}
+
+/* 3. Force stepper content to stick to header */
+.bs-stepper-content {
+    padding: 0 !important;
+    margin: 0 !important;
+    margin-top: 0 !important; /* Explicitly remove top margin */
+}
+
+/* 4. Content visibility */
+.bs-stepper-content > .content {
+    display: none;
+    padding: 15px !important;
+    margin: 0 !important;
+}
+
+.bs-stepper-content > .content.active,
+.bs-stepper-content > .content.dstepper-block {
+    display: block !important;
+}
+
+/* 5. Specific fix for Step 1 display */
+#search-vehicle-part {
+    display: block !important; /* Changed from inline to block for better spacing */
+}
+
+/* 6. General Cleanup */
+.bs-stepper .row {
+    margin-bottom: 0 !important;
+}
+
+.bs-stepper .step {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.card-body.p-2 {
+    padding: 10px !important;
+}
+
+.bs-stepper {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* 7. Remove row margins inside content */
+.bs-stepper-content .content > .row {
+    margin-top: 0 !important;
+}
+
+.bs-stepper-content h5 {
+    margin-top: 0 !important;
+    margin-bottom: 15px !important;
+}
+
+/* 8. Fix Stepper Trigger padding */
+.bs-stepper .step-trigger {
+    padding: 8px 15px !important; /* Increased horizontal padding slightly */
+}
+
+/* 9. Library Override */
+.bs-stepper > .bs-stepper-header + .bs-stepper-content {
+    margin-top: 0 !important;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Wait a brief moment for Bootstrap to render
+    setTimeout(function() {
+        // Fix 1: Target header correctly (removed .row)
+        const stepperHeader = document.querySelector('.bs-stepper-header');
+        if (stepperHeader) {
+            stepperHeader.style.marginBottom = '0';
+            stepperHeader.style.paddingBottom = '5px';
+            stepperHeader.style.borderBottom = '1px solid #dee2e6';
+        }
+        
+        // Fix 2: Force content to have 0 top margin
+        const stepperContent = document.querySelector('.bs-stepper-content');
+        if (stepperContent) {
+            stepperContent.style.setProperty('padding-top', '0', 'important');
+            stepperContent.style.setProperty('margin-top', '0', 'important');
+        }
+    }, 100);
+});
+</script>
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -33,7 +136,7 @@
               <div class="card-body p-2">
 
                 <div class="bs-stepper">
-                  <div class="row bs-stepper-header" role="tablist">
+                 <div class="bs-stepper-header d-flex flex-wrap" role="tablist">
                     
                     <div class="col-md-2">
                       <div class="step" data-target="#search-vehicle-part">
@@ -103,7 +206,7 @@
                   <div class="bs-stepper-content">
 
                     <!-- STEP 1: Search Vehicle -->
-                    <div id="search-vehicle-part" class="content" role="tabpanel">
+                    <div id="search-vehicle-part" class="content active dstepper-block" role="tabpanel">
                       <div class="row">
                         <div class="col-md-12">
                           <h5 class="text-center"><b>Vehicle Information</b></h5>
@@ -124,7 +227,12 @@
                     <!-- STEP 2: Vehicle Report -->
                     <div id="vehicle-report-part" class="content" role="tabpanel">
                       <div class="row">
-                        <div class="col-md-10 table-responsive p-0 mx-auto my-2" id="vehicle-report-tables">
+                        <div class="col-md-12">
+                          <h5 class="text-center"><b>Vehicle Report</b></h5>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12" id="vehicle-report-tables">
                           <!-- Tables will be dynamically loaded here -->
                         </div>
                       </div>
@@ -284,11 +392,16 @@
 
                         <!-- Info Row -->
                         <div class="row">
-                          <div class="col-sm-6 mx-auto" id="invoice-customer-info">
+                          <div class="col-sm-4" id="invoice-customer-info">
                             <!-- Customer info will be loaded here -->
                           </div>
-                          <div class="col-sm-6 mx-auto" id="invoice-job-info">
-                            <!-- Job info will be loaded here -->
+                          <div class="col-sm-4" id="invoice-vehicle-info">
+                            <!-- Vehicle info will be loaded here -->
+                          </div>
+                          <div class="col-sm-4">
+                            <p class="mb-1"><strong>Invoice Code:</strong> <span id="invoice-code">N/A</span></p>
+                            <p class="mb-1"><strong>Date:</strong> <span id="invoice-date">N/A</span></p>
+                            <p class="mb-1"><strong>Mileage:</strong> <span id="invoice-mileage">N/A</span></p>
                           </div>
                         </div>
 
