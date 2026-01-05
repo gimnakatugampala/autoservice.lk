@@ -1,108 +1,111 @@
 <?php include_once '../includes/header.php';?>
 <style>
-/* 1. Header Fix - Removed .row class from selector so it actually applies */
-.bs-stepper-header {
+/* =========================================================
+   ULTIMATE LAYOUT FIX
+   ========================================================= */
+
+/* 1. Stop the AdminLTE Wrapper from forcing full height */
+.content-wrapper {
+    height: auto !important;
+    min-height: auto !important;
+}
+
+/* 2. Stop the Card from stretching vertically */
+.card, .card-body {
+    height: auto !important;
+    min-height: 0 !important;
+    display: block !important; /* Forces standard stacking */
+}
+
+/* 3. The Stepper Container - The Root Cause */
+/* Ensure it acts as a simple block, not a flex container spread apart */
+.bs-stepper {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
     margin: 0 !important;
-    padding: 10px 0 !important;
-    border-bottom: 1px solid #dee2e6;
-    display: flex;
-    flex-wrap: wrap;
-}
-
-/* 2. Remove default margins from columns inside the header */
-.bs-stepper-header .col-md-1,
-.bs-stepper-header .col-md-2 {
-    margin-bottom: 0 !important;
-    padding-bottom: 5px !important;
-    padding-top: 5px !important;
-}
-
-/* 3. Force stepper content to stick to header */
-.bs-stepper-content {
     padding: 0 !important;
-    margin: 0 !important;
-    margin-top: 0 !important; /* Explicitly remove top margin */
 }
 
-/* 4. Content visibility */
-.bs-stepper-content > .content {
-    display: none;
-    padding: 15px !important;
+/* 4. The Header - Sit tightly at the top */
+.bs-stepper-header {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: flex-start !important; /* Aligns items to top */
     margin: 0 !important;
+    padding: 10px 0 15px 0 !important; /* Slight padding bottom */
+    border-bottom: 1px solid #dee2e6;
+    background: transparent !important;
+}
+
+/* 5. The Content - Sit immediately below header */
+.bs-stepper-content {
+    display: block !important;
+    margin-top: 0 !important;
+    padding: 20px 10px 10px 10px !important;
+    height: auto !important;
+    width: 100% !important;
+    position: relative !important;
+}
+
+/* 6. Fix for invisible/hidden steps taking up space */
+.bs-stepper-content > .content {
+    display: none; /* Default hidden */
+    width: 100%;
 }
 
 .bs-stepper-content > .content.active,
 .bs-stepper-content > .content.dstepper-block {
-    display: block !important;
+    display: block !important; /* Visible when active */
 }
 
-/* 5. Specific fix for Step 1 display */
-#search-vehicle-part {
-    display: block !important; /* Changed from inline to block for better spacing */
-}
-
-/* 6. General Cleanup */
-.bs-stepper .row {
-    margin-bottom: 0 !important;
-}
-
-.bs-stepper .step {
+/* 7. Column Reset */
+.bs-stepper-header .col-md-1,
+.bs-stepper-header .col-md-2 {
     margin: 0 !important;
-    padding: 0 !important;
+    padding: 5px !important;
 }
 
-.card-body.p-2 {
-    padding: 10px !important;
-}
-
-.bs-stepper {
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-/* 7. Remove row margins inside content */
-.bs-stepper-content .content > .row {
-    margin-top: 0 !important;
-}
-
-.bs-stepper-content h5 {
-    margin-top: 0 !important;
-    margin-bottom: 15px !important;
-}
-
-/* 8. Fix Stepper Trigger padding */
+/* 8. Step Trigger (Circle + Label) Compactness */
 .bs-stepper .step-trigger {
-    padding: 8px 15px !important; /* Increased horizontal padding slightly */
+    padding: 5px !important;
+    display: inline-flex !important;
+    align-items: center !important;
 }
 
-/* 9. Library Override */
-.bs-stepper > .bs-stepper-header + .bs-stepper-content {
-    margin-top: 0 !important;
+/* 9. Text alignment */
+.bs-stepper-label {
+    margin-left: 5px;
+    margin-top: 0 !important; /* Fixes label dropping below circle */
 }
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Wait a brief moment for Bootstrap to render
+    // 1. Force the first step to be visible immediately
+    const firstStepContent = document.querySelector('#search-vehicle-part');
+    if (firstStepContent) {
+        firstStepContent.classList.add('active', 'dstepper-block');
+        firstStepContent.style.display = 'block';
+    }
+
+    // 2. JS override for height calculations
     setTimeout(function() {
-        // Fix 1: Target header correctly (removed .row)
-        const stepperHeader = document.querySelector('.bs-stepper-header');
-        if (stepperHeader) {
-            stepperHeader.style.marginBottom = '0';
-            stepperHeader.style.paddingBottom = '5px';
-            stepperHeader.style.borderBottom = '1px solid #dee2e6';
-        }
+        const wrappers = document.querySelectorAll('.bs-stepper, .bs-stepper-content, .card, .card-body');
+        wrappers.forEach(el => {
+            el.style.setProperty('height', 'auto', 'important');
+            el.style.setProperty('min-height', '0px', 'important');
+            el.style.setProperty('justify-content', 'flex-start', 'important');
+        });
         
-        // Fix 2: Force content to have 0 top margin
-        const stepperContent = document.querySelector('.bs-stepper-content');
-        if (stepperContent) {
-            stepperContent.style.setProperty('padding-top', '0', 'important');
-            stepperContent.style.setProperty('margin-top', '0', 'important');
+        // Remove 'd-flex' from stepper if it exists in HTML to stop flex behavior
+        const stepper = document.querySelector('.bs-stepper');
+        if (stepper) {
+            stepper.classList.remove('d-flex');
         }
-    }, 100);
+    }, 200);
 });
 </script>
-
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
 
