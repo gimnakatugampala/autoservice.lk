@@ -102,23 +102,37 @@
                 <div class="col-12 p-4">
                   <div class="invoice p-0 mb-3 shadow-none border-0">
                     
-                    <div class="invoice-header-bg rounded-top">
-                      <div class="row align-items-center">
-                        <div class="col-md-2 text-center text-md-left">
-                          <img id="mdl_in_station_logo" width="120" src="" alt="Station Logo">
-                        </div>
-                        <div class="col-md-10 text-center text-md-left pl-md-4">
-                          <h2 class="m-0 font-weight-bold text-primary text-uppercase">
-                            <span id="mdl_in_station_name">Station Name</span>
-                          </h2>
-                          <p id="mdl_in_station_address" class="text-muted text-uppercase mb-1 small font-weight-bold">Address</p>
-                          <div class="small">
-                            <span><i class="fas fa-phone mr-1"></i> <span id="mdl_in_station_phone">-</span></span>
-                            <span class="ml-3"><i class="fas fa-envelope mr-1"></i> <span id="mdl_in_station_email">-</span></span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <div class="invoice-header-bg bg-white border-bottom pb-3 mb-4">
+  <div class="row align-items-center">
+    <div class="col-md-3 text-center text-md-left">
+      <img id="mdl_in_station_logo" 
+           style="max-height: 100px; width: auto; max-width: 100%; object-fit: contain;" 
+           src="../dist/img/system/logo_default.png" 
+           alt="Station Logo">
+    </div>
+    
+    <div class="col-md-9 text-center text-md-right pl-md-4">
+      <h2 class="m-0 font-weight-bold text-dark text-uppercase" style="letter-spacing: 1px;">
+        <span id="mdl_in_station_name">Station Name Loading...</span>
+      </h2>
+      
+      <p class="text-muted mb-1 font-weight-bold text-uppercase" style="font-size: 0.9rem;">
+        <span id="mdl_in_station_address">Address Loading...</span>
+      </p>
+      
+      <div class="small text-muted">
+        <span class="d-inline-block mr-3">
+            <i class="fas fa-phone-alt mr-1 text-success"></i> 
+            <span id="mdl_in_station_phone">...</span>
+        </span>
+        <span class="d-inline-block">
+            <i class="fas fa-envelope mr-1 text-primary"></i> 
+            <span id="mdl_in_station_email">...</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
 
                     <div class="row invoice-info px-4 mb-4">
                       <div class="col-sm-6 invoice-col border-right">
