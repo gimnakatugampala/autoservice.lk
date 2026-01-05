@@ -205,30 +205,22 @@
                         </div>
                         </div>
                         <div class="row px-4">
-                <div class="col-12 table-responsive">
-                  <table class="table table-striped table-bordered">
-                    <thead class="bg-light">
-                    <tr>
-                      <th>Code</th>
-                      <th>Item Description</th>
-                      <th class="text-center">QTY/Hrs</th>
-                      <th class="text-right">Unit Price</th>
-                      <th class="text-right">Discount</th>
-                      <th class="text-right">Total (LKR)</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                      <td>k141smgmNglR2gpiMLnJ</td>
-                      <td>Wash</td>
-                      <td class="text-center">1</td>
-                      <td class="text-right">1,500.00</td>
-                      <td class="text-right">0.00</td>
-                      <td class="text-right font-weight-bold text-dark">1,500.00</td>
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
+               <div class="col-12 table-responsive">
+              <table class="table table-striped table-bordered">
+                <thead class="bg-light">
+                  <tr>
+                    <th>Code</th>
+                    <th>Item Description</th>
+                    <th class="text-center">QTY/Hrs</th>
+                    <th class="text-right">Unit Price</th>
+                    <th class="text-right">Discount</th>
+                    <th class="text-right">Total (LKR)</th>
+                  </tr>
+                </thead>
+                <tbody id="invoice-items-body">
+                  </tbody>
+              </table>
+            </div>
                 </div>
               <div class="row px-4 mt-4">
                 <div class="col-6">
@@ -244,24 +236,20 @@
                 </div>
                 <div class="col-6">
                   <div class="table-responsive">
-                    <table class="table table-borderless">
-                      <tr>
-                        <th class="text-right" style="width:50%">Subtotal:</th>
-                        <td class="text-right font-weight-bold">LKR 250.30</td>
-                      </tr>
-                      <tr>
-                        <th class="text-right">VAT (%)</th>
-                        <td class="text-right font-weight-bold">10.34 %</td>
-                      </tr>
-                      <tr class="border-top border-bottom">
-                        <th class="text-right h4 text-bold text-primary">Total:</th>
-                        <td class="text-right h4 text-bold text-primary">LKR 265.24</td>
-                      </tr>
-                      <tr>
-                         <th class="text-right small text-muted">Paid Date:</th>
-                         <td class="text-right small text-muted font-italic">2/22/2014</td>
-                      </tr>
-                    </table>
+                  <table class="table table-borderless">
+                    <tr>
+                      <th class="text-right" style="width:50%">Subtotal:</th>
+                      <td class="text-right font-weight-bold" id="mdl_subtotal">LKR 0.00</td>
+                    </tr>
+                    <tr>
+                      <th class="text-right">VAT (%)</th>
+                      <td class="text-right font-weight-bold" id="mdl_vat_amount">0.00 %</td>
+                    </tr>
+                    <tr class="border-top border-bottom">
+                      <th class="text-right h4 text-bold text-primary">Total:</th>
+                      <td class="text-right h4 text-bold text-primary" id="mdl_grand_total">LKR 0.00</td>
+                    </tr>
+                  </table>
                   </div>
                 </div>
                 </div>
@@ -281,12 +269,16 @@
           </div>
         </div>
   <?php include_once '../includes/sub-footer.php';?>
+  
+  <aside class="control-sidebar control-sidebar-dark"></aside>
+</div> 
+<?php include_once '../includes/footer.php';?>
 
-  <aside class="control-sidebar control-sidebar-dark">
-    </aside>
-  </div>
+<script src="../assets/js/invoice-modal.js"></script>
+
 <script>
-  $(function () {
+  $(document).ready(function () {
+    // Initialize DataTables
     if (!$.fn.DataTable.isDataTable('#example1')) {
         $("#example1").DataTable({
           "responsive": true, 
@@ -295,11 +287,11 @@
           "order": [[6, "desc"]] // Sort by Completed Date
         });
     }
+    
+    // Initialize Tooltips
     $('[data-toggle="tooltip"]').tooltip();
   });
 </script>
-
-<?php include_once '../includes/footer.php';?>
 
 </body>
 </html>
