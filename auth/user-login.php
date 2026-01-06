@@ -139,6 +139,25 @@
         }
     }
 
+
+    // --- NEW: Handle Enter Key Press ---
+    document.addEventListener("DOMContentLoaded", function() {
+        // Select both email and password inputs
+        const inputs = document.querySelectorAll('#email, #password');
+        
+        inputs.forEach(input => {
+            input.addEventListener("keypress", function(event) {
+                // If the user presses the "Enter" key on the keyboard
+                if (event.key === "Enter") {
+                    // Cancel the default action, if needed
+                    event.preventDefault();
+                    // Trigger the button element with a click
+                    document.getElementById("btn_user_login").click();
+                }
+            });
+        });
+    });
+
     // Helper to switch buttons during AJAX (Add this logic to your user-login.js)
     function setLoginLoading(isLoading) {
         const btn = document.getElementById('btn_user_login');
