@@ -149,6 +149,23 @@ if (!isset($_SESSION["station_id"]) || $_SESSION["station_id"] == null) {
         document.getElementById('btn-user-reg').style.display = 'none';
         document.getElementById('btn-loading').style.display = 'block';
     }
+
+
+    // --- NEW: Handle Enter Key Press ---
+    document.addEventListener("DOMContentLoaded", function() {
+        // Select all inputs inside the admin register form
+        const inputs = document.querySelectorAll('#adminRegisterForm input');
+        
+        inputs.forEach(input => {
+            input.addEventListener("keypress", function(event) {
+                // Check if the key pressed is "Enter" (Key Code 13)
+                if (event.key === "Enter") {
+                    event.preventDefault(); // Stop default form submission
+                    document.getElementById("btn-user-reg").click(); // Trigger the button
+                }
+            });
+        });
+    });
 </script>
 
 <?php include_once '../includes/footer.php';?>
