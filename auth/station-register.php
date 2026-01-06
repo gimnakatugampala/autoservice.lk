@@ -283,9 +283,9 @@
     <?php include_once '../includes/auth-footer.php'; ?>
     <script src="../assets/js/station_register.js"></script>
     
-    <script>
+ <script>
         $(document).ready(function() {
-            // Password toggle logic for both fields
+            // --- Existing Toggle Logic ---
             $(document).on('click', '.toggle-password', function() {
                 $(this).toggleClass("fa-eye fa-eye-slash");
                 var input = $(this).siblings(".pass-input");
@@ -295,7 +295,19 @@
                     input.attr("type", "password");
                 }
             });
+
+            // --- NEW: Trigger Submit on Enter Key ---
+            // Listen for keypress on all input fields inside the form
+            $('#stationRegisterForm input').keypress(function(e) {
+                // Check if the key is 'Enter' (code 13)
+                if (e.which == 13) {
+                    e.preventDefault(); // Prevent default form submission if any
+                    $('#station_register_btn').click(); // Trigger the button click
+                }
+            });
         });
     </script>
+
+    
 </body>
 </html>
