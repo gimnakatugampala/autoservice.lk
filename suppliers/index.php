@@ -95,12 +95,13 @@
                            title="Edit Supplier">
                            <i class="fas fa-pen fa-xs"></i>
                         </a>
-                        <button type="button" 
-                                class="btn btn-danger btn-action-sm shadow-sm" 
-                                data-toggle="tooltip" 
-                                title="Delete Supplier">
-                          <i class="fas fa-trash fa-xs"></i>
-                        </button>
+                       <button type="button" 
+                            class="btn btn-danger btn-action-sm shadow-sm btn-delete" 
+                            data-id="<?php echo $row['id']; ?>" 
+                            data-toggle="tooltip" 
+                            title="Delete Supplier">
+                      <i class="fas fa-trash fa-xs"></i>
+                    </button>
                       </td>
                     </tr>
                   <?php endforeach; ?>
@@ -139,6 +140,8 @@
     $('[data-toggle="tooltip"]').tooltip();
   });
 </script>
+
+<script src="../assets/js/supplier-list.js"></script>
 
 </body>
 </html>
