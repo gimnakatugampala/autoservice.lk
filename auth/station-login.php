@@ -232,9 +232,9 @@
 
     <?php include_once '../includes/auth-footer.php'; ?>
     
-    <script>
+<script>
         $(document).ready(function() {
-            // Password toggle logic
+            // Existing Password toggle logic
             $(document).on('click', '.toggle-password', function() {
                 $(this).toggleClass("fa-eye fa-eye-slash");
                 var input = $(".pass-input");
@@ -244,6 +244,16 @@
                     input.attr("type", "password");
                 }
             });
+
+            // --- NEW CODE: Trigger Login on Enter Key ---
+            $('#email, #password').keypress(function(e) {
+                // Check if the key pressed is 'Enter' (key code 13)
+                if (e.which == 13) {
+                    e.preventDefault(); // Stop the form from submitting normally (page reload)
+                    $('#btn_station_login').click(); // Trigger the button click
+                }
+            });
+            // ---------------------------------------------
         });
     </script>
 </body>
