@@ -1,3 +1,5 @@
 /vendor
 /autoservice.zip
 /uploads
+
+.env

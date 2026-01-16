@@ -1,117 +1,118 @@
 <?php
-//Import PHPMailer classes into the global namespace
-//These must be at the top of your script, not inside a function
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
+// Load Composer's autoloader
+require_once('../vendor/autoload.php');
 
-//Load Composer's autoloader
-require '../vendor/autoload.php';
 
-//Create an instance; passing `true` enables exceptions
-$mail = new PHPMailer(true);
+
+use GuzzleHttp\Client;
+use SendinBlue\Client\Configuration;
+use SendinBlue\Client\Api\TransactionalEmailsApi;
+use SendinBlue\Client\Model\SendSmtpEmail;
+
+// Initialize Dotenv
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../'); // Adjust path to where .env is
+$dotenv->load();
+
+$apiKey = $_ENV['BREVO_API_KEY'];
+
+// 1. Setup Configuration
+// Replace 'YOUR_BREVO_API_KEY' with your actual API key from Brevo Dashboard
+$config = Configuration::getDefaultConfiguration()->setApiKey('api-key', $apiKey);
+
+$apiInstance = new TransactionalEmailsApi(new Client(), $config);
+$sendSmtpEmail = new SendSmtpEmail();
 
 try {
-    //Server settings
-    $mail->SMTPDebug = SMTP::DEBUG_OFF;                      //Enable verbose debug output
-    $mail->isSMTP();                                            //Send using SMTP
-    $mail->Host       = 'mail.autoservice.lk';                     //Set the SMTP server to send through
-    $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-    $mail->Username   = 'no-reply@stations.autoservice.lk';                     //SMTP username
-    $mail->Password   = '9922557gimna';                               //SMTP password
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-    $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+    // 2. Sender and Recipient
+    $sendSmtpEmail['sender'] = [
+        'name'  => 'autoservice.lk', 
+        'email' => 'no-reply@autoserviceapp.online'
+    ];
+    
+    $sendSmtpEmail['to'] = [
+        [
+            'email' => $data_vehicle[0]["email"], 
+            'name'  => $data_vehicle[0]["first_name"] . ' ' . $data_vehicle[0]["last_name"]
+        ]
+    ];
 
-    //Recipients
-    $mail->setFrom('no-reply@stations.autoservice.lk', 'autoservice.lk');
-    $mail->addAddress($data_vehicle[0]["email"]);     //Add a recipient
-    // $mail->addAddress('ellen@example.com');               //Name is optional
-    // $mail->addReplyTo('info@example.com', 'Information');
-    // $mail->addCC('cc@example.com');
-    // $mail->addBCC('bcc@example.com');
+    // 3. Content
+    $sendSmtpEmail['subject'] = '[Invoice]['.$data_vehicle[0]['vehicle_number'].'] '.$data_station[0]["service_name"];
 
-    //Attachments
-    $mail->addAttachment($email_invoice_path);         //Add attachments
-    // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
+    $serviceName = $data_station[0]["service_name"];
+    $customerName = $data_vehicle[0]["first_name"] . ' ' . $data_vehicle[0]["last_name"];
+    $vehicleNo = $data_vehicle[0]['vehicle_number'];
+    $currentYear = date("Y");
+    
+    $sendSmtpEmail['htmlContent'] = '
+      <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body style="margin: 0; padding: 0; font-family: \'Segoe UI\', Tahoma, Geneva, Verdana, sans-serif; background-color: #f6f9fc; color: #444;">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f6f9fc; padding: 20px 0;">
+            <tr>
+                <td align="center">
+                    <table width="600" border="0" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #e1e8ed;">
+                        
+                        <tr>
+                            <td style="background-color: #2c3e50; padding: 30px 40px; text-align: left;">
+                                <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 600; letter-spacing: -0.5px;">'.$serviceName.'</h1>
+                            </td>
+                        </tr>
 
-    //Content
-    $mail->isHTML(true);                                  //Set email format to HTML
-    $mail->Subject = '[Invoice]['.$data_vehicle[0]['vehicle_number'].'] '.$data_station[0]["service_name"].'';
-    $mail->Body    = '
-            <head>
-            <style>
-            body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            }
+                        <tr>
+                            <td style="padding: 40px;">
+                                <h2 style="color: #2c3e50; font-size: 20px; margin-top: 0;">Service Invoice Attached</h2>
+                                <p style="line-height: 1.6; color: #555;">Dear <strong>'.$customerName.'</strong>,</p>
+                                <p style="line-height: 1.6; color: #555;">We appreciate your business. Please find the attached digital invoice for the services completed on your vehicle.</p>
+                                
+                                <div style="background-color: #f8fafc; border-left: 4px solid #3498db; padding: 15px 20px; margin: 25px 0;">
+                                    <p style="margin: 5px 0; font-size: 14px; color: #7f8c8d;">Vehicle Number</p>
+                                    <p style="margin: 0; font-size: 18px; font-weight: bold; color: #2c3e50;">'.$vehicleNo.'</p>
+                                </div>
 
-            .container {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #ffffff;
-            padding: 20px;
-            box-sizing: border-box;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            border:1px #BFC9CA solid;
-            }
+                                <p style="line-height: 1.6; color: #555;">If you have any questions regarding your service or this invoice, please don\'t hesitate to reply to this email or visit our service center.</p>
+                                
+                                <p style="margin-top: 30px; line-height: 1.6; color: #555;">Best regards,<br>
+                                <span style="font-weight: 600; color: #2c3e50;">The Team at '.$serviceName.'</span></p>
+                            </td>
+                        </tr>
 
-            h1 {
-            color: #333333;
-            }
+                        <tr>
+                            <td style="background-color: #f8fafc; padding: 20px 40px; text-align: center; border-top: 1px solid #e1e8ed;">
+                                <p style="font-size: 12px; color: #95a5a6; margin: 0;">
+                                    &copy; '.$currentYear.' '.$serviceName.' | Managed via autoservice.lk
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>';
 
-            p {
-            color: #666666;
-            }
+    // 4. Handle Attachment
+    // The API requires the file to be encoded in Base64
+    if (file_exists($email_invoice_path)) {
+        $fileContent = base64_encode(file_get_contents($email_invoice_path));
+        $sendSmtpEmail['attachment'] = [
+            [
+                'content' => $fileContent,
+                'name'    => basename($email_invoice_path)
+            ]
+        ];
+    }
 
-            .button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #3498db;
-            color: #ffffff;
-            text-decoration: none;
-            border-radius: 3px;
-            }
-
-            .footer {
-            margin-top: 20px;
-            text-align: center;
-            color: #999999;
-            }
-
-            #code{
-                color:#E67E22;
-            }
-        </style>
-
-        </head>
-
-        <body>
-
-            <div class="container">
-            <h1>'.$data_station[0]["service_name"].'</h1>
-            <h3>Dear '.$data_vehicle[0]["first_name"].' '.$data_vehicle[0]["last_name"].',</h3>
-
-            <p>We hope this email finds you well. Attached to this email is the  invoice for the services provided by '.$data_station[0]["service_name"].'</p>
-            <p>Please find the attached invoice details below. If you have any questions or concerns, feel free to contact our support team.</p>
-
-         
-            <p>Thank you for choosing '.$data_station[0]["service_name"].'.</p>
-        </div>
-        <div class="footer">
-            <p>© '.date("Y").' '.$data_station[0]["service_name"].'</p>
-        </div>
-        </body>
-
-        ';
-    // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
-    $mail->isHTML(true); 
-    $mail->send();
-    // echo 'success';
+    // 5. Send the Email
+    $result = $apiInstance->sendTransacEmail($sendSmtpEmail);
+    
+    // Optional: Log success
+    // echo "Email sent successfully. Message ID: " . $result->getMessageId();
 
 } catch (Exception $e) {
-    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    echo 'Exception when sending email: ', $e->getMessage(), PHP_EOL;
 }

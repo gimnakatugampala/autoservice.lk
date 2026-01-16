@@ -9,6 +9,9 @@
       "notifylk/notify-php": "*@dev",
         "phpmailer/phpmailer": "^6.9",
         "tecnickcom/tcpdf": "^6.6",
-        "dompdf/dompdf": "^2.0"
+        "dompdf/dompdf": "^2.0",
+        "getbrevo/brevo-php": "1.x.x",
+        "sendinblue/api-v3-sdk": "^8.4",
+        "vlucas/phpdotenv": "^5.6"
     }
   }
