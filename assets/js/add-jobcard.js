@@ -1906,7 +1906,21 @@ $(document).ready(function () {
                 console.log(response)
   
                 if (response === "success") {
-                  window.location.href = "../job-cards/";    
+                  // window.location.href = "../job-cards/";   
+                  
+                  
+                       Swal.fire({
+                        icon: "success",
+                        title: "Job Card Created!",
+                        text: "The job card has been added successfully.",
+                        confirmButtonColor: "#007bff",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "../job-cards/";
+                            }
+                        }); 
+
+
               }else {
                   Swal.fire({
                       icon: "error",
@@ -2045,7 +2059,21 @@ $(document).ready(function () {
                 console.log(response)
   
                 if (response === "success") {
-                  window.location.href = "../job-cards/";    
+                  // window.location.href = "../job-cards/";    
+
+                  
+                       Swal.fire({
+                        icon: "success",
+                        title: "Job Card Created!",
+                        text: "The job card has been added successfully.",
+                        confirmButtonColor: "#007bff",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "../job-cards/";
+                            }
+                        }); 
+
+
               }else {
                   Swal.fire({
                       icon: "error",
@@ -2208,7 +2236,22 @@ $(document).ready(function () {
                   console.log(response)
     
                   if (response === "success") {
-                    window.location.href = "../job-cards/";    
+                    // window.location.href = "../job-cards/";    
+
+
+                    
+                       Swal.fire({
+                        icon: "success",
+                        title: "Job Card Created!",
+                        text: "The job card has been added successfully.",
+                        confirmButtonColor: "#007bff",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "../job-cards/";
+                            }
+                        }); 
+
+                        
                 }else {
                     Swal.fire({
                         icon: "error",
