@@ -1614,6 +1614,11 @@ $(document).ready(function () {
             },
             error:function (error) {
                 console.log(error)
+                  Swal.fire({
+                      icon: "error",
+                      title: "Please Try Again",
+                      text: "Something Went Wrong",
+                  });
             }
         });
 
@@ -1666,9 +1671,23 @@ $(document).ready(function () {
             success: function (response) {
               
                 console.log(response)
+
+
   
                 if (response === "success") {
-                  window.location.href = "../job-cards/";    
+                  // window.location.href = "../job-cards/";    
+                        Swal.fire({
+                        icon: "success",
+                        title: "Job Card Created!",
+                        text: "The job card has been added successfully.",
+                        confirmButtonColor: "#007bff",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "../job-cards/";
+                            }
+                        }); 
+
+
               }else {
                   Swal.fire({
                       icon: "error",

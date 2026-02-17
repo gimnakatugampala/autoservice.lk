@@ -214,9 +214,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
                     // ----------- SMS [Completed] --------------
-                    // $status_name="Completed";
-                    // $job_card_type_name="Repair";
-                    // include_once '../api/send-jobcard-sms.php';
+                    $status_name="Completed";
+                    $job_card_type_name="Repair";
+                    include_once '../api/send-jobcard-sms.php';
                     // ----------- SMS [Completed] --------------
 
 
