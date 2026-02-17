@@ -231,6 +231,8 @@ $(document).ready(function () {
 
 
 
+
+
     // ---------------- Step 1 --------------
     // ---------------------------------------
     $("#job-card-step-1").click(function () {
@@ -298,7 +300,7 @@ $(document).ready(function () {
         return
       }else{
 
-        //  ----- SHOW / HIDE Vehicle report based on joib card type
+        //  ----- SHOW / HIDE Vehicle report based on job card type
         if(job_card_type == "6" || job_card_type == "3" || job_card_type == "5"){
           getVehicleReport()
         }else{
@@ -333,6 +335,8 @@ $(document).ready(function () {
         $('#washer-part-container').html(`Washer Not Available`)
       }
       // --------------- Set Washer in Step 3 -----------
+
+  
 
         stepper.next()
 
@@ -452,7 +456,9 @@ $(document).ready(function () {
     }
 
     $("#job-card-step-2").click(function () {
-  
+
+      if (job_card_type != "1") {
+
     rowVehicleReportData = []
 
     $('table tbody tr').each(function(index) {
@@ -481,7 +487,7 @@ $(document).ready(function () {
     });
 
   
-    
+    }
     stepper.next()
     
     console.log(rowVehicleReportData);
@@ -490,6 +496,9 @@ $(document).ready(function () {
     })
      // ---------------------------------------
     // --------------- Step 2 ------------
+
+
+  
 
     // --------------- Step 3 ------------
      // ---------------------------------------
@@ -587,10 +596,10 @@ $(document).ready(function () {
     $("#wash-final-total").text(grandTotal.toFixed(2));
 }
 
+
     $("#job-card-step-3").click(function () {
       console.log(items)
       console.log(WasherValues)
-      stepper.next()
     })
      // ---------------------------------------
     // --------------- Step 3 ------------
@@ -619,6 +628,13 @@ $(document).ready(function () {
 
 
     dropdownServicePackage.addEventListener("change", function () {
+
+   if ($("#cmbjobcardtype").val() == "1") {
+        Swal.fire("Not Allowed", "You cannot add services to a Washer Only job.", "warning");
+        dropdownServicePackage.value = "";
+        return;
+    }
+
       var servicePackageId = dropdownServicePackage.value;
       $.ajax({
         type: "POST",
