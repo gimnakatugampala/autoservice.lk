@@ -328,6 +328,17 @@ $(document).ready(function () {
 
         }
 
+
+
+            // IF ONLY - REPAIR ONLY COMPONENTS
+        if(job_card_type == "2"){
+          $('#service-package-part-container').html(`Service Packages Not Applicable`)
+          $('#service-package-total-container').css('display', 'none');
+        }
+
+
+
+    
       // --------------- Set Washer in Step 3 -----------
       if(job_card_type != "2" && job_card_type != "3"){
 
@@ -356,6 +367,9 @@ $(document).ready(function () {
         $('#washer-part-container').html(`Washer Not Available`)
       }
       // --------------- Set Washer in Step 3 -----------
+
+
+
 
 
       //  ----------------- SHOW / HIDE COMPONENTS BASED ON JOBCARD TYPE ---------------
