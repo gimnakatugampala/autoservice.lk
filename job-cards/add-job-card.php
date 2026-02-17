@@ -557,7 +557,7 @@
 
                         </div>
                         </div>
-                        <h4><b>Total - LKR <span id="service-package-total">00</span>/=</b></h4>
+                        <h4 id="service-package-total-container"><b>Total - LKR <span id="service-package-total">00</span>/=</b></h4>
 
 
                         <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
@@ -644,7 +644,7 @@
                     </tbody>
                     </table>
 
-                    <h4><b>Total - LKR <span id="repair-final-total">00</span>/=</b></h4>
+                    <h4 id="repair-final-total-container"><b>Total - LKR <span id="repair-final-total">00</span>/=</b></h4>
 
                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                     <button id="job-card-step-5" class="btn btn-primary">Next</button>
@@ -654,7 +654,7 @@
 
                 <!--  Products  - Step 6 -->
                 <div id="select-products-part" class="content" role="tabpanel" aria-labelledby="select-products-part-trigger">
-                    <div class="row">
+                    <div id="select-products-container" class="row">
 
                     <div class="col-md-12">
                     <h5 class="text-center"><b>Select Products</b></h5>
@@ -764,7 +764,7 @@
                     </tbody>
                     </table>
 
-                    <h4><b>Total - LKR <span id="total-final-product">00</span>/=</b></h4>
+                    <h4 id="total-final-product-container"><b>Total - LKR <span id="total-final-product">00</span>/=</b></h4>
 
                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                     <button id="job-card-step-6" class="btn btn-primary">Next</button>

@@ -231,8 +231,6 @@ $(document).ready(function () {
 
 
 
-
-
     // ---------------- Step 1 --------------
     // ---------------------------------------
     $("#job-card-step-1").click(function () {
@@ -291,20 +289,43 @@ $(document).ready(function () {
           text: "Please Select Status",
         });
         return
-      }else if(notify == null){
+      }else if (job_card_type != "1" && notify == null) {
         Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Please Select Notification Time",
+            icon: "error",
+            title: "Error",
+            text: "Please Select Notification Time",
         });
-        return
-      }else{
+        return;
+    }else{
+
+      if (job_card_type == "1" && notify == null) {
+            notify = "0";
+        }
+
+        //  ----------------- SHOW / HIDE COMPONENTS BASED ON JOBCARD TYPE ---------------
 
         //  ----- SHOW / HIDE Vehicle report based on job card type
         if(job_card_type == "6" || job_card_type == "3" || job_card_type == "5"){
           getVehicleReport()
         }else{
           $('#vehicle-report-container').html(`Report Not Available`)
+        }
+
+
+        // IF ONLY  - WASHER ONLY COMPONENTS
+        if(job_card_type == "1"){
+          $('#service-package-part-container').html(`Service Packages Not Applicable`)
+          $('#service-package-total-container').css('display', 'none');
+
+          $('#maintenance-part-container').html(`Repair Options Not Applicable`)
+          $('.repairTable').css('display', 'none');
+          $('#repair-final-total-container').css('display', 'none');
+
+
+          $('#select-products-container').html(`Product Options Not Applicable`)
+          $('.productsTable').css('display', 'none');
+          $('#total-final-product-container').css('display', 'none');
+
         }
 
       // --------------- Set Washer in Step 3 -----------
@@ -336,7 +357,8 @@ $(document).ready(function () {
       }
       // --------------- Set Washer in Step 3 -----------
 
-  
+
+      //  ----------------- SHOW / HIDE COMPONENTS BASED ON JOBCARD TYPE ---------------
 
         stepper.next()
 
@@ -456,9 +478,7 @@ $(document).ready(function () {
     }
 
     $("#job-card-step-2").click(function () {
-
-      if (job_card_type != "1") {
-
+  
     rowVehicleReportData = []
 
     $('table tbody tr').each(function(index) {
@@ -487,7 +507,7 @@ $(document).ready(function () {
     });
 
   
-    }
+    
     stepper.next()
     
     console.log(rowVehicleReportData);
@@ -497,20 +517,24 @@ $(document).ready(function () {
      // ---------------------------------------
     // --------------- Step 2 ------------
 
-
-  
-
     // --------------- Step 3 ------------
      // ---------------------------------------
-    function populateWasherTable(data) {
+ function populateWasherTable(data) {
     // Clear previous content
     $('#washer-part-container').html('');
-    
 
     if (!data) {
         $('#washer-part-container').html('<p class="text-danger">No washer package found for this vehicle class.</p>');
         return;
     }
+
+    // CHECK IF WE ALREADY HAVE SAVED VALUES FOR THIS WASHER
+    // This prevents resetting when moving back and forth in the stepper
+    let savedWasher = WasherValues.find(w => w.washerID == data.id);
+    
+    let displayQty = savedWasher ? savedWasher.quantity : 1;
+    let displayPrice = savedWasher ? savedWasher.price : data.price;
+    let displayDiscount = savedWasher ? savedWasher.discount : 0;
 
     $('#washer-part-container').html(`
       <div class="col-md-12">
@@ -530,13 +554,13 @@ $(document).ready(function () {
                     <td style='display:none;' class='rowCode'>${data.code}</td>
                     <td>Wash (${data.code})</td>
                     <td>   
-                        <input value="1" type="number" class="form-control wash-qty">
+                        <input value="${displayQty}" type="number" class="form-control wash-qty">
                     </td>
                     <td>   
-                        <input value="${data.price}" type="number" class="form-control wash-unit-price">
+                        <input value="${displayPrice}" type="number" class="form-control wash-unit-price">
                     </td>
                     <td>   
-                        <input value="0" type="number" class="form-control wash-discount">
+                        <input value="${displayDiscount}" type="number" class="form-control wash-discount">
                     </td>
                     <td>   
                         <p class="h6 font-weight-bold wash-total">0.00</p>
@@ -550,7 +574,7 @@ $(document).ready(function () {
 
     var row = $(".rowBody");
     var item = {
-      rowCode: row.find(".rowCode")[0],
+        rowCode: row.find(".rowCode")[0],
         rowID: row.find(".rowID")[0],
         quantityInput: row.find(".wash-qty")[0],
         priceInput: row.find(".wash-unit-price")[0],
@@ -596,10 +620,10 @@ $(document).ready(function () {
     $("#wash-final-total").text(grandTotal.toFixed(2));
 }
 
-
     $("#job-card-step-3").click(function () {
       console.log(items)
       console.log(WasherValues)
+      stepper.next()
     })
      // ---------------------------------------
     // --------------- Step 3 ------------
@@ -628,13 +652,6 @@ $(document).ready(function () {
 
 
     dropdownServicePackage.addEventListener("change", function () {
-
-   if ($("#cmbjobcardtype").val() == "1") {
-        Swal.fire("Not Allowed", "You cannot add services to a Washer Only job.", "warning");
-        dropdownServicePackage.value = "";
-        return;
-    }
-
       var servicePackageId = dropdownServicePackage.value;
       $.ajax({
         type: "POST",
