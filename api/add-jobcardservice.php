@@ -157,9 +157,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                      if($status == "1"){
                         // ----------- SMS [Pending] --------------
-                        $status_name="Pending";
-                        $job_card_type_name="Service";
-                        include_once '../api/send-jobcard-sms.php';
+                        // $status_name="Pending";
+                        // $job_card_type_name="Service";
+                        // include_once '../api/send-jobcard-sms.php';
                         // ----------- SMS [Pending] --------------
                     }
     
@@ -255,9 +255,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
                     // ----------- SMS [Completed] --------------
-                    $status_name="Completed";
-                    $job_card_type_name="Service";
-                    include_once '../api/send-jobcard-sms.php';
+                    // $status_name="Completed";
+                    // $job_card_type_name="Service";
+                    // include_once '../api/send-jobcard-sms.php';
                     // ----------- SMS [Completed] --------------
 
                     // ------------------ SEND EMAIL ----------------
