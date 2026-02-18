@@ -17,11 +17,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ";
 
         $api_instance = new NotifyLk\Api\SmsApi();
-        $user_id = "26713";
-        $api_key = "w9mKmGQuGJxfPxVzSKDu";
+        $user_id = "26652";
+        $api_key = "g0ueyuIip9LW8vzOBs8O";
         $message = "$msg";
         $to = "$VehicleOwnerPhone";
-        $sender_id = "NotifyDEMO";
+        $sender_id = "AUTOSERV.LK";
         $contact_fname = "";
         $contact_lname = "";
         $contact_email = "";
