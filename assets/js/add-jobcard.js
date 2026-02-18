@@ -39,6 +39,16 @@ $(document).ready(function () {
     })
     
 
+    // Helper function for professional placeholders
+function getNotApplicableHTML(message) {
+    return `<div class="col-md-12 text-center my-5">
+                <div class="alert alert-light border border-info shadow-sm d-inline-block p-4">
+                    <i class="fas fa-info-circle text-info mb-2" style="font-size: 2rem;"></i>
+                    <h5 class="text-secondary font-weight-bold">${message}</h5>
+                    <p class="text-muted m-0 small text-uppercase">This section is hidden based on the selected Job Card Type.</p>
+                </div>
+            </div>`;
+}
   
     //  Search Vehicle
     dropdown.addEventListener("change", function () {
@@ -308,21 +318,21 @@ $(document).ready(function () {
         if(job_card_type == "6" || job_card_type == "3" || job_card_type == "5"){
           getVehicleReport()
         }else{
-          $('#vehicle-report-container').html(`Report Not Available`)
+          $('#vehicle-report-container').html(getNotApplicableHTML(`Report Not Available`))
         }
 
 
         // IF ONLY  - WASHER ONLY COMPONENTS
         if(job_card_type == "1"){
-          $('#service-package-part-container').html(`Service Packages Not Applicable`)
+          $('#service-package-part-container').html(getNotApplicableHTML(`Service Packages Not Applicable`))
           $('#service-package-total-container').css('display', 'none');
 
-          $('#maintenance-part-container').html(`Repair Options Not Applicable`)
+          $('#maintenance-part-container').html(getNotApplicableHTML(`Repair Options Not Applicable`))
           $('.repairTable').css('display', 'none');
           $('#repair-final-total-container').css('display', 'none');
 
 
-          $('#select-products-container').html(`Product Options Not Applicable`)
+          $('#select-products-container').html(getNotApplicableHTML(`Product Options Not Applicable`))
           $('.productsTable').css('display', 'none');
           $('#total-final-product-container').css('display', 'none');
 
@@ -332,14 +342,14 @@ $(document).ready(function () {
 
             // IF ONLY - REPAIR ONLY COMPONENTS
         if(job_card_type == "2"){
-          $('#service-package-part-container').html(`Service Packages Not Applicable`)
+          $('#service-package-part-container').html(getNotApplicableHTML(`Service Packages Not Applicable`))
           $('#service-package-total-container').css('display', 'none');
         }
 
 
         // IF ONLY - WASHER / REPAIR ONLY COMPONENTS
         if(job_card_type == "4"){
-           $('#service-package-part-container').html(`Service Packages Not Applicable`)
+           $('#service-package-part-container').html(getNotApplicableHTML(`Service Packages Not Applicable`))
           $('#service-package-total-container').css('display', 'none');
         }
 
@@ -371,7 +381,7 @@ $(document).ready(function () {
         });
         
       }else{
-        $('#washer-part-container').html(`Washer Not Available`)
+        $('#washer-part-container').html(getNotApplicableHTML(`Washer Not Available`))
       }
       // --------------- Set Washer in Step 3 -----------
 
