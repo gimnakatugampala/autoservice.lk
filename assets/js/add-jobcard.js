@@ -337,6 +337,13 @@ $(document).ready(function () {
         }
 
 
+        // IF ONLY - WASHER / REPAIR ONLY COMPONENTS
+        if(job_card_type == "4"){
+           $('#service-package-part-container').html(`Service Packages Not Applicable`)
+          $('#service-package-total-container').css('display', 'none');
+        }
+
+
 
     
       // --------------- Set Washer in Step 3 -----------
@@ -2251,7 +2258,7 @@ $(document).ready(function () {
                             }
                         }); 
 
-                        
+
                 }else {
                     Swal.fire({
                         icon: "error",
