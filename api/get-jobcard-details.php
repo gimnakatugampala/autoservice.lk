@@ -50,7 +50,7 @@ $sql = "
         jc.created_date                     AS JOB_CARD_PLACED_DATE,
         jct.type                            AS JOB_CARD_TYPE,
         jci.date                            AS COMPLETED_DATE,
-        jci.invoice_code                    AS invoice_no,
+        COALESCE(jci.invoice_code, 'N/A')   AS invoice_no, -- Changed to handle missing codes
         vo.first_name,
         vo.last_name,
         vo.phone,
@@ -65,7 +65,7 @@ $sql = "
     INNER JOIN vehicle          v   ON jc.vehicle_id        = v.id
     INNER JOIN vehicle_owner    vo  ON jc.vehicle_owner_id  = vo.id
     INNER JOIN job_card_type    jct ON jc.job_card_type_id  = jct.id
-    INNER JOIN job_card_invoice jci ON jc.id                = jci.job_card_id
+    LEFT JOIN job_card_invoice  jci ON jc.id                = jci.job_card_id -- Changed INNER to LEFT
     LEFT  JOIN vehicle_model    vm  ON v.vehicle_model_id   = vm.id
     LEFT  JOIN vehicle_make     vmk ON v.vehicle_manufacturer_id = vmk.id
     WHERE jc.id                 = $id
