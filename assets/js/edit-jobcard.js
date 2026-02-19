@@ -2,7 +2,7 @@ $(document).ready(function () {
     console.log("Edit Job Card Script Loaded");
 
     // ==========================================
-    // 1. GLOBAL HELPER FUNCTION
+    // 1. GLOBAL HELPER
     // ==========================================
     window.showStepContent = function (stepIndex) {
         $('.bs-stepper-content .content').removeClass('active dstepper-block').hide();
@@ -17,10 +17,7 @@ $(document).ready(function () {
     // ==========================================
     var stepperElement = document.querySelector('.bs-stepper');
     if (stepperElement) {
-        window.stepper = new Stepper(stepperElement, {
-            linear: false,
-            animation: false
-        });
+        window.stepper = new Stepper(stepperElement, { linear: false, animation: false });
         setTimeout(function () {
             if (window.stepper) window.stepper.to(1);
             window.showStepContent(1);
@@ -35,52 +32,54 @@ $(document).ready(function () {
     var urlParams   = new URLSearchParams(window.location.search);
     var jobCardCode = urlParams.get('code');
 
-    var vehicle            = [];
-    var serviceStationInfo = [];
+    var vehicle            = null;
+    var serviceStationInfo = null;
     var current_mileage    = 0;
     var new_mileage        = 0;
-    var paid_status        = "";
-    var job_card_type      = "";
-    var status             = "";
-    var notify             = "";
+    var paid_status        = '';
+    var job_card_type      = '';
+    var status             = '';
+    var notify             = '';
     var jobCardId          = 0;
-    var invoiceCode        = "";
+    var invoiceCode        = '';
     var vehicleClassId     = null;
+    var vat                = 0;   // ← ADD THIS
+
 
     var rowVehicleReportData = [];
 
-    // Washer (DOM-reference style like add_jobcard)
+    // Washer
     var items        = [];
     var WasherValues = [];
 
     // Service Packages
-    var selected_service_packages = [];
-    var selected_fuel             = [];
-    var selected_filter           = [];
+    var tableBodyServicePackage       = $('#table-jobcard-service-packages');
+    var service_packages_items        = [];
+    var selected_service_packages     = [];
+    var service_packages_items_fuel   = [];
+    var service_packages_items_filter = [];
+    var counterId    = 0;
+    var selected_fuel   = [];
+    var selected_filter = [];
 
-    // Repairs (DOM-reference style)
+    // Repairs
+    var tableBodyRepair  = $('#table-jobcard-repair');
     var repair_items     = [];
     var selected_repairs = [];
 
-    // Products (DOM-reference style)
+    // Products
+    var tableBodyProducts = $('#table-jobcard-products');
     var products_items    = [];
     var selected_products = [];
 
     if (!jobCardCode) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'No Job Card Code',
-            text: 'Please provide a job card code in the URL'
-        }).then(function () {
-            window.location.href = '../job-cards/';
-        });
+        Swal.fire({ icon: 'warning', title: 'No Job Card Code', text: 'Please provide a job card code in the URL' })
+            .then(function () { window.location.href = '../job-cards/'; });
         return;
     }
 
-    loadJobCardData(jobCardCode);
-
     // ==========================================
-    // 4. LOAD & POPULATE  (STEP 1 — PRESERVED AS-IS)
+    // 4. LOAD JOB CARD DATA
     // ==========================================
     function loadJobCardData(code) {
         $.ajax({
@@ -90,9 +89,7 @@ $(document).ready(function () {
             dataType: 'json',
             beforeSend: function () {
                 $('#search-vehicle-content').html(
-                    '<div class="d-flex justify-content-center my-4">' +
-                    '<div class="spinner-border text-primary" role="status">' +
-                    '<span class="sr-only">Loading...</span></div></div>'
+                    '<div class="d-flex justify-content-center my-4"><div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div></div>'
                 );
             },
             success: function (data) {
@@ -109,12 +106,21 @@ $(document).ready(function () {
         });
     }
 
+    loadJobCardData(jobCardCode);
+
     function populateExistingData(data) {
         var jc = data.job_card;
 
         jobCardId      = jc.id;
         invoiceCode    = jc.invoice_code || generateUUID();
         vehicleClassId = jc.vehicle_class_id;
+        job_card_type  = String(jc.job_card_type_id);
+        paid_status    = jc.paid_status_id;
+        status         = jc.status_id;
+        notify         = jc.notify_month || 2;
+        current_mileage = jc.job_mileage  || 0;
+        new_mileage     = jc.next_mileage || 0;
+        vat             = parseFloat(jc.vat) || 0;  
 
         vehicle = [{
             vehicle_id         : jc.vehicle_id,
@@ -135,39 +141,46 @@ $(document).ready(function () {
         }];
 
         serviceStationInfo = data.station;
-        current_mileage    = jc.job_mileage  || 0;
-        new_mileage        = jc.next_mileage || 0;
-        paid_status        = jc.paid_status_id;
-        job_card_type      = jc.job_card_type_id;
-        status             = jc.status_id;
-        notify             = jc.notify_month || 2;
 
+        // Step 1
         populateVehicleInfo(data);
-        populateVehicleReports(data.reports);
-        populateWashers(data.washers);
-        populateServicePackages(data.fuels, data.filters);
-        populateRepairs(data.repairs);
-        populateProducts(data.products);
 
+        // Step 2
+        populateVehicleReports(data.reports);
+
+        // Step 3 — Washer
+        populateWasherStep(data.washers);
+
+        // Step 4 — Service Packages: load dropdown options + pre-load saved packages
+        loadServicePackageDropdown(data.fuels, data.filters);
+
+        // Step 5 — Repairs: load dropdown options + pre-load saved repairs
+        loadRepairDropdown(data.repairs);
+
+        // Step 6 — Products: load dropdown options + pre-load saved products
+        loadProductDropdown(data.products);
+
+        // Step 7 — Invoice
         setTimeout(function () {
             getInvoiceDetails(vehicle, serviceStationInfo);
-        }, 200);
+        }, 500);
     }
 
-    // ── STEP 1: Vehicle Info (preserved) ─────────────────────────────────────
+    // ==========================================
+    // 5. STEP 1 — VEHICLE INFO
+    // ==========================================
     function populateVehicleInfo(data) {
         var jc = data.job_card;
-
         var vehicleImages = {
-            1:  '../assets/img/vehicle-img/light_motor_cycle.jpg',
-            2:  '../assets/img/vehicle-img/motor_cycles.jpg',
-            3:  '../assets/img/vehicle-img/three_wheeler.jpg',
-            4:  '../assets/img/vehicle-img/van.jpg',
-            5:  '../assets/img/vehicle-img/car.jpg',
-            6:  '../assets/img/vehicle-img/Light_Motor_Lorry.jpg',
-            7:  '../assets/img/vehicle-img/motor_lorry.jpg',
-            8:  '../assets/img/vehicle-img/Heavy_Motor_Lorry.jpg',
-            9:  '../assets/img/vehicle-img/light_bus.jpg',
+            1: '../assets/img/vehicle-img/light_motor_cycle.jpg',
+            2: '../assets/img/vehicle-img/motor_cycles.jpg',
+            3: '../assets/img/vehicle-img/three_wheeler.jpg',
+            4: '../assets/img/vehicle-img/van.jpg',
+            5: '../assets/img/vehicle-img/car.jpg',
+            6: '../assets/img/vehicle-img/Light_Motor_Lorry.jpg',
+            7: '../assets/img/vehicle-img/motor_lorry.jpg',
+            8: '../assets/img/vehicle-img/Heavy_Motor_Lorry.jpg',
+            9: '../assets/img/vehicle-img/light_bus.jpg',
             10: '../assets/img/vehicle-img/Hand_Tractors.jpg',
             11: '../assets/img/vehicle-img/Land_Vehicle.jpg',
             12: '../assets/img/vehicle-img/Special_purpose_Vehicle.jpg'
@@ -179,51 +192,45 @@ $(document).ready(function () {
             '<div class="card p-3 py-4 border border-dark text-center"><div class="mx-auto my-2">' +
             '<img src="' + vehicleImage + '" style="width:80px;height:80px;border-radius:50%;object-fit:cover;" alt="Vehicle"/>' +
             '<div class="d-flex align-items-center justify-content-center mt-2">' +
-            '<span class="m-0 p-0 d-flex align-items-center text-secondary mr-2"><span class="mr-1">Color: </span>' +
-            '<div class="border" style="width:15px;height:15px;background-color:' + jc.vehicle_color + ';border-radius:50%"></div></span>' +
+            '<span class="m-0 p-0 d-flex align-items-center text-secondary mr-2"><span class="mr-1">Color:</span>' +
+            '<div class="border" style="width:15px;height:15px;background-color:' + jc.vehicle_color + ';border-radius:50%;"></div></span>' +
             '<span class="h4 m-0 p-0"><b>' + jc.vehicle_number + '</b></span></div>' +
             '<p class="m-0 p-0 text-secondary mt-2">' + jc.first_name + ' ' + jc.last_name + '</p>' +
             '<p class="m-0 p-0 text-secondary">+94 ' + removeLeadingZeros(jc.phone) + '</p>' +
-            '<p class="m-0 p-0 text-secondary">Previous Mileage: ' + (jc.current_mileage || 0) + ' KM</p>' +
+            '<p class="m-0 p-0 text-secondary">Prev Mileage: ' + (jc.current_mileage || 0) + ' KM</p>' +
             '</div></div></div></div>' +
 
             '<div class="row">' +
             '<div class="col-md-4 mx-auto"><div class="form-group">' +
-            '<label for="current-mileage">Current Mileage (KM) <span class="text-danger">*</span></label>' +
-            '<input type="number" class="form-control" id="current-mileage" placeholder="Current Mileage" value="' + current_mileage + '"></div></div>' +
+            '<label>Current Mileage (KM) <span class="text-danger">*</span></label>' +
+            '<input type="number" class="form-control" id="current-mileage" value="' + current_mileage + '"></div></div>' +
             '<div class="col-md-4 mx-auto"><div class="form-group">' +
-            '<label for="new-mileage">Next Service Mileage (KM) <span class="text-danger">*</span></label>' +
-            '<input type="number" class="form-control" id="new-mileage" placeholder="Next Mileage" value="' + new_mileage + '"></div></div></div>' +
+            '<label>Next Mileage (KM) <span class="text-danger">*</span></label>' +
+            '<input type="number" class="form-control" id="new-mileage" value="' + new_mileage + '"></div></div></div>' +
 
             '<div class="row">' +
             '<div class="col-sm-4"><div class="form-group"><label>Paid Status <span class="text-danger">*</span></label>' +
             '<select id="cmbpaidstatus" class="custom-select"><option value="" disabled>Please Select</option>' +
-            data.cmbpaidstatus.map(function (s) {
-                return '<option value="' + s.id + '"' + (s.id == paid_status ? ' selected' : '') + '>' + s.status + '</option>';
-            }).join('') + '</select></div></div>' +
-
+            data.cmbpaidstatus.map(function (s) { return '<option value="' + s.id + '"' + (s.id == paid_status ? ' selected' : '') + '>' + s.status + '</option>'; }).join('') +
+            '</select></div></div>' +
             '<div class="col-sm-4"><div class="form-group"><label>Job Card Type <span class="text-danger">*</span></label>' +
             '<select id="cmbjobcardtype" class="custom-select" disabled><option value="" disabled>Please Select</option>' +
-            data.cmbjobtypes.map(function (s) {
-                return '<option value="' + s.id + '"' + (s.id == job_card_type ? ' selected' : '') + '>' + s.type + '</option>';
-            }).join('') + '</select></div></div>' +
-
+            data.cmbjobtypes.map(function (s) { return '<option value="' + s.id + '"' + (s.id == job_card_type ? ' selected' : '') + '>' + s.type + '</option>'; }).join('') +
+            '</select></div></div>' +
             '<div class="col-sm-4"><div class="form-group"><label>Status <span class="text-danger">*</span></label>' +
             '<select id="cmbstatus" class="custom-select"><option value="" disabled>Please Select</option>' +
-            data.cmbstatus.map(function (s) {
-                return '<option value="' + s.id + '"' + (s.id == status ? ' selected' : '') + '>' + s.status + '</option>';
-            }).join('') + '</select></div></div></div>' +
+            data.cmbstatus.map(function (s) { return '<option value="' + s.id + '"' + (s.id == status ? ' selected' : '') + '>' + s.status + '</option>'; }).join('') +
+            '</select></div></div></div>' +
 
-            '<div class="row"><div class="col-md-8 mx-auto">' +
-            '<label>Notify Customer For Next Service <span class="text-danger">*</span></label>' +
-            '<div class="row mt-2">' +
-            '<div class="col-md-4"><div class="custom-control custom-radio">' +
+            '<div class="row"><div class="col-md-6 mx-auto"><label>Notify Me <span class="text-danger">*</span></label></div></div>' +
+            '<div class="row"><div class="col-md-6 mx-auto"><div class="row">' +
+            '<div class="col-md-4 mx-auto"><div class="custom-control custom-radio">' +
             '<input value="2" class="custom-control-input" type="radio" id="customRadio2" name="customRadio"' + (notify == 2 ? ' checked' : '') + '>' +
             '<label for="customRadio2" class="custom-control-label">In 2 Months</label></div></div>' +
-            '<div class="col-md-4"><div class="custom-control custom-radio">' +
+            '<div class="col-md-4 mx-auto"><div class="custom-control custom-radio">' +
             '<input value="4" class="custom-control-input" type="radio" id="customRadio4" name="customRadio"' + (notify == 4 ? ' checked' : '') + '>' +
             '<label for="customRadio4" class="custom-control-label">In 4 Months</label></div></div>' +
-            '<div class="col-md-4"><div class="custom-control custom-radio">' +
+            '<div class="col-md-4 mx-auto"><div class="custom-control custom-radio">' +
             '<input value="6" class="custom-control-input" type="radio" id="customRadio6" name="customRadio"' + (notify == 6 ? ' checked' : '') + '>' +
             '<label for="customRadio6" class="custom-control-label">In 6 Months</label></div></div>' +
             '</div></div></div>';
@@ -231,123 +238,121 @@ $(document).ready(function () {
         $('#search-vehicle-content').html(html).show().css('display', 'block');
     }
 
-    // ── STEP 2: Vehicle Reports ───────────────────────────────────────────────
+    // ==========================================
+    // 6. STEP 2 — VEHICLE REPORT
+    // ==========================================
     function populateVehicleReports(reports) {
         if (!reports || reports.length === 0) {
             if (job_card_type == '6' || job_card_type == '3' || job_card_type == '5') {
                 $.ajax({
                     type: 'POST', url: '../api/getvehiclereport.php', dataType: 'json',
-                    success: function (data) { populateVehicleReportContent(data, []); },
-                    error: function () {
-                        $('#vehicle-report-tables').html('<p class="text-center text-danger">Failed to load vehicle report template</p>');
-                    }
+                    success: function (data) { renderVehicleReportTables(data, []); },
+                    error: function () { $('#vehicle-report-container').html('<p class="text-center text-danger">Failed to load vehicle report</p>'); }
                 });
             } else {
-                $('#vehicle-report-tables').html('<p class="text-center text-muted">Vehicle reports not available for this job card type.</p>');
+                $('#vehicle-report-container').html('<p class="text-center text-muted">Vehicle reports not applicable for this job card type.</p>');
             }
             return;
         }
         $.ajax({
             type: 'POST', url: '../api/getvehiclereport.php', dataType: 'json',
-            success: function (data) { populateVehicleReportContent(data, reports); }
+            success: function (data) { renderVehicleReportTables(data, reports); }
         });
     }
 
-    function populateVehicleReportContent(data, existingReports) {
-        var tablesHTML = data.vehicle_category.map(function (category) {
+    function renderVehicleReportTables(data, existingReports) {
+        var html = data.vehicle_category.map(function (category) {
             var rows = data.vehicle_subcategory
                 .filter(function (sub) { return sub.vehicle_condition_category_id === category.id; })
                 .map(function (sub) {
-                    var existing      = existingReports.find(function (r) { return r.sub_category_id == sub.id; });
-                    var selectedValue = existing ? existing.value_id : null;
-                    var radios = [1, 2, 3, 4, 5].map(function (val) {
-                        return '<td class="text-center"><input value="' + val + '" class="form-check-input" type="radio" name="radio' + sub.id + '"' + (selectedValue == val ? ' checked' : '') + '></td>';
+                    var existing = existingReports.find(function (r) { return r.sub_category_id == sub.id; });
+                    var sel = existing ? existing.value_id : null;
+                    var labels = ['Worse', 'Bad', 'Ok', 'Good', 'Perfect'];
+                    var radios = [1,2,3,4,5].map(function (v) {
+                        return '<td><div class="form-check">' +
+                               '<input value="' + v + '" class="form-check-input" type="radio" name="radio' + sub.id + '"' + (sel == v ? ' checked' : '') + '>' +
+                               '<label class="form-check-label">' + labels[v-1] + '</label></div></td>';
                     }).join('');
-                    return '<tr data-category-id="' + category.id + '" data-subcategory-id="' + sub.id + '"><td>' + sub.sub_category + '</td>' + radios + '</tr>';
+                    return '<tr data-category-id="' + category.id + '" data-subcategory-id="' + sub.id + '">' +
+                           '<td>' + sub.sub_category + '</td>' + radios + '</tr>';
                 }).join('');
-
             return '<div class="col-md-10 table-responsive p-0 mx-auto my-2">' +
                    '<table class="table table-striped table-bordered table-hover"><thead><tr>' +
-                   '<th style="width:30%">' + category.category + '</th>' +
-                   '<th class="text-center">Worse</th><th class="text-center">Bad</th>' +
-                   '<th class="text-center">Ok</th><th class="text-center">Good</th><th class="text-center">Perfect</th>' +
+                   '<th>' + category.category + '</th><th></th><th></th><th></th><th></th><th></th>' +
                    '</tr></thead><tbody>' + rows + '</tbody></table></div>';
         }).join('');
 
-        $('#vehicle-report-tables').html(tablesHTML);
+        $('#vehicle-report-container').html(html);
         collectVehicleReportData();
-        $('#vehicle-report-tables input[type="radio"]').on('change', collectVehicleReportData);
+        $('#vehicle-report-container input[type="radio"]').on('change', collectVehicleReportData);
     }
 
     function collectVehicleReportData() {
         rowVehicleReportData = [];
-        $('#vehicle-report-tables tr[data-category-id]').each(function () {
-            var categoryId    = $(this).data('category-id');
-            var subcategoryId = $(this).data('subcategory-id');
-            var selected      = $(this).find('input[type="radio"]:checked');
-            if (selected.length > 0) {
+        $('#vehicle-report-container tr[data-category-id]').each(function () {
+            var sel = $(this).find('input[type="radio"]:checked');
+            if (sel.length > 0) {
                 rowVehicleReportData.push({
-                    categoryId    : categoryId,
-                    subcategoryId : subcategoryId,
-                    value         : parseInt(selected.val())
+                    categoryId    : $(this).data('category-id'),
+                    subcategoryId : $(this).data('subcategory-id'),
+                    value         : parseInt(sel.val())
                 });
             }
         });
     }
 
     // ==========================================
-    // 5. STEP 3: WASHERS  (add_jobcard style)
+    // 7. STEP 3 — WASHER
     // ==========================================
-    function populateWashers(washers) {
+    function populateWasherStep(savedWashers) {
         items        = [];
         WasherValues = [];
-        $('#table-jobcard-washer tbody').empty();
 
-        if (!washers || washers.length === 0) {
-            if (vehicleClassId) {
-                $.ajax({
-                    type: 'POST', url: '../api/getwasherbyvehicleclassid.php',
-                    data: { vehicle_class_id: vehicleClassId }, dataType: 'json',
-                    success: function (data) {
-                        if (data && data.length > 0) {
-                            addWasherRow(data[0].id, data[0].code, 1, parseFloat(data[0].price) || 0, 0);
-                        } else {
-                            $('#table-jobcard-washer tbody').html('<tr><td colspan="8" class="text-center text-muted">No washers found</td></tr>');
-                        }
+        if (savedWashers && savedWashers.length > 0) {
+            var w = savedWashers[0];
+            renderWasherTable({ id: w.washer_id, code: w.code, price: w.price }, w.qty, w.price, w.discount);
+        } else if (vehicleClassId) {
+            $.ajax({
+                type: 'POST', url: '../api/getwasherbyvehicleclassid.php',
+                data: { vehicle_class_id: vehicleClassId }, dataType: 'json',
+                success: function (data) {
+                    if (data && data[0]) {
+                        renderWasherTable(data[0], 1, data[0].price, 0);
+                    } else {
+                        $('#washer-part-container').html('<p class="text-danger">No washer package found for this vehicle class.</p>');
                     }
-                });
-            } else {
-                $('#table-jobcard-washer tbody').html('<tr><td colspan="8" class="text-center text-muted">No washers added</td></tr>');
-            }
-            return;
+                }
+            });
+        } else {
+            $('#washer-part-container').html('<p class="text-muted">No washer data available.</p>');
         }
-
-        washers.forEach(function (washer) {
-            addWasherRow(washer.washer_id, washer.code, parseFloat(washer.qty) || 1, parseFloat(washer.price) || 0, parseFloat(washer.discount) || 0);
-        });
     }
 
-    function addWasherRow(washerId, washerCode, qty, price, discount) {
-        var rowIndex = $('#table-jobcard-washer tbody tr.rowBody').length + 1;
+    function renderWasherTable(data, displayQty, displayPrice, displayDiscount) {
+        displayQty      = parseFloat(displayQty)      || 1;
+        displayPrice    = parseFloat(displayPrice)    || parseFloat(data.price) || 0;
+        displayDiscount = parseFloat(displayDiscount) || 0;
 
-        // Remove placeholder row if present
-        $('#table-jobcard-washer tbody tr:not(.rowBody)').remove();
-
-        var row = $(
+        $('#washer-part-container').html(
+            '<div class="col-md-12">' +
+            '<table class="table table-striped">' +
+            '<thead><tr><th>Washer Package Name</th><th>QTY</th><th>Unit Price (LKR)</th><th>Discount (LKR)</th><th>Total (LKR)</th></tr></thead>' +
+            '<tbody>' +
             '<tr class="rowBody">' +
-            '<td style="display:none;" class="rowID">' + washerId + '</td>' +
-            '<td style="display:none;" class="rowCode">' + washerCode + '</td>' +
-            '<td>' + rowIndex + '</td>' +
-            '<td>Wash (' + washerCode + ')</td>' +
-            '<td><input value="' + qty + '" type="number" class="form-control wash-qty" min="0" step="1"></td>' +
-            '<td><input value="' + price + '" type="number" class="form-control wash-unit-price" min="0" step="0.01"></td>' +
-            '<td><input value="' + discount + '" type="number" class="form-control wash-discount" min="0" step="0.01"></td>' +
+            '<td style="display:none;" class="rowID">'   + data.id   + '</td>' +
+            '<td style="display:none;" class="rowCode">' + data.code + '</td>' +
+            '<td>Wash (' + data.code + ')</td>' +
+            '<td><input value="' + displayQty      + '" type="number" class="form-control wash-qty"></td>' +
+            '<td><input value="' + displayPrice    + '" type="number" class="form-control wash-unit-price"></td>' +
+            '<td><input value="' + displayDiscount + '" type="number" class="form-control wash-discount"></td>' +
             '<td><p class="h6 font-weight-bold wash-total">0.00</p></td>' +
-            '</tr>'
+            '</tr>' +
+            '</tbody></table>' +
+            '<h4><b>Total - LKR <span id="wash-final-total">0.00</span>/=</b></h4>' +
+            '</div>'
         );
 
-        $('#table-jobcard-washer tbody').append(row);
-
+        var row  = $('.rowBody');
         var item = {
             rowCode       : row.find('.rowCode')[0],
             rowID         : row.find('.rowID')[0],
@@ -356,585 +361,723 @@ $(document).ready(function () {
             discountInput : row.find('.wash-discount')[0],
             totalCell     : row.find('.wash-total')[0]
         };
-        items.push(item);
+        items = [item];
 
-        $(item.quantityInput).on('input', calculateWasherTotal);
-        $(item.priceInput).on('input', calculateWasherTotal);
-        $(item.discountInput).on('input', calculateWasherTotal);
+        [item.quantityInput, item.priceInput, item.discountInput].forEach(function (inp) {
+            inp.addEventListener('input', calculateWasherTotal);
+        });
         calculateWasherTotal();
     }
 
-    // Washer search
-    $(document).on('click', '#washer-search-btn', function () {
-        var q = $('#washer-search-input').val().trim();
-        if (!q) return;
-        $.ajax({
-            url: '../api/getwashers.php', type: 'POST',
-            data: { search: q, vehicle_class_id: vehicleClassId }, dataType: 'json',
-            success: function (data) {
-                var $res = $('#washer-search-results').empty().show();
-                if (!data || data.length === 0) { $res.append('<a class="list-group-item disabled">No results found</a>'); return; }
-                data.forEach(function (w) {
-                    $res.append(
-                        '<a class="list-group-item list-group-item-action washer-result-item" href="#" ' +
-                        'data-id="' + w.id + '" data-code="' + (w.code || '') + '" data-price="' + (parseFloat(w.price) || 0) + '">' +
-                        'Wash (' + (w.code || '') + ') — LKR ' + parseFloat(w.price || 0).toFixed(2) + '</a>'
-                    );
-                });
-            }
-        });
-    });
-
-    $(document).on('click', '.washer-result-item', function (e) {
-        e.preventDefault();
-        addWasherRow($(this).data('id'), $(this).data('code'), 1, parseFloat($(this).data('price')) || 0, 0);
-        $('#washer-search-results').hide().empty();
-        $('#washer-search-input').val('');
-    });
-
-    $(document).on('click', function (e) {
-        if (!$(e.target).closest('#washer-search-bar').length) $('#washer-search-results').hide();
-    });
-
     function calculateWasherTotal() {
-        WasherValues = [];
         var grandTotal = 0;
+        WasherValues   = [];
         items.forEach(function (item) {
-            if (!item.quantityInput) return;
-            var qty      = parseFloat($(item.quantityInput).val()) || 0;
-            var price    = parseFloat($(item.priceInput).val())    || 0;
-            var discount = parseFloat($(item.discountInput).val()) || 0;
-            var total    = (qty * price) - discount;
-            $(item.totalCell).text(total.toFixed(2));
+            var quantity = parseFloat(item.quantityInput.value) || 0;
+            var price    = parseFloat(item.priceInput.value)    || 0;
+            var discount = parseFloat(item.discountInput.value) || 0;
+            var total    = (quantity * price) - discount;
+            item.totalCell.textContent = total.toFixed(2);
             grandTotal += total;
-            if (qty > 0) {
-                WasherValues.push({
-                    washerID : $(item.rowID).text(),
-                    code     : $(item.rowCode).text(),
-                    qty      : qty,
-                    price    : price,
-                    discount : discount,
-                    total    : total
-                });
-            }
+            WasherValues.push({ washerID: item.rowID.innerText, price: price, quantity: quantity, discount: discount });
         });
-        $('#washer-grand-total').text(grandTotal.toFixed(2));
-        calculateInvoiceTotal();
+        $('#wash-final-total').text(grandTotal.toFixed(2));
     }
 
     // ==========================================
-    // 6. STEP 4: SERVICE PACKAGES  (add_jobcard style)
+    // 8. STEP 4 — SERVICE PACKAGES
     // ==========================================
-    function populateServicePackages(fuels, filters) {
-        selected_fuel             = [];
-        selected_filter           = [];
-        selected_service_packages = [];
 
-        if ((!fuels || fuels.length === 0) && (!filters || filters.length === 0)) {
-            $('#table-service-packages tbody').html('<tr><td colspan="4" class="text-center text-muted">No service packages added</td></tr>');
-            return;
-        }
+    // Load all available service packages into the dropdown via dedicated API call
+    function loadServicePackageDropdown(savedFuels, savedFilters) {
+        $.ajax({
+            type: 'POST',
+            url: '../api/cmb/servicepackages.php',   // same endpoint add_jobcard uses to populate the select
+            dataType: 'json',
+            success: function (packages) {
+                var $cmb = $('#cmbservicepackages');
+                $cmb.find('option:not(:first)').remove();
 
-        var packageMap = {};
-        (fuels || []).forEach(function (f) {
-            if (!packageMap[f.service_package_id]) packageMap[f.service_package_id] = { fuels: [], filters: [] };
-            packageMap[f.service_package_id].fuels.push({ id: f.fuel_type_id, name: f.fuel_name, price: parseFloat(f.price) });
-            selected_fuel.push({
-                ServicePackageId   : f.service_package_id,
-                ServicePackageName : 'Service Package',
-                ServicePackageCode : 'SP-' + f.service_package_id,
-                price  : parseFloat(f.price),
-                typeId : f.fuel_type_id
+                if (packages && packages.length > 0) {
+                    packages.forEach(function (pkg) {
+                        // Support both possible field names from the API
+                        var pkgName = pkg.package_name || pkg.name || 'Package #' + pkg.id;
+                        $cmb.append('<option value="' + pkg.id + '">' + pkgName + '</option>');
+                    });
+                }
+
+                // Now pre-load the packages that were saved on this job card
+                if (savedFuels && savedFuels.length > 0) {
+                    preLoadSavedServicePackages(savedFuels, savedFilters || []);
+                }
+            },
+            error: function () {
+                console.warn('Could not load service packages dropdown. Trying checksearchvehicle fallback.');
+                // If dedicated endpoint not available, just pre-load saved packages
+                if (savedFuels && savedFuels.length > 0) {
+                    preLoadSavedServicePackages(savedFuels, savedFilters || []);
+                }
+            }
+        });
+    }
+
+    // Pre-load each saved package by calling checkservicepackage.php — this gives us the
+    // real package_name, fuelArry, and filterArry, exactly as add_jobcard does on dropdown change.
+    function preLoadSavedServicePackages(savedFuels, savedFilters) {
+        // Collect unique package IDs from the saved fuels/filters
+        var pkgIds = [];
+        savedFuels.forEach(function (f) {
+            if (pkgIds.indexOf(String(f.service_package_id)) === -1) {
+                pkgIds.push(String(f.service_package_id));
+            }
+        });
+        savedFilters.forEach(function (f) {
+            if (pkgIds.indexOf(String(f.service_package_id)) === -1) {
+                pkgIds.push(String(f.service_package_id));
+            }
+        });
+
+        // For each package ID, call checkservicepackage.php to get real data
+        pkgIds.forEach(function (pkgId) {
+            $.ajax({
+                type: 'POST',
+                url: '../api/checkservicepackage.php',
+                data: { servicePackageId: pkgId },
+                dataType: 'json',
+                success: function (data) {
+                    if (!data || !data.servicePackage || data.servicePackage.length === 0) return;
+
+                    // Find the saved fuel/filter values for this package so we can pre-select them
+                    var pkgSavedFuels   = savedFuels.filter(function (f) { return String(f.service_package_id) === pkgId; });
+                    var pkgSavedFilters = savedFilters.filter(function (f) { return String(f.service_package_id) === pkgId; });
+
+                    var alreadyAdded = selected_service_packages.some(function (sp) { return String(sp.id) === pkgId; });
+                    if (!alreadyAdded) {
+                        counterId += 1;
+                        populateTableServicePackage(data, counterId, pkgSavedFuels, pkgSavedFilters);
+                        selected_service_packages.push(data.servicePackage[0]);
+                    }
+                },
+                error: function () {
+                    console.warn('Failed to load service package #' + pkgId);
+                }
             });
         });
-        (filters || []).forEach(function (f) {
-            if (!packageMap[f.service_package_id]) packageMap[f.service_package_id] = { fuels: [], filters: [] };
-            packageMap[f.service_package_id].filters.push({ id: f.filter_type_id, name: f.filter_name, price: parseFloat(f.price) });
-            selected_filter.push({
-                ServicePackageId   : f.service_package_id,
-                ServicePackageName : 'Service Package',
-                ServicePackageCode : 'SP-' + f.service_package_id,
-                price  : parseFloat(f.price),
-                typeId : f.filter_type_id
+    }
+
+    // Dropdown change — identical to add_jobcard
+    $(document).on('change', '#cmbservicepackages', function () {
+        var servicePackageId = $(this).val();
+        $.ajax({
+            type: 'POST',
+            url: '../api/checkservicepackage.php',
+            data: { servicePackageId: servicePackageId },
+            dataType: 'json',
+            success: function (data) {
+                var foundServicePackage = selected_service_packages.some(function (sp) { return String(sp.id) === String(servicePackageId); });
+                if (foundServicePackage) {
+                    Swal.fire({ icon: 'error', title: 'Error', text: 'Service Package Already Exist' });
+                    return;
+                }
+                counterId += 1;
+                populateTableServicePackage(data, counterId, [], []);
+                selected_service_packages.push(data.servicePackage[0]);
+            }
+        });
+    });
+
+    // Identical to add_jobcard's populateTableServicePackage
+    function populateTableServicePackage(data, cid, preFuels, preFilters) {
+        data.servicePackage.forEach(function (plist) {
+            var row = $([
+                '<tr data-widget="expandable-table" aria-expanded="false">',
+                    '<td class="rowServicePackageID"   style="display:none;">' + plist.id           + '</td>',
+                    '<td class="rowServicePackageCode" style="display:none;">' + plist.code         + '</td>',
+                    '<td class="rowServicePackageName" style="display:none;">' + plist.package_name + '</td>',
+                    '<td>' + cid + '</td>',
+                    '<td>' + plist.package_name + '</td>',
+                    '<td><button data-id="' + plist.id + '" type="button" class="btn bg-gradient-danger deleteServicePackageItem"><i class="fas fa-trash"></i></button></td>',
+                '</tr>',
+                '<tr class="expandable-body">',
+                    '<td colspan="5"><p class="m-0 p-0"><div class="row">',
+
+                    // Fuel type table
+                    '<div class="col-md-6">',
+                    '<table class="table table-sm table-striped"><thead><tr>',
+                    '<th>#</th><th>Lubricant Type</th><th>Price</th><th>Select</th>',
+                    '</tr></thead><tbody>',
+                    data.fuelArry.map(function (fuel, fuelIndex) {
+                        var savedFuel  = preFuels.find(function (pf) { return String(pf.fuel_type_id) === String(fuel.id); });
+                        var fuelPrice  = savedFuel ? savedFuel.price : fuel.price;
+                        var isChecked  = !!savedFuel;
+                        return '<tr>' +
+                            '<td class="rowFuelID"            style="display:none;">' + fuel.id           + '</td>' +
+                            '<td class="rowServicePackageID"  style="display:none;">' + plist.id          + '</td>' +
+                            '<td class="rowServicePackageCode" style="display:none;">' + plist.code       + '</td>' +
+                            '<td class="rowServicePackageName" style="display:none;">' + plist.package_name + '</td>' +
+                            '<td>' + (fuelIndex + 1) + '</td>' +
+                            '<td>' + fuel.name + '</td>' +
+                            '<td><div class="input-group"><div class="input-group-prepend"><span class="input-group-text">LKR</span></div>' +
+                            '<input value="' + fuelPrice + '" type="text" class="form-control FuelPrice">' +
+                            '<div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>' +
+                            '<td><div class="custom-control custom-radio">' +
+                            '<input class="custom-control-input fuel-radio" type="radio"' +
+                            ' id="fuelRadio' + cid + '_' + (fuelIndex + 1) + '"' +
+                            ' name="fuelRadio' + cid + '"' +
+                            (isChecked ? ' checked' : '') + '>' +
+                            '<label for="fuelRadio' + cid + '_' + (fuelIndex + 1) + '" class="custom-control-label"></label>' +
+                            '</div></td>' +
+                            '</tr>';
+                    }).join(''),
+                    '</tbody></table></div>',
+
+                    // Filter type table
+                    '<div class="col-md-6">',
+                    '<table class="table table-sm table-striped"><thead><tr>',
+                    '<th>#</th><th>Filter Type</th><th>Price</th><th>Select</th>',
+                    '</tr></thead><tbody>',
+                    data.filterArry.map(function (filter, filterIndex) {
+                        var savedFilter  = preFilters.find(function (pf) { return String(pf.filter_type_id) === String(filter.id); });
+                        var filterPrice  = savedFilter ? savedFilter.price : filter.price;
+                        var isChecked    = !!savedFilter;
+                        return '<tr>' +
+                            '<td class="rowFilterID"           style="display:none;">' + filter.id         + '</td>' +
+                            '<td class="rowServicePackageID"  style="display:none;">' + plist.id          + '</td>' +
+                            '<td class="rowServicePackageCode" style="display:none;">' + plist.code       + '</td>' +
+                            '<td class="rowServicePackageName" style="display:none;">' + plist.package_name + '</td>' +
+                            '<td>' + (filterIndex + 1) + '</td>' +
+                            '<td>' + filter.name + '</td>' +
+                            '<td><div class="input-group"><div class="input-group-prepend"><span class="input-group-text">LKR</span></div>' +
+                            '<input value="' + filterPrice + '" type="text" class="form-control FilterPrice">' +
+                            '<div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>' +
+                            '<td><div class="custom-control custom-radio">' +
+                            '<input class="custom-control-input filter-radio" type="radio"' +
+                            ' id="filterRadio' + cid + '_' + (filterIndex + 1) + '"' +
+                            ' name="filterRadio' + cid + '"' +
+                            (isChecked ? ' checked' : '') + '>' +
+                            '<label for="filterRadio' + cid + '_' + (filterIndex + 1) + '" class="custom-control-label"></label>' +
+                            '</div></td>' +
+                            '</tr>';
+                    }).join(''),
+                    '</tbody></table></div>',
+
+                    '</div></p></td>',
+                '</tr>'
+            ].join(''));
+
+            tableBodyServicePackage.append(row);
+
+            // Track references (same as add_jobcard)
+            service_packages_items.push({
+                rowServicePackageID   : row.find('.rowServicePackageID')[0],
+                rowServicePackageCode : row.find('.rowServicePackageCode')[0],
+                rowServicePackageName : row.find('.rowServicePackageName')[0]
             });
-        });
+            service_packages_items_fuel.push({
+                rowServicePackageID   : row.find('.rowServicePackageID')[0],
+                rowServicePackageCode : row.find('.rowServicePackageCode')[0],
+                rowServicePackageName : row.find('.rowServicePackageName')[0],
+                rowFuelID             : row.find('.rowFuelID')[0],
+                FuelPrice             : row.find('.FuelPrice')[0]
+            });
+            service_packages_items_filter.push({
+                rowServicePackageID   : row.find('.rowServicePackageID')[0],
+                rowServicePackageCode : row.find('.rowServicePackageCode')[0],
+                rowServicePackageName : row.find('.rowServicePackageName')[0],
+                rowFilterID           : row.find('.rowFilterID')[0],
+                FilterPrice           : row.find('.FilterPrice')[0]
+            });
 
-        var html = '';
-        var index = 1;
-        Object.keys(packageMap).forEach(function (pkgId) {
-            var pkg = packageMap[pkgId];
-            var total = 0; var itemsList = [];
-            pkg.fuels.forEach(function (f)   { itemsList.push(f.name); total += f.price; });
-            pkg.filters.forEach(function (f) { itemsList.push(f.name); total += f.price; });
-            html += '<tr><td>' + index++ + '</td>' +
-                    '<td>Service Package #' + pkgId + '<br><small class="text-muted">' + itemsList.join(', ') + '</small></td>' +
-                    '<td><strong>LKR ' + total.toFixed(2) + '</strong></td>' +
-                    '<td><button type="button" class="btn btn-sm bg-gradient-danger sp-remove-btn" data-pkgid="' + pkgId + '"><i class="fas fa-trash"></i></button></td></tr>';
-            selected_service_packages.push({ id: pkgId });
+            // Trigger change on pre-checked radios so selected_fuel / selected_filter arrays are populated
+            row.find('.fuel-radio:checked').trigger('change');
+            row.find('.filter-radio:checked').trigger('change');
         });
-
-        $('#table-service-packages tbody').html(html);
-        calculateServicePackageTotal();
     }
 
-    // Service package search
-    $(document).on('click', '#sp-search-btn', function () {
-        var q = $('#sp-search-input').val().trim();
-        if (!q) return;
-        $.ajax({
-            url: '../api/getservicepackages.php', type: 'POST', data: { search: q }, dataType: 'json',
-            success: function (data) {
-                var $res = $('#sp-search-results').empty().show();
-                if (!data || data.length === 0) { $res.append('<a class="list-group-item disabled">No results found</a>'); return; }
-                data.forEach(function (pkg) {
-                    $res.append(
-                        '<a class="list-group-item list-group-item-action sp-result-item" href="#" ' +
-                        'data-id="' + pkg.id + '" data-code="' + (pkg.code || '') + '" data-name="' + (pkg.name || '') + '">' +
-                        '<b>' + (pkg.code || '') + '</b> — ' + (pkg.name || '') + ' (LKR ' + parseFloat(pkg.total_price || 0).toFixed(2) + ')</a>'
-                    );
-                });
-            }
-        });
-    });
+    // Fuel radio — identical to add_jobcard
+    $(document).on('change', '.fuel-radio', function () {
+        if ($(this).is(':checked')) {
+            var ServicePackageId   = $(this).closest('tr').find('.rowServicePackageID').text();
+            var selectedPrice      = $(this).closest('tr').find('.FuelPrice').val();
+            var ServicePackageName = $(this).closest('tr').find('.rowServicePackageName').text();
+            var ServicePackageCode = $(this).closest('tr').find('.rowServicePackageCode').text();
+            var selectedId         = $(this).closest('tr').find('.rowFuelID').text();
 
-    $(document).on('click', '.sp-result-item', function (e) {
-        e.preventDefault();
-        var pkgId = $(this).data('id'), pkgCode = $(this).data('code'), pkgName = $(this).data('name');
-        $.ajax({
-            url: '../api/getservicepackagedetails.php', type: 'POST', data: { package_id: pkgId }, dataType: 'json',
-            success: function (data) {
-                selected_fuel   = selected_fuel.filter(function (f)   { return f.ServicePackageId != pkgId; });
-                selected_filter = selected_filter.filter(function (f) { return f.ServicePackageId != pkgId; });
-                (data.fuels || []).forEach(function (f) {
-                    selected_fuel.push({ ServicePackageId: pkgId, ServicePackageCode: pkgCode || ('SP-' + pkgId), ServicePackageName: pkgName || 'Service Package', typeId: f.fuel_type_id || f.typeId, price: parseFloat(f.price) || 0 });
-                });
-                (data.filters || []).forEach(function (f) {
-                    selected_filter.push({ ServicePackageId: pkgId, ServicePackageCode: pkgCode || ('SP-' + pkgId), ServicePackageName: pkgName || 'Service Package', typeId: f.filter_type_id || f.typeId, price: parseFloat(f.price) || 0 });
-                });
-                if (!selected_service_packages.find(function (p) { return p.id == pkgId; })) selected_service_packages.push({ id: pkgId });
-                refreshServicePackageTable();
-                $('#sp-search-results').hide().empty();
-                $('#sp-search-input').val('');
-            }
-        });
-    });
-
-    $(document).on('click', '.sp-remove-btn', function () {
-        var pkgId = $(this).data('pkgid');
-        selected_fuel             = selected_fuel.filter(function (f)   { return f.ServicePackageId != pkgId; });
-        selected_filter           = selected_filter.filter(function (f) { return f.ServicePackageId != pkgId; });
-        selected_service_packages = selected_service_packages.filter(function (p) { return p.id != pkgId; });
-        refreshServicePackageTable();
-    });
-
-    $(document).on('click', function (e) {
-        if (!$(e.target).closest('#sp-search-bar').length) $('#sp-search-results').hide();
-    });
-
-    function refreshServicePackageTable() {
-        var pkgMap = {};
-        selected_fuel.forEach(function (f)   { if (!pkgMap[f.ServicePackageId]) pkgMap[f.ServicePackageId] = { fuels: [], filters: [] }; pkgMap[f.ServicePackageId].fuels.push(f); });
-        selected_filter.forEach(function (f) { if (!pkgMap[f.ServicePackageId]) pkgMap[f.ServicePackageId] = { fuels: [], filters: [] }; pkgMap[f.ServicePackageId].filters.push(f); });
-        var html = ''; var index = 1;
-        Object.keys(pkgMap).forEach(function (pkgId) {
-            var pkg = pkgMap[pkgId]; var total = 0; var itemsList = [];
-            pkg.fuels.forEach(function (f)   { total += f.price; itemsList.push('Fuel'); });
-            pkg.filters.forEach(function (f) { total += f.price; itemsList.push('Filter'); });
-            html += '<tr><td>' + index++ + '</td>' +
-                    '<td>Service Package #' + pkgId + '<br><small class="text-muted">' + itemsList.join(', ') + '</small></td>' +
-                    '<td><strong>LKR ' + total.toFixed(2) + '</strong></td>' +
-                    '<td><button type="button" class="btn btn-sm bg-gradient-danger sp-remove-btn" data-pkgid="' + pkgId + '"><i class="fas fa-trash"></i></button></td></tr>';
-        });
-        if (!html) html = '<tr><td colspan="4" class="text-center text-muted">No service packages. Search to add one.</td></tr>';
-        $('#table-service-packages tbody').html(html);
-        calculateServicePackageTotal();
-    }
-
-    function calculateServicePackageTotal() {
-        var grandTotal = 0;
-        selected_fuel.forEach(function (f)   { grandTotal += f.price; });
-        selected_filter.forEach(function (f) { grandTotal += f.price; });
-        $('#service-package-grand-total').text(grandTotal.toFixed(2));
-        calculateInvoiceTotal();
-    }
-
-    // ==========================================
-    // 7. STEP 5: REPAIRS  (add_jobcard style)
-    // ==========================================
-    function populateRepairs(repairs) {
-        repair_items     = [];
-        selected_repairs = [];
-        $('#table-jobcard-repair tbody').empty();
-
-        if (!repairs || repairs.length === 0) {
-            $('#table-jobcard-repair tbody').html('<tr><td colspan="10" class="text-center text-muted">No repairs added</td></tr>');
-            return;
+            selected_fuel = selected_fuel.filter(function (item) { return item.ServicePackageId !== ServicePackageId; });
+            selected_fuel.push({ ServicePackageId: ServicePackageId, ServicePackageName: ServicePackageName, ServicePackageCode: ServicePackageCode, price: selectedPrice, typeId: selectedId });
+            calculateServicePackageTotal();
         }
-        repairs.forEach(function (repair, index) {
-            addRepairRow(repair.repair_id, repair.code, repair.name, parseFloat(repair.hours) || 0, parseFloat(repair.unit_price) || 0, parseFloat(repair.discount) || 0, index + 1);
+    });
+
+    // Filter radio — identical to add_jobcard
+    $(document).on('change', '.filter-radio', function () {
+        if ($(this).is(':checked')) {
+            var ServicePackageId   = $(this).closest('tr').find('.rowServicePackageID').text();
+            var selectedPrice      = $(this).closest('tr').find('.FilterPrice').val();
+            var selectedId         = $(this).closest('tr').find('.rowFilterID').text();
+            var ServicePackageCode = $(this).closest('tr').find('.rowServicePackageCode').text();
+            var ServicePackageName = $(this).closest('tr').find('.rowServicePackageName').text();
+
+            selected_filter = selected_filter.filter(function (item) { return item.ServicePackageId !== ServicePackageId; });
+            selected_filter.push({ ServicePackageId: ServicePackageId, ServicePackageName: ServicePackageName, ServicePackageCode: ServicePackageCode, price: selectedPrice, typeId: selectedId });
+            calculateServicePackageTotal();
+        }
+    });
+
+$(document).on('input', '.FuelPrice', function () {
+    var $row             = $(this).closest('tr');
+    var ServicePackageId = $row.find('.rowServicePackageID').text();
+    var newPrice         = $(this).val();
+
+    var existingIdx = selected_fuel.findIndex(function (item) {
+        return item.ServicePackageId === ServicePackageId;
+    });
+    if (existingIdx !== -1) {
+        selected_fuel[existingIdx].price = newPrice;  // keep array in sync for submit
+    }
+    calculateServicePackageTotal(); // always recalculate from DOM
+});
+
+$(document).on('input', '.FilterPrice', function () {
+    var $row             = $(this).closest('tr');
+    var ServicePackageId = $row.find('.rowServicePackageID').text();
+    var newPrice         = $(this).val();
+
+    var existingIdx = selected_filter.findIndex(function (item) {
+        return item.ServicePackageId === ServicePackageId;
+    });
+    if (existingIdx !== -1) {
+        selected_filter[existingIdx].price = newPrice; // keep array in sync for submit
+    }
+    calculateServicePackageTotal(); // always recalculate from DOM
+});
+
+    // Delete service package — identical to add_jobcard
+    $('#tableServicePackage').on('click', '.deleteServicePackageItem', function () {
+        var listItem = String($(this).data('id'));
+
+        var idx = selected_service_packages.findIndex(function (i) { return String(i.id) === listItem; });
+        if (idx !== -1) selected_service_packages.splice(idx, 1);
+
+        selected_fuel   = selected_fuel.filter(function (i)   { return String(i.ServicePackageId) !== listItem; });
+        selected_filter = selected_filter.filter(function (i) { return String(i.ServicePackageId) !== listItem; });
+
+        $(this).closest('tr').next('.expandable-body').remove();
+        $(this).closest('tr').remove();
+        calculateServicePackageTotal();
+    });
+
+   function calculateServicePackageTotal() {
+    var totalAmount = 0;
+
+    // Sum all checked fuel radios' price inputs
+    $('#table-jobcard-service-packages .fuel-radio:checked').each(function () {
+        var price = parseFloat($(this).closest('tr').find('.FuelPrice').val()) || 0;
+        totalAmount += price;
+    });
+
+    // Sum all checked filter radios' price inputs
+    $('#table-jobcard-service-packages .filter-radio:checked').each(function () {
+        var price = parseFloat($(this).closest('tr').find('.FilterPrice').val()) || 0;
+        totalAmount += price;
+    });
+
+    $('#service-package-total').text(totalAmount.toFixed(2));
+}
+
+    // ==========================================
+    // 9. STEP 5 — REPAIRS
+    // ==========================================
+    function loadRepairDropdown(savedRepairs) {
+        $.ajax({
+            type: 'POST',
+            url: '../api/cmb/repairlist.php',   // dedicated endpoint that lists all repairs for the dropdown
+            data: { vehicleClassId: vehicleClassId },
+            dataType: 'json',
+            success: function (repairs) {
+                var $cmb = $('#cmbrepair');
+                $cmb.find('option:not(:first)').remove();
+                if (repairs && repairs.length > 0) {
+                    repairs.forEach(function (r) {
+                        var name = r.name || r.repair_name || 'Repair #' + r.id;
+                        $cmb.append('<option value="' + r.id + '">' + name + '</option>');
+                    });
+                }
+                // Pre-load saved repairs
+                preLoadSavedRepairs(savedRepairs);
+            },
+            error: function () {
+                console.warn('Could not load repairs dropdown.');
+                preLoadSavedRepairs(savedRepairs);
+            }
         });
     }
 
-    function addRepairRow(repairId, repairCode, repairName, hours, unitPrice, discount, rowNum) {
-        var index = rowNum || ($('#table-jobcard-repair tbody tr[data-repair-row]').length + 1);
-        $('#table-jobcard-repair tbody tr:not([data-repair-row])').remove();
-
-        var row = $(
-            '<tr data-repair-row="1">' +
-            '<td class="rowID" style="display:none;">' + repairId + '</td>' +
-            '<td class="rowCode" style="display:none;">' + repairCode + '</td>' +
-            '<td class="rowName" style="display:none;">' + repairName + '</td>' +
-            '<td>' + index + '</td>' +
-            '<td>' + repairName + '</td>' +
-            '<td><input value="' + hours + '" type="number" class="form-control hours" min="0" step="0.5"></td>' +
-            '<td><input value="' + unitPrice + '" type="number" class="form-control unit-price" min="0" step="0.01"></td>' +
-            '<td><input value="' + discount + '" type="number" class="form-control discount" min="0" step="0.01"></td>' +
-            '<td><p class="h6 repair-total">0.00</p></td>' +
-            '<td><button data-id="' + repairId + '" type="button" class="btn btn-sm bg-gradient-danger deleteRepairItem"><i class="fas fa-trash"></i></button></td>' +
-            '</tr>'
-        );
-        $('#table-jobcard-repair tbody').append(row);
-
-        var item = {
-            rowID         : row.find('.rowID')[0],
-            rowCode       : row.find('.rowCode')[0],
-            rowName       : row.find('.rowName')[0],
-            HoursInput    : row.find('.hours')[0],
-            UnitPriceInput: row.find('.unit-price')[0],
-            discountInput : row.find('.discount')[0],
-            totalCell     : row.find('.repair-total')[0]
-        };
-        repair_items.push(item);
-        selected_repairs.push({ id: repairId });
-
-        $(item.HoursInput).on('input', calculateRepairTotal);
-        $(item.UnitPriceInput).on('input', calculateRepairTotal);
-        $(item.discountInput).on('input', calculateRepairTotal);
+    function preLoadSavedRepairs(savedRepairs) {
+        if (!savedRepairs || savedRepairs.length === 0) return;
+        savedRepairs.forEach(function (repair) {
+            var fakeData = [{
+                id    : repair.repair_id,
+                code  : repair.code,
+                name  : repair.name,
+                price : repair.unit_price
+            }];
+            var alreadyAdded = selected_repairs.some(function (r) { return String(r.id) === String(repair.repair_id); });
+            if (!alreadyAdded) {
+                populateTableRepairs(fakeData, repair.hours, repair.discount);
+                selected_repairs.push(fakeData[0]);
+            }
+        });
         calculateRepairTotal();
     }
 
-    // Repair search
-    $(document).on('click', '#repair-search-btn', function () {
-        var q = $('#repair-search-input').val().trim();
-        if (!q) return;
+    // Dropdown change — identical to add_jobcard
+    $(document).on('change', '#cmbrepair', function () {
+        var repairId = $(this).val();
         $.ajax({
-            url: '../api/getrepairs.php', type: 'POST', data: { search: q }, dataType: 'json',
+            type: 'POST',
+            url: '../api/checkrepair.php',
+            data: { repairId: repairId, vehicleClassId: vehicleClassId },
+            dataType: 'json',
             success: function (data) {
-                var $res = $('#repair-search-results').empty().show();
-                if (!data || data.length === 0) { $res.append('<a class="list-group-item disabled">No results found</a>'); return; }
-                data.forEach(function (r) {
-                    $res.append(
-                        '<a class="list-group-item list-group-item-action repair-result-item" href="#" ' +
-                        'data-id="' + r.id + '" data-code="' + (r.code || '') + '" data-name="' + (r.name || '') + '" data-price="' + (parseFloat(r.price) || 0) + '">' +
-                        '<b>' + (r.code || '') + '</b> — ' + (r.name || '') + ' (LKR ' + parseFloat(r.price || 0).toFixed(2) + ')</a>'
-                    );
-                });
+                if (!data || data.length === 0) return;
+                var foundRepair = selected_repairs.some(function (r) { return String(r.id) === String(repairId); });
+                if (foundRepair) {
+                    Swal.fire({ icon: 'error', title: 'Error', text: 'Repair Already Exist' });
+                    return;
+                }
+                populateTableRepairs(data, 1, 0);
+                selected_repairs.push(data[0]);
             }
         });
     });
 
-    $(document).on('click', '.repair-result-item', function (e) {
-        e.preventDefault();
-        var $el = $(this);
-        if (selected_repairs.find(function (r) { return r.id == $el.data('id'); })) {
-            Swal.fire('Warning', 'This repair is already added.', 'warning');
-            $('#repair-search-results').hide().empty(); return;
-        }
-        var nextIndex = $('#table-jobcard-repair tbody tr[data-repair-row]').length + 1;
-        addRepairRow($el.data('id'), $el.data('code'), $el.data('name'), 1, parseFloat($el.data('price')) || 0, 0, nextIndex);
-        $('#repair-search-results').hide().empty();
-        $('#repair-search-input').val('');
-    });
+    function populateTableRepairs(data, defaultHours, defaultDiscount) {
+        defaultHours    = (defaultHours    !== undefined && defaultHours    !== null) ? defaultHours    : 1;
+        defaultDiscount = (defaultDiscount !== undefined && defaultDiscount !== null) ? defaultDiscount : 0;
 
-    $(document).on('click', function (e) {
-        if (!$(e.target).closest('#repair-search-bar').length) $('#repair-search-results').hide();
-    });
+        data.forEach(function (plist) {
+            var row = $('<tr>');
+            row.append('<td class="rowID"   style="display:none;">' + plist.id   + '</td>');
+            row.append('<td class="rowCode" style="display:none;">' + (plist.code || '') + '</td>');
+            row.append('<td class="rowName" style="display:none;">' + plist.name + '</td>');
+            row.append('<td>' + (repair_items.length + 1) + '.</td>');
+            row.append('<td>' + plist.name + '</td>');
+            row.append(
+                '<td><div class="input-group"><input value="' + defaultHours + '" type="text" class="form-control hours">' +
+                '<div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>'
+            );
+            row.append(
+                '<td><div class="input-group"><input value="' + (plist.price || 0) + '" type="text" class="form-control unit-price">' +
+                '<div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>'
+            );
+            row.append(
+                '<td><div class="input-group"><input value="' + defaultDiscount + '" type="text" class="form-control discount">' +
+                '<div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>'
+            );
+            row.append('<td><p class="h6 repair-total">0.00</p></td>');
+            row.append('<td><button data-id="' + plist.id + '" type="button" class="btn bg-gradient-danger deleteRepairItem"><i class="fas fa-trash"></i></button></td>');
+            tableBodyRepair.append(row);
 
-    $(document).on('click', '.deleteRepairItem', function () {
-        var repairId = $(this).data('id');
-        var $btn = $(this);
-        Swal.fire({
-            title: 'Are you sure?', text: 'Do you want to remove this repair item?', icon: 'warning',
-            showCancelButton: true, confirmButtonColor: '#3085d6', cancelButtonColor: '#d33', confirmButtonText: 'Yes, remove it!'
-        }).then(function (result) {
-            if (result.isConfirmed) {
-                $btn.closest('tr').remove();
-                repair_items     = repair_items.filter(function (item) { return $(item.rowID).text() != repairId; });
-                selected_repairs = selected_repairs.filter(function (r) { return r.id != repairId; });
-                $('#table-jobcard-repair tbody tr[data-repair-row]').each(function (i) { $(this).find('td:eq(3)').text(i + 1); });
-                calculateRepairTotal();
-                Swal.fire('Removed!', 'Repair item has been removed.', 'success');
-            }
+            var item = {
+                rowCode        : row.find('.rowCode')[0],
+                rowName        : row.find('.rowName')[0],
+                rowID          : row.find('.rowID')[0],
+                HoursInput     : row.find('.hours')[0],
+                UnitPriceInput : row.find('.unit-price')[0],
+                discountInput  : row.find('.discount')[0],
+                totalCell      : row.find('.repair-total')[0]
+            };
+            repair_items.push(item);
+
+            item.HoursInput.addEventListener('input',     calculateRepairTotal);
+            item.UnitPriceInput.addEventListener('input', calculateRepairTotal);
+            item.discountInput.addEventListener('input',  calculateRepairTotal);
+            calculateRepairTotal();
         });
-    });
+    }
 
     function calculateRepairTotal() {
-        var grandTotal = 0;
+        var totalAmount = 0;
         repair_items.forEach(function (item) {
-            var hours    = parseFloat($(item.HoursInput).val())     || 0;
-            var price    = parseFloat($(item.UnitPriceInput).val()) || 0;
-            var discount = parseFloat($(item.discountInput).val())  || 0;
-            var total    = (hours * price) - discount;
-            $(item.totalCell).text(total.toFixed(2));
-            grandTotal += total;
+            var hours     = parseFloat(item.HoursInput.value)     || 0;
+            var unitPrice = parseFloat(item.UnitPriceInput.value) || 0;
+            var discount  = parseFloat(item.discountInput.value)  || 0;
+            var itemTotal = hours * unitPrice - discount;
+            item.totalCell.textContent = itemTotal.toFixed(2);
+            totalAmount += itemTotal;
         });
-        $('#repair-grand-total').text(grandTotal.toFixed(2));
-        calculateInvoiceTotal();
+        $('#repair-final-total').text(totalAmount.toFixed(2));
     }
 
-    // ==========================================
-    // 8. STEP 6: PRODUCTS  (add_jobcard style)
-    // ==========================================
-    function populateProducts(products) {
-        products_items    = [];
-        selected_products = [];
-        $('#table-jobcard-products tbody').empty();
+    $('table.repairTable').on('click', '.deleteRepairItem', function () {
+        var listItem = String($(this).data('id'));
+        var idx = selected_repairs.findIndex(function (i) { return String(i.id) === listItem; });
+        if (idx !== -1) selected_repairs.splice(idx, 1);
+        var itemIdx = repair_items.findIndex(function (i) { return String(i.rowID.innerText) === listItem; });
+        if (itemIdx !== -1) repair_items.splice(itemIdx, 1);
+        $(this).closest('tr').remove();
+        calculateRepairTotal();
+    });
 
-        if (!products || products.length === 0) {
-            $('#table-jobcard-products tbody').html('<tr><td colspan="10" class="text-center text-muted">No products added</td></tr>');
-            return;
-        }
-        products.forEach(function (product, index) {
-            addProductRow(product.product_id, product.code, product.product_name, parseFloat(product.qty) || 1, parseFloat(product.price) || 0, parseFloat(product.discount) || 0, index + 1);
+    // ==========================================
+    // 10. STEP 6 — PRODUCTS
+    // ==========================================
+    function loadProductDropdown(savedProducts) {
+        $.ajax({
+            type: 'POST',
+            url: '../api/cmb/productslist.php',   // dedicated endpoint that lists all products for the dropdown
+            dataType: 'json',
+            success: function (products) {
+                var $cmb = $('#cmbproducts');
+                $cmb.find('option:not(:first)').remove();
+                if (products && products.length > 0) {
+                    products.forEach(function (p) {
+                        var name = p.product_name || p.name || 'Product #' + p.id;
+                        $cmb.append('<option value="' + p.id + '">' + name + '</option>');
+                    });
+                }
+                preLoadSavedProducts(savedProducts);
+            },
+            error: function () {
+                console.warn('Could not load products dropdown.');
+                preLoadSavedProducts(savedProducts);
+            }
         });
     }
 
-    function addProductRow(productId, productCode, productName, qty, price, discount, rowNum) {
-        var index = rowNum || ($('#table-jobcard-products tbody tr[data-product-row]').length + 1);
-        $('#table-jobcard-products tbody tr:not([data-product-row])').remove();
-
-        var row = $(
-            '<tr data-product-row="1">' +
-            '<td class="rowProductID" style="display:none;">' + productId + '</td>' +
-            '<td class="rowProductCode" style="display:none;">' + productCode + '</td>' +
-            '<td class="rowProductName" style="display:none;">' + productName + '</td>' +
-            '<td>' + index + '</td>' +
-            '<td>' + productName + '</td>' +
-            '<td><input value="' + qty + '" type="number" class="form-control quantityQty" min="0" step="1"></td>' +
-            '<td><input value="' + price + '" type="number" class="form-control unitPriceProduct" min="0" step="0.01"></td>' +
-            '<td><input value="' + discount + '" type="number" class="form-control discountProduct" min="0" step="0.01"></td>' +
-            '<td><p class="h6 totalProduct">0.00</p></td>' +
-            '<td><button data-id="' + productId + '" type="button" class="btn btn-sm bg-gradient-danger deleteProductsItem"><i class="fas fa-trash"></i></button></td>' +
-            '</tr>'
-        );
-        $('#table-jobcard-products tbody').append(row);
-
-        var item = {
-            rowID         : row.find('.rowProductID')[0],
-            rowCode       : row.find('.rowProductCode')[0],
-            rowName       : row.find('.rowProductName')[0],
-            quantityInput : row.find('.quantityQty')[0],
-            priceInput    : row.find('.unitPriceProduct')[0],
-            discountInput : row.find('.discountProduct')[0],
-            totalCell     : row.find('.totalProduct')[0]
-        };
-        products_items.push(item);
-        selected_products.push({ id: productId });
-
-        $(item.quantityInput).on('input', calculateProductTotal);
-        $(item.priceInput).on('input', calculateProductTotal);
-        $(item.discountInput).on('input', calculateProductTotal);
+    function preLoadSavedProducts(savedProducts) {
+        if (!savedProducts || savedProducts.length === 0) return;
+        savedProducts.forEach(function (product) {
+            var fakeData = [{
+                id           : product.product_id,
+                code         : product.code,
+                product_name : product.product_name,
+                quantity     : product.qty,
+                selling_price: product.price
+            }];
+            var alreadyAdded = selected_products.some(function (p) { return String(p.id) === String(product.product_id); });
+            if (!alreadyAdded) {
+                populateTableProducts(fakeData, product.qty, product.discount);
+                selected_products.push(fakeData[0]);
+            }
+        });
         calculateProductTotal();
     }
 
-    // Product search
-    $(document).on('click', '#product-search-btn', function () {
-        var q = $('#product-search-input').val().trim();
-        if (!q) return;
+    // Dropdown change — identical to add_jobcard
+    $(document).on('change', '#cmbproducts', function () {
+        var productId = $(this).val();
         $.ajax({
-            url: '../api/getproducts.php', type: 'POST', data: { search: q }, dataType: 'json',
+            type: 'POST',
+            url: '../api/checkproduct.php',
+            data: { productId: productId },
+            dataType: 'json',
             success: function (data) {
-                var $res = $('#product-search-results').empty().show();
-                if (!data || data.length === 0) { $res.append('<a class="list-group-item disabled">No results found</a>'); return; }
-                data.forEach(function (p) {
-                    $res.append(
-                        '<a class="list-group-item list-group-item-action product-result-item" href="#" ' +
-                        'data-id="' + p.id + '" data-code="' + (p.code || '') + '" data-name="' + (p.name || p.product_name || '') + '" data-price="' + (parseFloat(p.price) || 0) + '">' +
-                        '<b>' + (p.code || '') + '</b> — ' + (p.name || p.product_name || '') + ' (LKR ' + parseFloat(p.price || 0).toFixed(2) + ')</a>'
-                    );
-                });
+                if (!data || data.length === 0) return;
+                var foundSales = selected_products.some(function (p) { return String(p.id) === String(productId); });
+                if (foundSales) {
+                    Swal.fire({ icon: 'error', title: 'Error', text: 'Product Already Exist' });
+                    return;
+                }
+                populateTableProducts(data, data[0].quantity, 0);
+                selected_products.push(data[0]);
             }
         });
     });
 
-    $(document).on('click', '.product-result-item', function (e) {
-        e.preventDefault();
-        var $el = $(this);
-        if (selected_products.find(function (p) { return p.id == $el.data('id'); })) {
-            Swal.fire('Warning', 'This product is already added.', 'warning');
-            $('#product-search-results').hide().empty(); return;
-        }
-        var nextIndex = $('#table-jobcard-products tbody tr[data-product-row]').length + 1;
-        addProductRow($el.data('id'), $el.data('code'), $el.data('name'), 1, parseFloat($el.data('price')) || 0, 0, nextIndex);
-        $('#product-search-results').hide().empty();
-        $('#product-search-input').val('');
-    });
+    function populateTableProducts(data, defaultQty, defaultDiscount) {
+        defaultQty      = (defaultQty      !== undefined && defaultQty      !== null) ? defaultQty      : 1;
+        defaultDiscount = (defaultDiscount !== undefined && defaultDiscount !== null) ? defaultDiscount : 0;
 
-    $(document).on('click', function (e) {
-        if (!$(e.target).closest('#product-search-bar').length) $('#product-search-results').hide();
-    });
+        data.forEach(function (plist) {
+            var row = $('<tr>');
+            row.append('<td class="rowProductID"   style="display:none;">' + plist.id           + '</td>');
+            row.append('<td class="rowProductCode" style="display:none;">' + (plist.code || '') + '</td>');
+            row.append('<td class="rowProductName" style="display:none;">' + plist.product_name  + '</td>');
+            row.append('<td>' + (products_items.length + 1) + '.</td>');
+            row.append('<td>' + plist.product_name + '</td>');
+            row.append(
+                '<td><div class="input-group"><input value="' + defaultQty + '" type="text" class="form-control quantityQty">' +
+                '<div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>'
+            );
+            row.append(
+                '<td><div class="input-group"><input value="' + (plist.selling_price || 0) + '" type="text" class="form-control unitPriceProduct">' +
+                '<div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>'
+            );
+            row.append(
+                '<td><div class="input-group"><input value="' + defaultDiscount + '" type="text" class="form-control discountProduct">' +
+                '<div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>'
+            );
+            row.append('<td><p class="h6 totalProduct">0.00</p></td>');
+            row.append('<td><button data-id="' + plist.id + '" type="button" class="btn bg-gradient-danger deleteProductsItem"><i class="fas fa-trash"></i></button></td>');
+            tableBodyProducts.append(row);
 
-    $(document).on('click', '.deleteProductsItem', function () {
-        var productId = $(this).data('id');
-        var $btn = $(this);
-        Swal.fire({
-            title: 'Are you sure?', text: 'Do you want to remove this product?', icon: 'warning',
-            showCancelButton: true, confirmButtonColor: '#3085d6', cancelButtonColor: '#d33', confirmButtonText: 'Yes, remove it!'
-        }).then(function (result) {
-            if (result.isConfirmed) {
-                $btn.closest('tr').remove();
-                products_items    = products_items.filter(function (item) { return $(item.rowID).text() != productId; });
-                selected_products = selected_products.filter(function (p) { return p.id != productId; });
-                $('#table-jobcard-products tbody tr[data-product-row]').each(function (i) { $(this).find('td:eq(3)').text(i + 1); });
-                calculateProductTotal();
-                Swal.fire('Removed!', 'Product has been removed.', 'success');
-            }
+            var item = {
+                rowID         : row.find('.rowProductID')[0],
+                rowCode       : row.find('.rowProductCode')[0],
+                rowName       : row.find('.rowProductName')[0],
+                quantityInput : row.find('.quantityQty')[0],
+                priceInput    : row.find('.unitPriceProduct')[0],
+                discountInput : row.find('.discountProduct')[0],
+                totalCell     : row.find('.totalProduct')[0]
+            };
+            products_items.push(item);
+
+            item.quantityInput.addEventListener('input', calculateProductTotal);
+            item.priceInput.addEventListener('input',    calculateProductTotal);
+            item.discountInput.addEventListener('input', calculateProductTotal);
+            calculateProductTotal();
         });
-    });
-
-    function calculateProductTotal() {
-        var grandTotal = 0;
-        products_items.forEach(function (item) {
-            var qty      = parseFloat($(item.quantityInput).val()) || 0;
-            var price    = parseFloat($(item.priceInput).val())    || 0;
-            var discount = parseFloat($(item.discountInput).val()) || 0;
-            var total    = (qty * price) - discount;
-            $(item.totalCell).text(total.toFixed(2));
-            grandTotal += total;
-        });
-        $('#product-grand-total').text(grandTotal.toFixed(2));
-        calculateInvoiceTotal();
     }
 
+    function calculateProductTotal() {
+        var totalAmount = 0;
+        products_items.forEach(function (item) {
+            var quantity  = parseFloat(item.quantityInput.value) || 0;
+            var price     = parseFloat(item.priceInput.value)    || 0;
+            var discount  = parseFloat(item.discountInput.value) || 0;
+            var itemTotal = quantity * price - discount;
+            item.totalCell.textContent = itemTotal.toFixed(2);
+            totalAmount += itemTotal;
+        });
+        $('#total-final-product').text(totalAmount.toFixed(2));
+    }
+
+    $('table.productsTable').on('click', '.deleteProductsItem', function () {
+        var listItem = String($(this).data('id'));
+        var idx = selected_products.findIndex(function (i) { return String(i.id) === listItem; });
+        if (idx !== -1) selected_products.splice(idx, 1);
+        var itemIdx = products_items.findIndex(function (i) { return String(i.rowID.innerText) === listItem; });
+        if (itemIdx !== -1) products_items.splice(itemIdx, 1);
+        $(this).closest('tr').remove();
+        calculateProductTotal();
+    });
+
     // ==========================================
-    // 9. STEP 7: INVOICE
+    // 11. STEP 7 — INVOICE
     // ==========================================
     function getInvoiceDetails(vehicleData, stationData) {
         if (!vehicleData || !vehicleData.length || !stationData || !stationData.length) return;
         var jc = vehicleData[0], station = stationData[0];
 
-        $('#station-logo').attr('src', station.logo ? '../uploads/stations/' + station.logo : '../dist/img/system/logo_pistona.png');
-        $('#station-name').text(station.service_name || 'Station Name');
-        $('#station-address').text([station.address, station.street, station.city].filter(Boolean).join(', ') || 'Station Address');
-        $('#station-contact').text('Tel: ' + (station.phone || 'N/A') + ' | Fax: ' + (station.other_phone || 'N/A'));
-        $('#station-email').text('Email: ' + (station.email || 'N/A'));
+        $('#invoice-code').text(invoiceCode);
+        $('#invoice-date').text(new Date().toLocaleDateString());
+        $('#in_vat_input').val(vat);   
+        $('#invoice-mileage').text(current_mileage + ' KM');
 
         $('#invoice-customer-info').html(
-            '<p class="mb-1"><strong>Customer Name:</strong> ' + jc.first_name + ' ' + jc.last_name + '</p>' +
+            '<p class="mb-1"><strong>Customer:</strong> ' + jc.first_name + ' ' + jc.last_name + '</p>' +
             '<p class="mb-1"><strong>Phone:</strong> +94 ' + removeLeadingZeros(jc.phone) + '</p>' +
             '<p class="mb-1"><strong>Address:</strong> ' + (jc.address || 'N/A') + '</p>'
         );
         $('#invoice-vehicle-info').html(
-            '<p class="mb-1"><strong>Vehicle Number:</strong> ' + jc.vehicle_number + '</p>' +
-            '<p class="mb-1"><strong>Make & Model:</strong> ' + jc.vehicle_make_name + ' ' + jc.vehicle_model_name + '</p>' +
-            '<p class="mb-1"><strong>Chassis Number:</strong> ' + (jc.chassis_number || 'N/A') + '</p>' +
-            '<p class="mb-1"><strong>Engine Number:</strong> ' + (jc.engine_number || 'N/A') + '</p>'
+            '<p class="mb-1"><strong>Vehicle:</strong> ' + jc.vehicle_number + '</p>' +
+            '<p class="mb-1"><strong>Make/Model:</strong> ' + jc.vehicle_make_name + ' ' + jc.vehicle_model_name + '</p>' +
+            '<p class="mb-1"><strong>Chassis:</strong> ' + (jc.chassis_number || 'N/A') + '</p>' +
+            '<p class="mb-1"><strong>Engine:</strong> ' + (jc.engine_number || 'N/A') + '</p>'
         );
-        $('#invoice-code').text(invoiceCode);
-        $('#invoice-date').text(new Date().toLocaleDateString());
-        $('#invoice-mileage').text(current_mileage + ' KM');
+        $('#station-logo').attr('src', station.logo ? '../uploads/stations/' + station.logo : '../dist/img/system/logo_pistona.png');
+        $('#station-name').text(station.service_name || '');
+        $('#station-address').text([station.address, station.street, station.city].filter(Boolean).join(' ') || 'N/A');
+        $('#station-contact').text('Tel: ' + (station.phone || 'N/A') + ' | Fax: ' + (station.other_phone || 'N/A'));
+        $('#station-email').text('Email: ' + (station.email || 'N/A'));
 
         generateInvoiceItems();
-        calculateInvoiceTotal();
+        calculateSubtotal();
+        displayCalculation();
     }
 
     function generateInvoiceItems() {
         var html = '';
 
-        items.forEach(function (item) {
-            if (!item.quantityInput) return;
-            var qty = parseFloat($(item.quantityInput).val()) || 0;
-            var price = parseFloat($(item.priceInput).val()) || 0;
-            var discount = parseFloat($(item.discountInput).val()) || 0;
-            if (qty > 0) {
-                var amount = qty * price, total = amount - discount;
-                html += '<tr><td>' + $(item.rowCode).text() + '</td><td>Wash Service</td><td>' + qty + '</td><td>' + price.toFixed(2) + '</td><td>' + amount.toFixed(2) + '</td><td>' + discount.toFixed(2) + '</td><td>' + total.toFixed(2) + '</td></tr>';
-            }
+        items.forEach(function (wash) {
+            html += '<tr><td>' + wash.rowCode.innerText + '</td><td class="text-uppercase">Wash</td>' +
+                    '<td>' + wash.quantityInput.value + '</td><td>' + wash.priceInput.value + '</td>' +
+                    '<td>' + wash.discountInput.value + '</td><td>' + wash.totalCell.innerText + '</td></tr>';
         });
 
-        selected_fuel.forEach(function (fuel) {
-            html += '<tr><td>' + fuel.ServicePackageCode + '</td><td>Fuel — Service Package</td><td>1</td><td>' + fuel.price.toFixed(2) + '</td><td>' + fuel.price.toFixed(2) + '</td><td>0.00</td><td>' + fuel.price.toFixed(2) + '</td></tr>';
-        });
-        selected_filter.forEach(function (filter) {
-            html += '<tr><td>' + filter.ServicePackageCode + '</td><td>Filter — Service Package</td><td>1</td><td>' + filter.price.toFixed(2) + '</td><td>' + filter.price.toFixed(2) + '</td><td>0.00</td><td>' + filter.price.toFixed(2) + '</td></tr>';
-        });
-
-        repair_items.forEach(function (item) {
-            if (!item.HoursInput) return;
-            var hours = parseFloat($(item.HoursInput).val()) || 0;
-            var price = parseFloat($(item.UnitPriceInput).val()) || 0;
-            var discount = parseFloat($(item.discountInput).val()) || 0;
-            if (hours > 0) {
-                var amount = hours * price, total = amount - discount;
-                html += '<tr><td>' + $(item.rowCode).text() + '</td><td>' + $(item.rowName).text() + '</td><td>' + hours + '</td><td>' + price.toFixed(2) + '</td><td>' + amount.toFixed(2) + '</td><td>' + discount.toFixed(2) + '</td><td>' + total.toFixed(2) + '</td></tr>';
-            }
+        repair_items.forEach(function (repair) {
+            html += '<tr><td>' + repair.rowCode.innerText + '</td><td class="text-uppercase">' + repair.rowName.innerText + '</td>' +
+                    '<td>' + repair.HoursInput.value + '</td><td>' + repair.UnitPriceInput.value + '</td>' +
+                    '<td>' + repair.discountInput.value + '</td><td>' + repair.totalCell.innerText + '</td></tr>';
         });
 
-        products_items.forEach(function (item) {
-            if (!item.quantityInput) return;
-            var qty = parseFloat($(item.quantityInput).val()) || 0;
-            var price = parseFloat($(item.priceInput).val()) || 0;
-            var discount = parseFloat($(item.discountInput).val()) || 0;
-            if (qty > 0) {
-                var amount = qty * price, total = amount - discount;
-                html += '<tr><td>' + $(item.rowCode).text() + '</td><td>' + $(item.rowName).text() + '</td><td>' + qty + '</td><td>' + price.toFixed(2) + '</td><td>' + amount.toFixed(2) + '</td><td>' + discount.toFixed(2) + '</td><td>' + total.toFixed(2) + '</td></tr>';
-            }
+        products_items.forEach(function (product) {
+            html += '<tr><td>' + product.rowCode.innerText + '</td><td class="text-uppercase">' + product.rowName.innerText + '</td>' +
+                    '<td>' + product.quantityInput.value + '</td><td>' + product.priceInput.value + '</td>' +
+                    '<td>' + product.discountInput.value + '</td><td>' + product.totalCell.innerText + '</td></tr>';
         });
 
-        if (!html) html = '<tr><td colspan="7" class="text-center text-muted">No items added</td></tr>';
-        $('#invoice-items-tbody').html(html);
+        service_packages_items.forEach(function (spitems) {
+            var spId = spitems.rowServicePackageID.innerText;
+            var fuelTotal = 0, filterTotal = 0;
+            service_packages_items_fuel.forEach(function (f) {
+                if (f.rowServicePackageID.innerText == spId) fuelTotal += parseFloat(f.FuelPrice.value) || 0;
+            });
+            service_packages_items_filter.forEach(function (f) {
+                if (f.rowServicePackageID.innerText == spId) filterTotal += parseFloat(f.FilterPrice.value) || 0;
+            });
+            html += '<tr><td>' + spitems.rowServicePackageCode.innerText + '</td><td class="text-uppercase">' + spitems.rowServicePackageName.innerText + '</td>' +
+                    '<td>1</td><td>1</td><td>0</td><td>' + (fuelTotal + filterTotal).toFixed(2) + '</td></tr>';
+        });
+
+        if (!html) html = '<tr><td colspan="6" class="text-center text-muted">No items added</td></tr>';
+        $('#tb_jobcard_items').html(html);
     }
 
-    function calculateInvoiceTotal() {
-        var subtotal = 0;
-        items.forEach(function (item) {
-            if (!item.quantityInput) return;
-            subtotal += (parseFloat($(item.quantityInput).val()) || 0) * (parseFloat($(item.priceInput).val()) || 0) - (parseFloat($(item.discountInput).val()) || 0);
-        });
-        selected_fuel.forEach(function (f)   { subtotal += f.price; });
-        selected_filter.forEach(function (f) { subtotal += f.price; });
-        repair_items.forEach(function (item) {
-            subtotal += (parseFloat($(item.HoursInput).val()) || 0) * (parseFloat($(item.UnitPriceInput).val()) || 0) - (parseFloat($(item.discountInput).val()) || 0);
-        });
-        products_items.forEach(function (item) {
-            subtotal += (parseFloat($(item.quantityInput).val()) || 0) * (parseFloat($(item.priceInput).val()) || 0) - (parseFloat($(item.discountInput).val()) || 0);
-        });
-        var vatRate = parseFloat($('#in_vat_input').val()) || 0;
-        var grandTotal = subtotal + (subtotal * vatRate / 100);
-        $('#invoice-subtotal').text(subtotal.toFixed(2));
-        $('#invoice-grand-total').text(grandTotal.toFixed(2));
+    function calculateSubtotal() {
+        var grandTotal = 0;
+        grandTotal += items.reduce(function (t, w) { return t + (parseFloat(w.totalCell.innerText) || 0); }, 0);
+        grandTotal += repair_items.reduce(function (t, r) { return t + (parseFloat(r.totalCell.innerText) || 0); }, 0);
+        grandTotal += products_items.reduce(function (t, p) { return t + (parseFloat(p.totalCell.innerText) || 0); }, 0);
+        grandTotal += service_packages_items.reduce(function (t, sp) {
+            var spId = sp.rowServicePackageID.innerText;
+            var fuelTotal = 0, filterTotal = 0;
+            service_packages_items_fuel.forEach(function (f) { if (f.rowServicePackageID.innerText == spId) fuelTotal += parseFloat(f.FuelPrice.value) || 0; });
+            service_packages_items_filter.forEach(function (f) { if (f.rowServicePackageID.innerText == spId) filterTotal += parseFloat(f.FilterPrice.value) || 0; });
+            return t + fuelTotal + filterTotal;
+        }, 0);
+        $('#in_subtotal').text(grandTotal.toFixed(2));
     }
 
-    $(document).on('input', '#in_vat_input', calculateInvoiceTotal);
+    function displayCalculation() {
+        var vatValue = parseFloat($('#in_vat_input').val()) || 0;
+        var subtotal = parseFloat($('#in_subtotal').text()) || 0;
+        var final    = subtotal + (subtotal * vatValue / 100);
+        $('#in_total').text(final.toFixed(2));
+    }
+
+    $(document).on('input', '#in_vat_input', function () { calculateSubtotal(); displayCalculation(); });
 
     // ==========================================
-    // 10. STEP NAVIGATION
+    // 12. STEP NAVIGATION
     // ==========================================
     $(document).on('click', 'button', function (e) {
-        if ($(this).text().trim() === 'Previous' || $(this).attr('onclick') === 'stepper.previous()') {
+        if ($(this).attr('onclick') === 'stepper.previous()') {
             e.preventDefault(); e.stopPropagation();
             var currentStep = 1;
-            if ($('#generate-invoice-part').is(':visible'))    currentStep = 7;
+            if ($('#generate-invoice-part').is(':visible'))     currentStep = 7;
             else if ($('#select-products-part').is(':visible')) currentStep = 6;
-            else if ($('#maintenance-part').is(':visible'))    currentStep = 5;
+            else if ($('#maintenance-part').is(':visible'))     currentStep = 5;
             else if ($('#service-package-part').is(':visible')) currentStep = 4;
-            else if ($('#washer-part').is(':visible'))         currentStep = 3;
-            else if ($('#vehicle-report-part').is(':visible')) currentStep = 2;
+            else if ($('#washer-part').is(':visible'))          currentStep = 3;
+            else if ($('#vehicle-report-part').is(':visible'))  currentStep = 2;
             if (currentStep > 1) { window.stepper.to(currentStep - 1); window.showStepContent(currentStep - 1); }
         }
     });
 
     $('#job-card-step-1').on('click', function () {
-        current_mileage = parseInt($('#current-mileage').val());
-        new_mileage     = parseInt($('#new-mileage').val());
+        current_mileage = $('#current-mileage').val();
+        new_mileage     = $('#new-mileage').val();
         paid_status     = $('#cmbpaidstatus').val();
         status          = $('#cmbstatus').val();
         notify          = $('input[name="customRadio"]:checked').val();
 
-        if (!current_mileage || current_mileage <= 0) { Swal.fire({ icon: 'warning', title: 'Validation Error', text: 'Please enter current mileage' }); return; }
-        if (!new_mileage || new_mileage <= 0)         { Swal.fire({ icon: 'warning', title: 'Validation Error', text: 'Please enter next service mileage' }); return; }
-        if (!paid_status)                              { Swal.fire({ icon: 'warning', title: 'Validation Error', text: 'Please select paid status' }); return; }
-        if (!status)                                   { Swal.fire({ icon: 'warning', title: 'Validation Error', text: 'Please select status' }); return; }
+        if (!current_mileage) { Swal.fire({ icon: 'warning', title: 'Validation Error', text: 'Please enter current mileage' }); return; }
+        if (!new_mileage)     { Swal.fire({ icon: 'warning', title: 'Validation Error', text: 'Please enter next mileage' });    return; }
+        if (!paid_status)     { Swal.fire({ icon: 'warning', title: 'Validation Error', text: 'Please select paid status' });    return; }
+        if (!status)          { Swal.fire({ icon: 'warning', title: 'Validation Error', text: 'Please select status' });         return; }
 
         window.stepper.to(2); window.showStepContent(2);
     });
@@ -944,101 +1087,95 @@ $(document).ready(function () {
     $('#job-card-step-4').on('click', function () { window.stepper.to(5); window.showStepContent(5); });
     $('#job-card-step-5').on('click', function () { window.stepper.to(6); window.showStepContent(6); });
     $('#job-card-step-6').on('click', function () {
-        try { generateInvoiceItems(); calculateInvoiceTotal(); } catch (e) { console.error('Invoice gen error', e); }
-        window.stepper.to(7); window.showStepContent(7);
-    });
-
-    $('.step-trigger').on('click', function () {
-        setTimeout(function () { window.showStepContent($('.step.active').index() + 1); }, 100);
+        generateInvoiceItems();
+        calculateSubtotal();
+        displayCalculation();
+        window.stepper.to(7);
+        window.showStepContent(7);
     });
 
     // ==========================================
-    // 11. SUBMIT — UPDATE JOB CARD
+    // 13. SUBMIT
     // ==========================================
     $('#submit_update_jobcard').on('click', function () {
-        current_mileage = parseInt($('#current-mileage').val());
-        if (!current_mileage || current_mileage <= 0) {
+        current_mileage = $('#current-mileage').val();
+        if (!current_mileage) {
             Swal.fire({ icon: 'warning', title: 'Validation Error', text: 'Please enter current mileage' });
             window.stepper.to(1); window.showStepContent(1); return;
         }
 
+        var repairArr = repair_items.map(function (repair) {
+            return {
+                repair_id : repair.rowID.innerText,
+                repairCode: repair.rowCode.innerText,
+                repairName: repair.rowName.innerText,
+                hours     : repair.HoursInput.value,
+                price     : repair.UnitPriceInput.value,
+                discount  : repair.discountInput.value,
+                total     : repair.totalCell.innerText
+            };
+        });
+
+        var productArr = products_items.map(function (product) {
+            return {
+                product_id : product.rowID.innerText,
+                productCode: product.rowCode.innerText,
+                productName: product.rowName.innerText,
+                qty        : product.quantityInput.value,
+                price      : product.priceInput.value,
+                discount   : product.discountInput.value,
+                total      : product.totalCell.innerText
+            };
+        });
+
         var jobCardData = {
             job_card_id     : jobCardId,
             vehicle_id      : vehicle[0].vehicle_id,
+            vehicle_number  : vehicle[0].vehicle_number,
             current_mileage : current_mileage,
-            new_mileage     : parseInt($('#new-mileage').val()),
+            new_mileage     : $('#new-mileage').val(),
             paid_status     : $('#cmbpaidstatus').val(),
             job_card_type   : job_card_type,
             status          : $('#cmbstatus').val(),
             notify          : $('input[name="customRadio"]:checked').val(),
             invoice_code    : invoiceCode,
-            vat             : parseFloat($('#in_vat_input').val()) || 0,
-            vehicle_reports : rowVehicleReportData,
-            washers         : WasherValues,
-            service_packages: selected_service_packages,
-            fuels           : selected_fuel,
-            filters         : selected_filter,
-            repairs         : [],
-            products        : []
+            vat             : $('#in_vat_input').val() || 0,
+            vehicle_reports : JSON.stringify(rowVehicleReportData),
+            washers         : JSON.stringify(WasherValues),
+            fuels           : JSON.stringify(selected_fuel),
+            filters         : JSON.stringify(selected_filter),
+            repairs         : JSON.stringify(repairArr),
+            products        : JSON.stringify(productArr),
+            vehicleDetails  : JSON.stringify(vehicle),
+            station         : JSON.stringify(serviceStationInfo)
         };
-
-        repair_items.forEach(function (item) {
-            var hours = parseFloat($(item.HoursInput).val()) || 0;
-            if (hours > 0) {
-                jobCardData.repairs.push({
-                    repair_id  : $(item.rowID).text(),
-                    code       : $(item.rowCode).text(),
-                    name       : $(item.rowName).text(),
-                    hours      : hours,
-                    unit_price : parseFloat($(item.UnitPriceInput).val()) || 0,
-                    discount   : parseFloat($(item.discountInput).val())  || 0
-                });
-            }
-        });
-
-        products_items.forEach(function (item) {
-            var qty = parseFloat($(item.quantityInput).val()) || 0;
-            if (qty > 0) {
-                jobCardData.products.push({
-                    product_id : $(item.rowID).text(),
-                    code       : $(item.rowCode).text(),
-                    name       : $(item.rowName).text(),
-                    qty        : qty,
-                    price      : parseFloat($(item.priceInput).val())    || 0,
-                    discount   : parseFloat($(item.discountInput).val()) || 0
-                });
-            }
-        });
 
         $('#submit_update_jobcard').hide();
         $('#btn-loading').show();
 
         $.ajax({
-            type        : 'POST',
-            url         : '../api/update-jobcard.php',
-            data        : JSON.stringify(jobCardData),
-            contentType : 'application/json',
-            dataType    : 'json',
-            success: function (response) {
+            type    : 'POST',
+            url     : '../api/update-jobcard.php',
+            data    : jobCardData,
+            success : function (response) {
                 $('#btn-loading').hide(); $('#submit_update_jobcard').show();
-                if (response.success) {
-                    Swal.fire({ icon: 'success', title: 'Success!', text: 'Job card updated successfully', timer: 3000 })
-                        .then(function () { window.location.href = '../job-cards/'; });
+                if (response === 'success' || (typeof response === 'object' && response.success)) {
+                    Swal.fire({ icon: 'success', title: 'Job Card Updated!', text: 'The job card has been updated successfully.', confirmButtonColor: '#007bff' })
+                        .then(function (result) { if (result.isConfirmed) window.location.href = '../job-cards/'; });
                 } else {
-                    Swal.fire({ icon: 'error', title: 'Error', text: response.message || 'Failed to update job card' });
+                    Swal.fire({ icon: 'error', title: 'Please Try Again', text: (typeof response === 'object' ? response.message : null) || 'Something Went Wrong' });
                 }
             },
             error: function (xhr) {
                 $('#btn-loading').hide(); $('#submit_update_jobcard').show();
-                var msg = xhr.responseText ? xhr.responseText.replace(/<[^>]*>?/gm, '').substring(0, 300) : 'Check console (F12) for details.';
-                Swal.fire({ icon: 'error', title: 'Server Error: ' + xhr.status, text: msg });
+                Swal.fire({ icon: 'error', title: 'Server Error', text: xhr.responseText ? xhr.responseText.substring(0, 200) : 'Something Went Wrong' });
             }
         });
     });
 
     // ==========================================
-    // 12. UTILITIES
+    // 14. UTILITIES
     // ==========================================
-    function removeLeadingZeros(phoneNumber) { return (phoneNumber || '').replace(/^0+/, ''); }
+    function removeLeadingZeros(phone) { return (phone || '').replace(/^0+/, ''); }
     function generateUUID() { return 'INV-' + Date.now() + '-' + Math.floor(Math.random() * 10000); }
 });
