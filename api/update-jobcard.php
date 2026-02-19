@@ -58,19 +58,19 @@ $current_mileage = (float) $current_mileage;
 $new_mileage     = (float) $new_mileage;
 $notify          = (int)   $notify;
 
+$transaction_committed = false;
+
 $conn->begin_transaction();
 
 try {
 
     // ── 1. job_card ────────────────────────────────────────────────────────
-    // Columns: status_id, paid_status_id, vat
     $stmt = $conn->prepare("UPDATE job_card SET status_id = ?, paid_status_id = ?, vat = ? WHERE id = ?");
     $stmt->bind_param("iidi", $status, $paid_status, $vat, $job_card_id);
     if (!$stmt->execute()) throw new Exception("Failed to update job card: " . $stmt->error);
     $stmt->close();
 
     // ── 2. job_card_mileage ────────────────────────────────────────────────
-    // Columns: job_card_id, current_mileage (double), next_mileage (double), created_date
     $stmt = $conn->prepare("SELECT job_card_id FROM job_card_mileage WHERE job_card_id = ? LIMIT 1");
     $stmt->bind_param("i", $job_card_id);
     $stmt->execute();
@@ -89,15 +89,12 @@ try {
     $stmt->close();
 
     // ── 3. job_card_notification ───────────────────────────────────────────
-    // Columns: job_card_id, notify_date, month_number, service_station_id, sent, created_date
     $stmt = $conn->prepare("UPDATE job_card_notification SET month_number = ? WHERE job_card_id = ?");
     $stmt->bind_param("ii", $notify, $job_card_id);
-    $stmt->execute(); // Non-critical, skip error check
+    $stmt->execute();
     $stmt->close();
 
     // ── 4. job_card_washer ─────────────────────────────────────────────────
-    // Columns: job_card_id, washer_id, qty (double), price (int), discount (int)
-    // JS sends: { washerID, quantity, price, discount }  — note 'quantity' not 'qty'
     $conn->query("DELETE FROM job_card_washer WHERE job_card_id = $job_card_id");
     if (!empty($data_washers)) {
         $stmt = $conn->prepare("INSERT INTO job_card_washer (job_card_id, washer_id, qty, price, discount) VALUES (?, ?, ?, ?, ?)");
@@ -113,8 +110,6 @@ try {
     }
 
     // ── 5. job_card_repair ─────────────────────────────────────────────────
-    // Columns: job_card_id, repair_id, hours (double), unit_price (int), discount (int)
-    // JS sends: { repair_id, hours, price, discount }  — note 'price' not 'unit_price'
     $conn->query("DELETE FROM job_card_repair WHERE job_card_id = $job_card_id");
     if (!empty($data_repairs)) {
         $stmt = $conn->prepare("INSERT INTO job_card_repair (job_card_id, repair_id, hours, unit_price, discount) VALUES (?, ?, ?, ?, ?)");
@@ -130,8 +125,6 @@ try {
     }
 
     // ── 6. job_card_products ───────────────────────────────────────────────
-    // Columns: job_card_id, product_id, qty (double), price (int), discount (int)
-    // JS sends: { product_id, qty, price, discount }
     $conn->query("DELETE FROM job_card_products WHERE job_card_id = $job_card_id");
     if (!empty($data_products)) {
         $stmt = $conn->prepare("INSERT INTO job_card_products (job_card_id, product_id, qty, price, discount) VALUES (?, ?, ?, ?, ?)");
@@ -147,8 +140,6 @@ try {
     }
 
     // ── 7. job_card_service_package_fuel ───────────────────────────────────
-    // Columns: job_card_id, service_package_id, fuel_type_id, price (int)
-    // JS sends: { ServicePackageId, typeId, price }
     $conn->query("DELETE FROM job_card_service_package_fuel WHERE job_card_id = $job_card_id");
     if (!empty($data_fuels)) {
         $stmt = $conn->prepare("INSERT INTO job_card_service_package_fuel (job_card_id, service_package_id, fuel_type_id, price) VALUES (?, ?, ?, ?)");
@@ -163,8 +154,6 @@ try {
     }
 
     // ── 8. job_card_service_package_filter ─────────────────────────────────
-    // Columns: job_card_id, service_package_id, filter_type_id, price (int)
-    // JS sends: { ServicePackageId, typeId, price }
     $conn->query("DELETE FROM job_card_service_package_filter WHERE job_card_id = $job_card_id");
     if (!empty($data_filters)) {
         $stmt = $conn->prepare("INSERT INTO job_card_service_package_filter (job_card_id, service_package_id, filter_type_id, price) VALUES (?, ?, ?, ?)");
@@ -179,8 +168,6 @@ try {
     }
 
     // ── 9. job_card_vehicle_report ─────────────────────────────────────────
-    // Columns: job_card_id, category_id, sub_category_id, value_id
-    // JS sends: { categoryId, subcategoryId, value }
     $conn->query("DELETE FROM job_card_vehicle_report WHERE job_card_id = $job_card_id");
     if (!empty($data_vehicle_reports)) {
         $stmt = $conn->prepare("INSERT INTO job_card_vehicle_report (job_card_id, category_id, sub_category_id, value_id) VALUES (?, ?, ?, ?)");
@@ -196,11 +183,10 @@ try {
         $stmt->close();
     }
 
-    // ── 10. Invoice + inventory deduction ──────────────────────────────────
-    // job_card_invoice columns: id, invoice_code, job_card_id, service_station_id, employee_id, date
-    // product.quantity (int) is the stock field
+    // ── 10. Invoice + inventory deduction + email ──────────────────────────
     if (($paid_status === 3 || $status === 3) && !empty($invoice_code)) {
 
+        // Check if invoice already exists
         $stmt = $conn->prepare("SELECT id FROM job_card_invoice WHERE job_card_id = ? LIMIT 1");
         $stmt->bind_param("i", $job_card_id);
         $stmt->execute();
@@ -209,6 +195,7 @@ try {
         $stmt->close();
 
         if (!$invoice_exists) {
+            // Create invoice record
             $station_id = (int) ($_SESSION["station_id"] ?? 0);
             $user_id    = (int) ($_SESSION["user_id"]    ?? 0);
             $stmt = $conn->prepare("INSERT INTO job_card_invoice (invoice_code, job_card_id, service_station_id, employee_id) VALUES (?, ?, ?, ?)");
@@ -216,7 +203,7 @@ try {
             if (!$stmt->execute()) throw new Exception("Failed to create invoice: " . $stmt->error);
             $stmt->close();
 
-            // Deduct product stock only on first invoice creation
+            // Deduct product stock (only on first invoice creation)
             foreach ($data_products as $p) {
                 $product_id = (int)   ($p['product_id'] ?? 0);
                 $qty        = (float) ($p['qty']         ?? 0);
@@ -236,13 +223,120 @@ try {
                 }
             }
         }
+
+        // ── Load vehicle + station data for PDF maker + email ──────────────
+        $stmt = $conn->prepare("
+            SELECT
+                jc.job_card_type_id,
+                v.id              AS vehicle_id,
+                v.vehicle_number,
+                v.chassis_number,
+                v.engine_number,
+                vmod.name         AS vehicle_model_name,
+                vmak.name         AS vehicle_make_name,
+                vo.first_name,
+                vo.last_name,
+                vo.email,
+                vo.phone,
+                vo.address,
+                ss.service_name,
+                ss.address        AS station_address,
+                ss.street,
+                ss.city,
+                ss.phone          AS station_phone,
+                ss.other_phone,
+                ss.email          AS station_email,
+                ss.logo
+            FROM job_card jc
+            JOIN vehicle         v    ON v.id    = jc.vehicle_id
+            JOIN vehicle_owner   vo   ON vo.id   = jc.vehicle_owner_id
+            JOIN service_station ss   ON ss.id   = jc.service_station_id
+            LEFT JOIN vehicle_model vmod ON vmod.id = v.vehicle_model_id
+            LEFT JOIN vehicle_make  vmak ON vmak.id = v.vehicle_manufacturer_id
+            WHERE jc.id = ?
+            LIMIT 1
+        ");
+        $stmt->bind_param("i", $job_card_id);
+        $stmt->execute();
+        $email_result = $stmt->get_result();
+        $stmt->close();
+
+        if ($email_row = $email_result->fetch_assoc()) {
+
+            // These variable names match what the PDF maker and send-email.php expect
+            $data_vehicle = [[
+                'vehicle_id'         => $email_row['vehicle_id'],
+                'vehicle_number'     => $email_row['vehicle_number'],
+                'chassis_number'     => $email_row['chassis_number'],
+                'engine_number'      => $email_row['engine_number'],
+                'vehicle_model_name' => $email_row['vehicle_model_name'] ?? '',
+                'vehicle_make_name'  => $email_row['vehicle_make_name']  ?? '',
+                'first_name'         => $email_row['first_name'],
+                'last_name'          => $email_row['last_name'],
+                'email'              => $email_row['email'],
+                'phone'              => $email_row['phone'],
+                'address'            => $email_row['address'],
+            ]];
+            $data_station = [[
+                'service_name' => $email_row['service_name'],
+                'address'      => $email_row['station_address'],
+                'street'       => $email_row['street'],
+                'city'         => $email_row['city'],
+                'phone'        => $email_row['station_phone'],
+                'other_phone'  => $email_row['other_phone'],
+                'email'        => $email_row['station_email'],
+                'logo'         => $email_row['logo'],
+            ]];
+
+            // Variables used inside the PDF maker
+            $jobcardInvoicecode = $invoice_code;
+            $jobcardcode        = $invoice_code;  // alias — some PDF makers use $jobcardcode
+            $vehicle_number     = $email_row['vehicle_number'];
+            $JobCardID          = $job_card_id;
+
+            // Commit BEFORE generating PDF so the PDF maker reads
+            // the fully saved job card data from the DB
+            $conn->commit();
+            $transaction_committed = true;
+
+            // Generates PDF + sends email — pick maker based on job card type
+            // 1=Washer only, 2=Repair only, 3=Service only,
+            // 4=Washer+Repair, 5=Washer+Service, 6=All
+            $job_card_type_id = (int) $email_row['job_card_type_id'];
+            switch ($job_card_type_id) {
+                case 1:
+                    include_once '../api/job-card-washer-pdf-maker.php';
+                    break;
+                case 2:
+                    include_once '../api/job-card-repair-pdf-maker.php';
+                    break;
+                case 3:
+                    include_once '../api/job-card-service-pdf-maker.php';
+                    break;
+                case 4:
+                    include_once '../api/job-card-washer-repair-pdf-maker.php';
+                    break;
+                case 5:
+                    include_once '../api/job-card-washer-service-pdf-maker.php';
+                    break;
+                case 6:
+                default:
+                    include_once '../api/job-card-all-pdf-maker.php';
+                    break;
+            }
+        }
     }
 
-    $conn->commit();
+    if (!$transaction_committed) {
+        $conn->commit();
+    }
+
     echo json_encode(['success' => true, 'message' => 'Job Card Updated Successfully']);
 
 } catch (Exception $e) {
-    $conn->rollback();
+    if (!$transaction_committed) {
+        $conn->rollback();
+    }
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 }
 ?>
