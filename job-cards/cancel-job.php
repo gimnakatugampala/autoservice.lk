@@ -126,9 +126,7 @@
 
     #inv-items-table tbody tr:hover { background: #f8f9ff; }
 
-    .inv-totals {
-        padding: 0 32px 24px;
-    }
+    .inv-totals { padding: 0 32px 24px; }
 
     .inv-totals-box {
         background: #f8f9fa;
@@ -165,7 +163,6 @@
         letter-spacing: 0.5px;
     }
 
-    /* Spinner overlay inside modal */
     #inv-loading {
         position: absolute;
         inset: 0;
@@ -204,11 +201,13 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-10">
-            <h1 class="m-0 font-weight-bold text-dark"><i class="fas fa-file-excel mr-2 text-danger"></i>Cancel Job Card List</h1>
+            <h1 class="m-0 font-weight-bold text-dark">
+              <i class="fas fa-file-excel mr-2 text-danger"></i>Cancel Job Card List
+            </h1>
           </div>
           <div class="col-sm-2">
             <a href="../job-cards/add-job-card.php" class="btn btn-block btn-primary elevation-2">
-                <i class="fas fa-plus-circle mr-1"></i> Add Job Card
+              <i class="fas fa-plus-circle mr-1"></i> Add Job Card
             </a>
           </div>
         </div>
@@ -222,10 +221,10 @@
             <div class="card card-danger card-outline shadow-sm">
               <div class="card-header">
                 <h3 class="card-title text-bold text-danger">
-                    <i class="fas fa-ban mr-1"></i> Canceled Job Cards
+                  <i class="fas fa-ban mr-1"></i> Canceled Job Cards
                 </h3>
                 <div class="card-tools">
-                   <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                  <button type="button" class="btn btn-tool" data-card-widget="maximize">
                     <i class="fas fa-expand"></i>
                   </button>
                 </div>
@@ -233,38 +232,58 @@
               <div class="card-body">
                 <table id="example1" class="table table-hover table-striped table-valign-middle">
                   <thead>
-                  <tr>
-                    <th>Job Card Code</th>
-                    <th>Vehicle Owner</th>
-                    <th>Phone</th>
-                    <th>Vehicle Name</th>
-                    <th>Job Card Type</th>
-                    <th>Created Date</th>
-                    <th>Canceled Date</th>
-                    <th>Actions</th>
-                  </tr>
+                    <tr>
+                      <th class="d-none"> style="display:none">_sort</th>
+                      <th>Job Card Code</th>  <!-- 1 -->
+                      <th>Vehicle Owner</th>  <!-- 1 -->
+                      <th>Phone</th>          <!-- 2 -->
+                      <th>Vehicle No.</th>    <!-- 3 -->
+                      <th>Job Card Type</th>  <!-- 4 -->
+                      <th>Created Date</th>   <!-- 5 -->
+                      <th>Canceled Date</th>  <!-- 6 -->
+                      <th>Actions</th>        <!-- 7 -->
+                    </tr>
                   </thead>
                   <tbody>
-                  <?php foreach ($jobcards as $row) : ?>
-                    <tr>
-                      <td class="font-weight-bold text-muted"><?php echo $row["job_card_code"]; ?></td>
-                      <td class="text-uppercase"><?php echo $row["first_name"]; ?> <?php echo $row["last_name"]; ?></td>
-                      <td><i class="fas fa-phone-alt mr-1 text-muted small"></i> <?php echo $row["phone"]; ?></td>
-                      <td><span class="badge badge-light border px-2 py-1"><?php echo $row["vehicle_number"]; ?></span></td>
-                      <td>
-                          <span class="badge badge-secondary shadow-none">
-                            <?php echo $row["JOB_CARD_TYPE"]; ?>
+                    <?php foreach ($jobcards as $idx => $row) : ?>
+                      <tr>
+                        <td class="d-none"> style="display:none"><?php echo $idx; ?></td>
+                        <td class="font-weight-bold text-muted">
+                          <?php echo htmlspecialchars($row["job_card_code"]); ?>
+                        </td>
+                        <td class="text-uppercase">
+                          <?php echo htmlspecialchars($row["first_name"] . ' ' . $row["last_name"]); ?>
+                        </td>
+                        <td>
+                          <i class="fas fa-phone-alt mr-1 text-muted small"></i>
+                          <?php echo htmlspecialchars($row["phone"]); ?>
+                        </td>
+                        <td>
+                          <span class="badge badge-light border px-2 py-1">
+                            <?php echo htmlspecialchars($row["vehicle_number"]); ?>
                           </span>
-                      </td>
-                      <td class="text-muted small"><i class="far fa-calendar-alt mr-1"></i> <?php echo $row["JOB_CARD_PLACED_DATE"]; ?></td>
-                      <td class="text-danger font-weight-bold"><i class="fas fa-times-circle mr-1"></i> <?php echo $row["CANCELED_DATE"]; ?></td>
-                      <td>
-                        <button class="btn-view-invoice" onclick="viewJobCardDetails('<?php echo htmlspecialchars($row['job_card_code'], ENT_QUOTES); ?>')">
-                          <i class="fas fa-eye mr-1"></i> View Details
-                        </button>
-                      </td>
-                    </tr>
-                  <?php endforeach; ?>
+                        </td>
+                        <td>
+                          <span class="badge badge-secondary shadow-none">
+                            <?php echo htmlspecialchars($row["JOB_CARD_TYPE"]); ?>
+                          </span>
+                        </td>
+                        <td class="text-muted small">
+                          <i class="far fa-calendar-alt mr-1"></i>
+                          <?php echo htmlspecialchars($row["JOB_CARD_PLACED_DATE"]); ?>
+                        </td>
+                        <td class="text-danger font-weight-bold" data-order="<?php echo strtotime($row['CANCELED_DATE']); ?>">
+                          <i class="fas fa-times-circle mr-1"></i>
+                          <?php echo htmlspecialchars($row["CANCELED_DATE"]); ?>
+                        </td>
+                        <td>
+                          <button class="btn-view-invoice"
+                            onclick="viewJobCardDetails('<?php echo htmlspecialchars($row['job_card_code'], ENT_QUOTES); ?>')">
+                            <i class="fas fa-eye mr-1"></i> View Details
+                          </button>
+                        </td>
+                      </tr>
+                    <?php endforeach; ?>
                   </tbody>
                 </table>
               </div>
@@ -279,10 +298,10 @@
   <aside class="control-sidebar control-sidebar-dark"></aside>
 </div>
 
-<!-- ════════════════════════════════════════
+<!-- ═══════════════════════════════════════════
      INVOICE DETAILS MODAL
-═══════════════════════════════════════════ -->
-<div class="modal fade" id="invoiceModal" tabindex="-1" role="dialog" aria-labelledby="invoiceModalLabel" aria-hidden="true">
+════════════════════════════════════════════ -->
+<div class="modal fade" id="invoiceModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content" style="position:relative;">
 
@@ -315,7 +334,6 @@
 
       <!-- Info Grid -->
       <div class="inv-info-grid">
-        <!-- Customer -->
         <div>
           <div class="inv-section-title"><i class="fas fa-user mr-1"></i> Customer</div>
           <div class="inv-info-block mb-2">
@@ -331,7 +349,6 @@
             <div class="value" id="inv-cust-address">—</div>
           </div>
         </div>
-        <!-- Vehicle -->
         <div>
           <div class="inv-section-title"><i class="fas fa-car mr-1"></i> Vehicle</div>
           <div class="inv-info-block mb-2">
@@ -365,13 +382,13 @@
 
       <!-- Items Table -->
       <div class="inv-items-wrap">
-        <div class="inv-section-title"><i class="fas fa-list mr-1"></i> Services & Items</div>
+        <div class="inv-section-title"><i class="fas fa-list mr-1"></i> Services &amp; Items</div>
         <div class="table-responsive">
           <table class="table table-bordered" id="inv-items-table">
             <thead>
               <tr>
                 <th>#</th>
-                <th>Code</th>
+                <th>Type</th>
                 <th>Description</th>
                 <th class="text-center">Qty</th>
                 <th class="text-right">Unit Price</th>
@@ -379,9 +396,7 @@
                 <th class="text-right">Total</th>
               </tr>
             </thead>
-            <tbody id="inv-items-body">
-              <!-- populated by JS -->
-            </tbody>
+            <tbody id="inv-items-body"></tbody>
           </table>
         </div>
       </div>
@@ -404,60 +419,64 @@
         </div>
       </div>
 
-      <!-- Footer Bar -->
       <div class="inv-footer-bar">
         Generated by the Service Management System &nbsp;|&nbsp; This is a CANCELED job card record
       </div>
 
-      <!-- Close Button -->
       <button type="button" class="close" data-dismiss="modal" aria-label="Close"
         style="position:absolute;top:14px;right:18px;color:#fff;opacity:0.85;font-size:1.4rem;z-index:20;">
         <span aria-hidden="true">&times;</span>
       </button>
 
-    </div><!-- /.modal-content -->
+    </div>
   </div>
 </div>
-<!-- ════════════════════════════════════════ -->
 
 <?php include_once '../includes/footer.php';?>
 
 <script>
   $(function () {
     if (!$.fn.DataTable.isDataTable('#example1')) {
-        $("#example1").DataTable({
-          "responsive": true, 
-          "lengthChange": true, 
-          "autoWidth": false,
-          "order": [[6, "desc"]]
-        });
+      $("#example1").DataTable({
+        "responsive"   : true,
+        "lengthChange" : true,
+        "autoWidth"    : false,
+        "order"        : [[0, "asc"]],
+        "columnDefs"   : [
+          { "visible": false, "targets": 0 },
+          { "orderable": false, "targets": 8 }
+        ]
+      });
     }
   });
 
-  // ── Currency formatter ──
+  // ── Currency formatter ──────────────────────────────────────────────────────
   function fmt(n) {
-    return parseFloat(n || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+    return parseFloat(n || 0).toLocaleString('en-US', {
+      minimumFractionDigits: 2, maximumFractionDigits: 2
+    });
   }
 
-  // ── XSS-safe string escape ──
+  // ── XSS-safe string escape ──────────────────────────────────────────────────
   function escHtml(s) {
-    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    return String(s || '')
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
-  // ── Open modal & fetch details ──
+  // ── Open modal ──────────────────────────────────────────────────────────────
   function viewJobCardDetails(job_card_code) {
-    // Reset & show modal with loader
     $('#inv-items-body').html('');
     resetInvoiceFields();
     $('#inv-loading').show();
     $('#invoiceModal').modal('show');
 
     $.ajax({
-      url: '../api/get-invoice-details.php',
-      type: 'POST',
-      data: { job_card_code: job_card_code },   // pass code — always unique & reliable
-      dataType: 'json',
-      success: function(res) {
+      url      : '../api/get-invoice-details.php',
+      type     : 'POST',
+      data     : { job_card_code: job_card_code },
+      dataType : 'json',
+      success  : function (res) {
         $('#inv-loading').hide();
         if (!res.success) {
           Swal.fire ? Swal.fire('Error', res.message, 'error') : alert('Error: ' + res.message);
@@ -466,7 +485,7 @@
         }
         populateModal(res.data, res.items, res.totals);
       },
-      error: function(xhr, status, err) {
+      error    : function (xhr, status, err) {
         $('#inv-loading').hide();
         alert('Request failed: ' + err);
         $('#invoiceModal').modal('hide');
@@ -474,28 +493,35 @@
     });
   }
 
+  // ── Reset all modal fields to "—" ──────────────────────────────────────────
   function resetInvoiceFields() {
     ['inv-station-name','inv-station-address','inv-station-contact',
      'inv-code','inv-invoice-code','inv-cust-name','inv-cust-phone',
      'inv-cust-address','inv-veh-number','inv-veh-makemodel','inv-veh-ids',
      'inv-veh-mileage','inv-veh-next','inv-job-type',
-     'inv-subtotal','inv-vat-amount','inv-grand-total'].forEach(function(id){
-      $('#'+id).text('—');
-    });
-    $('#inv-logo-wrap').html('<div class="inv-logo-placeholder"><i class="fas fa-tools"></i></div>');
+     'inv-subtotal','inv-vat-amount','inv-grand-total'
+    ].forEach(function (id) { $('#' + id).text('—'); });
+    $('#inv-logo-wrap').html(
+      '<div class="station-logo-placeholder"><i class="fas fa-tools"></i></div>'
+    );
   }
 
+  // ── Populate modal with API data ────────────────────────────────────────────
   function populateModal(d, items, totals) {
+
     // Station
     $('#inv-station-name').text(d.service_name || '—');
     $('#inv-station-address').text([d.st_address, d.st_city].filter(Boolean).join(', ') || '—');
     $('#inv-station-contact').text([d.st_phone, d.st_email].filter(Boolean).join('  |  ') || '—');
 
-    // Logo
     if (d.logo) {
-      $('#inv-logo-wrap').html('<img src="../uploads/logos/' + d.logo + '" class="station-logo" onerror="this.style.display=\'none\'">');
+      $('#inv-logo-wrap').html(
+        '<img src="../uploads/logos/' + d.logo + '" class="station-logo" onerror="this.style.display=\'none\'">'
+      );
     } else {
-      $('#inv-logo-wrap').html('<div class="inv-header station-logo-placeholder"><i class="fas fa-tools"></i></div>');
+      $('#inv-logo-wrap').html(
+        '<div class="station-logo-placeholder"><i class="fas fa-tools"></i></div>'
+      );
     }
 
     // Codes
@@ -511,63 +537,66 @@
     $('#inv-veh-number').text(d.vehicle_number || '—');
     $('#inv-veh-makemodel').text([d.make_name, d.model_name].filter(Boolean).join(' / ') || '—');
     $('#inv-veh-ids').text(
-      [d.engine_number ? 'Eng: ' + d.engine_number : null, d.chassis_number ? 'Ch: ' + d.chassis_number : null]
+      [d.engine_number ? 'Eng: ' + d.engine_number : null,
+       d.chassis_number ? 'Ch: ' + d.chassis_number : null]
         .filter(Boolean).join('  |  ') || '—'
     );
     $('#inv-veh-mileage').text(d.current_mileage ? d.current_mileage + ' km' : '—');
     $('#inv-veh-next').text(d.next_mileage ? d.next_mileage + ' km' : '—');
     $('#inv-job-type').text(d.job_type || '—');
 
-    // ── Build items table ───────────────────────────────────────────────
-    // item_type values from API:
-    //   Normal rows : 'Washer' | 'Repair' | 'Product'
-    //   Package rows: 'Service Package'  (is_package=true)
-    //   Sub-item rows: 'Package Item' | 'Free Item' | 'Fuel' | 'Filter'  (is_sub_item=true)
-
+    // ── Items table ───────────────────────────────────────────────────────────
     var badgeCfg = {
-      'Washer':          { cls: 'badge-info',    icon: 'fas fa-spray-can'   },
-      'Repair':          { cls: 'badge-warning',  icon: 'fas fa-wrench'      },
-      'Product':         { cls: 'badge-success',  icon: 'fas fa-box'         },
-      'Service Package': { cls: 'badge-primary',  icon: 'fas fa-layer-group' },
-      'Package Item':    { cls: 'badge-secondary',icon: 'fas fa-check'       },
-      'Free Item':       { cls: 'badge-success',  icon: 'fas fa-gift'        },
-      'Fuel':            { cls: 'badge-dark',     icon: 'fas fa-oil-can'     },
-      'Filter':          { cls: 'badge-secondary',icon: 'fas fa-filter'      },
+      'Washer'         : { cls: 'badge-info',      icon: 'fas fa-spray-can'    },
+      'Repair'         : { cls: 'badge-warning',   icon: 'fas fa-wrench'       },
+      'Product'        : { cls: 'badge-success',   icon: 'fas fa-box'          },
+      'Service Package': { cls: 'badge-primary',   icon: 'fas fa-layer-group'  },
+      'Package Item'   : { cls: 'badge-secondary', icon: 'fas fa-check'        },
+      'Free Item'      : { cls: 'badge-success',   icon: 'fas fa-gift'         },
+      'Fuel'           : { cls: 'badge-dark',      icon: 'fas fa-oil-can'      },
+      'Filter'         : { cls: 'badge-secondary', icon: 'fas fa-filter'       },
     };
 
     var tbody  = '';
     var rowNum = 0;
 
     if (items && items.length > 0) {
-      items.forEach(function(item) {
+      items.forEach(function (item) {
         var isPackage = item.is_package  === true;
         var isSubItem = item.is_sub_item === true;
         var isFree    = item.is_free     === true;
         var lineTotal = parseFloat(((item.qty * item.price) - item.discount).toFixed(2));
         var cfg       = badgeCfg[item.item_type] || { cls: 'badge-secondary', icon: 'fas fa-tag' };
 
-        /* ── Service Package header ── */
         if (isPackage) {
+          // ── Service Package header row ──
           tbody +=
             '<tr style="background:#16213e;color:#fff;">' +
               '<td colspan="7" class="py-2 font-weight-bold" style="font-size:0.82rem;letter-spacing:.8px;">' +
                 '<i class="fas fa-layer-group mr-2" style="opacity:.7;"></i>' +
                 'SERVICE PACKAGE &nbsp;—&nbsp; ' +
                 '<span style="font-size:1rem;">' + escHtml(item.name) + '</span>' +
-                '<span class="float-right" style="font-size:0.72rem;opacity:.6;font-weight:400;font-family:monospace;">' + escHtml(item.code) + '</span>' +
+                '<span class="float-right" style="font-size:0.72rem;opacity:.6;font-weight:400;font-family:monospace;">' +
+                  escHtml(item.code) +
+                '</span>' +
               '</td>' +
             '</tr>';
 
-        /* ── Sub-items (Package Item, Free Item, Fuel, Filter) ── */
         } else if (isSubItem) {
+          // ── Package sub-item row ──
           rowNum++;
-          var rowBg    = isFree ? '#f6fff8' : '#f8f9fa';
-          var nameTd   = isFree
-            ? '<i class="fas fa-gift mr-1 text-success"></i><em>' + escHtml(item.name) + '</em> <span class="badge badge-success" style="font-size:0.65rem;">FREE</span>'
+          var rowBg   = isFree ? '#f6fff8' : '#f8f9fa';
+          var nameTd  = isFree
+            ? '<i class="fas fa-gift mr-1 text-success"></i><em>' + escHtml(item.name) +
+              '</em> <span class="badge badge-success" style="font-size:0.65rem;">FREE</span>'
             : '<i class="' + cfg.icon + ' mr-1 text-muted" style="font-size:0.75rem;"></i>' + escHtml(item.name);
-          var priceTd  = item.price > 0 ? fmt(item.price) : (isFree ? '<span class="text-success">0.00</span>' : '—');
-          var totalTd  = lineTotal > 0   ? '<strong>' + fmt(lineTotal) + '</strong>'
-                                         : (isFree ? '<span class="text-success">0.00</span>' : '—');
+          var priceTd = item.price > 0
+            ? fmt(item.price)
+            : (isFree ? '<span class="text-success">0.00</span>' : '—');
+          var totalTd = lineTotal > 0
+            ? '<strong>' + fmt(lineTotal) + '</strong>'
+            : (isFree ? '<span class="text-success">0.00</span>' : '—');
+
           tbody +=
             '<tr style="background:' + rowBg + ';">' +
               '<td class="text-muted pl-4" style="font-size:0.75rem;">' + rowNum + '</td>' +
@@ -579,8 +608,8 @@
               '<td class="text-right">' + totalTd + '</td>' +
             '</tr>';
 
-        /* ── Normal rows: Washer / Repair / Product ── */
         } else {
+          // ── Normal row: Washer / Repair / Product ──
           rowNum++;
           tbody +=
             '<tr>' +
