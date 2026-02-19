@@ -1,4 +1,19 @@
+<?php require_once '../includes/db_config.php';?>
 <?php include_once '../includes/header.php';?>
+
+<?php
+
+// Get Job Card ID from URL
+$job_card_id = isset($_GET['code']) ? mysqli_real_escape_string($conn, $_GET['code']) : null;
+
+if (!$job_card_id) {
+    echo "<script>alert('No Job Card ID provided'); window.location='index.php';</script>";
+    exit;
+}
+?>
+
+<input type="hidden" id="edit_job_card_id" value="<?php echo $job_card_id; ?>">
+
 <style>
 /* =========================================================
    ULTIMATE LAYOUT FIX
