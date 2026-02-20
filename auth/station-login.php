@@ -158,10 +158,29 @@
         to { opacity: 1; transform: translateX(0); }
     }
 
-    /* Responsive */
     @media (max-width: 991px) {
         .login-img { display: none; }
     }
+
+    /* ── Forgot Password Modal ── */
+    #fpModal .modal-content   { border-radius: 12px; overflow: hidden; }
+    #fpModal .modal-header    { background: var(--primary-blue); border-bottom: none; }
+    #fpModal .modal-title     { color: #fff; font-weight: 700; }
+    #fpModal .modal-header .close { color: #fff; opacity: 0.8; }
+    #fpModal .modal-footer    { border-top: none; }
+    #fp-email-input {
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        width: 100%;
+        transition: all 0.3s;
+    }
+    #fp-email-input:focus {
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+        outline: none;
+    }
+    #fp-success-box, #fp-error-box { display: none; }
 </style>
 
 <body class="account-page">
@@ -176,7 +195,7 @@
                                 <h4 class="ml-2 mb-0">autoservice.lk</h4>
                             </div>
                         </div>
-                        
+
                         <div class="login-userheading">
                             <h3>Welcome Back</h3>
                             <h4>Manage your service station dashboard</h4>
@@ -201,13 +220,18 @@
 
                             <div class="form-login d-flex justify-content-end">
                                 <div class="alreadyuser">
-                                    <h4><a href="forgetpassword.html">Forgot Password?</a></h4>
+                                    <!-- Opens forgot password modal -->
+                                    <h4>
+                                        <a href="#" id="btn-forgot-password">
+                                            <i class="fas fa-key mr-1"></i>Forgot Password?
+                                        </a>
+                                    </h4>
                                 </div>
                             </div>
 
                             <div class="form-login">
                                 <button type="button" id="btn_station_login" class="btn btn-login">Sign In</button>
-                                
+
                                 <div style="display: none;" id="btn-loading">
                                     <button type="button" class="btn btn-login" disabled>
                                         <span class="spinner-border spinner-border-sm mr-2" role="status"></span>
@@ -218,7 +242,9 @@
                         </form>
 
                         <div class="signinform text-center">
-                            <h4>Don’t have an account? <a href="../auth/station-register.php" class="hover-a">Create Station Account</a></h4>
+                            <h4>Don't have an account?
+                                <a href="../auth/station-register.php" class="hover-a">Create Station Account</a>
+                            </h4>
                         </div>
                     </div>
                 </div>
@@ -230,31 +256,155 @@
         </div>
     </div>
 
-    <?php include_once '../includes/auth-footer.php'; ?>
-    
-<script>
-        $(document).ready(function() {
-            // Existing Password toggle logic
-            $(document).on('click', '.toggle-password', function() {
-                $(this).toggleClass("fa-eye fa-eye-slash");
-                var input = $(".pass-input");
-                if (input.attr("type") == "password") {
-                    input.attr("type", "text");
-                } else {
-                    input.attr("type", "password");
-                }
-            });
+    <!-- ════════════════════════════════════════════
+         FORGOT PASSWORD MODAL
+    ═════════════════════════════════════════════ -->
+    <div class="modal fade" id="fpModal" tabindex="-1" role="dialog" aria-labelledby="fpModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:420px;">
+            <div class="modal-content shadow-lg">
 
-            // --- NEW CODE: Trigger Login on Enter Key ---
-            $('#email, #password').keypress(function(e) {
-                // Check if the key pressed is 'Enter' (key code 13)
-                if (e.which == 13) {
-                    e.preventDefault(); // Stop the form from submitting normally (page reload)
-                    $('#btn_station_login').click(); // Trigger the button click
-                }
-            });
-            // ---------------------------------------------
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fpModalLabel">
+                        <i class="fas fa-lock-open mr-2"></i>Reset Station Password
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body p-4">
+                    <p class="text-muted small mb-3">
+                        Enter the email address registered to your station account. We'll send you a link to reset your password.
+                    </p>
+
+                    <!-- Success -->
+                    <div id="fp-success-box" class="alert alert-success">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <span id="fp-success-msg"></span>
+                    </div>
+
+                    <!-- Error -->
+                    <div id="fp-error-box" class="alert alert-danger">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        <span id="fp-error-msg"></span>
+                    </div>
+
+                    <div id="fp-form-area">
+                        <label class="font-weight-bold" style="font-size:14px;" for="fp-email-input">Station Email Address</label>
+                        <input id="fp-email-input" type="email" placeholder="station@example.com">
+                    </div>
+                </div>
+
+                <div class="modal-footer d-flex justify-content-between px-4 pb-4">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-dismiss="modal">
+                        <i class="fas fa-times mr-1"></i> Cancel
+                    </button>
+                    <button id="btn-fp-submit" type="button" class="btn btn-primary rounded-pill px-4"
+                            onclick="submitForgotPassword()">
+                        <i class="fas fa-paper-plane mr-1"></i> Send Reset Link
+                    </button>
+                    <button id="btn-fp-loading" style="display:none;" type="button"
+                            class="btn btn-primary rounded-pill px-4" disabled>
+                        <span class="spinner-border spinner-border-sm mr-1"></span> Sending...
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- END FORGOT PASSWORD MODAL -->
+
+    <?php include_once '../includes/auth-footer.php'; ?>
+
+<script>
+    $(document).ready(function () {
+
+        // Password visibility toggle
+        $(document).on('click', '.toggle-password', function () {
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            var input = $(".pass-input");
+            input.attr("type", input.attr("type") === "password" ? "text" : "password");
         });
-    </script>
+
+        // Enter key → login
+        $('#email, #password').keypress(function (e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                $('#btn_station_login').click();
+            }
+        });
+
+        // Forgot password link — explicit JS trigger works even if Bootstrap JS
+        // data-attributes aren't firing due to load order
+        $('#btn-forgot-password').on('click', function (e) {
+            e.preventDefault();
+            $('#fpModal').modal('show');
+        });
+
+        // Enter key → forgot password submit
+        $('#fp-email-input').keypress(function (e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                submitForgotPassword();
+            }
+        });
+
+        // Reset modal state on open
+        $('#fpModal').on('show.bs.modal', function () {
+            $('#fp-email-input').val('');
+            $('#fp-success-box, #fp-error-box').hide();
+            $('#fp-form-area').show();
+            $('#btn-fp-submit').show();
+            $('#btn-fp-loading').hide();
+        });
+    });
+
+    // ── Forgot Password ────────────────────────────────────────────────────
+    function submitForgotPassword() {
+        var email = $('#fp-email-input').val().trim();
+
+        if (!email) {
+            showFpError('Please enter your email address.');
+            return;
+        }
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            showFpError('Please enter a valid email address.');
+            return;
+        }
+
+        $('#btn-fp-submit').hide();
+        $('#btn-fp-loading').show();
+        $('#fp-success-box, #fp-error-box').hide();
+
+        $.ajax({
+            url: '../api/forgot-password-station.php',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ email: email }),
+            success: function (data) {
+                $('#btn-fp-loading').hide();
+                if (data.success) {
+                    $('#fp-form-area').hide();
+                    $('#fp-success-msg').text(data.message);
+                    $('#fp-success-box').show();
+                } else {
+                    $('#btn-fp-submit').show();
+                    showFpError(data.message);
+                }
+            },
+            error: function () {
+                $('#btn-fp-loading').hide();
+                $('#btn-fp-submit').show();
+                showFpError('Something went wrong. Please try again.');
+            }
+        });
+    }
+
+    function showFpError(msg) {
+        $('#fp-error-msg').text(msg);
+        $('#fp-error-box').show();
+    }
+</script>
 </body>
 </html>
