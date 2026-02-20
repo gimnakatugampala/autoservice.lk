@@ -75,7 +75,7 @@ $(document).ready(function () {
                 console.log(response)
 
               if (response === "success") {
-                window.location.href = "../vehicles/";
+                window.location.href = "../dashboard/";
                 // console.log("Success")
     
               } else if (response == "User Exist"){
