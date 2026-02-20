@@ -58,6 +58,21 @@ $current_mileage = (float) $current_mileage;
 $new_mileage     = (float) $new_mileage;
 $notify          = (int)   $notify;
 
+// ── Helper: map job_card_type_id → SMS type name (mirrors add_jobcard files) ─
+if (!function_exists("getJobCardTypeName")) {
+function getJobCardTypeName(int $type_id): string {
+    switch ($type_id) {
+        case 1:  return 'Washer';
+        case 2:  return 'Repair';
+        case 3:  return 'Service';
+        case 4:  return 'WnR';
+        case 5:  return 'WnS';
+        case 6:
+        default: return 'All';
+    }
+}
+}
+
 $transaction_committed = false;
 
 $conn->begin_transaction();
@@ -69,6 +84,78 @@ try {
     $stmt->bind_param("iidi", $status, $paid_status, $vat, $job_card_id);
     if (!$stmt->execute()) throw new Exception("Failed to update job card: " . $stmt->error);
     $stmt->close();
+
+    // ── 1b. Fetch job card meta + vehicle + station data ───────────────────
+    // Done early so $data_station, $data_vehicle, $vehicle_number, $jobcardcode
+    // are available for BOTH the Pending and Completed SMS calls.
+    $stmt = $conn->prepare("
+        SELECT
+            jc.job_card_code,
+            jc.job_card_type_id,
+            jc.vehicle_owner_id,
+            v.id              AS vehicle_id,
+            v.vehicle_number,
+            v.chassis_number,
+            v.engine_number,
+            vmod.name         AS vehicle_model_name,
+            vmak.name         AS vehicle_make_name,
+            vo.first_name,
+            vo.last_name,
+            vo.email,
+            vo.phone,
+            vo.address,
+            ss.service_name,
+            ss.address        AS station_address,
+            ss.street,
+            ss.city,
+            ss.phone          AS station_phone,
+            ss.other_phone,
+            ss.email          AS station_email,
+            ss.logo
+        FROM job_card jc
+        JOIN vehicle         v    ON v.id  = jc.vehicle_id
+        JOIN vehicle_owner   vo   ON vo.id = jc.vehicle_owner_id
+        JOIN service_station ss   ON ss.id = jc.service_station_id
+        LEFT JOIN vehicle_model vmod ON vmod.id = v.vehicle_model_id
+        LEFT JOIN vehicle_make  vmak ON vmak.id = v.vehicle_manufacturer_id
+        WHERE jc.id = ?
+        LIMIT 1
+    ");
+    $stmt->bind_param("i", $job_card_id);
+    $stmt->execute();
+    $base_row = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+
+    $jobcardcode      = $base_row['job_card_code']        ?? '';  // real job card code — used in SMS
+    $job_card_type_id = (int) ($base_row['job_card_type_id'] ?? 0);
+    $vehicle_id       = (int) ($base_row['vehicle_id']       ?? 0);
+    $vehicle_owner_id = (int) ($base_row['vehicle_owner_id'] ?? 0);
+    $vehicle_number   = $base_row['vehicle_number']        ?? '';
+
+    // These arrays are what send-jobcard-sms.php and the PDF makers expect
+    $data_vehicle = [[
+        'vehicle_id'         => $vehicle_id,
+        'vehicle_number'     => $base_row['vehicle_number']     ?? '',
+        'chassis_number'     => $base_row['chassis_number']     ?? '',
+        'engine_number'      => $base_row['engine_number']      ?? '',
+        'vehicle_model_name' => $base_row['vehicle_model_name'] ?? '',
+        'vehicle_make_name'  => $base_row['vehicle_make_name']  ?? '',
+        'first_name'         => $base_row['first_name']         ?? '',
+        'last_name'          => $base_row['last_name']          ?? '',
+        'email'              => $base_row['email']              ?? '',
+        'phone'              => $base_row['phone']              ?? '',
+        'address'            => $base_row['address']            ?? '',
+    ]];
+    $data_station = [[
+        'service_name' => $base_row['service_name']    ?? '',
+        'address'      => $base_row['station_address'] ?? '',
+        'street'       => $base_row['street']          ?? '',
+        'city'         => $base_row['city']            ?? '',
+        'phone'        => $base_row['station_phone']   ?? '',
+        'other_phone'  => $base_row['other_phone']     ?? '',
+        'email'        => $base_row['station_email']   ?? '',
+        'logo'         => $base_row['logo']            ?? '',
+    ]];
 
     // ── 2. job_card_mileage ────────────────────────────────────────────────
     $stmt = $conn->prepare("SELECT job_card_id FROM job_card_mileage WHERE job_card_id = ? LIMIT 1");
@@ -183,7 +270,16 @@ try {
         $stmt->close();
     }
 
-    // ── 10. Invoice + inventory deduction + email ──────────────────────────
+    // ── 10. SMS — Pending ──────────────────────────────────────────────────
+    // $data_station, $data_vehicle, $vehicle_number, $jobcardcode are all
+    // available now because they were populated in step 1b above.
+    if ($status === 1) {
+        $status_name        = "Pending";
+        $job_card_type_name = getJobCardTypeName($job_card_type_id);
+        include_once '../api/send-jobcard-sms.php';
+    }
+
+    // ── 11. Invoice + inventory deduction + PDF email + SMS (Completed) ───
     if (($paid_status === 3 || $status === 3) && !empty($invoice_code)) {
 
         // Check if invoice already exists
@@ -224,106 +320,46 @@ try {
             }
         }
 
-        // ── Load vehicle + station data for PDF maker + email ──────────────
-        $stmt = $conn->prepare("
-            SELECT
-                jc.job_card_type_id,
-                v.id              AS vehicle_id,
-                v.vehicle_number,
-                v.chassis_number,
-                v.engine_number,
-                vmod.name         AS vehicle_model_name,
-                vmak.name         AS vehicle_make_name,
-                vo.first_name,
-                vo.last_name,
-                vo.email,
-                vo.phone,
-                vo.address,
-                ss.service_name,
-                ss.address        AS station_address,
-                ss.street,
-                ss.city,
-                ss.phone          AS station_phone,
-                ss.other_phone,
-                ss.email          AS station_email,
-                ss.logo
-            FROM job_card jc
-            JOIN vehicle         v    ON v.id    = jc.vehicle_id
-            JOIN vehicle_owner   vo   ON vo.id   = jc.vehicle_owner_id
-            JOIN service_station ss   ON ss.id   = jc.service_station_id
-            LEFT JOIN vehicle_model vmod ON vmod.id = v.vehicle_model_id
-            LEFT JOIN vehicle_make  vmak ON vmak.id = v.vehicle_manufacturer_id
-            WHERE jc.id = ?
-            LIMIT 1
-        ");
-        $stmt->bind_param("i", $job_card_id);
-        $stmt->execute();
-        $email_result = $stmt->get_result();
-        $stmt->close();
+        // Variables used inside the PDF makers.
+        // $jobcardcode        = real job card code (set in step 1b) — also used by SMS.
+        // $jobcardInvoicecode = invoice code — used by PDF makers.
+        $jobcardInvoicecode = $invoice_code;
+        $JobCardID          = $job_card_id;
 
-        if ($email_row = $email_result->fetch_assoc()) {
+        // Commit BEFORE generating PDF so the PDF maker reads
+        // the fully saved job card data from the DB
+        $conn->commit();
+        $transaction_committed = true;
 
-            // These variable names match what the PDF maker and send-email.php expect
-            $data_vehicle = [[
-                'vehicle_id'         => $email_row['vehicle_id'],
-                'vehicle_number'     => $email_row['vehicle_number'],
-                'chassis_number'     => $email_row['chassis_number'],
-                'engine_number'      => $email_row['engine_number'],
-                'vehicle_model_name' => $email_row['vehicle_model_name'] ?? '',
-                'vehicle_make_name'  => $email_row['vehicle_make_name']  ?? '',
-                'first_name'         => $email_row['first_name'],
-                'last_name'          => $email_row['last_name'],
-                'email'              => $email_row['email'],
-                'phone'              => $email_row['phone'],
-                'address'            => $email_row['address'],
-            ]];
-            $data_station = [[
-                'service_name' => $email_row['service_name'],
-                'address'      => $email_row['station_address'],
-                'street'       => $email_row['street'],
-                'city'         => $email_row['city'],
-                'phone'        => $email_row['station_phone'],
-                'other_phone'  => $email_row['other_phone'],
-                'email'        => $email_row['station_email'],
-                'logo'         => $email_row['logo'],
-            ]];
+        // ── SMS — Completed ────────────────────────────────────────────────
+        // $data_station, $data_vehicle, $vehicle_number, $jobcardcode are all
+        // available from step 1b — no undefined variable warnings.
+        $status_name        = "Completed";
+        $job_card_type_name = getJobCardTypeName($job_card_type_id);
+        include_once '../api/send-jobcard-sms.php';
 
-            // Variables used inside the PDF maker
-            $jobcardInvoicecode = $invoice_code;
-            $jobcardcode        = $invoice_code;  // alias — some PDF makers use $jobcardcode
-            $vehicle_number     = $email_row['vehicle_number'];
-            $JobCardID          = $job_card_id;
-
-            // Commit BEFORE generating PDF so the PDF maker reads
-            // the fully saved job card data from the DB
-            $conn->commit();
-            $transaction_committed = true;
-
-            // Generates PDF + sends email — pick maker based on job card type
-            // 1=Washer only, 2=Repair only, 3=Service only,
-            // 4=Washer+Repair, 5=Washer+Service, 6=All
-            $job_card_type_id = (int) $email_row['job_card_type_id'];
-            switch ($job_card_type_id) {
-                case 1:
-                    include_once '../api/job-card-washer-pdf-maker.php';
-                    break;
-                case 2:
-                    include_once '../api/job-card-repair-pdf-maker.php';
-                    break;
-                case 3:
-                    include_once '../api/job-card-service-pdf-maker.php';
-                    break;
-                case 4:
-                    include_once '../api/job-card-washer-repair-pdf-maker.php';
-                    break;
-                case 5:
-                    include_once '../api/job-card-washer-service-pdf-maker.php';
-                    break;
-                case 6:
-                default:
-                    include_once '../api/job-card-all-pdf-maker.php';
-                    break;
-            }
+        // ── PDF + email — pick maker based on job card type ────────────────
+        // 1=Washer, 2=Repair, 3=Service, 4=WnR, 5=WnS, 6=All
+        switch ($job_card_type_id) {
+            case 1:
+                include_once '../api/job-card-washer-pdf-maker.php';
+                break;
+            case 2:
+                include_once '../api/job-card-repair-pdf-maker.php';
+                break;
+            case 3:
+                include_once '../api/job-card-service-pdf-maker.php';
+                break;
+            case 4:
+                include_once '../api/job-card-washer-repair-pdf-maker.php';
+                break;
+            case 5:
+                include_once '../api/job-card-washer-service-pdf-maker.php';
+                break;
+            case 6:
+            default:
+                include_once '../api/job-card-all-pdf-maker.php';
+                break;
         }
     }
 
