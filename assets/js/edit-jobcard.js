@@ -27,6 +27,53 @@ $(document).ready(function () {
     }
 
     // ==========================================
+    // 1b. SHOW/HIDE HELPER (mirrors add_jobcard)
+    // ==========================================
+    function getNotApplicableHTML(message) {
+        return '<div class="col-md-12 text-center my-5">' +
+               '<div class="alert alert-light border border-info shadow-sm d-inline-block p-4">' +
+               '<i class="fas fa-info-circle text-info mb-2" style="font-size:2rem;"></i>' +
+               '<h5 class="text-secondary font-weight-bold">' + message + '</h5>' +
+               '<p class="text-muted m-0 small text-uppercase">This section is hidden based on the selected Job Card Type.</p>' +
+               '</div></div>';
+    }
+
+    // Apply show/hide rules based on job_card_type — called after job_card_type is set
+    function applyJobCardTypeVisibility() {
+        var jct = String(job_card_type);
+
+        // ── Vehicle Report (Step 2): shown for types 3, 5, 6 ──────────────────
+        // Note: populateVehicleReports already handles this correctly,
+        // but we guard the container in case reports array is empty.
+        // (populateVehicleReports itself already puts the N/A message for other types)
+
+        // ── Washer (Step 3): hidden for types 2, 3 ────────────────────────────
+        if (jct === '2' || jct === '3') {
+            $('#washer-part-container').html(getNotApplicableHTML('Washer Not Available'));
+        }
+
+        // ── Service Packages (Step 4): hidden for types 1, 2, 4 ──────────────
+        if (jct === '1' || jct === '2' || jct === '4') {
+            $('#service-package-part-container').html(getNotApplicableHTML('Service Packages Not Applicable'));
+            $('#service-package-total-container').hide();
+        }
+
+        // ── Repairs (Step 5): hidden for types 1, 3, 5 ───────────────────────
+        if (jct === '1' || jct === '3' || jct === '5') {
+            $('#maintenance-part-container').html(getNotApplicableHTML('Repair Options Not Applicable'));
+            $('.repairTable').hide();
+            $('#repair-final-total-container').hide();
+        }
+
+        // ── Products (Step 6): hidden for types 1, 3, 5 ──────────────────────
+        if (jct === '1' || jct === '3' || jct === '5') {
+            $('#select-products-container').html(getNotApplicableHTML('Product Options Not Applicable'));
+            $('.productsTable').hide();
+            $('#total-final-product-container').hide();
+        }
+    }
+
+    // ==========================================
     // 3. GLOBALS
     // ==========================================
     var urlParams   = new URLSearchParams(window.location.search);
@@ -141,12 +188,33 @@ $(document).ready(function () {
 
         serviceStationInfo = data.station;
 
+        // Apply show/hide rules BEFORE populating steps,
+        // so sections not applicable to this job card type show the N/A placeholder
+        // instead of being populated with data (or left blank).
+        applyJobCardTypeVisibility();
+
         populateVehicleInfo(data);
         populateVehicleReports(data.reports);
-        populateWasherStep(data.washers);
-        loadServicePackageDropdown(data.fuels, data.filters);
-        loadRepairDropdown(data.repairs);
-        loadProductDropdown(data.products);
+
+        // Only populate washer if this type uses it
+        if (job_card_type !== '2' && job_card_type !== '3') {
+            populateWasherStep(data.washers);
+        }
+
+        // Only populate service packages if this type uses them
+        if (job_card_type === '3' || job_card_type === '5' || job_card_type === '6') {
+            loadServicePackageDropdown(data.fuels, data.filters);
+        }
+
+        // Only populate repairs if this type uses them
+        if (job_card_type === '2' || job_card_type === '4' || job_card_type === '6') {
+            loadRepairDropdown(data.repairs);
+        }
+
+        // Only populate products if this type uses them
+        if (job_card_type === '2' || job_card_type === '4' || job_card_type === '6') {
+            loadProductDropdown(data.products);
+        }
 
         setTimeout(function () {
             getInvoiceDetails(vehicle, serviceStationInfo);
@@ -1010,6 +1078,13 @@ $(document).ready(function () {
         }
     });
 
+    // ── Helpers to check which steps are active for this job card type ────────
+    function hasVehicleReport() { return job_card_type === '3' || job_card_type === '5' || job_card_type === '6'; }
+    function hasWasher()        { return job_card_type !== '2' && job_card_type !== '3'; }
+    function hasServicePkg()    { return job_card_type === '3' || job_card_type === '5' || job_card_type === '6'; }
+    function hasRepairs()       { return job_card_type === '2' || job_card_type === '4' || job_card_type === '6'; }
+    function hasProducts()      { return job_card_type === '2' || job_card_type === '4' || job_card_type === '6'; }
+
     $('#job-card-step-1').on('click', function () {
         current_mileage = $('#current-mileage').val();
         new_mileage     = $('#new-mileage').val();
@@ -1023,10 +1098,28 @@ $(document).ready(function () {
         window.stepper.to(2); window.showStepContent(2);
     });
 
-    $('#job-card-step-2').on('click', function () { collectVehicleReportData(); window.stepper.to(3); window.showStepContent(3); });
-    $('#job-card-step-3').on('click', function () { window.stepper.to(4); window.showStepContent(4); });
-    $('#job-card-step-4').on('click', function () { window.stepper.to(5); window.showStepContent(5); });
-    $('#job-card-step-5').on('click', function () { window.stepper.to(6); window.showStepContent(6); });
+    // Step 2 → Step 3 (skip 2 if no vehicle report)
+    $('#job-card-step-2').on('click', function () {
+        if (hasVehicleReport()) collectVehicleReportData();
+        window.stepper.to(3); window.showStepContent(3);
+    });
+
+    // Step 3 → Step 4 (skip 3 if no washer — go to 4)
+    $('#job-card-step-3').on('click', function () {
+        window.stepper.to(4); window.showStepContent(4);
+    });
+
+    // Step 4 → Step 5 (skip 4 if no service packages — go to 5)
+    $('#job-card-step-4').on('click', function () {
+        window.stepper.to(5); window.showStepContent(5);
+    });
+
+    // Step 5 → Step 6 (skip 5 if no repairs — go to 6)
+    $('#job-card-step-5').on('click', function () {
+        window.stepper.to(6); window.showStepContent(6);
+    });
+
+    // Step 6 → Step 7 Invoice
     $('#job-card-step-6').on('click', function () {
         generateInvoiceItems();
         calculateSubtotal();

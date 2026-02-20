@@ -367,7 +367,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                   <th>Item Description</th>
                                   <th>QTY / Labour Hr</th>
                                   <th>Unit Price (LKR)</th>
-                                  <!-- <th>Amount (LKR)</th> -->
+                                  <th>Amount (LKR)</th>
                                   <th>Discount (LKR)</th>
                                   <th>Total (LKR)</th>
                                 </tr>
