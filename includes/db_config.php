@@ -6,10 +6,12 @@
 // gimna.exon@gmail.com
 // 9922557gimna
 // gimnakatugampala9@gmail.com
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "autoservice_db";
+
+
+// $servername = "localhost";
+// $username = "root";
+// $password = "";
+// $dbname = "autoservice_db";
 
 // // TEST SERVER
 // $servername = "localhost";
@@ -18,11 +20,11 @@ $dbname = "autoservice_db";
 // $dbname = "autoserv_autoservice_test_db";
 
 
-// // PRODUCTION SERVER
-// $servername = "localhost";
-// $username = "autoserv_root";
-// $password = "PBh*n[{iR9Gs";
-// $dbname = "autoserv_autoservice_db";
+// PRODUCTION SERVER
+$servername = "localhost";
+$username = "autovnph_autovnph";
+$password = "FS8qiqfeIkwQ";
+$dbname = "autovnph_autoservice_db";
 
 
 $conn = new mysqli($servername, $username, $password, $dbname);

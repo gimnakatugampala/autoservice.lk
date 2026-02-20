@@ -19,7 +19,7 @@ if(!isset($_SESSION['user_id'])) {
 // Emp session is Null && Station session is null 
 if(isset($_SESSION['user_id']) && isset($_SESSION['station_id'])) {
     // Session exists
-    header("Location: ./vehicles");
+    header("Location: ./dashboard");
     // exit(0);
 }
 
