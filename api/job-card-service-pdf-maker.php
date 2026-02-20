@@ -8,263 +8,237 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-
-if($env == 'd'){
-    // Development
-    $file_location = $_SERVER['DOCUMENT_ROOT']."autoservice/uploads/invoices/"; 
-}else{
-    // Production
-    $file_location = $_SERVER['DOCUMENT_ROOT']."uploads/invoices/"; 
+if ($env == 'd') {
+    $file_location = $_SERVER['DOCUMENT_ROOT'] . "autoservice/uploads/invoices/";
+} else {
+    $file_location = $_SERVER['DOCUMENT_ROOT'] . "uploads/invoices/";
 }
 
-// GET THE CURRENT EMP
-$curr_emp =  $_SESSION["user_emp_name"];
+$curr_emp = $_SESSION["user_emp_name"] ?? '';
 
-// -------------------- FILE NAME DEFINE -------------------
-$datetime=date('dmY_hms');
-$file_name = "INV_".$datetime.".pdf";
+$datetime  = date('dmY_hms');
+$file_name = "INV_" . $datetime . ".pdf";
 ob_end_clean();
-// -------------------- FILE NAME DEFINE -------------------
 
-// ---------------- STATION LOGO -------------------
-$station_logo =$_SERVER['DOCUMENT_ROOT'].'';
-// ---------------- STATION LOGO -------------------
+$jcId = (int)$JobCardID;
 
+// ── Fetch real job_card_code ───────────────────────────────────────────
+$jc_code_result    = $conn->query("SELECT job_card_code FROM job_card WHERE id = $jcId");
+$jc_code_row       = $jc_code_result ? $jc_code_result->fetch_assoc() : [];
+$real_jobcard_code = $jc_code_row['job_card_code'] ?? $jobcardcode ?? '';
 
-	//----- Code for generate pdf
-	$pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-	$pdf->SetCreator(PDF_CREATOR);  
-	//$pdf->SetTitle("Export HTML Table data to PDF using TCPDF in PHP");  
-	$pdf->SetHeaderData('', '', PDF_HEADER_TITLE, PDF_HEADER_STRING);  
-	$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));  
-	$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));  
-	$pdf->SetDefaultMonospacedFont('helvetica');  
-	$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);  
-	$pdf->SetMargins(PDF_MARGIN_LEFT, '5', PDF_MARGIN_RIGHT);  
-	$pdf->setPrintHeader(false);  
-	$pdf->setPrintFooter(false);  
-	$pdf->SetAutoPageBreak(TRUE, 10);  
-	$pdf->SetFont('helvetica', '', 12);  
-	$pdf->AddPage(); //default A4
-	//$pdf->AddPage('P','A5'); //when you require custome page size 
+// ── Fetch ALL items from all 5 tables ─────────────────────────────────
 
+$items = [];
 
-    $content = ''; 
-    $content .= '
+// 1. Washers
+$r = $conn->query("
+    SELECT w.code AS item_code, 'Car Wash' AS item_name,
+           jcw.qty, jcw.price AS unit_price, jcw.discount
+    FROM job_card_washer jcw
+    INNER JOIN washers w ON jcw.washer_id = w.id
+    WHERE jcw.job_card_id = $jcId
+");
+if ($r) while ($row = $r->fetch_assoc()) $items[] = $row;
 
-    <style type="text/css"> 
-    *{
-        margin:0;
-        padding:0;
+// 2. Products
+$r = $conn->query("
+    SELECT p.code AS item_code, p.product_name AS item_name,
+           jcp.qty, jcp.price AS unit_price, jcp.discount
+    FROM job_card_products jcp
+    INNER JOIN product p ON jcp.product_id = p.id
+    WHERE jcp.job_card_id = $jcId
+");
+if ($r) while ($row = $r->fetch_assoc()) $items[] = $row;
+
+// 3. Repairs / Labour
+$r = $conn->query("
+    SELECT r.code AS item_code, r.name AS item_name,
+           jcr.hours AS qty, jcr.unit_price, jcr.discount
+    FROM job_card_repair jcr
+    INNER JOIN repair r ON jcr.repair_id = r.id
+    WHERE jcr.job_card_id = $jcId
+");
+if ($r) while ($row = $r->fetch_assoc()) $items[] = $row;
+
+// 4. Service Package – Filters
+$r = $conn->query("
+    SELECT ft.code AS item_code, ft.name AS item_name,
+           1 AS qty, jcsf.price AS unit_price, 0 AS discount
+    FROM job_card_service_package_filter jcsf
+    INNER JOIN filter_type ft ON jcsf.filter_type_id = ft.id
+    WHERE jcsf.job_card_id = $jcId
+");
+if ($r) while ($row = $r->fetch_assoc()) $items[] = $row;
+
+// 5. Service Package – Fuel / Lubricants
+$r = $conn->query("
+    SELECT ft.code AS item_code, ft.name AS item_name,
+           1 AS qty, jcspf.price AS unit_price, 0 AS discount
+    FROM job_card_service_package_fuel jcspf
+    INNER JOIN fuel_type ft ON jcspf.fuel_type_id = ft.id
+    WHERE jcspf.job_card_id = $jcId
+");
+if ($r) while ($row = $r->fetch_assoc()) $items[] = $row;
+
+// ── Build PDF ──────────────────────────────────────────────────────────
+$pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+$pdf->SetCreator(PDF_CREATOR);
+$pdf->SetHeaderData('', '', PDF_HEADER_TITLE, PDF_HEADER_STRING);
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN,  '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA,  '', PDF_FONT_SIZE_DATA));
+$pdf->SetDefaultMonospacedFont('helvetica');
+$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+$pdf->SetMargins(PDF_MARGIN_LEFT, '5', PDF_MARGIN_RIGHT);
+$pdf->setPrintHeader(false);
+$pdf->setPrintFooter(false);
+$pdf->SetAutoPageBreak(TRUE, 10);
+$pdf->SetFont('helvetica', '', 12);
+$pdf->AddPage();
+
+$content  = '';
+$content .= '
+<style type="text/css">
+* { margin:0; padding:0; }
+body {
+    font-size:11px;
+    line-height:24px;
+    font-family:"Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
+    color:#000;
+}
+table.table, th, table.table td {
+    border: 1px solid black;
+    padding: 5px;
+}
+.invoice {
+    background-color: #ffffff;
+    border-radius: 10px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+</style>
+
+<div class="invoice">
+<table cellpadding="0" cellspacing="0">
+<table style="width:100%;">
+    <tr><td colspan="2">&nbsp;</td></tr>
+    <tr><td colspan="5" align="center">
+        <img width="50" height="50" src="../uploads/stations/' . $data_station[0]["logo"] . '">
+    </td></tr>
+    <tr><td colspan="2" align="center"><b>' . $data_station[0]["service_name"] . '</b></td></tr>
+    <tr><td colspan="2" align="center">ADDRESS: ' . $data_station[0]["address"] . ' ' . $data_station[0]["street"] . ' ' . $data_station[0]["city"] . '</td></tr>
+    <tr><td colspan="2" align="center">CONTACT: ' . $data_station[0]["phone"] . '</td></tr>
+    <tr><td colspan="2" align="center">EMAIL: ' . $data_station[0]["email"] . '</td></tr>
+    <tr><td colspan="2" align="center"><b>Invoice</b></td></tr>
+</table>
+</table>
+
+<p>------------------------------------------------------------------------------------------------------------------------------</p>
+
+<table cellpadding="0" cellspacing="0">
+<table style="width:100%;">
+    <tr>
+        <td><b>JOB CARD NO</b>: ' . htmlspecialchars($real_jobcard_code) . '</td>
+        <td align="right"><b>INVOICE NO</b>: ' . htmlspecialchars($jobcardInvoicecode) . '</td>
+    </tr>
+    <tr>
+        <td><b>CUSTOMER NAME</b>: ' . $data_vehicle[0]["first_name"] . ' ' . $data_vehicle[0]["last_name"] . '</td>
+        <td align="right"><b>INVOICE DATE</b>: ' . date("Y-m-d H:i:s") . '</td>
+    </tr>
+    <tr>
+        <td><b>ADDRESS</b>: ' . $data_vehicle[0]["address"] . '</td>
+        <td align="right"><b>VEHICLE NO</b>: ' . $data_vehicle[0]["vehicle_number"] . '</td>
+    </tr>
+    <tr>
+        <td><b>CONTACT NO</b>: ' . $data_vehicle[0]["phone"] . '</td>
+        <td align="right"><b>OPENING DATE</b>: ' . date("Y-m-d H:i:s") . '</td>
+    </tr>
+    <tr>
+        <td><b>VAT (%)</b>: ' . $vat . '</td>
+        <td align="right"><b>CLOSING DATE</b>: ' . date("Y-m-d H:i:s") . '</td>
+    </tr>
+    <tr>
+        <td><b>MODEL</b>: ' . ($data_vehicle[0]["vehicle_model_name"] ?? '') . '</td>
+        <td align="right"><b>NXT SERV. MILEAGE</b>: ' . $new_mileage . ' KM</td>
+    </tr>
+    <tr>
+        <td><b>MAKE</b>: ' . ($data_vehicle[0]["vehicle_make_name"] ?? '') . '</td>
+        <td align="right"><b>CHASSIS NO</b>: ' . $data_vehicle[0]["chassis_number"] . '</td>
+    </tr>
+    <tr>
+        <td><b>CURRENT MILEAGE</b>: ' . $current_mileage . ' KM</td>
+        <td align="right"><b>ENGINE NO</b>: ' . $data_vehicle[0]["engine_number"] . '</td>
+    </tr>
+    <tr>
+        <td><b>EMPLOYEE NAME</b>: ' . $curr_emp . '</td>
+        <td align="right"><b>JOB CARD TYPE</b>: SERVICE ONLY</td>
+    </tr>
+</table>
+</table>
+
+<p>------------------------------------------------------------------------------------------------------------------------------</p>
+
+<div class="row my-3">
+<div class="col-12 table-responsive">
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Description</th>
+            <th>QTY / Hrs</th>
+            <th>Unit Price (LKR)</th>
+            <th>Discount (LKR)</th>
+            <th>Total (LKR)</th>
+        </tr>
+    </thead>
+    <tbody>';
+
+$subTotal = 0.0;
+
+if (!empty($items)) {
+    foreach ($items as $item) {
+        $qty       = floatval($item['qty']);
+        $unitPrice = floatval($item['unit_price']);
+        $discount  = floatval($item['discount']);
+        $lineTotal = ($qty * $unitPrice) - $discount;
+        $subTotal += $lineTotal;
+
+        $content .= '
+        <tr>
+            <td>' . htmlspecialchars($item['item_code']) . '</td>
+            <td>' . htmlspecialchars($item['item_name']) . '</td>
+            <td align="center">' . $qty . '</td>
+            <td align="right">' . number_format($unitPrice, 2) . '</td>
+            <td align="right">' . number_format($discount,  2) . '</td>
+            <td align="right">' . number_format($lineTotal,  2) . '</td>
+        </tr>';
     }
-    body{
-		font-size:11px;
-		line-height:24px;
-		font-family:"Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
-		color:#000;
-		}
-        
-		table.table, th, table.table td {
-			border: 1px solid black;
-            padding:5px;
-		  }
-	
+} else {
+    $content .= '<tr><td colspan="6" align="center">No items found.</td></tr>';
+}
 
-          .invoice {
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            max-width: 800px; /* Adjust as needed */
-            margin: 0 auto;
-        }
+$vatAmount   = $subTotal * floatval($vat) / 100;
+$totalAmount = $subTotal + $vatAmount;
 
-    
-    </style>
-    
-        <div class="invoice">
-    
-        <table cellpadding="0" cellspacing="0">
+$content .= '
+    </tbody>
+</table>
+</div>
+</div>
 
-        <table style="width:100%;" >
-        <tr><td colspan="2">&nbsp;</td></tr>
+<table cellpadding="0" cellspacing="0">
+<table style="width:100%;">
+    <tr><td align="right"><b>Subtotal:</b> LKR ' . number_format($subTotal,   2) . '</td></tr>
+    <tr><td align="right"><b>VAT (' . $vat . '%):</b> LKR ' . number_format($vatAmount,   2) . '</td></tr>
+    <tr><td align="right"><b>Total Amount:</b> LKR ' . number_format($totalAmount, 2) . '</td></tr>
+</table>
+</table>
+</div>';
 
-        <tr><td colspan="5" align="center"> <img  width="50" height="50" src="../uploads/stations/'.$data_station[0]["logo"].'"></td></tr>
-        <tr><td colspan="2" align="center"><b>'.$data_station[0]["service_name"].'</b></td></tr>
-        <tr><td colspan="2" align="center">ADDRESS: '.$data_station[0]["address"].' '.$data_station[0]["street"].' '.$data_station[0]["city"].'</td></tr>
-        <tr><td colspan="2" align="center">CONTACT: '.$data_station[0]["phone"].'</td></tr>
-        <tr><td colspan="2" align="center">EMAIL: '.$data_station[0]["email"].'</td></tr>
-        <tr><td colspan="2" align="center"><b>Invoice</b></td></tr>
-    
-        <p>------------------------------------------------------------------------------------------------------------------------------</p>
-    
-    
-        <tr>
-        <td><b>JOB CARD NO</b>:'.$jobcardcode.'</td>
-        <td align="right"><b>INVOICE NO</b>:'.$jobcardInvoicecode.'</td>
-        </tr>
-        
-        <tr>
-        <td><b>CUSTOMER NAME</b>:'.$data_vehicle[0]["first_name"].' '.$data_vehicle[0]["last_name"].'</td>
-        <td align="right"><b>INVOICE DATE</b>:'.date("Y-m-d H:i:s").'</td>
-        </tr>
-
-
-        <tr>
-        <td><b>ADDRESS</b>:'.$data_vehicle[0]["address"].'</td>
-        <td align="right"><b>VEHICLE NO</b>:'.$data_vehicle[0]["vehicle_number"].'</td>
-        </tr>
-
-     
-     
-    
-        <tr>
-        <td><b>CONTACT NO</b>:'.$data_vehicle[0]["phone"].'</td>
-        <td align="right"><b>OPENING DATE</b>:'.date("Y-m-d H:i:s").'</td>
-        </tr>
-
-
-        <tr>
-        <td><b>VAT NO</b>:'.$vat.'</td>
-        <td align="right"><b>CLOSING DATE</b>:'.date("Y-m-d H:i:s").'</td>
-        </tr>
-
-        <tr>
-        <td><b>MODEL CODE</b>:'.$data_vehicle[0]["vehicle_model_name"].'</td>
-        <td align="right"><b>NXT SERV.MILEAGE</b>: '.$new_mileage.' KM</td>
-        </tr>
-
-        <tr>
-        <td><b>MAKE CODE</b>:'.$data_vehicle[0]["vehicle_make_name"].'</td>
-        <td align="right"><b>CHASSIS NO</b>: '.$data_vehicle[0]["chassis_number"].'</td>
-        </tr>
-
-        <tr>
-        <td><b>CURRENT MILEAGE</b>:'.$current_mileage.' KM</td>
-        <td align="right"><b>ENGINE NO</b>:'.$data_vehicle[0]["engine_number"].'</td>
-        </tr>
-
-        <tr>
-        <td><b>EMPLOYEE NAME</b>:'.$curr_emp.'</td>
-        <td align="right"><b>JOB CARD TYPE </b>: SERVICE ONLY</td>
-        </tr>
-
-      
-
-       
-        </table>
-        </table>
-        
-             
-        <p>------------------------------------------------------------------------------------------------------------------------------</p>
-
-            <div class="row my-3">
-                <div class="col-12 table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                    <th>Code</th>
-                    <th>Item Description</th>
-                    <th>QTY / Labour Hr</th>
-                    <th>Unit Price (LKR)</th>
-                    <th>Discount (LKR)</th>
-                    <th>Total (LKR)</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-
-                    ';
-
-                    $fuelTotal = 0;
-                    $filterTotal = 0;
-
-                    $subTotal=0.0;
-                    $totalAmount = 0.0;
-                    
-                    foreach ($data_fuels as $spitem) {
-                        // Get the service package ID
-                        $servicePackageId = $spitem['ServicePackageId']; // Assuming 'rowServicePackageID' is the key in your array
-                        
-                        // Initialize fuel and filter totals for each service package
-                        $fuelTotal = 0;
-                        $filterTotal = 0;
-                        
-                        // Calculate fuel total
-                        foreach ($data_fuels as $fuelItem) {
-                            if ($fuelItem['ServicePackageId'] == $servicePackageId) {
-                                $fuelTotal += floatval($fuelItem['price']);
-                            }
-                        }
-                        
-                        // Calculate filter total
-                        foreach ($data_filters as $filterItem) {
-                            if ($filterItem['ServicePackageId'] == $servicePackageId) {
-                                $filterTotal += floatval($filterItem['price']);
-                            }
-                        }
-                        
-                        // Calculate total
-                        $total = $fuelTotal + $filterTotal;
-                        $subTotal += $total;
-                        
-                        // Append table row to content
-                        $content .= '
-                            <tr>
-                                <td>'.$spitem['ServicePackageId'].'</td>
-                                <td class="text-uppercase">'.$spitem['ServicePackageName'].'</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>0</td>
-                                <td>'.  number_format($total, 2) . '</td>
-                            </tr>';
-                    }
-
-
-                    $totalAmount += $subTotal + ($subTotal * floatval($vat) / 100);
-
-
-
-            $content .= '
-                    
-            </tbody>
-            </table>
-            </div>
-          
-            </div>
-         
-    
-    
-    
-    
-            <table cellpadding="0" cellspacing="0">
-            <table style="width:100%;">
-            <tr>
-            <td align="right"><b>Subtotal:</b>LKR '.$subTotal.'</td>
-            </tr>
-    
-            <tr>
-            <td align="right"><b>VAT (%) :</b>'.$vat.'</td>
-            </tr>
-    
-            <tr>
-            <td align="right"><b>Total Amount :</b>LKR '.$totalAmount.'</td>
-            </tr>
-    
-    
-           
-            </table>
-        </table>
-        </div>
-        
-   
-        '; 
 $pdf->writeHTML($content);
-$pdf->Output($file_location.$file_name, 'F'); // D means download
-
+$pdf->Output($file_location . $file_name, 'F');
 
 // Send Email
-$email_invoice_path=$file_location.$file_name;
+$email_invoice_path = $file_location . $file_name;
 require_once '../api/send-email-invoice.php';
-
-
 ?>
