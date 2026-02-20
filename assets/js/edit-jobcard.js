@@ -43,8 +43,7 @@ $(document).ready(function () {
     var jobCardId          = 0;
     var invoiceCode        = '';
     var vehicleClassId     = null;
-    var vat                = 0;   // ← ADD THIS
-
+    var vat                = 0;
 
     var rowVehicleReportData = [];
 
@@ -111,16 +110,16 @@ $(document).ready(function () {
     function populateExistingData(data) {
         var jc = data.job_card;
 
-        jobCardId      = jc.id;
-        invoiceCode    = jc.invoice_code || generateUUID();
-        vehicleClassId = jc.vehicle_class_id;
-        job_card_type  = String(jc.job_card_type_id);
-        paid_status    = jc.paid_status_id;
-        status         = jc.status_id;
-        notify         = jc.notify_month || 2;
+        jobCardId       = jc.id;
+        invoiceCode     = jc.invoice_code || generateUUID();
+        vehicleClassId  = jc.vehicle_class_id;
+        job_card_type   = String(jc.job_card_type_id);
+        paid_status     = jc.paid_status_id;
+        status          = jc.status_id;
+        notify          = jc.notify_month || 2;
         current_mileage = jc.job_mileage  || 0;
         new_mileage     = jc.next_mileage || 0;
-        vat             = parseFloat(jc.vat) || 0;  
+        vat             = parseFloat(jc.vat) || 0;
 
         vehicle = [{
             vehicle_id         : jc.vehicle_id,
@@ -142,25 +141,13 @@ $(document).ready(function () {
 
         serviceStationInfo = data.station;
 
-        // Step 1
         populateVehicleInfo(data);
-
-        // Step 2
         populateVehicleReports(data.reports);
-
-        // Step 3 — Washer
         populateWasherStep(data.washers);
-
-        // Step 4 — Service Packages: load dropdown options + pre-load saved packages
         loadServicePackageDropdown(data.fuels, data.filters);
-
-        // Step 5 — Repairs: load dropdown options + pre-load saved repairs
         loadRepairDropdown(data.repairs);
-
-        // Step 6 — Products: load dropdown options + pre-load saved products
         loadProductDropdown(data.products);
 
-        // Step 7 — Invoice
         setTimeout(function () {
             getInvoiceDetails(vehicle, serviceStationInfo);
         }, 500);
@@ -387,33 +374,25 @@ $(document).ready(function () {
     // ==========================================
     // 8. STEP 4 — SERVICE PACKAGES
     // ==========================================
-
-    // Load all available service packages into the dropdown via dedicated API call
     function loadServicePackageDropdown(savedFuels, savedFilters) {
         $.ajax({
             type: 'POST',
-            url: '../api/cmb/servicepackages.php',   // same endpoint add_jobcard uses to populate the select
+            url: '../api/cmb/servicepackages.php',
             dataType: 'json',
             success: function (packages) {
                 var $cmb = $('#cmbservicepackages');
                 $cmb.find('option:not(:first)').remove();
-
                 if (packages && packages.length > 0) {
                     packages.forEach(function (pkg) {
-                        // Support both possible field names from the API
                         var pkgName = pkg.package_name || pkg.name || 'Package #' + pkg.id;
                         $cmb.append('<option value="' + pkg.id + '">' + pkgName + '</option>');
                     });
                 }
-
-                // Now pre-load the packages that were saved on this job card
                 if (savedFuels && savedFuels.length > 0) {
                     preLoadSavedServicePackages(savedFuels, savedFilters || []);
                 }
             },
             error: function () {
-                console.warn('Could not load service packages dropdown. Trying checksearchvehicle fallback.');
-                // If dedicated endpoint not available, just pre-load saved packages
                 if (savedFuels && savedFuels.length > 0) {
                     preLoadSavedServicePackages(savedFuels, savedFilters || []);
                 }
@@ -421,23 +400,15 @@ $(document).ready(function () {
         });
     }
 
-    // Pre-load each saved package by calling checkservicepackage.php — this gives us the
-    // real package_name, fuelArry, and filterArry, exactly as add_jobcard does on dropdown change.
     function preLoadSavedServicePackages(savedFuels, savedFilters) {
-        // Collect unique package IDs from the saved fuels/filters
         var pkgIds = [];
         savedFuels.forEach(function (f) {
-            if (pkgIds.indexOf(String(f.service_package_id)) === -1) {
-                pkgIds.push(String(f.service_package_id));
-            }
+            if (pkgIds.indexOf(String(f.service_package_id)) === -1) pkgIds.push(String(f.service_package_id));
         });
         savedFilters.forEach(function (f) {
-            if (pkgIds.indexOf(String(f.service_package_id)) === -1) {
-                pkgIds.push(String(f.service_package_id));
-            }
+            if (pkgIds.indexOf(String(f.service_package_id)) === -1) pkgIds.push(String(f.service_package_id));
         });
 
-        // For each package ID, call checkservicepackage.php to get real data
         pkgIds.forEach(function (pkgId) {
             $.ajax({
                 type: 'POST',
@@ -446,26 +417,19 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (data) {
                     if (!data || !data.servicePackage || data.servicePackage.length === 0) return;
-
-                    // Find the saved fuel/filter values for this package so we can pre-select them
                     var pkgSavedFuels   = savedFuels.filter(function (f) { return String(f.service_package_id) === pkgId; });
                     var pkgSavedFilters = savedFilters.filter(function (f) { return String(f.service_package_id) === pkgId; });
-
                     var alreadyAdded = selected_service_packages.some(function (sp) { return String(sp.id) === pkgId; });
                     if (!alreadyAdded) {
                         counterId += 1;
                         populateTableServicePackage(data, counterId, pkgSavedFuels, pkgSavedFilters);
                         selected_service_packages.push(data.servicePackage[0]);
                     }
-                },
-                error: function () {
-                    console.warn('Failed to load service package #' + pkgId);
                 }
             });
         });
     }
 
-    // Dropdown change — identical to add_jobcard
     $(document).on('change', '#cmbservicepackages', function () {
         var servicePackageId = $(this).val();
         $.ajax({
@@ -474,11 +438,8 @@ $(document).ready(function () {
             data: { servicePackageId: servicePackageId },
             dataType: 'json',
             success: function (data) {
-                var foundServicePackage = selected_service_packages.some(function (sp) { return String(sp.id) === String(servicePackageId); });
-                if (foundServicePackage) {
-                    Swal.fire({ icon: 'error', title: 'Error', text: 'Service Package Already Exist' });
-                    return;
-                }
+                var found = selected_service_packages.some(function (sp) { return String(sp.id) === String(servicePackageId); });
+                if (found) { Swal.fire({ icon: 'error', title: 'Error', text: 'Service Package Already Exist' }); return; }
                 counterId += 1;
                 populateTableServicePackage(data, counterId, [], []);
                 selected_service_packages.push(data.servicePackage[0]);
@@ -486,7 +447,6 @@ $(document).ready(function () {
         });
     });
 
-    // Identical to add_jobcard's populateTableServicePackage
     function populateTableServicePackage(data, cid, preFuels, preFilters) {
         data.servicePackage.forEach(function (plist) {
             var row = $([
@@ -500,20 +460,16 @@ $(document).ready(function () {
                 '</tr>',
                 '<tr class="expandable-body">',
                     '<td colspan="5"><p class="m-0 p-0"><div class="row">',
-
-                    // Fuel type table
                     '<div class="col-md-6">',
-                    '<table class="table table-sm table-striped"><thead><tr>',
-                    '<th>#</th><th>Lubricant Type</th><th>Price</th><th>Select</th>',
-                    '</tr></thead><tbody>',
+                    '<table class="table table-sm table-striped"><thead><tr><th>#</th><th>Lubricant Type</th><th>Price</th><th>Select</th></tr></thead><tbody>',
                     data.fuelArry.map(function (fuel, fuelIndex) {
-                        var savedFuel  = preFuels.find(function (pf) { return String(pf.fuel_type_id) === String(fuel.id); });
-                        var fuelPrice  = savedFuel ? savedFuel.price : fuel.price;
-                        var isChecked  = !!savedFuel;
+                        var savedFuel = preFuels.find(function (pf) { return String(pf.fuel_type_id) === String(fuel.id); });
+                        var fuelPrice = savedFuel ? savedFuel.price : fuel.price;
+                        var isChecked = !!savedFuel;
                         return '<tr>' +
-                            '<td class="rowFuelID"            style="display:none;">' + fuel.id           + '</td>' +
-                            '<td class="rowServicePackageID"  style="display:none;">' + plist.id          + '</td>' +
-                            '<td class="rowServicePackageCode" style="display:none;">' + plist.code       + '</td>' +
+                            '<td class="rowFuelID"             style="display:none;">' + fuel.id           + '</td>' +
+                            '<td class="rowServicePackageID"   style="display:none;">' + plist.id          + '</td>' +
+                            '<td class="rowServicePackageCode" style="display:none;">' + plist.code        + '</td>' +
                             '<td class="rowServicePackageName" style="display:none;">' + plist.package_name + '</td>' +
                             '<td>' + (fuelIndex + 1) + '</td>' +
                             '<td>' + fuel.name + '</td>' +
@@ -526,24 +482,19 @@ $(document).ready(function () {
                             ' name="fuelRadio' + cid + '"' +
                             (isChecked ? ' checked' : '') + '>' +
                             '<label for="fuelRadio' + cid + '_' + (fuelIndex + 1) + '" class="custom-control-label"></label>' +
-                            '</div></td>' +
-                            '</tr>';
+                            '</div></td></tr>';
                     }).join(''),
                     '</tbody></table></div>',
-
-                    // Filter type table
                     '<div class="col-md-6">',
-                    '<table class="table table-sm table-striped"><thead><tr>',
-                    '<th>#</th><th>Filter Type</th><th>Price</th><th>Select</th>',
-                    '</tr></thead><tbody>',
+                    '<table class="table table-sm table-striped"><thead><tr><th>#</th><th>Filter Type</th><th>Price</th><th>Select</th></tr></thead><tbody>',
                     data.filterArry.map(function (filter, filterIndex) {
-                        var savedFilter  = preFilters.find(function (pf) { return String(pf.filter_type_id) === String(filter.id); });
-                        var filterPrice  = savedFilter ? savedFilter.price : filter.price;
-                        var isChecked    = !!savedFilter;
+                        var savedFilter = preFilters.find(function (pf) { return String(pf.filter_type_id) === String(filter.id); });
+                        var filterPrice = savedFilter ? savedFilter.price : filter.price;
+                        var isChecked   = !!savedFilter;
                         return '<tr>' +
                             '<td class="rowFilterID"           style="display:none;">' + filter.id         + '</td>' +
-                            '<td class="rowServicePackageID"  style="display:none;">' + plist.id          + '</td>' +
-                            '<td class="rowServicePackageCode" style="display:none;">' + plist.code       + '</td>' +
+                            '<td class="rowServicePackageID"   style="display:none;">' + plist.id          + '</td>' +
+                            '<td class="rowServicePackageCode" style="display:none;">' + plist.code        + '</td>' +
                             '<td class="rowServicePackageName" style="display:none;">' + plist.package_name + '</td>' +
                             '<td>' + (filterIndex + 1) + '</td>' +
                             '<td>' + filter.name + '</td>' +
@@ -556,18 +507,15 @@ $(document).ready(function () {
                             ' name="filterRadio' + cid + '"' +
                             (isChecked ? ' checked' : '') + '>' +
                             '<label for="filterRadio' + cid + '_' + (filterIndex + 1) + '" class="custom-control-label"></label>' +
-                            '</div></td>' +
-                            '</tr>';
+                            '</div></td></tr>';
                     }).join(''),
                     '</tbody></table></div>',
-
                     '</div></p></td>',
                 '</tr>'
             ].join(''));
 
             tableBodyServicePackage.append(row);
 
-            // Track references (same as add_jobcard)
             service_packages_items.push({
                 rowServicePackageID   : row.find('.rowServicePackageID')[0],
                 rowServicePackageCode : row.find('.rowServicePackageCode')[0],
@@ -588,13 +536,11 @@ $(document).ready(function () {
                 FilterPrice           : row.find('.FilterPrice')[0]
             });
 
-            // Trigger change on pre-checked radios so selected_fuel / selected_filter arrays are populated
             row.find('.fuel-radio:checked').trigger('change');
             row.find('.filter-radio:checked').trigger('change');
         });
     }
 
-    // Fuel radio — identical to add_jobcard
     $(document).on('change', '.fuel-radio', function () {
         if ($(this).is(':checked')) {
             var ServicePackageId   = $(this).closest('tr').find('.rowServicePackageID').text();
@@ -602,14 +548,12 @@ $(document).ready(function () {
             var ServicePackageName = $(this).closest('tr').find('.rowServicePackageName').text();
             var ServicePackageCode = $(this).closest('tr').find('.rowServicePackageCode').text();
             var selectedId         = $(this).closest('tr').find('.rowFuelID').text();
-
             selected_fuel = selected_fuel.filter(function (item) { return item.ServicePackageId !== ServicePackageId; });
             selected_fuel.push({ ServicePackageId: ServicePackageId, ServicePackageName: ServicePackageName, ServicePackageCode: ServicePackageCode, price: selectedPrice, typeId: selectedId });
             calculateServicePackageTotal();
         }
     });
 
-    // Filter radio — identical to add_jobcard
     $(document).on('change', '.filter-radio', function () {
         if ($(this).is(':checked')) {
             var ServicePackageId   = $(this).closest('tr').find('.rowServicePackageID').text();
@@ -617,73 +561,49 @@ $(document).ready(function () {
             var selectedId         = $(this).closest('tr').find('.rowFilterID').text();
             var ServicePackageCode = $(this).closest('tr').find('.rowServicePackageCode').text();
             var ServicePackageName = $(this).closest('tr').find('.rowServicePackageName').text();
-
             selected_filter = selected_filter.filter(function (item) { return item.ServicePackageId !== ServicePackageId; });
             selected_filter.push({ ServicePackageId: ServicePackageId, ServicePackageName: ServicePackageName, ServicePackageCode: ServicePackageCode, price: selectedPrice, typeId: selectedId });
             calculateServicePackageTotal();
         }
     });
 
-$(document).on('input', '.FuelPrice', function () {
-    var $row             = $(this).closest('tr');
-    var ServicePackageId = $row.find('.rowServicePackageID').text();
-    var newPrice         = $(this).val();
-
-    var existingIdx = selected_fuel.findIndex(function (item) {
-        return item.ServicePackageId === ServicePackageId;
+    $(document).on('input', '.FuelPrice', function () {
+        var ServicePackageId = $(this).closest('tr').find('.rowServicePackageID').text();
+        var newPrice = $(this).val();
+        var idx = selected_fuel.findIndex(function (item) { return item.ServicePackageId === ServicePackageId; });
+        if (idx !== -1) selected_fuel[idx].price = newPrice;
+        calculateServicePackageTotal();
     });
-    if (existingIdx !== -1) {
-        selected_fuel[existingIdx].price = newPrice;  // keep array in sync for submit
-    }
-    calculateServicePackageTotal(); // always recalculate from DOM
-});
 
-$(document).on('input', '.FilterPrice', function () {
-    var $row             = $(this).closest('tr');
-    var ServicePackageId = $row.find('.rowServicePackageID').text();
-    var newPrice         = $(this).val();
-
-    var existingIdx = selected_filter.findIndex(function (item) {
-        return item.ServicePackageId === ServicePackageId;
+    $(document).on('input', '.FilterPrice', function () {
+        var ServicePackageId = $(this).closest('tr').find('.rowServicePackageID').text();
+        var newPrice = $(this).val();
+        var idx = selected_filter.findIndex(function (item) { return item.ServicePackageId === ServicePackageId; });
+        if (idx !== -1) selected_filter[idx].price = newPrice;
+        calculateServicePackageTotal();
     });
-    if (existingIdx !== -1) {
-        selected_filter[existingIdx].price = newPrice; // keep array in sync for submit
-    }
-    calculateServicePackageTotal(); // always recalculate from DOM
-});
 
-    // Delete service package — identical to add_jobcard
     $('#tableServicePackage').on('click', '.deleteServicePackageItem', function () {
         var listItem = String($(this).data('id'));
-
         var idx = selected_service_packages.findIndex(function (i) { return String(i.id) === listItem; });
         if (idx !== -1) selected_service_packages.splice(idx, 1);
-
         selected_fuel   = selected_fuel.filter(function (i)   { return String(i.ServicePackageId) !== listItem; });
         selected_filter = selected_filter.filter(function (i) { return String(i.ServicePackageId) !== listItem; });
-
         $(this).closest('tr').next('.expandable-body').remove();
         $(this).closest('tr').remove();
         calculateServicePackageTotal();
     });
 
-   function calculateServicePackageTotal() {
-    var totalAmount = 0;
-
-    // Sum all checked fuel radios' price inputs
-    $('#table-jobcard-service-packages .fuel-radio:checked').each(function () {
-        var price = parseFloat($(this).closest('tr').find('.FuelPrice').val()) || 0;
-        totalAmount += price;
-    });
-
-    // Sum all checked filter radios' price inputs
-    $('#table-jobcard-service-packages .filter-radio:checked').each(function () {
-        var price = parseFloat($(this).closest('tr').find('.FilterPrice').val()) || 0;
-        totalAmount += price;
-    });
-
-    $('#service-package-total').text(totalAmount.toFixed(2));
-}
+    function calculateServicePackageTotal() {
+        var totalAmount = 0;
+        $('#table-jobcard-service-packages .fuel-radio:checked').each(function () {
+            totalAmount += parseFloat($(this).closest('tr').find('.FuelPrice').val()) || 0;
+        });
+        $('#table-jobcard-service-packages .filter-radio:checked').each(function () {
+            totalAmount += parseFloat($(this).closest('tr').find('.FilterPrice').val()) || 0;
+        });
+        $('#service-package-total').text(totalAmount.toFixed(2));
+    }
 
     // ==========================================
     // 9. STEP 5 — REPAIRS
@@ -691,7 +611,7 @@ $(document).on('input', '.FilterPrice', function () {
     function loadRepairDropdown(savedRepairs) {
         $.ajax({
             type: 'POST',
-            url: '../api/cmb/repairlist.php',   // dedicated endpoint that lists all repairs for the dropdown
+            url: '../api/cmb/repairlist.php',
             data: { vehicleClassId: vehicleClassId },
             dataType: 'json',
             success: function (repairs) {
@@ -699,29 +619,19 @@ $(document).on('input', '.FilterPrice', function () {
                 $cmb.find('option:not(:first)').remove();
                 if (repairs && repairs.length > 0) {
                     repairs.forEach(function (r) {
-                        var name = r.name || r.repair_name || 'Repair #' + r.id;
-                        $cmb.append('<option value="' + r.id + '">' + name + '</option>');
+                        $cmb.append('<option value="' + r.id + '">' + (r.name || r.repair_name || 'Repair #' + r.id) + '</option>');
                     });
                 }
-                // Pre-load saved repairs
                 preLoadSavedRepairs(savedRepairs);
             },
-            error: function () {
-                console.warn('Could not load repairs dropdown.');
-                preLoadSavedRepairs(savedRepairs);
-            }
+            error: function () { preLoadSavedRepairs(savedRepairs); }
         });
     }
 
     function preLoadSavedRepairs(savedRepairs) {
         if (!savedRepairs || savedRepairs.length === 0) return;
         savedRepairs.forEach(function (repair) {
-            var fakeData = [{
-                id    : repair.repair_id,
-                code  : repair.code,
-                name  : repair.name,
-                price : repair.unit_price
-            }];
+            var fakeData = [{ id: repair.repair_id, code: repair.code, name: repair.name, price: repair.unit_price }];
             var alreadyAdded = selected_repairs.some(function (r) { return String(r.id) === String(repair.repair_id); });
             if (!alreadyAdded) {
                 populateTableRepairs(fakeData, repair.hours, repair.discount);
@@ -731,21 +641,15 @@ $(document).on('input', '.FilterPrice', function () {
         calculateRepairTotal();
     }
 
-    // Dropdown change — identical to add_jobcard
     $(document).on('change', '#cmbrepair', function () {
         var repairId = $(this).val();
         $.ajax({
-            type: 'POST',
-            url: '../api/checkrepair.php',
-            data: { repairId: repairId, vehicleClassId: vehicleClassId },
-            dataType: 'json',
+            type: 'POST', url: '../api/checkrepair.php',
+            data: { repairId: repairId, vehicleClassId: vehicleClassId }, dataType: 'json',
             success: function (data) {
                 if (!data || data.length === 0) return;
-                var foundRepair = selected_repairs.some(function (r) { return String(r.id) === String(repairId); });
-                if (foundRepair) {
-                    Swal.fire({ icon: 'error', title: 'Error', text: 'Repair Already Exist' });
-                    return;
-                }
+                var found = selected_repairs.some(function (r) { return String(r.id) === String(repairId); });
+                if (found) { Swal.fire({ icon: 'error', title: 'Error', text: 'Repair Already Exist' }); return; }
                 populateTableRepairs(data, 1, 0);
                 selected_repairs.push(data[0]);
             }
@@ -753,43 +657,27 @@ $(document).on('input', '.FilterPrice', function () {
     });
 
     function populateTableRepairs(data, defaultHours, defaultDiscount) {
-        defaultHours    = (defaultHours    !== undefined && defaultHours    !== null) ? defaultHours    : 1;
-        defaultDiscount = (defaultDiscount !== undefined && defaultDiscount !== null) ? defaultDiscount : 0;
-
+        defaultHours    = (defaultHours    != null) ? defaultHours    : 1;
+        defaultDiscount = (defaultDiscount != null) ? defaultDiscount : 0;
         data.forEach(function (plist) {
             var row = $('<tr>');
-            row.append('<td class="rowID"   style="display:none;">' + plist.id   + '</td>');
-            row.append('<td class="rowCode" style="display:none;">' + (plist.code || '') + '</td>');
-            row.append('<td class="rowName" style="display:none;">' + plist.name + '</td>');
+            row.append('<td class="rowID"   style="display:none;">' + plist.id              + '</td>');
+            row.append('<td class="rowCode" style="display:none;">' + (plist.code || '')    + '</td>');
+            row.append('<td class="rowName" style="display:none;">' + plist.name            + '</td>');
             row.append('<td>' + (repair_items.length + 1) + '.</td>');
             row.append('<td>' + plist.name + '</td>');
-            row.append(
-                '<td><div class="input-group"><input value="' + defaultHours + '" type="text" class="form-control hours">' +
-                '<div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>'
-            );
-            row.append(
-                '<td><div class="input-group"><input value="' + (plist.price || 0) + '" type="text" class="form-control unit-price">' +
-                '<div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>'
-            );
-            row.append(
-                '<td><div class="input-group"><input value="' + defaultDiscount + '" type="text" class="form-control discount">' +
-                '<div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>'
-            );
+            row.append('<td><div class="input-group"><input value="' + defaultHours + '" type="text" class="form-control hours"><div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>');
+            row.append('<td><div class="input-group"><input value="' + (plist.price || 0) + '" type="text" class="form-control unit-price"><div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>');
+            row.append('<td><div class="input-group"><input value="' + defaultDiscount + '" type="text" class="form-control discount"><div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>');
             row.append('<td><p class="h6 repair-total">0.00</p></td>');
             row.append('<td><button data-id="' + plist.id + '" type="button" class="btn bg-gradient-danger deleteRepairItem"><i class="fas fa-trash"></i></button></td>');
             tableBodyRepair.append(row);
-
             var item = {
-                rowCode        : row.find('.rowCode')[0],
-                rowName        : row.find('.rowName')[0],
-                rowID          : row.find('.rowID')[0],
-                HoursInput     : row.find('.hours')[0],
-                UnitPriceInput : row.find('.unit-price')[0],
-                discountInput  : row.find('.discount')[0],
-                totalCell      : row.find('.repair-total')[0]
+                rowCode: row.find('.rowCode')[0], rowName: row.find('.rowName')[0], rowID: row.find('.rowID')[0],
+                HoursInput: row.find('.hours')[0], UnitPriceInput: row.find('.unit-price')[0],
+                discountInput: row.find('.discount')[0], totalCell: row.find('.repair-total')[0]
             };
             repair_items.push(item);
-
             item.HoursInput.addEventListener('input',     calculateRepairTotal);
             item.UnitPriceInput.addEventListener('input', calculateRepairTotal);
             item.discountInput.addEventListener('input',  calculateRepairTotal);
@@ -800,12 +688,12 @@ $(document).on('input', '.FilterPrice', function () {
     function calculateRepairTotal() {
         var totalAmount = 0;
         repair_items.forEach(function (item) {
-            var hours     = parseFloat(item.HoursInput.value)     || 0;
-            var unitPrice = parseFloat(item.UnitPriceInput.value) || 0;
-            var discount  = parseFloat(item.discountInput.value)  || 0;
-            var itemTotal = hours * unitPrice - discount;
-            item.totalCell.textContent = itemTotal.toFixed(2);
-            totalAmount += itemTotal;
+            var hours = parseFloat(item.HoursInput.value) || 0;
+            var price = parseFloat(item.UnitPriceInput.value) || 0;
+            var disc  = parseFloat(item.discountInput.value)  || 0;
+            var total = (hours * price) - disc;
+            item.totalCell.textContent = total.toFixed(2);
+            totalAmount += total;
         });
         $('#repair-final-total').text(totalAmount.toFixed(2));
     }
@@ -825,37 +713,25 @@ $(document).on('input', '.FilterPrice', function () {
     // ==========================================
     function loadProductDropdown(savedProducts) {
         $.ajax({
-            type: 'POST',
-            url: '../api/cmb/productslist.php',   // dedicated endpoint that lists all products for the dropdown
-            dataType: 'json',
+            type: 'POST', url: '../api/cmb/productslist.php', dataType: 'json',
             success: function (products) {
                 var $cmb = $('#cmbproducts');
                 $cmb.find('option:not(:first)').remove();
                 if (products && products.length > 0) {
                     products.forEach(function (p) {
-                        var name = p.product_name || p.name || 'Product #' + p.id;
-                        $cmb.append('<option value="' + p.id + '">' + name + '</option>');
+                        $cmb.append('<option value="' + p.id + '">' + (p.product_name || p.name || 'Product #' + p.id) + '</option>');
                     });
                 }
                 preLoadSavedProducts(savedProducts);
             },
-            error: function () {
-                console.warn('Could not load products dropdown.');
-                preLoadSavedProducts(savedProducts);
-            }
+            error: function () { preLoadSavedProducts(savedProducts); }
         });
     }
 
     function preLoadSavedProducts(savedProducts) {
         if (!savedProducts || savedProducts.length === 0) return;
         savedProducts.forEach(function (product) {
-            var fakeData = [{
-                id           : product.product_id,
-                code         : product.code,
-                product_name : product.product_name,
-                quantity     : product.qty,
-                selling_price: product.price
-            }];
+            var fakeData = [{ id: product.product_id, code: product.code, product_name: product.product_name, quantity: product.qty, selling_price: product.price }];
             var alreadyAdded = selected_products.some(function (p) { return String(p.id) === String(product.product_id); });
             if (!alreadyAdded) {
                 populateTableProducts(fakeData, product.qty, product.discount);
@@ -865,21 +741,15 @@ $(document).on('input', '.FilterPrice', function () {
         calculateProductTotal();
     }
 
-    // Dropdown change — identical to add_jobcard
     $(document).on('change', '#cmbproducts', function () {
         var productId = $(this).val();
         $.ajax({
-            type: 'POST',
-            url: '../api/checkproduct.php',
-            data: { productId: productId },
-            dataType: 'json',
+            type: 'POST', url: '../api/checkproduct.php',
+            data: { productId: productId }, dataType: 'json',
             success: function (data) {
                 if (!data || data.length === 0) return;
-                var foundSales = selected_products.some(function (p) { return String(p.id) === String(productId); });
-                if (foundSales) {
-                    Swal.fire({ icon: 'error', title: 'Error', text: 'Product Already Exist' });
-                    return;
-                }
+                var found = selected_products.some(function (p) { return String(p.id) === String(productId); });
+                if (found) { Swal.fire({ icon: 'error', title: 'Error', text: 'Product Already Exist' }); return; }
                 populateTableProducts(data, data[0].quantity, 0);
                 selected_products.push(data[0]);
             }
@@ -887,43 +757,27 @@ $(document).on('input', '.FilterPrice', function () {
     });
 
     function populateTableProducts(data, defaultQty, defaultDiscount) {
-        defaultQty      = (defaultQty      !== undefined && defaultQty      !== null) ? defaultQty      : 1;
-        defaultDiscount = (defaultDiscount !== undefined && defaultDiscount !== null) ? defaultDiscount : 0;
-
+        defaultQty      = (defaultQty      != null) ? defaultQty      : 1;
+        defaultDiscount = (defaultDiscount != null) ? defaultDiscount : 0;
         data.forEach(function (plist) {
             var row = $('<tr>');
-            row.append('<td class="rowProductID"   style="display:none;">' + plist.id           + '</td>');
-            row.append('<td class="rowProductCode" style="display:none;">' + (plist.code || '') + '</td>');
-            row.append('<td class="rowProductName" style="display:none;">' + plist.product_name  + '</td>');
+            row.append('<td class="rowProductID"   style="display:none;">' + plist.id              + '</td>');
+            row.append('<td class="rowProductCode" style="display:none;">' + (plist.code || '')    + '</td>');
+            row.append('<td class="rowProductName" style="display:none;">' + plist.product_name    + '</td>');
             row.append('<td>' + (products_items.length + 1) + '.</td>');
             row.append('<td>' + plist.product_name + '</td>');
-            row.append(
-                '<td><div class="input-group"><input value="' + defaultQty + '" type="text" class="form-control quantityQty">' +
-                '<div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>'
-            );
-            row.append(
-                '<td><div class="input-group"><input value="' + (plist.selling_price || 0) + '" type="text" class="form-control unitPriceProduct">' +
-                '<div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>'
-            );
-            row.append(
-                '<td><div class="input-group"><input value="' + defaultDiscount + '" type="text" class="form-control discountProduct">' +
-                '<div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>'
-            );
+            row.append('<td><div class="input-group"><input value="' + defaultQty + '" type="text" class="form-control quantityQty"><div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>');
+            row.append('<td><div class="input-group"><input value="' + (plist.selling_price || 0) + '" type="text" class="form-control unitPriceProduct"><div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>');
+            row.append('<td><div class="input-group"><input value="' + defaultDiscount + '" type="text" class="form-control discountProduct"><div class="input-group-append"><span class="input-group-text">.00</span></div></div></td>');
             row.append('<td><p class="h6 totalProduct">0.00</p></td>');
             row.append('<td><button data-id="' + plist.id + '" type="button" class="btn bg-gradient-danger deleteProductsItem"><i class="fas fa-trash"></i></button></td>');
             tableBodyProducts.append(row);
-
             var item = {
-                rowID         : row.find('.rowProductID')[0],
-                rowCode       : row.find('.rowProductCode')[0],
-                rowName       : row.find('.rowProductName')[0],
-                quantityInput : row.find('.quantityQty')[0],
-                priceInput    : row.find('.unitPriceProduct')[0],
-                discountInput : row.find('.discountProduct')[0],
-                totalCell     : row.find('.totalProduct')[0]
+                rowID: row.find('.rowProductID')[0], rowCode: row.find('.rowProductCode')[0], rowName: row.find('.rowProductName')[0],
+                quantityInput: row.find('.quantityQty')[0], priceInput: row.find('.unitPriceProduct')[0],
+                discountInput: row.find('.discountProduct')[0], totalCell: row.find('.totalProduct')[0]
             };
             products_items.push(item);
-
             item.quantityInput.addEventListener('input', calculateProductTotal);
             item.priceInput.addEventListener('input',    calculateProductTotal);
             item.discountInput.addEventListener('input', calculateProductTotal);
@@ -934,12 +788,12 @@ $(document).on('input', '.FilterPrice', function () {
     function calculateProductTotal() {
         var totalAmount = 0;
         products_items.forEach(function (item) {
-            var quantity  = parseFloat(item.quantityInput.value) || 0;
-            var price     = parseFloat(item.priceInput.value)    || 0;
-            var discount  = parseFloat(item.discountInput.value) || 0;
-            var itemTotal = quantity * price - discount;
-            item.totalCell.textContent = itemTotal.toFixed(2);
-            totalAmount += itemTotal;
+            var qty   = parseFloat(item.quantityInput.value) || 0;
+            var price = parseFloat(item.priceInput.value)    || 0;
+            var disc  = parseFloat(item.discountInput.value) || 0;
+            var total = (qty * price) - disc;
+            item.totalCell.textContent = total.toFixed(2);
+            totalAmount += total;
         });
         $('#total-final-product').text(totalAmount.toFixed(2));
     }
@@ -955,15 +809,16 @@ $(document).on('input', '.FilterPrice', function () {
     });
 
     // ==========================================
-    // 11. STEP 7 — INVOICE
+    // 11. STEP 7 — INVOICE  ← FIXED
     // ==========================================
     function getInvoiceDetails(vehicleData, stationData) {
         if (!vehicleData || !vehicleData.length || !stationData || !stationData.length) return;
-        var jc = vehicleData[0], station = stationData[0];
+        var jc      = vehicleData[0];
+        var station = stationData[0];
 
         $('#invoice-code').text(invoiceCode);
         $('#invoice-date').text(new Date().toLocaleDateString());
-        $('#in_vat_input').val(vat);   
+        $('#in_vat_input').val(vat);
         $('#invoice-mileage').text(current_mileage + ' KM');
 
         $('#invoice-customer-info').html(
@@ -977,6 +832,7 @@ $(document).on('input', '.FilterPrice', function () {
             '<p class="mb-1"><strong>Chassis:</strong> ' + (jc.chassis_number || 'N/A') + '</p>' +
             '<p class="mb-1"><strong>Engine:</strong> ' + (jc.engine_number || 'N/A') + '</p>'
         );
+
         $('#station-logo').attr('src', station.logo ? '../uploads/stations/' + station.logo : '../dist/img/system/logo_pistona.png');
         $('#station-name').text(station.service_name || '');
         $('#station-address').text([station.address, station.street, station.city].filter(Boolean).join(' ') || 'N/A');
@@ -988,67 +844,154 @@ $(document).on('input', '.FilterPrice', function () {
         displayCalculation();
     }
 
+    // ── FIXED: matches the 7-column table header in the HTML ──────────────
+    // Columns: Code | Item Description | QTY/Labour Hr | Unit Price | Amount | Discount | Total
     function generateInvoiceItems() {
         var html = '';
 
+        // Washers
         items.forEach(function (wash) {
-            html += '<tr><td>' + wash.rowCode.innerText + '</td><td class="text-uppercase">Wash</td>' +
-                    '<td>' + wash.quantityInput.value + '</td><td>' + wash.priceInput.value + '</td>' +
-                    '<td>' + wash.discountInput.value + '</td><td>' + wash.totalCell.innerText + '</td></tr>';
+            var qty       = parseFloat(wash.quantityInput.value) || 0;
+            var unitPrice = parseFloat(wash.priceInput.value)    || 0;
+            var discount  = parseFloat(wash.discountInput.value) || 0;
+            var amount    = qty * unitPrice;
+            var total     = amount - discount;
+            html += '<tr>' +
+                '<td>' + wash.rowCode.innerText + '</td>' +
+                '<td class="text-uppercase">Car Wash</td>' +
+                '<td class="text-center">' + qty + '</td>' +
+                '<td class="text-right">LKR ' + unitPrice.toFixed(2) + '</td>' +
+                '<td class="text-right">LKR ' + amount.toFixed(2) + '</td>' +
+                '<td class="text-right">LKR ' + discount.toFixed(2) + '</td>' +
+                '<td class="text-right font-weight-bold">LKR ' + total.toFixed(2) + '</td>' +
+                '</tr>';
         });
 
+        // Repairs
         repair_items.forEach(function (repair) {
-            html += '<tr><td>' + repair.rowCode.innerText + '</td><td class="text-uppercase">' + repair.rowName.innerText + '</td>' +
-                    '<td>' + repair.HoursInput.value + '</td><td>' + repair.UnitPriceInput.value + '</td>' +
-                    '<td>' + repair.discountInput.value + '</td><td>' + repair.totalCell.innerText + '</td></tr>';
+            var hours     = parseFloat(repair.HoursInput.value)     || 0;
+            var unitPrice = parseFloat(repair.UnitPriceInput.value) || 0;
+            var discount  = parseFloat(repair.discountInput.value)  || 0;
+            var amount    = hours * unitPrice;
+            var total     = amount - discount;
+            html += '<tr>' +
+                '<td>' + repair.rowCode.innerText + '</td>' +
+                '<td class="text-uppercase">' + repair.rowName.innerText + '</td>' +
+                '<td class="text-center">' + hours + ' hrs</td>' +
+                '<td class="text-right">LKR ' + unitPrice.toFixed(2) + '</td>' +
+                '<td class="text-right">LKR ' + amount.toFixed(2) + '</td>' +
+                '<td class="text-right">LKR ' + discount.toFixed(2) + '</td>' +
+                '<td class="text-right font-weight-bold">LKR ' + total.toFixed(2) + '</td>' +
+                '</tr>';
         });
 
+        // Products
         products_items.forEach(function (product) {
-            html += '<tr><td>' + product.rowCode.innerText + '</td><td class="text-uppercase">' + product.rowName.innerText + '</td>' +
-                    '<td>' + product.quantityInput.value + '</td><td>' + product.priceInput.value + '</td>' +
-                    '<td>' + product.discountInput.value + '</td><td>' + product.totalCell.innerText + '</td></tr>';
+            var qty       = parseFloat(product.quantityInput.value) || 0;
+            var unitPrice = parseFloat(product.priceInput.value)    || 0;
+            var discount  = parseFloat(product.discountInput.value) || 0;
+            var amount    = qty * unitPrice;
+            var total     = amount - discount;
+            html += '<tr>' +
+                '<td>' + product.rowCode.innerText + '</td>' +
+                '<td class="text-uppercase">' + product.rowName.innerText + '</td>' +
+                '<td class="text-center">' + qty + '</td>' +
+                '<td class="text-right">LKR ' + unitPrice.toFixed(2) + '</td>' +
+                '<td class="text-right">LKR ' + amount.toFixed(2) + '</td>' +
+                '<td class="text-right">LKR ' + discount.toFixed(2) + '</td>' +
+                '<td class="text-right font-weight-bold">LKR ' + total.toFixed(2) + '</td>' +
+                '</tr>';
         });
 
-        service_packages_items.forEach(function (spitems) {
-            var spId = spitems.rowServicePackageID.innerText;
-            var fuelTotal = 0, filterTotal = 0;
-            service_packages_items_fuel.forEach(function (f) {
-                if (f.rowServicePackageID.innerText == spId) fuelTotal += parseFloat(f.FuelPrice.value) || 0;
-            });
-            service_packages_items_filter.forEach(function (f) {
-                if (f.rowServicePackageID.innerText == spId) filterTotal += parseFloat(f.FilterPrice.value) || 0;
-            });
-            html += '<tr><td>' + spitems.rowServicePackageCode.innerText + '</td><td class="text-uppercase">' + spitems.rowServicePackageName.innerText + '</td>' +
-                    '<td>1</td><td>1</td><td>0</td><td>' + (fuelTotal + filterTotal).toFixed(2) + '</td></tr>';
+        // Service Packages — one row per package, showing selected fuel + filter
+        // Group unique package IDs from selected_fuel and selected_filter
+        var packageIds = [];
+        selected_fuel.forEach(function (f) {
+            if (packageIds.indexOf(f.ServicePackageId) === -1) packageIds.push(f.ServicePackageId);
+        });
+        selected_filter.forEach(function (f) {
+            if (packageIds.indexOf(f.ServicePackageId) === -1) packageIds.push(f.ServicePackageId);
         });
 
-        if (!html) html = '<tr><td colspan="6" class="text-center text-muted">No items added</td></tr>';
+        packageIds.forEach(function (pkgId) {
+            var fuel   = selected_fuel.find(function (f)   { return f.ServicePackageId === pkgId; });
+            var filter = selected_filter.find(function (f) { return f.ServicePackageId === pkgId; });
+
+            var pkgCode = fuel ? fuel.ServicePackageCode : (filter ? filter.ServicePackageCode : '');
+            var pkgName = fuel ? fuel.ServicePackageName : (filter ? filter.ServicePackageName : '');
+
+            var fuelAmt   = fuel   ? (parseFloat(fuel.price)   || 0) : 0;
+            var filterAmt = filter ? (parseFloat(filter.price) || 0) : 0;
+            var total     = fuelAmt + filterAmt;
+
+            html += '<tr>' +
+                '<td>' + pkgCode + '</td>' +
+                '<td class="text-uppercase">' + pkgName + '</td>' +
+                '<td class="text-center">1</td>' +
+                '<td class="text-right">LKR ' + total.toFixed(2) + '</td>' +
+                '<td class="text-right">LKR ' + total.toFixed(2) + '</td>' +
+                '<td class="text-right">LKR 0.00</td>' +
+                '<td class="text-right font-weight-bold">LKR ' + total.toFixed(2) + '</td>' +
+                '</tr>';
+        });
+
+        if (!html) {
+            html = '<tr><td colspan="7" class="text-center text-muted">No items added</td></tr>';
+        }
+
         $('#tb_jobcard_items').html(html);
     }
 
     function calculateSubtotal() {
         var grandTotal = 0;
-        grandTotal += items.reduce(function (t, w) { return t + (parseFloat(w.totalCell.innerText) || 0); }, 0);
-        grandTotal += repair_items.reduce(function (t, r) { return t + (parseFloat(r.totalCell.innerText) || 0); }, 0);
-        grandTotal += products_items.reduce(function (t, p) { return t + (parseFloat(p.totalCell.innerText) || 0); }, 0);
-        grandTotal += service_packages_items.reduce(function (t, sp) {
-            var spId = sp.rowServicePackageID.innerText;
-            var fuelTotal = 0, filterTotal = 0;
-            service_packages_items_fuel.forEach(function (f) { if (f.rowServicePackageID.innerText == spId) fuelTotal += parseFloat(f.FuelPrice.value) || 0; });
-            service_packages_items_filter.forEach(function (f) { if (f.rowServicePackageID.innerText == spId) filterTotal += parseFloat(f.FilterPrice.value) || 0; });
-            return t + fuelTotal + filterTotal;
-        }, 0);
+
+        // Washers
+        items.forEach(function (w) {
+            var qty  = parseFloat(w.quantityInput.value) || 0;
+            var price = parseFloat(w.priceInput.value)   || 0;
+            var disc  = parseFloat(w.discountInput.value)|| 0;
+            grandTotal += (qty * price) - disc;
+        });
+
+        // Repairs
+        repair_items.forEach(function (r) {
+            var hrs   = parseFloat(r.HoursInput.value)     || 0;
+            var price = parseFloat(r.UnitPriceInput.value) || 0;
+            var disc  = parseFloat(r.discountInput.value)  || 0;
+            grandTotal += (hrs * price) - disc;
+        });
+
+        // Products
+        products_items.forEach(function (p) {
+            var qty   = parseFloat(p.quantityInput.value) || 0;
+            var price = parseFloat(p.priceInput.value)    || 0;
+            var disc  = parseFloat(p.discountInput.value) || 0;
+            grandTotal += (qty * price) - disc;
+        });
+
+        // Service packages — sum checked fuel + filter radio prices from DOM
+        $('#table-jobcard-service-packages .fuel-radio:checked').each(function () {
+            grandTotal += parseFloat($(this).closest('tr').find('.FuelPrice').val()) || 0;
+        });
+        $('#table-jobcard-service-packages .filter-radio:checked').each(function () {
+            grandTotal += parseFloat($(this).closest('tr').find('.FilterPrice').val()) || 0;
+        });
+
         $('#in_subtotal').text(grandTotal.toFixed(2));
+        return grandTotal;
     }
 
     function displayCalculation() {
         var vatValue = parseFloat($('#in_vat_input').val()) || 0;
         var subtotal = parseFloat($('#in_subtotal').text()) || 0;
-        var final    = subtotal + (subtotal * vatValue / 100);
-        $('#in_total').text(final.toFixed(2));
+        var total    = subtotal + (subtotal * vatValue / 100);
+        $('#in_total').text(total.toFixed(2));
     }
 
-    $(document).on('input', '#in_vat_input', function () { calculateSubtotal(); displayCalculation(); });
+    $(document).on('input', '#in_vat_input', function () {
+        calculateSubtotal();
+        displayCalculation();
+    });
 
     // ==========================================
     // 12. STEP NAVIGATION
@@ -1073,12 +1016,10 @@ $(document).on('input', '.FilterPrice', function () {
         paid_status     = $('#cmbpaidstatus').val();
         status          = $('#cmbstatus').val();
         notify          = $('input[name="customRadio"]:checked').val();
-
         if (!current_mileage) { Swal.fire({ icon: 'warning', title: 'Validation Error', text: 'Please enter current mileage' }); return; }
         if (!new_mileage)     { Swal.fire({ icon: 'warning', title: 'Validation Error', text: 'Please enter next mileage' });    return; }
         if (!paid_status)     { Swal.fire({ icon: 'warning', title: 'Validation Error', text: 'Please select paid status' });    return; }
         if (!status)          { Swal.fire({ icon: 'warning', title: 'Validation Error', text: 'Please select status' });         return; }
-
         window.stepper.to(2); window.showStepContent(2);
     });
 
