@@ -4,6 +4,9 @@ require_once '../includes/db_config.php';
 require_once '../includes/environment.php';
 require_once '../vendor/tecnickcom/tcpdf/tcpdf.php';
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
