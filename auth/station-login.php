@@ -50,14 +50,13 @@
         top: 0; left: 0;
     }
 
-
-    .login-wrapper .login-content{
-        overflow-x: hidden;
-    }
-
     /* ══════════════════════════
        LEFT PANEL
     ══════════════════════════ */
+    .login-wrapper .login-content{
+        overflow-x: hidden;
+    }
+    
     .login-content {
         position: relative;
         width: 460px;
@@ -467,6 +466,9 @@
     /* ══════════════════════════
        MODAL
     ══════════════════════════ */
+    #fpModal { z-index: 99999 !important; }
+    .modal-backdrop { z-index: 99998 !important; }
+
     #fpModal .modal-content {
         border: none;
         border-radius: 16px;
@@ -734,7 +736,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"><i class="fas fa-key mr-2"></i>Reset Station Password</h5>
-                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                <button type="button" class="close" onclick="$('#fpModal').modal('hide')"><span>&times;</span></button>
             </div>
             <div class="modal-body">
                 <p class="desc">Enter the email address linked to your station account and we'll send you a password reset link.</p>
@@ -746,7 +748,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="fp-btn-cancel" data-dismiss="modal"><i class="fas fa-times mr-1"></i> Cancel</button>
+                <button type="button" class="fp-btn-cancel" onclick="$('#fpModal').modal('hide')"><i class="fas fa-times mr-1"></i> Cancel</button>
                 <div>
                     <button id="btn-fp-submit" type="button" class="fp-btn-primary" onclick="submitForgotPassword()">
                         <i class="fas fa-paper-plane mr-1"></i> Send Reset Link
@@ -770,12 +772,15 @@ $(document).ready(function () {
         var panel = document.querySelector('.login-content');
         var inner = document.querySelector('.login-userset');
         if (!panel || !inner) return;
-        inner.style.transform = ''; // reset
-        var panelH = panel.clientHeight;
+        inner.style.transform = '';
+        inner.style.marginTop = '';
+        var panelH = panel.clientHeight - 48;
         var innerH = inner.scrollHeight;
         if (innerH > panelH) {
             var scale = panelH / innerH;
             inner.style.transform = 'scale(' + scale + ')';
+            var shrink = innerH - (innerH * scale);
+            inner.style.marginTop = '-' + (shrink / 2) + 'px';
         }
     }
     scaleFormToFit();
