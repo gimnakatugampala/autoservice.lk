@@ -1,6 +1,6 @@
 <?php
 
-// include_once '../includes/environment.php';
+include_once '../includes/environment.php';
 
 // LOCAL HOST SERVER
 // gimna.exon@gmail.com
@@ -16,17 +16,24 @@
 // $password = "PBh*n[{iR9Gs";
 // $dbname = "autoserv_autoservice_test_db";
 
+if($env == 'd'){
+    
+    // DEV SERVER
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "autoservice_db";
+}else{
     
     // PRODUCTION SERVER
     $servername = "localhost";
     $username = "autovnph_autovnph";
     $password = "FS8qiqfeIkwQ";
     $dbname = "autovnph_autoservice_db";
+}
 
-    // $servername = "localhost";
-    // $username = "root";
-    // $password = "";
-    // $dbname = "autoservice_db";
+    
+
 
 
 
