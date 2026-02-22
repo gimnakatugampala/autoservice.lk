@@ -110,7 +110,7 @@ include_once '../includes/auth-header.php';
         align-items: center;
         justify-content: center;
         position: relative;
-        overflow: hidden;
+        /* overflow: hidden; */
     }
 
     /* Background blobs */
