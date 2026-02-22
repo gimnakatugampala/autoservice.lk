@@ -23,4 +23,7 @@
 <link rel="stylesheet" href="../assets/css/style.css">
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 </head>

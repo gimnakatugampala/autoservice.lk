@@ -6,6 +6,9 @@ $(document).ready(function () {
         var email = $("#email").val();
         var password = $("#password").val();
 
+        // 1. GET RECAPTCHA RESPONSE
+        var recaptchaResponse = grecaptcha.getResponse();
+
         console.log(email)
         console.log(password)
     
@@ -37,6 +40,13 @@ $(document).ready(function () {
 
               return
 
+        }else if(recaptchaResponse.length == 0){
+            Swal.fire({
+                icon: "error",
+                title: "Robot Check",
+                text: "Please verify that you are not a robot.",
+            });
+            return;
         }
 
 
@@ -51,7 +61,8 @@ $(document).ready(function () {
             url: "../api/station-login.php",
             data: {
               email:email,
-              password:password
+              password:password,
+              'g-recaptcha-response': recaptchaResponse
             },
             success: function (response) {
      
@@ -62,20 +73,30 @@ $(document).ready(function () {
                 // console.log("Success")
     
               }else {
-                Swal.fire({
-                    icon: "error",
-                    title: "Login failed",
-                    text: "Please check your credentials.",
-                  });
+                    // RESET RECAPTCHA ON FAILURE
+                    grecaptcha.reset();
 
-                  // SHOW LOADING BTN
-              document.getElementById("btn_station_login").style.display = "block"
-              document.getElementById("btn-loading").style.display = "none"
-              }
+                    let errorText = "Please check your credentials.";
+                    if (response === "captcha_failed") {
+                        errorText = "Robot verification failed. Please try again.";
+                    }
 
+                    Swal.fire({
+                        icon: "error",
+                        title: "Login failed",
+                        text: errorText,
+                    });
+
+                    // RESTORE BUTTONS
+                    document.getElementById("btn_station_login").style.display = "block";
+                    document.getElementById("btn-loading").style.display = "none";
+                }
             },
             error:function (error) {
-                console.log(error)
+               grecaptcha.reset();
+                console.log(error);
+                document.getElementById("btn_station_login").style.display = "block";
+                document.getElementById("btn-loading").style.display = "none";
             }
           });
 

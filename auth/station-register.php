@@ -258,6 +258,8 @@
                                 </div>
                             </div>
 
+                            <div class="g-recaptcha" data-sitekey="6LeS1XMsAAAAABs89_XYKP-khhboHHiYY4KnHNLy" style="margin-bottom: 15px;"></div>
+
                             <div class="form-login mt-2">
                                 <button type="button" id="station_register_btn" class="btn btn-login">Create Account</button>
 

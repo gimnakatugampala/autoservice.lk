@@ -8,6 +8,32 @@ require_once '../includes/db_config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+
+// 1. RECAPTCHA VERIFICATION
+    $recaptcha_secret = "6LeS1XMsAAAAAECEa016egAwj31c8yjJ5ftK2I6p"; // Replace with your Secret Key
+    $recaptcha_response = $_POST['g-recaptcha-response'];
+
+    $verify_url = "https://www.google.com/recaptcha/api/siteverify";
+    $verify_params = [
+        'secret'   => $recaptcha_secret,
+        'response' => $recaptcha_response
+    ];
+
+    $ch_cap = curl_init();
+    curl_setopt($ch_cap, CURLOPT_URL, $verify_url);
+    curl_setopt($ch_cap, CURLOPT_POST, true);
+    curl_setopt($ch_cap, CURLOPT_POSTFIELDS, http_build_query($verify_params));
+    curl_setopt($ch_cap, CURLOPT_RETURNTRANSFER, true);
+    $cap_result = curl_exec($ch_cap);
+    curl_close($ch_cap);
+
+    $cap_data = json_decode($cap_result);
+
+    if (!$cap_data->success) {
+        echo "reCAPTCHA failed";
+        return;
+    }
+
     $station_code = $_POST['station_code'];
     $station_name = $_POST['station_name'];
     $email =  $_POST['email'];

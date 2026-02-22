@@ -9,6 +9,9 @@ $(document).ready(function () {
         var lat = ""
         var long = ""
 
+        // 1. GET RECAPTCHA RESPONSE
+        var recaptchaResponse = grecaptcha.getResponse();
+
         let form_data = new FormData();
         let img = $("#station_logo")[0].files;
 
@@ -83,6 +86,13 @@ $(document).ready(function () {
 
               return
 
+        }else if(recaptchaResponse.length == 0){
+            Swal.fire({
+                icon: "error",
+                title: "Robot Check",
+                text: "Please verify that you are not a robot.",
+            });
+            return;
         }
 
 
@@ -114,6 +124,7 @@ $(document).ready(function () {
         form_data.append("lat",lat.toString())
         form_data.append("long",lat.toString())
         form_data.append("my_image",img[0])
+        form_data.append("g-recaptcha-response", recaptchaResponse);
 
         // ------------------ DATA -----------------
 
@@ -137,46 +148,25 @@ $(document).ready(function () {
                 window.location.href = "../auth/user-register.php";
                 // console.log("Success")
     
-              } else if (response == "User Exist"){
-                Swal.fire({
-                    icon: "error",
-                    title: "Register failed",
-                    text: "Service Station Already Exist.",
-                  });
-
-
-                  // SHOW LOADING BTN
-                  document.getElementById("station_register_btn").style.display = "block"
-                  document.getElementById("btn-loading").style.display = "none"
-
-              }else if (response == "Email is Invalid"){
-                Swal.fire({
-                    icon: "error",
-                    title: "Register failed",
-                    text: "Email is Invalid.",
-                  });
-
-
-                  // SHOW LOADING BTN
-                  document.getElementById("station_register_btn").style.display = "block"
-                  document.getElementById("btn-loading").style.display = "none"
-
               }else {
-                Swal.fire({
-                    icon: "error",
-                    title: "Register failed",
-                    text: "Please check your credentials.",
-                  });
+                        // If it fails, reset reCAPTCHA so the user can try again
+                        grecaptcha.reset(); 
+                        
+                        let errorText = "Please check your credentials.";
+                        if (response == "User Exist") errorText = "Service Station Already Exist.";
+                        if (response == "Email is Invalid") errorText = "Email is Invalid.";
+                        if (response == "reCAPTCHA failed") errorText = "Robot verification failed. Please try again.";
 
+                        Swal.fire({ icon: "error", title: "Register failed", text: errorText });
 
-                    // SHOW LOADING BTN
-                    document.getElementById("station_register_btn").style.display = "block"
-                    document.getElementById("btn-loading").style.display = "none"
-              }
+                        document.getElementById("station_register_btn").style.display = "block";
+                        document.getElementById("btn-loading").style.display = "none";
+                    }
 
             },
             error:function (error) {
-                console.log(error)
+                grecaptcha.reset();
+                    console.log(error);
             }
           });
 

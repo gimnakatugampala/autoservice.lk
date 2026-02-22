@@ -230,6 +230,10 @@
                             </div>
 
                             <div class="form-login">
+                                <div class="g-recaptcha" data-sitekey="6LeS1XMsAAAAABs89_XYKP-khhboHHiYY4KnHNLy"></div>
+                            </div>
+
+                            <div class="form-login">
                                 <button type="button" id="btn_station_login" class="btn btn-login">Sign In</button>
 
                                 <div style="display: none;" id="btn-loading">

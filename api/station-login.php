@@ -8,6 +8,19 @@ require_once '../includes/db_config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+// 1. RECAPTCHA VERIFICATION
+    $recaptcha_secret = "6LeS1XMsAAAAAECEa016egAwj31c8yjJ5ftK2I6p"; // Use your Secret Key here
+    $recaptcha_response = $_POST['g-recaptcha-response'];
+
+    $verify_url = "https://www.google.com/recaptcha/api/siteverify";
+    $verify_response = file_get_contents($verify_url . "?secret=" . $recaptcha_secret . "&response=" . $recaptcha_response);
+    $response_data = json_decode($verify_response);
+
+    if (!$response_data->success) {
+        echo "captcha_failed";
+        exit();
+    }
+
     $email =  $_POST['email'];
     $password = $_POST['password'];
 
@@ -30,7 +43,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         VALUES ('{$_SESSION["station_id"]}')";
             if ($conn->query($sql) === TRUE) {
                     echo "success";
-                }
+                }else {
+            echo "session_error";
+        }
 
         // echo "success";        
     } else {
